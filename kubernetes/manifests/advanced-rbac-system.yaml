@@ -1,0 +1,770 @@
+# Advanced RBAC System for Essential CodAI Services
+# Version: 1.0
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rbac-config
+  namespace: codai-production
+data:
+  rbac-policy.json: |
+    {
+      "roleHierarchy": {
+        "systemAdmin": {
+          "level": 0,
+          "inherits": [],
+          "permissions": ["*:*"],
+          "description": "Platform-wide administrative access"
+        },
+        "tenantAdmin": {
+          "level": 1,
+          "inherits": [],
+          "permissions": ["tenant:*", "users:*", "roles:*", "organizations:*", "projects:*"],
+          "description": "Full tenant management capabilities"
+        },
+        "departmentManager": {
+          "level": 2,
+          "inherits": ["teamLead"],
+          "permissions": ["department:*", "users:read", "projects:manage"],
+          "description": "Department-specific permissions"
+        },
+        "teamLead": {
+          "level": 3,
+          "inherits": ["endUser"],
+          "permissions": ["team:*", "projects:write", "users:read"],
+          "description": "Team and project management permissions"
+        },
+        "endUser": {
+          "level": 4,
+          "inherits": [],
+          "permissions": ["profile:*", "projects:read", "dashboard:read"],
+          "description": "Standard application access"
+        },
+        "readOnlyUser": {
+          "level": 5,
+          "inherits": [],
+          "permissions": ["*:read"],
+          "description": "View-only access to resources"
+        },
+        "apiUser": {
+          "level": 6,
+          "inherits": [],
+          "permissions": ["api:read", "api:write"],
+          "description": "Programmatic access with limited scope"
+        }
+      },
+      "resourceTypes": [
+        "users", "roles", "permissions", "organizations", "projects", 
+        "teams", "departments", "audit", "analytics", "api", "dashboard",
+        "settings", "integrations", "reports", "workflows", "notifications"
+      ],
+      "actions": [
+        "create", "read", "update", "delete", "execute", "manage", "configure", "audit"
+      ],
+      "contextualFactors": {
+        "location": ["ip_range", "country", "region"],
+        "time": ["business_hours", "after_hours", "weekends"],
+        "device": ["trusted", "untrusted", "mobile", "desktop"],
+        "session": ["active", "expired", "suspicious"]
+      }
+    }
+
+  permission-engine.json: |
+    {
+      "cacheConfig": {
+        "enabled": true,
+        "ttl": 300,
+        "maxSize": 10000,
+        "strategy": "LRU"
+      },
+      "evaluationEngine": {
+        "type": "ABAC",
+        "supportsPBAC": true,
+        "supportsJIT": true,
+        "defaultEffect": "deny"
+      },
+      "auditConfig": {
+        "logAllChecks": true,
+        "logFailures": true,
+        "logSuccesses": false,
+        "includeContext": true
+      },
+      "performance": {
+        "batchSize": 100,
+        "timeoutMs": 5000,
+        "maxConcurrentChecks": 1000
+      }
+    }
+
+---
+# RBAC Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-rbac-service
+  namespace: codai-production
+  labels:
+    app: codai-rbac-service
+    component: enterprise-security
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: codai-rbac-service
+  template:
+    metadata:
+      labels:
+        app: codai-rbac-service
+        component: enterprise-security
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-rbac-service
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: rbac-service
+        image: codai/rbac-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3001
+          name: http
+          protocol: TCP
+        - containerPort: 9091
+          name: grpc
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: HTTP_PORT
+          value: "3001"
+        - name: GRPC_PORT
+          value: "9091"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: rbac-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: RBAC_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: rbac-secrets
+              key: secret-key
+        - name: PERMISSION_CACHE_TTL
+          value: "300"
+        - name: ENABLE_AUDIT_LOGGING
+          value: "true"
+        - name: ENABLE_PERMISSION_CACHING
+          value: "true"
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        - name: policies
+          mountPath: /app/policies
+          readOnly: true
+        resources:
+          requests:
+            cpu: 300m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        # gRPC health check
+        livenessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:9091"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      volumes:
+      - name: config
+        configMap:
+          name: rbac-config
+      - name: policies
+        configMap:
+          name: rbac-policies
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-rbac-service
+  namespace: codai-production
+  labels:
+    app: codai-rbac-service
+    component: enterprise-security
+spec:
+  ports:
+  - port: 3001
+    targetPort: 3001
+    name: http
+    protocol: TCP
+  - port: 9091
+    targetPort: 9091
+    name: grpc
+    protocol: TCP
+  selector:
+    app: codai-rbac-service
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-rbac-service
+  namespace: codai-production
+  labels:
+    app: codai-rbac-service
+
+---
+# RBAC Policies ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rbac-policies
+  namespace: codai-production
+data:
+  default-policies.json: |
+    {
+      "policies": [
+        {
+          "id": "tenant-isolation-policy",
+          "name": "Tenant Data Isolation",
+          "description": "Ensures users can only access data within their tenant",
+          "rules": [
+            {
+              "effect": "allow",
+              "subjects": ["user:*"],
+              "resources": ["*"],
+              "actions": ["*"],
+              "conditions": {
+                "tenant_match": "subject.tenant_id == resource.tenant_id"
+              }
+            }
+          ]
+        },
+        {
+          "id": "admin-policy",
+          "name": "Administrator Policy",
+          "description": "Full access policy for administrators",
+          "rules": [
+            {
+              "effect": "allow",
+              "subjects": ["role:tenantAdmin", "role:systemAdmin"],
+              "resources": ["*"],
+              "actions": ["*"],
+              "conditions": {}
+            }
+          ]
+        },
+        {
+          "id": "user-self-management",
+          "name": "User Self Management",
+          "description": "Users can manage their own profile and settings",
+          "rules": [
+            {
+              "effect": "allow",
+              "subjects": ["user:*"],
+              "resources": ["user:${subject.id}", "profile:${subject.id}"],
+              "actions": ["read", "update"],
+              "conditions": {}
+            }
+          ]
+        },
+        {
+          "id": "api-access-policy",
+          "name": "API Access Control",
+          "description": "Control API access based on API keys and scopes",
+          "rules": [
+            {
+              "effect": "allow",
+              "subjects": ["apikey:*"],
+              "resources": ["api:*"],
+              "actions": ["*"],
+              "conditions": {
+                "scope_match": "subject.scopes contains resource.required_scope"
+              }
+            }
+          ]
+        },
+        {
+          "id": "time-based-access",
+          "name": "Time-Based Access Control",
+          "description": "Restrict access based on time and business hours",
+          "rules": [
+            {
+              "effect": "allow",
+              "subjects": ["role:endUser"],
+              "resources": ["*"],
+              "actions": ["*"],
+              "conditions": {
+                "business_hours": "current_time >= '08:00' AND current_time <= '18:00'",
+                "work_days": "day_of_week >= 1 AND day_of_week <= 5"
+              }
+            }
+          ]
+        }
+      ]
+    }
+
+  conditional-policies.json: |
+    {
+      "conditionalPolicies": [
+        {
+          "id": "location-based-policy",
+          "name": "Geographic Access Control",
+          "conditions": {
+            "allowed_countries": ["US", "CA", "GB", "DE", "RO"],
+            "blocked_countries": ["*"],
+            "ip_whitelist": ["192.168.0.0/16", "10.0.0.0/8"]
+          },
+          "actions": {
+            "allow": "normal_access",
+            "deny": "block_access",
+            "require_mfa": "enhanced_verification"
+          }
+        },
+        {
+          "id": "device-trust-policy", 
+          "name": "Device-Based Access Control",
+          "conditions": {
+            "trusted_devices": true,
+            "device_compliance": "compliant",
+            "device_encryption": "enabled"
+          },
+          "actions": {
+            "allow": "full_access",
+            "restrict": "limited_access",
+            "deny": "no_access"
+          }
+        },
+        {
+          "id": "risk-based-policy",
+          "name": "Risk-Based Access Control",
+          "conditions": {
+            "risk_score": "< 50",
+            "anomaly_detection": "normal",
+            "threat_intelligence": "clean"
+          },
+          "actions": {
+            "low_risk": "normal_access",
+            "medium_risk": "require_mfa",
+            "high_risk": "block_and_alert"
+          }
+        }
+      ]
+    }
+
+---
+# RBAC Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rbac-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  secret-key: Y29kYWktcmJhYy1zZWNyZXQta2V5LTIwMjU=  # codai-rbac-secret-key-2025
+
+---
+# Permission Cache Service (Redis-based)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-permission-cache
+  namespace: codai-production
+  labels:
+    app: codai-permission-cache
+    component: enterprise-security
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-permission-cache
+  template:
+    metadata:
+      labels:
+        app: codai-permission-cache
+        component: enterprise-security
+    spec:
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      containers:
+      - name: redis
+        image: redis:7.2-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6379
+          name: redis
+        command:
+        - redis-server
+        - /etc/redis/redis.conf
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: password
+        volumeMounts:
+        - name: config
+          mountPath: /etc/redis
+        - name: data
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - --no-auth-warning
+            - -a
+            - $(REDIS_PASSWORD)
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - --no-auth-warning
+            - -a
+            - $(REDIS_PASSWORD)
+            - ping
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: permission-cache-config
+      - name: data
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: permission-cache-config
+  namespace: codai-production
+data:
+  redis.conf: |
+    # Redis Permission Cache Configuration
+    maxmemory 256mb
+    maxmemory-policy allkeys-lru
+    
+    # Network configuration
+    bind 0.0.0.0
+    port 6379
+    timeout 300
+    tcp-keepalive 300
+    
+    # Security
+    requirepass codai-redis-password
+    
+    # Logging
+    loglevel notice
+    
+    # Disable persistence for cache
+    save ""
+    appendonly no
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-permission-cache
+  namespace: codai-production
+  labels:
+    app: codai-permission-cache
+    component: enterprise-security
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: redis
+  selector:
+    app: codai-permission-cache
+
+---
+# RBAC Audit Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-rbac-audit
+  namespace: codai-production
+  labels:
+    app: codai-rbac-audit
+    component: enterprise-security
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-rbac-audit
+  template:
+    metadata:
+      labels:
+        app: codai-rbac-audit
+        component: enterprise-security
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-rbac-audit
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: rbac-audit
+        image: codai/rbac-audit:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3002
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3002"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: audit-url
+        - name: ELASTICSEARCH_URL
+          value: "http://elasticsearch.observability.svc.cluster.local:9200"
+        - name: KAFKA_BROKERS
+          value: "kafka.codai-production.svc.cluster.local:9092"
+        - name: AUDIT_RETENTION_DAYS
+          value: "2555"  # 7 years for compliance
+        - name: ENABLE_REAL_TIME_ALERTS
+          value: "true"
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3002
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: rbac-audit-config
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rbac-audit-config
+  namespace: codai-production
+data:
+  audit-config.json: |
+    {
+      "auditEvents": {
+        "authentication": {
+          "login_success": { "severity": "info", "retention": "1y" },
+          "login_failure": { "severity": "warning", "retention": "7y" },
+          "logout": { "severity": "info", "retention": "1y" },
+          "password_change": { "severity": "info", "retention": "7y" },
+          "mfa_enabled": { "severity": "info", "retention": "7y" },
+          "mfa_disabled": { "severity": "warning", "retention": "7y" }
+        },
+        "authorization": {
+          "permission_granted": { "severity": "debug", "retention": "1y" },
+          "permission_denied": { "severity": "warning", "retention": "7y" },
+          "role_assigned": { "severity": "info", "retention": "7y" },
+          "role_revoked": { "severity": "info", "retention": "7y" },
+          "privilege_escalation": { "severity": "critical", "retention": "7y" }
+        },
+        "dataAccess": {
+          "data_created": { "severity": "info", "retention": "3y" },
+          "data_read": { "severity": "debug", "retention": "1y" },
+          "data_updated": { "severity": "info", "retention": "3y" },
+          "data_deleted": { "severity": "warning", "retention": "7y" },
+          "bulk_operation": { "severity": "info", "retention": "7y" }
+        },
+        "administration": {
+          "user_created": { "severity": "info", "retention": "7y" },
+          "user_deleted": { "severity": "warning", "retention": "7y" },
+          "config_changed": { "severity": "info", "retention": "7y" },
+          "system_maintenance": { "severity": "info", "retention": "3y" }
+        }
+      },
+      "alerting": {
+        "enabled": true,
+        "channels": ["slack", "email", "webhook"],
+        "rules": [
+          {
+            "name": "Multiple Failed Logins",
+            "condition": "login_failure > 5 in 5m",
+            "severity": "high",
+            "channels": ["slack", "email"]
+          },
+          {
+            "name": "Privilege Escalation",
+            "condition": "privilege_escalation > 0",
+            "severity": "critical",
+            "channels": ["slack", "email", "webhook"]
+          },
+          {
+            "name": "Bulk Data Access",
+            "condition": "data_read > 1000 in 1h",
+            "severity": "medium",
+            "channels": ["slack"]
+          }
+        ]
+      },
+      "compliance": {
+        "gdpr": {
+          "enabled": true,
+          "data_subject_requests": true,
+          "consent_tracking": true,
+          "breach_notification": true
+        },
+        "hipaa": {
+          "enabled": true,
+          "phi_access_logging": true,
+          "minimum_necessary": true,
+          "user_training_tracking": true
+        },
+        "soc2": {
+          "enabled": true,
+          "security_controls": true,
+          "availability_monitoring": true,
+          "confidentiality_controls": true
+        }
+      }
+    }
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-rbac-audit
+  namespace: codai-production
+  labels:
+    app: codai-rbac-audit
+    component: enterprise-security
+spec:
+  ports:
+  - port: 3002
+    targetPort: 3002
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-rbac-audit
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-rbac-audit
+  namespace: codai-production
+  labels:
+    app: codai-rbac-audit
+
+---
+# Horizontal Pod Autoscaler for RBAC Services
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-rbac-service-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-rbac-service
+  minReplicas: 3
+  maxReplicas: 15
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-rbac-audit-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-rbac-audit
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

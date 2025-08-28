@@ -60,13 +60,13 @@ async function testDirectClick() {
         const result = await execAsync(`pwsh -NoProfile -ExecutionPolicy Bypass -File "${tempFile}"`);
         console.log('STDOUT:', result.stdout);
         console.log('STDERR:', result.stderr);
-        
+
         // Parse the output
         const output = result.stdout.trim();
         const lines = output.split('\n');
         const resultLine = lines.find(line => line.startsWith('SUCCESS|') || line.startsWith('ERROR|'));
         console.log('Result line:', resultLine);
-        
+
     } catch (error) {
         console.error('Execution failed:', error.message);
         console.error('Full error:', error);

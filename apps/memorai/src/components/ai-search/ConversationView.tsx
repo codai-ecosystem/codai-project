@@ -407,7 +407,6 @@ const MessageItem = memo(({
                       <ExternalLink
                         className="h-4 w-4 text-gray-400 shrink-0"
                         aria-hidden="true"
-                        title="Opens result details"
                       />
                     </div>
                   </CardContent>

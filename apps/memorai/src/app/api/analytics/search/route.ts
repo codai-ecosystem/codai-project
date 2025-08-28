@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
             totalSearches: analytics.searchPatterns?.length || 0,
             averageQueryTime: analytics.performanceMetrics?.averageResponseTime || 0,
             memoryGrowthRate: 0, // Calculate based on creation trends
-            categories: analytics.categoriesDistribution || [],
+            categories: analytics.categoryDistribution || [],
             tags: analytics.tagsDistribution || [],
             searchPatterns: analytics.searchPatterns || [],
             performanceMetrics: {

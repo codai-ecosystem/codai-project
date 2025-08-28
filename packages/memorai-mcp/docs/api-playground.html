@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="MemorAI API Playground - Interactive testing environment for MemorAI APIs with real-time responses">
+    <title>MemorAI API Playground - Interactive Testing Environment</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4F46E5;
+            --secondary-color: #10B981;
+            --accent-color: #F59E0B;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F9FAFB;
+            --bg-tertiary: #EFF6FF;
+            --border-color: #E5E7EB;
+            --success-color: #059669;
+            --warning-color: #D97706;
+            --error-color: #DC2626;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --code-bg: #1E293B;
+            --code-text: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .nav {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .main {
+            padding: 2rem 0;
+        }
+
+        .playground-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            height: calc(100vh - 200px);
+        }
+
+        .panel {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Request Panel */
+        .request-form {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-select,
+        .form-input,
+        .form-textarea {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-select:focus,
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(79 70 229 / 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            font-family: 'Fira Code', monospace;
+            background: var(--code-bg);
+            color: var(--code-text);
+            min-height: 120px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3730A3;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Response Panel */
+        .response-container {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .response-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow: auto;
+            padding: 1.5rem;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .response-code {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.875rem;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 200px;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: #ECFDF5;
+            color: var(--success-color);
+        }
+
+        .status-error {
+            background: #FEF2F2;
+            color: var(--error-color);
+        }
+
+        .status-loading {
+            background: #FFFBEB;
+            color: var(--warning-color);
+        }
+
+        /* Examples Sidebar */
+        .examples-sidebar {
+            width: 300px;
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+        }
+
+        .examples-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .examples-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .examples-list {
+            padding: 1rem 0;
+        }
+
+        .example-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+        }
+
+        .example-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .example-item.active {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .example-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .example-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .playground-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .panel {
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>
+                <i class="fas fa-play-circle"></i>
+                API Playground
+            </h1>
+            <p>Interactive environment to test MemorAI APIs in real-time</p>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="developer-portal.html" class="nav-link">← Back to Portal</a></li>
+                <li><a href="#" class="nav-link active">API Playground</a></li>
+                <li><a href="integration-guides/index.html" class="nav-link">Integration Guides</a></li>
+                <li><a href="examples/index.html" class="nav-link">Examples</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <div class="playground-container">
+                <!-- Request Panel -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="fas fa-paper-plane"></i>
+                            Request
+                        </h2>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary" id="load-example">
+                                <i class="fas fa-download"></i>
+                                Load Example
+                            </button>
+                            <button class="btn btn-secondary" id="clear-request">
+                                <i class="fas fa-trash"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <form class="request-form" id="api-form">
+                            <div class="form-group">
+                                <label class="form-label" for="endpoint">API Endpoint</label>
+                                <select class="form-select" id="endpoint" required>
+                                    <option value="">Select an endpoint...</option>
+                                    <option value="POST /mcp">Remember Memory</option>
+                                    <option value="POST /mcp">Recall Memories</option>
+                                    <option value="POST /mcp">Update Memory</option>
+                                    <option value="POST /mcp">Forget Memory</option>
+                                    <option value="POST /mcp">Cluster Memories</option>
+                                    <option value="POST /mcp">Get Analytics</option>
+                                    <option value="POST /mcp">Summarize Memories</option>
+                                    <option value="GET /health">Health Check</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="base-url">Base URL</label>
+                                <input type="url" class="form-input" id="base-url" value="http://localhost:4950"
+                                    placeholder="http://localhost:4950" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="headers">Headers (JSON)</label>
+                                <textarea class="form-textarea" id="headers"
+                                    placeholder='{"Content-Type": "application/json"}'>{"Content-Type": "application/json", "Accept": "application/json"}</textarea>
+                            </div>
+
+                            <div class="form-group" id="body-group">
+                                <label class="form-label" for="body">Request Body (JSON)</label>
+                                <textarea class="form-textarea" id="body" rows="8"
+                                    placeholder='{"jsonrpc": "2.0", "method": "remember", "params": {}, "id": 1}'></textarea>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary" id="send-request">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Send Request
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="prettify-json">
+                                    <i class="fas fa-magic"></i>
+                                    Format JSON
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Response Panel -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="fas fa-server"></i>
+                            Response
+                        </h2>
+                        <div id="response-status"></div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="response-container">
+                            <div class="response-tabs">
+                                <button class="tab active" data-tab="response-body">Response Body</button>
+                                <button class="tab" data-tab="response-headers">Headers</button>
+                                <button class="tab" data-tab="request-info">Request Info</button>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="response-body">
+                                    <div class="response-code" id="response-body-content">
+                                        Click "Send Request" to see the API response here...
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="response-headers">
+                                    <div class="response-code" id="response-headers-content">
+                                        Response headers will appear here...
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="request-info">
+                                    <div class="response-code" id="request-info-content">
+                                        Request information will appear here...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Examples Modal -->
+    <div id="examples-modal"
+        style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; padding: 2rem;">
+        <div
+            style="background: white; border-radius: 1rem; max-width: 800px; margin: 0 auto; max-height: 80vh; overflow-y: auto;">
+            <div style="padding: 2rem; border-bottom: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="font-size: 1.5rem; font-weight: 600;">API Examples</h3>
+                    <button id="close-modal"
+                        style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+                </div>
+            </div>
+            <div style="padding: 1rem;">
+                <div class="examples-list" id="modal-examples-list">
+                    <!-- Examples will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Examples
+        const apiExamples = {
+            'remember-basic': {
+                title: 'Remember Memory - Basic',
+                description: 'Store a simple memory with basic metadata',
+                method: 'POST /mcp',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: {
+                    jsonrpc: '2.0',
+                    method: 'remember',
+                    params: {
+                        agentId: 'user-agent-001',
+                        content: 'User prefers dark mode and compact layout',
+                        metadata: {
+                            importance: 7,
+                            priority: 'high',
+                            tags: ['preferences', 'ui']
+                        }
+                    },
+                    id: 1
+                }
+            },
+            'remember-advanced': {
+                title: 'Remember Memory - Advanced',
+                description: 'Store memory with full metadata and tenant context',
+                method: 'POST /mcp',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: {
+                    jsonrpc: '2.0',
+                    method: 'remember',
+                    params: {
+                        agentId: 'enterprise-agent-001',
+                        content: 'Customer John Doe completed premium upgrade. Increased usage by 300% after onboarding call.',
+                        metadata: {
+                            importance: 9,
+                            priority: 'critical',
+                            tags: ['customer', 'upgrade', 'success'],
+                            entityType: 'customer_interaction',
+                            project: 'customer-success',
+                            session: 'upgrade-flow-2025'
+                        }
+                    },
+                    id: 1
+                }
+            },
+            'recall-basic': {
+                title: 'Recall Memories - Basic',
+                description: 'Search for memories with a simple query',
+                method: 'POST /mcp',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: {
+                    jsonrpc: '2.0',
+                    method: 'recall',
+                    params: {
+                        agentId: 'user-agent-001',
+                        query: 'user preferences',
+                        limit: 10
+                    },
+                    id: 1
+                }
+            },
+            'recall-advanced': {
+                title: 'Recall Memories - Advanced',
+                description: 'Search with importance filtering and metadata',
+                method: 'POST /mcp',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: {
+                    jsonrpc: '2.0',
+                    method: 'recall',
+                    params: {
+                        agentId: 'enterprise-agent-001',
+                        query: 'customer upgrade success',
+                        limit: 20,
+                        minImportance: 7,
+                        project: 'customer-success',
+                        includeOtherAgents: false
+                    },
+                    id: 1
+                }
+            },
+            'cluster-memories': {
+                title: 'Cluster Memories',
+                description: 'Group related memories using AI clustering',
+                method: 'POST /mcp',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: {
+                    jsonrpc: '2.0',
+                    method: 'cluster_memories',
+                    params: {
+                        agentId: 'data-analyst-001',
+                        clusterCount: 5,
+                        options: {
+                            semanticWeight: 0.7,
+                            temporalWeight: 0.2,
+                            importanceWeight: 0.1
+                        }
+                    },
+                    id: 1
+                }
+            },
+            'get-analytics': {
+                title: 'Get Analytics Dashboard',
+                description: 'Retrieve comprehensive memory analytics',
+                method: 'POST /mcp',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: {
+                    jsonrpc: '2.0',
+                    method: 'get_analytics_dashboard',
+                    params: {
+                        agentId: 'enterprise-agent-001',
+                        timeRange: 'last_30_days',
+                        includeUsagePatterns: true,
+                        includePerformanceMetrics: true,
+                        includeTrendAnalysis: true
+                    },
+                    id: 1
+                }
+            },
+            'summarize-memories': {
+                title: 'Summarize Memories',
+                description: 'Generate AI-powered memory summaries',
+                method: 'POST /mcp',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: {
+                    jsonrpc: '2.0',
+                    method: 'generate_insights',
+                    params: {
+                        agentId: 'insight-agent-001',
+                        level: 'COMPREHENSIVE',
+                        strategy: 'THEMATIC',
+                        options: {
+                            includeStatistics: true,
+                            includeKeywords: true,
+                            includeSentiment: true
+                        }
+                    },
+                    id: 1
+                }
+            },
+            'health-check': {
+                title: 'Health Check',
+                description: 'Check API server health status',
+                method: 'GET /health',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: null
+            }
+        };
+
+        // DOM Elements
+        const endpointSelect = document.getElementById('endpoint');
+        const baseUrlInput = document.getElementById('base-url');
+        const headersTextarea = document.getElementById('headers');
+        const bodyTextarea = document.getElementById('body');
+        const bodyGroup = document.getElementById('body-group');
+        const apiForm = document.getElementById('api-form');
+        const loadExampleBtn = document.getElementById('load-example');
+        const clearRequestBtn = document.getElementById('clear-request');
+        const prettifyJsonBtn = document.getElementById('prettify-json');
+        const responseStatus = document.getElementById('response-status');
+        const responseBodyContent = document.getElementById('response-body-content');
+        const responseHeadersContent = document.getElementById('response-headers-content');
+        const requestInfoContent = document.getElementById('request-info-content');
+        const examplesModal = document.getElementById('examples-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalExamplesList = document.getElementById('modal-examples-list');
+
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and panes
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+                // Add active class to clicked tab and corresponding pane
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Endpoint selection
+        endpointSelect.addEventListener('change', (e) => {
+            const isGetRequest = e.target.value.startsWith('GET');
+            bodyGroup.style.display = isGetRequest ? 'none' : 'block';
+
+            if (isGetRequest) {
+                bodyTextarea.value = '';
+            } else if (!bodyTextarea.value.trim()) {
+                // Set default MCP request body
+                bodyTextarea.value = JSON.stringify({
+                    jsonrpc: '2.0',
+                    method: 'tools/list',
+                    params: {},
+                    id: 1
+                }, null, 2);
+            }
+        });
+
+        // Load example functionality
+        loadExampleBtn.addEventListener('click', () => {
+            populateExamplesModal();
+            examplesModal.style.display = 'flex';
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            examplesModal.style.display = 'none';
+        });
+
+        examplesModal.addEventListener('click', (e) => {
+            if (e.target === examplesModal) {
+                examplesModal.style.display = 'none';
+            }
+        });
+
+        function populateExamplesModal() {
+            modalExamplesList.innerHTML = Object.entries(apiExamples)
+                .map(([key, example]) => `
+                    <div class="example-item" data-example="${key}">
+                        <div class="example-title">${example.title}</div>
+                        <div class="example-description">${example.description}</div>
+                    </div>
+                `).join('');
+
+            // Add click handlers to example items
+            modalExamplesList.querySelectorAll('.example-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const exampleKey = item.dataset.example;
+                    loadExample(exampleKey);
+                    examplesModal.style.display = 'none';
+                });
+            });
+        }
+
+        function loadExample(exampleKey) {
+            const example = apiExamples[exampleKey];
+            if (!example) return;
+
+            // Set endpoint
+            const endpointOption = Array.from(endpointSelect.options).find(option =>
+                option.value.includes(example.method.split(' ')[0])
+            );
+            if (endpointOption) {
+                endpointSelect.value = endpointOption.value;
+                endpointSelect.dispatchEvent(new Event('change'));
+            }
+
+            // Set headers
+            headersTextarea.value = JSON.stringify(example.headers, null, 2);
+
+            // Set body (if applicable)
+            if (example.body) {
+                bodyTextarea.value = JSON.stringify(example.body, null, 2);
+            }
+        }
+
+        // Clear request
+        clearRequestBtn.addEventListener('click', () => {
+            endpointSelect.value = '';
+            baseUrlInput.value = 'http://localhost:4950';
+            headersTextarea.value = '{"Content-Type": "application/json", "Accept": "application/json"}';
+            bodyTextarea.value = '';
+            clearResponse();
+        });
+
+        // Prettify JSON
+        prettifyJsonBtn.addEventListener('click', () => {
+            try {
+                if (headersTextarea.value.trim()) {
+                    const headers = JSON.parse(headersTextarea.value);
+                    headersTextarea.value = JSON.stringify(headers, null, 2);
+                }
+
+                if (bodyTextarea.value.trim()) {
+                    const body = JSON.parse(bodyTextarea.value);
+                    bodyTextarea.value = JSON.stringify(body, null, 2);
+                }
+            } catch (error) {
+                alert('Invalid JSON format. Please check your input.');
+            }
+        });
+
+        // Form submission
+        apiForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await sendRequest();
+        });
+
+        async function sendRequest() {
+            const endpoint = endpointSelect.value;
+            const baseUrl = baseUrlInput.value;
+            const headersText = headersTextarea.value;
+            const bodyText = bodyTextarea.value;
+
+            if (!endpoint || !baseUrl) {
+                alert('Please select an endpoint and enter a base URL.');
+                return;
+            }
+
+            // Show loading state
+            setResponseStatus('loading', 'Sending request...');
+            responseBodyContent.textContent = 'Loading...';
+
+            try {
+                // Parse headers
+                let headers = {};
+                if (headersText.trim()) {
+                    headers = JSON.parse(headersText);
+                }
+
+                // Parse body
+                let body = null;
+                if (bodyText.trim() && !endpoint.startsWith('GET')) {
+                    body = JSON.parse(bodyText);
+                }
+
+                // Determine URL and method
+                const [method, path] = endpoint.split(' ');
+                const url = `${baseUrl}${path}`;
+
+                // Record request start time
+                const startTime = Date.now();
+
+                // Make request
+                const requestOptions = {
+                    method: method,
+                    headers: headers,
+                    body: body ? JSON.stringify(body) : undefined
+                };
+
+                const response = await fetch(url, requestOptions);
+                const endTime = Date.now();
+                const responseTime = endTime - startTime;
+
+                // Get response data
+                const responseText = await response.text();
+                let responseData;
+
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch {
+                    responseData = responseText;
+                }
+
+                // Update response tabs
+                updateResponseTabs(response, responseData, responseTime, requestOptions, url);
+
+                // Set status
+                if (response.ok) {
+                    setResponseStatus('success', `${response.status} ${response.statusText} (${responseTime}ms)`);
+                } else {
+                    setResponseStatus('error', `${response.status} ${response.statusText} (${responseTime}ms)`);
+                }
+
+            } catch (error) {
+                setResponseStatus('error', `Request failed: ${error.message}`);
+                responseBodyContent.textContent = `Error: ${error.message}\n\nPlease check:\n- The server is running\n- The URL is correct\n- The request format is valid`;
+                responseHeadersContent.textContent = 'No headers (request failed)';
+                requestInfoContent.textContent = `Request failed with error: ${error.message}`;
+            }
+        }
+
+        function updateResponseTabs(response, responseData, responseTime, requestOptions, url) {
+            // Response body
+            responseBodyContent.textContent = typeof responseData === 'object'
+                ? JSON.stringify(responseData, null, 2)
+                : responseData;
+
+            // Response headers
+            const responseHeaders = {};
+            for (let [key, value] of response.headers.entries()) {
+                responseHeaders[key] = value;
+            }
+            responseHeadersContent.textContent = JSON.stringify(responseHeaders, null, 2);
+
+            // Request info
+            const requestInfo = {
+                url: url,
+                method: requestOptions.method,
+                headers: requestOptions.headers,
+                body: requestOptions.body ? JSON.parse(requestOptions.body) : null,
+                responseTime: `${responseTime}ms`,
+                status: `${response.status} ${response.statusText}`,
+                timestamp: new Date().toISOString()
+            };
+            requestInfoContent.textContent = JSON.stringify(requestInfo, null, 2);
+        }
+
+        function setResponseStatus(type, message) {
+            responseStatus.innerHTML = `
+                <div class="status-indicator status-${type}">
+                    ${type === 'loading' ? '<div class="loading-spinner"></div>' :
+                    type === 'success' ? '<i class="fas fa-check-circle"></i>' :
+                        '<i class="fas fa-exclamation-circle"></i>'}
+                    ${message}
+                </div>
+            `;
+        }
+
+        function clearResponse() {
+            responseStatus.innerHTML = '';
+            responseBodyContent.textContent = 'Click "Send Request" to see the API response here...';
+            responseHeadersContent.textContent = 'Response headers will appear here...';
+            requestInfoContent.textContent = 'Request information will appear here...';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set default values
+            endpointSelect.value = '';
+            clearResponse();
+        });
+    </script>
+</body>
+
+</html>

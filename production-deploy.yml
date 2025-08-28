@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  romai-agi-server:
+    build: .
+    ports:
+      - "6101:6101"
+    environment:
+      - ROMAI_ENV=production
+      - PYTHONPATH=/app/apps/romai/src
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  romai-enterprise-api:
+    build: .
+    ports:
+      - "8001:8001" 
+    environment:
+      - ROMAI_ENV=production
+      - ENTERPRISE_API_PORT=8001
+      - ROMAI_AGI_BASE_URL=http://romai-agi-server:6101
+    depends_on:
+      - romai-agi-server
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - romai-agi-server
+      - romai-enterprise-api

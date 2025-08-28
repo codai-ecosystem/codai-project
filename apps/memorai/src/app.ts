@@ -44,15 +44,16 @@ app.use(express.json({ limit: '100kb' }))
 app.use(express.urlencoded({ extended: true }))
 
 // Error handling middleware for body parser errors
-app.use((error: any, req: Request, res: Response, next: any) => {
+app.use((error: any, req: Request, res: Response, next: (err?: any) => void): void => {
   if (error && error.type === 'entity.too.large') {
-    return res.status(400).json({
+    res.status(400).json({
       error: 'Content too large',
       message: 'Request body exceeds the maximum allowed size'
-    })
+    });
+    return;
   }
-  next(error)
-})
+  next(error);
+});
 
 // Apply rate limiting (enabled for all environments including tests)
 app.use('/api/', limiter)
@@ -397,12 +398,12 @@ app.post('/api/memories/search', async (req: Request & { user?: any }, res: Resp
         const searchText = searchQuery.toLowerCase()
         const matchesText = m.title.toLowerCase().includes(searchText) || 
                            m.content.toLowerCase().includes(searchText) ||
-                           m.tags.some(tag => tag.toLowerCase().includes(searchText))
+                           m.tags.some((tag: string) => tag.toLowerCase().includes(searchText))
         if (!matchesText) return false
       }
       
       if (filters?.category && m.category !== filters.category) return false
-      if (filters?.tags && !filters.tags.every(tag => m.tags.includes(tag))) return false
+      if (filters?.tags && !filters.tags.every((tag: string) => m.tags.includes(tag))) return false
       
       return true
     })
@@ -415,12 +416,12 @@ app.post('/api/memories/search', async (req: Request & { user?: any }, res: Resp
         const searchText = searchQuery.toLowerCase()
         const matchesText = m.title.toLowerCase().includes(searchText) || 
                            m.content.toLowerCase().includes(searchText) ||
-                           m.tags.some(tag => tag.toLowerCase().includes(searchText))
+                           m.tags.some((tag: string) => tag.toLowerCase().includes(searchText))
         if (!matchesText) return false
       }
       
       if (filters?.category && m.category !== filters.category) return false
-      if (filters?.tags && !filters.tags.every(tag => m.tags.includes(tag))) return false
+      if (filters?.tags && !filters.tags.every((tag: string) => m.tags.includes(tag))) return false
       
       return true
     })
@@ -630,7 +631,7 @@ app.post('/api/memories/search', async (req: Request & { user?: any }, res: Resp
   
   if (tags && Array.isArray(tags)) {
     results = results.filter((memory: Memory) =>
-      tags.some(tag => memory.tags?.includes(tag))
+      tags.some((tag: string) => memory.tags?.includes(tag))
     )
   }
   

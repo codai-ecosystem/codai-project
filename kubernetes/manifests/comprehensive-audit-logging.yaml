@@ -1,0 +1,855 @@
+# Comprehensive Audit Logging Infrastructure for Essential CodAI Services
+# Version: 1.0
+# Enterprise Compliance & Security Monitoring
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: audit-logging-config
+  namespace: codai-production
+data:
+  audit-config.json: |
+    {
+      "auditLevels": {
+        "system": {
+          "level": "comprehensive",
+          "retention": "7y",
+          "encryption": true,
+          "events": [
+            "system_startup", "system_shutdown", "configuration_change",
+            "service_deployment", "health_check_failure", "resource_exhaustion",
+            "security_policy_change", "certificate_renewal", "backup_operation"
+          ]
+        },
+        "security": {
+          "level": "comprehensive",
+          "retention": "7y",
+          "encryption": true,
+          "realTimeAlerts": true,
+          "events": [
+            "authentication_attempt", "authorization_decision", "privilege_escalation",
+            "password_change", "mfa_enrollment", "suspicious_activity",
+            "intrusion_detection", "vulnerability_scan", "security_incident"
+          ]
+        },
+        "dataAccess": {
+          "level": "detailed",
+          "retention": "3y",
+          "encryption": true,
+          "events": [
+            "data_creation", "data_reading", "data_modification", "data_deletion",
+            "bulk_operation", "export_operation", "import_operation",
+            "schema_change", "index_creation", "query_performance"
+          ]
+        },
+        "userActivity": {
+          "level": "standard",
+          "retention": "1y", 
+          "encryption": false,
+          "events": [
+            "user_login", "user_logout", "page_view", "feature_usage",
+            "profile_update", "preference_change", "session_timeout",
+            "api_call", "integration_usage", "workflow_execution"
+          ]
+        },
+        "business": {
+          "level": "detailed",
+          "retention": "7y",
+          "encryption": true,
+          "events": [
+            "transaction_created", "payment_processed", "subscription_change",
+            "invoice_generated", "refund_processed", "chargeback_received",
+            "contract_signed", "license_activated", "usage_quota_exceeded"
+          ]
+        },
+        "compliance": {
+          "level": "comprehensive", 
+          "retention": "permanent",
+          "encryption": true,
+          "immutable": true,
+          "events": [
+            "gdpr_request", "data_subject_access", "consent_granted",
+            "consent_revoked", "data_breach_detected", "compliance_violation",
+            "audit_trail_access", "regulatory_report_generated", "policy_acceptance"
+          ]
+        }
+      },
+      "destinations": {
+        "elasticsearch": {
+          "enabled": true,
+          "cluster": "http://elasticsearch.observability.svc.cluster.local:9200",
+          "index_pattern": "codai-audit-{YYYY.MM.DD}",
+          "retention_policy": "delete_after_retention_period",
+          "compression": true
+        },
+        "s3": {
+          "enabled": true,
+          "bucket": "codai-audit-logs",
+          "region": "us-east-1",
+          "encryption": "AES256",
+          "lifecycle_policy": "transition_to_glacier_after_1y"
+        },
+        "database": {
+          "enabled": true,
+          "connection": "audit_db_connection",
+          "table": "audit_events",
+          "partitioning": "monthly",
+          "compression": true
+        },
+        "siem": {
+          "enabled": true,
+          "provider": "splunk",
+          "endpoint": "${SIEM_ENDPOINT}",
+          "format": "json",
+          "batch_size": 1000
+        }
+      },
+      "alerting": {
+        "enabled": true,
+        "rules": [
+          {
+            "name": "Failed Login Attempts",
+            "condition": "authentication_attempt.result == 'failed' AND count > 5 in 5m",
+            "severity": "high",
+            "channels": ["slack", "email", "pagerduty"]
+          },
+          {
+            "name": "Privilege Escalation",
+            "condition": "privilege_escalation detected",
+            "severity": "critical", 
+            "channels": ["slack", "email", "pagerduty", "webhook"]
+          },
+          {
+            "name": "Data Breach Indicators",
+            "condition": "bulk_operation.records > 10000 OR export_operation.size > 1GB",
+            "severity": "medium",
+            "channels": ["slack", "email"]
+          },
+          {
+            "name": "Compliance Violations",
+            "condition": "compliance_violation detected",
+            "severity": "critical",
+            "channels": ["slack", "email", "pagerduty", "legal_team"]
+          },
+          {
+            "name": "System Anomalies",
+            "condition": "error_rate > 5% OR response_time > 5s",
+            "severity": "medium",
+            "channels": ["slack", "oncall_engineer"]
+          }
+        ],
+        "channels": {
+          "slack": {
+            "webhook": "${SLACK_WEBHOOK_URL}",
+            "channel": "#security-alerts"
+          },
+          "email": {
+            "smtp_host": "${SMTP_HOST}",
+            "recipients": ["security@company.com", "compliance@company.com"]
+          },
+          "pagerduty": {
+            "service_key": "${PAGERDUTY_SERVICE_KEY}"
+          },
+          "webhook": {
+            "url": "${SECURITY_WEBHOOK_URL}",
+            "method": "POST",
+            "headers": {"Authorization": "Bearer ${WEBHOOK_TOKEN}"}
+          }
+        }
+      },
+      "compliance_frameworks": {
+        "gdpr": {
+          "enabled": true,
+          "data_subject_rights": true,
+          "consent_tracking": true,
+          "breach_notification": true,
+          "data_minimization": true,
+          "retention_limits": true
+        },
+        "hipaa": {
+          "enabled": true,
+          "phi_access_logging": true,
+          "minimum_necessary": true,
+          "user_training_tracking": true,
+          "risk_assessment": true,
+          "incident_response": true
+        },
+        "soc2": {
+          "enabled": true,
+          "security_controls": true,
+          "availability_monitoring": true,
+          "confidentiality_controls": true,
+          "processing_integrity": true,
+          "privacy_controls": true
+        },
+        "iso27001": {
+          "enabled": true,
+          "information_security": true,
+          "risk_management": true,
+          "incident_management": true,
+          "business_continuity": true,
+          "supplier_relationships": true
+        }
+      }
+    }
+
+  log-schemas.json: |
+    {
+      "base_event": {
+        "event_id": "string",
+        "timestamp": "datetime",
+        "event_type": "string", 
+        "severity": "enum[debug,info,warn,error,critical]",
+        "source_service": "string",
+        "source_version": "string",
+        "tenant_id": "string",
+        "user_id": "string",
+        "session_id": "string",
+        "correlation_id": "string",
+        "ip_address": "string",
+        "user_agent": "string",
+        "request_id": "string"
+      },
+      "authentication_event": {
+        "extends": "base_event",
+        "auth_method": "enum[password,oauth,saml,mfa]",
+        "auth_result": "enum[success,failure,expired,locked]",
+        "failure_reason": "string",
+        "mfa_required": "boolean",
+        "device_info": "object",
+        "location": "object"
+      },
+      "authorization_event": {
+        "extends": "base_event", 
+        "resource": "string",
+        "action": "string",
+        "permission_result": "enum[granted,denied]",
+        "role": "string",
+        "permissions": "array",
+        "policy_evaluated": "string",
+        "context_factors": "object"
+      },
+      "data_access_event": {
+        "extends": "base_event",
+        "operation": "enum[create,read,update,delete]",
+        "resource_type": "string",
+        "resource_id": "string",
+        "data_classification": "enum[public,internal,confidential,restricted]",
+        "records_affected": "integer",
+        "query_hash": "string",
+        "response_time_ms": "integer"
+      },
+      "system_event": {
+        "extends": "base_event",
+        "component": "string",
+        "action": "string",
+        "status": "enum[started,completed,failed]",
+        "duration_ms": "integer",
+        "resource_usage": "object",
+        "error_details": "object"
+      },
+      "compliance_event": {
+        "extends": "base_event",
+        "framework": "enum[gdpr,hipaa,soc2,iso27001]",
+        "requirement": "string",
+        "compliance_status": "enum[compliant,violation,warning]",
+        "remediation_required": "boolean",
+        "impact_assessment": "string"
+      }
+    }
+
+---
+# Centralized Audit Logging Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-audit-logger
+  namespace: codai-production
+  labels:
+    app: codai-audit-logger
+    component: enterprise-compliance
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: codai-audit-logger
+  template:
+    metadata:
+      labels:
+        app: codai-audit-logger
+        component: enterprise-compliance
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-audit-logger
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: audit-logger
+        image: codai/audit-logger:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3008
+          name: http
+          protocol: TCP
+        - containerPort: 9092
+          name: grpc
+          protocol: TCP
+        - containerPort: 9093
+          name: metrics
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: HTTP_PORT
+          value: "3008"
+        - name: GRPC_PORT
+          value: "9092"
+        - name: METRICS_PORT
+          value: "9093"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: audit-url
+        - name: ELASTICSEARCH_URL
+          value: "http://elasticsearch.observability.svc.cluster.local:9200"
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: KAFKA_BROKERS
+          value: "kafka.codai-production.svc.cluster.local:9092"
+        - name: S3_BUCKET
+          value: "codai-audit-logs"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-s3-secrets
+              key: access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-s3-secrets
+              key: secret-access-key
+        - name: ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: audit-secrets
+              key: encryption-key
+        - name: SIEM_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: siem-secrets
+              key: endpoint
+        - name: SLACK_WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: alerting-secrets
+              key: slack-webhook
+        - name: PAGERDUTY_SERVICE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: alerting-secrets
+              key: pagerduty-key
+        - name: ENABLE_REAL_TIME_PROCESSING
+          value: "true"
+        - name: BATCH_SIZE
+          value: "1000"
+        - name: FLUSH_INTERVAL
+          value: "10000"
+        - name: MAX_RETENTION_DAYS
+          value: "2555"  # 7 years
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        - name: buffer-storage
+          mountPath: /app/buffer
+        - name: temp-processing
+          mountPath: /app/temp
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3008
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3008
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        # Security context
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: config
+        configMap:
+          name: audit-logging-config
+      - name: buffer-storage
+        emptyDir:
+          sizeLimit: 5Gi
+      - name: temp-processing
+        emptyDir:
+          sizeLimit: 2Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-audit-logger
+  namespace: codai-production
+  labels:
+    app: codai-audit-logger
+    component: enterprise-compliance
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9093"
+    prometheus.io/path: "/metrics"
+spec:
+  ports:
+  - port: 3008
+    targetPort: 3008
+    name: http
+    protocol: TCP
+  - port: 9092
+    targetPort: 9092
+    name: grpc
+    protocol: TCP
+  - port: 9093
+    targetPort: 9093
+    name: metrics
+    protocol: TCP
+  selector:
+    app: codai-audit-logger
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-audit-logger
+  namespace: codai-production
+  labels:
+    app: codai-audit-logger
+
+---
+# Audit Event Processing Pipeline
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-audit-processor
+  namespace: codai-production
+  labels:
+    app: codai-audit-processor
+    component: enterprise-compliance
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-audit-processor
+  template:
+    metadata:
+      labels:
+        app: codai-audit-processor
+        component: enterprise-compliance
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-audit-processor
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: audit-processor
+        image: codai/audit-processor:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3009
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3009"
+        - name: KAFKA_BROKERS
+          value: "kafka.codai-production.svc.cluster.local:9092"
+        - name: ELASTICSEARCH_URL
+          value: "http://elasticsearch.observability.svc.cluster.local:9200"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: audit-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: ENABLE_ANOMALY_DETECTION
+          value: "true"
+        - name: ENABLE_COMPLIANCE_CHECKING
+          value: "true"
+        - name: PROCESSING_THREADS
+          value: "4"
+        - name: BATCH_PROCESSING_SIZE
+          value: "500"
+        resources:
+          requests:
+            cpu: 300m
+            memory: 1Gi
+          limits:
+            cpu: 1500m
+            memory: 2Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3009
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3009
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-audit-processor
+  namespace: codai-production
+  labels:
+    app: codai-audit-processor
+    component: enterprise-compliance
+spec:
+  ports:
+  - port: 3009
+    targetPort: 3009
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-audit-processor
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-audit-processor
+  namespace: codai-production
+  labels:
+    app: codai-audit-processor
+
+---
+# Compliance Monitoring Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-compliance-monitor
+  namespace: codai-production
+  labels:
+    app: codai-compliance-monitor
+    component: enterprise-compliance
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-compliance-monitor
+  template:
+    metadata:
+      labels:
+        app: codai-compliance-monitor
+        component: enterprise-compliance
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-compliance-monitor
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: compliance-monitor
+        image: codai/compliance-monitor:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3010
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3010"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: compliance-url
+        - name: ELASTICSEARCH_URL
+          value: "http://elasticsearch.observability.svc.cluster.local:9200"
+        - name: ENABLED_FRAMEWORKS
+          value: "gdpr,hipaa,soc2,iso27001"
+        - name: SCAN_FREQUENCY
+          value: "hourly"
+        - name: ALERT_THRESHOLD
+          value: "medium"
+        - name: ENABLE_AUTO_REMEDIATION
+          value: "false"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3010
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3010
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-compliance-monitor
+  namespace: codai-production
+  labels:
+    app: codai-compliance-monitor
+    component: enterprise-compliance
+spec:
+  ports:
+  - port: 3010
+    targetPort: 3010
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-compliance-monitor
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-compliance-monitor
+  namespace: codai-production
+  labels:
+    app: codai-compliance-monitor
+
+---
+# Audit Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: audit-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  encryption-key: Y29kYWktYXVkaXQtZW5jcnlwdGlvbi1rZXktMjAyNQ==  # codai-audit-encryption-key-2025
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: siem-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  endpoint: aHR0cHM6Ly95b3VyLXNpZW0tZW5kcG9pbnQuY29t  # https://your-siem-endpoint.com
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alerting-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  slack-webhook: aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvWU9VUi9TTEFDS19XRUJIT09L  # https://hooks.slack.com/services/YOUR/SLACK_WEBHOOK
+  pagerduty-key: WU9VUl9QQUdFUkRVVFlfU0VSVklDRV9LRVk=  # YOUR_PAGERDUTY_SERVICE_KEY
+
+---
+# Audit Event Stream Consumer (Kafka)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-audit-stream-consumer
+  namespace: codai-production
+  labels:
+    app: codai-audit-stream-consumer
+    component: enterprise-compliance
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-audit-stream-consumer
+  template:
+    metadata:
+      labels:
+        app: codai-audit-stream-consumer
+        component: enterprise-compliance
+    spec:
+      serviceAccountName: codai-audit-stream-consumer
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: stream-consumer
+        image: codai/audit-stream-consumer:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: KAFKA_BROKERS
+          value: "kafka.codai-production.svc.cluster.local:9092"
+        - name: KAFKA_GROUP_ID
+          value: "codai-audit-consumers"
+        - name: KAFKA_TOPICS
+          value: "audit-events,security-events,compliance-events"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: audit-url
+        - name: ELASTICSEARCH_URL
+          value: "http://elasticsearch.observability.svc.cluster.local:9200"
+        - name: CONSUMER_CONCURRENCY
+          value: "4"
+        - name: BATCH_SIZE
+          value: "100"
+        - name: COMMIT_INTERVAL
+          value: "1000"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-audit-stream-consumer
+  namespace: codai-production
+  labels:
+    app: codai-audit-stream-consumer
+
+---
+# Horizontal Pod Autoscaler for Audit Services
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-audit-logger-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-audit-logger
+  minReplicas: 3
+  maxReplicas: 12
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-audit-processor-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-audit-processor
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-compliance-monitor-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-compliance-monitor
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 75

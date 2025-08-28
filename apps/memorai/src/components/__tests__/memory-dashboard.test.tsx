@@ -19,9 +19,9 @@ describe('MemoryDashboard Component', () => {
   beforeEach(async () => {
     vi.clearAllMocks()
     const { memoraiMCPClient } = await import('@/utils/memorai-mcp-client')
-    memoraiMCPClient.testConnection.mockResolvedValue({ connected: true, status: 'connected' })
-    memoraiMCPClient.getAllMemories.mockResolvedValue([])
-    memoraiMCPClient.getMemoryStats.mockResolvedValue({ totalMemories: 0 })
+    ;(memoraiMCPClient.testConnection as any).mockResolvedValue({ connected: true, status: 'connected' })
+    ;(memoraiMCPClient.getAllMemories as any).mockResolvedValue([])
+    ;(memoraiMCPClient.getMemoryStats as any).mockResolvedValue({ totalMemories: 0 })
   })
 
   it('should render the memory dashboard', async () => {

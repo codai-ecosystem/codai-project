@@ -1,0 +1,56 @@
+[
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:20:50.895808",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.300, Efficiency: 0.295",
+    "timestamp": "2025-08-27T10:20:50.900105",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:20:51.925632",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.310, Efficiency: 0.506",
+    "timestamp": "2025-08-27T10:20:51.927589",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:20:52.952956",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.317, Efficiency: 0.654",
+    "timestamp": "2025-08-27T10:20:52.955448",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  }
+]

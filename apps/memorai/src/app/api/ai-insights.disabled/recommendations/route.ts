@@ -20,8 +20,7 @@ export async function POST(request: NextRequest) {
 
         const recommendations = await aiInsightsService.generateRecommendations(
             memories,
-            userId,
-            context
+            userId
         );
 
         return NextResponse.json({

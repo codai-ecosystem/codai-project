@@ -1,0 +1,808 @@
+# Performance Benchmarking Suite
+# MemorAI MCP Server v9.5.0 - Phase 6 Task 11: Enterprise Integration
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-performance-config
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: performance
+    environment: production
+    version: v9.5.0
+data:
+  # Benchmarking Configuration
+  BENCHMARK_ENABLED: "true"
+  BENCHMARK_SCHEDULE: "0 1 * * SUN"  # Weekly on Sunday at 1 AM
+  BENCHMARK_DURATION_MINUTES: "60"
+  BENCHMARK_WARMUP_MINUTES: "5"
+  BENCHMARK_COOLDOWN_MINUTES: "5"
+  
+  # Load Testing Parameters
+  LOAD_TEST_CONCURRENT_USERS: "100,500,1000,2000"
+  LOAD_TEST_RAMP_UP_SECONDS: "300"
+  LOAD_TEST_STEADY_STATE_MINUTES: "30"
+  LOAD_TEST_RAMP_DOWN_SECONDS: "300"
+  
+  # Performance Thresholds
+  RESPONSE_TIME_P95_MS: "500"
+  RESPONSE_TIME_P99_MS: "1000"
+  THROUGHPUT_RPS_MIN: "1000"
+  ERROR_RATE_MAX_PERCENT: "0.1"
+  CPU_UTILIZATION_MAX_PERCENT: "80"
+  MEMORY_UTILIZATION_MAX_PERCENT: "85"
+  
+  # Test Scenarios
+  SCENARIO_MEMORY_OPERATIONS: "true"
+  SCENARIO_SEARCH_QUERIES: "true"
+  SCENARIO_BATCH_PROCESSING: "true"
+  SCENARIO_CONCURRENT_SESSIONS: "true"
+  SCENARIO_VECTOR_SIMILARITY: "true"
+  SCENARIO_GRAPH_TRAVERSAL: "true"
+  
+  # Memory Operation Tests
+  MEMORY_CREATE_WEIGHT: "30"
+  MEMORY_READ_WEIGHT: "40"
+  MEMORY_UPDATE_WEIGHT: "20"
+  MEMORY_DELETE_WEIGHT: "10"
+  MEMORY_BATCH_SIZE: "10,50,100,500"
+  
+  # Search Performance Tests
+  SEARCH_QUERY_TYPES: "semantic,keyword,hybrid,vector"
+  SEARCH_COMPLEXITY_LEVELS: "simple,medium,complex"
+  SEARCH_RESULT_LIMITS: "10,50,100,500"
+  
+  # Resource Monitoring
+  MONITOR_CPU: "true"
+  MONITOR_MEMORY: "true"
+  MONITOR_DISK_IO: "true"
+  MONITOR_NETWORK_IO: "true"
+  MONITOR_DATABASE: "true"
+  MONITOR_REDIS: "true"
+  
+  # Reporting Configuration
+  REPORT_FORMAT: "json,html,csv"
+  REPORT_STORAGE: "s3,local"
+  REPORT_RETENTION_DAYS: "90"
+  GENERATE_CHARTS: "true"
+  SEND_ALERTS: "true"
+  
+  # Regression Detection
+  REGRESSION_DETECTION: "true"
+  BASELINE_COMPARISON_WEEKS: "4"
+  PERFORMANCE_DEGRADATION_THRESHOLD: "15"  # 15% degradation triggers alert
+  
+  # Stress Testing
+  STRESS_TEST_ENABLED: "true"
+  STRESS_TEST_MAX_CONCURRENT: "5000"
+  STRESS_TEST_DURATION_MINUTES: "10"
+  MEMORY_LEAK_DETECTION: "true"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: memorai-performance-secrets
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: performance
+    environment: production
+    version: v9.5.0
+type: Opaque
+stringData:
+  # Performance Testing API Keys
+  PERFORMANCE_API_KEY: "memorai-performance-testing-key-2025"
+  BENCHMARK_SERVICE_TOKEN: "benchmark-service-secure-token"
+  
+  # Monitoring Integration
+  PROMETHEUS_USERNAME: "performance_monitor"
+  PROMETHEUS_PASSWORD: "secure-prometheus-password"
+  GRAFANA_API_KEY: "grafana-performance-dashboard-api-key"
+  
+  # Notification Secrets
+  SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+  EMAIL_SMTP_PASSWORD: "smtp-server-password-for-alerts"
+  
+  # Cloud Storage for Reports
+  S3_PERFORMANCE_ACCESS_KEY: "AKIA-PERFORMANCE-REPORTS-KEY"
+  S3_PERFORMANCE_SECRET_KEY: "performance-reports-s3-secret-key"
+  
+  # Database Connections for Testing
+  TEST_DB_USERNAME: "performance_test_user"
+  TEST_DB_PASSWORD: "performance-test-db-password"
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memorai-performance-benchmark
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: performance
+    type: benchmark
+    environment: production
+    version: v9.5.0
+spec:
+  schedule: "0 1 * * SUN"  # Weekly on Sunday at 1 AM
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: memorai-performance-service-account
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1003
+            runAsGroup: 3003
+            fsGroup: 2003
+          containers:
+          - name: performance-benchmark
+            image: memorai/performance-benchmark:v9.5.0
+            command:
+            - /bin/bash
+            - -c
+            - |
+              set -euo pipefail
+              
+              echo "🚀 Starting MemorAI Performance Benchmark - $(date)"
+              echo "================================================"
+              
+              BENCHMARK_DATE=$(date +%Y%m%d_%H%M%S)
+              REPORT_DIR="/reports/performance/$BENCHMARK_DATE"
+              mkdir -p "$REPORT_DIR"
+              
+              # Initialize performance monitoring
+              echo "📊 Initializing performance monitoring..."
+              python3 /scripts/init_monitoring.py
+              
+              # Warmup Phase
+              echo "🔥 Starting warmup phase..."
+              python3 /scripts/warmup_test.py \
+                --duration "$BENCHMARK_WARMUP_MINUTES" \
+                --base-url "$MEMORAI_BASE_URL" \
+                --api-key "$PERFORMANCE_API_KEY"
+              
+              # Memory Operations Benchmark
+              if [[ "$SCENARIO_MEMORY_OPERATIONS" == "true" ]]; then
+                echo "🧠 Running memory operations benchmark..."
+                python3 /scripts/memory_benchmark.py \
+                  --concurrent-users "$LOAD_TEST_CONCURRENT_USERS" \
+                  --duration "$BENCHMARK_DURATION_MINUTES" \
+                  --batch-sizes "$MEMORY_BATCH_SIZE" \
+                  --output "$REPORT_DIR/memory_operations.json"
+              fi
+              
+              # Search Performance Benchmark
+              if [[ "$SCENARIO_SEARCH_QUERIES" == "true" ]]; then
+                echo "🔍 Running search performance benchmark..."
+                python3 /scripts/search_benchmark.py \
+                  --query-types "$SEARCH_QUERY_TYPES" \
+                  --complexity-levels "$SEARCH_COMPLEXITY_LEVELS" \
+                  --result-limits "$SEARCH_RESULT_LIMITS" \
+                  --output "$REPORT_DIR/search_performance.json"
+              fi
+              
+              # Vector Similarity Benchmark
+              if [[ "$SCENARIO_VECTOR_SIMILARITY" == "true" ]]; then
+                echo "🔢 Running vector similarity benchmark..."
+                python3 /scripts/vector_benchmark.py \
+                  --vector-dimensions "768,1536,3072" \
+                  --similarity-algorithms "cosine,euclidean,dot_product" \
+                  --batch-sizes "1,10,100,1000" \
+                  --output "$REPORT_DIR/vector_similarity.json"
+              fi
+              
+              # Batch Processing Benchmark
+              if [[ "$SCENARIO_BATCH_PROCESSING" == "true" ]]; then
+                echo "📦 Running batch processing benchmark..."
+                python3 /scripts/batch_benchmark.py \
+                  --batch-sizes "10,50,100,500,1000" \
+                  --processing-types "create,update,delete,search" \
+                  --output "$REPORT_DIR/batch_processing.json"
+              fi
+              
+              # Graph Traversal Benchmark
+              if [[ "$SCENARIO_GRAPH_TRAVERSAL" == "true" ]]; then
+                echo "🕸️ Running graph traversal benchmark..."
+                python3 /scripts/graph_benchmark.py \
+                  --graph-sizes "1000,10000,100000" \
+                  --traversal-depths "1,3,5,7" \
+                  --algorithms "bfs,dfs,dijkstra" \
+                  --output "$REPORT_DIR/graph_traversal.json"
+              fi
+              
+              # Concurrent Sessions Stress Test
+              if [[ "$SCENARIO_CONCURRENT_SESSIONS" == "true" ]]; then
+                echo "👥 Running concurrent sessions stress test..."
+                python3 /scripts/concurrent_benchmark.py \
+                  --max-concurrent "$STRESS_TEST_MAX_CONCURRENT" \
+                  --ramp-up-seconds "$LOAD_TEST_RAMP_UP_SECONDS" \
+                  --steady-state-minutes "10" \
+                  --output "$REPORT_DIR/concurrent_sessions.json"
+              fi
+              
+              # Resource Utilization Analysis
+              echo "📈 Analyzing resource utilization..."
+              python3 /scripts/resource_analysis.py \
+                --start-time "$(date -d '1 hour ago' --iso-8601)" \
+                --end-time "$(date --iso-8601)" \
+                --output "$REPORT_DIR/resource_utilization.json"
+              
+              # Performance Regression Detection
+              if [[ "$REGRESSION_DETECTION" == "true" ]]; then
+                echo "🔍 Running regression detection..."
+                python3 /scripts/regression_detection.py \
+                  --current-report "$REPORT_DIR" \
+                  --baseline-weeks "$BASELINE_COMPARISON_WEEKS" \
+                  --threshold "$PERFORMANCE_DEGRADATION_THRESHOLD" \
+                  --output "$REPORT_DIR/regression_analysis.json"
+              fi
+              
+              # Generate Performance Report
+              echo "📋 Generating performance report..."
+              python3 /scripts/generate_report.py \
+                --input-dir "$REPORT_DIR" \
+                --formats "$REPORT_FORMAT" \
+                --include-charts "$GENERATE_CHARTS" \
+                --output "$REPORT_DIR/performance_report"
+              
+              # Upload Reports to Storage
+              echo "☁️ Uploading reports to storage..."
+              aws s3 cp "$REPORT_DIR/" "s3://memorai-performance-reports/$BENCHMARK_DATE/" \
+                --recursive \
+                --storage-class STANDARD_IA
+              
+              # Performance Analysis Summary
+              TOTAL_REQUESTS=$(jq '.summary.total_requests' "$REPORT_DIR"/*.json | paste -sd+ | bc)
+              AVG_RESPONSE_TIME=$(jq '.summary.avg_response_time_ms' "$REPORT_DIR"/*.json | jq -s 'add/length')
+              ERROR_RATE=$(jq '.summary.error_rate_percent' "$REPORT_DIR"/*.json | jq -s 'max')
+              
+              echo "✅ Performance Benchmark Completed!"
+              echo "📊 Summary Statistics:"
+              echo "  - Total Requests: $TOTAL_REQUESTS"
+              echo "  - Average Response Time: ${AVG_RESPONSE_TIME}ms"
+              echo "  - Error Rate: ${ERROR_RATE}%"
+              echo "  - Report Location: s3://memorai-performance-reports/$BENCHMARK_DATE/"
+              
+              # Send Performance Alert if Thresholds Exceeded
+              if (( $(echo "$AVG_RESPONSE_TIME > $RESPONSE_TIME_P95_MS" | bc -l) )) || \
+                 (( $(echo "$ERROR_RATE > $ERROR_RATE_MAX_PERCENT" | bc -l) )); then
+                echo "🚨 Performance thresholds exceeded - sending alert..."
+                python3 /scripts/send_alert.py \
+                  --type "performance_degradation" \
+                  --data "$REPORT_DIR/regression_analysis.json" \
+                  --webhook "$SLACK_WEBHOOK_URL"
+              fi
+            envFrom:
+            - configMapRef:
+                name: memorai-performance-config
+            - secretRef:
+                name: memorai-performance-secrets
+            env:
+            - name: MEMORAI_BASE_URL
+              value: "http://memorai-mcp-service:4950"
+            resources:
+              requests:
+                memory: "4Gi"
+                cpu: "2000m"
+              limits:
+                memory: "8Gi"
+                cpu: "4000m"
+            volumeMounts:
+            - name: reports-storage
+              mountPath: /reports
+            - name: scripts-volume
+              mountPath: /scripts
+              readOnly: true
+            - name: temp-storage
+              mountPath: /tmp
+          volumes:
+          - name: reports-storage
+            persistentVolumeClaim:
+              claimName: memorai-performance-reports
+          - name: scripts-volume
+            configMap:
+              name: memorai-performance-scripts
+              defaultMode: 0755
+          - name: temp-storage
+            emptyDir:
+              sizeLimit: 10Gi
+          restartPolicy: OnFailure
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-performance-scripts
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: performance
+    type: scripts
+    environment: production
+    version: v9.5.0
+data:
+  memory_benchmark.py: |
+    #!/usr/bin/env python3
+    """
+    MemorAI Memory Operations Performance Benchmark
+    Tests memory creation, retrieval, updates, and deletion performance
+    """
+    import asyncio
+    import aiohttp
+    import json
+    import time
+    import argparse
+    from concurrent.futures import ThreadPoolExecutor
+    import statistics
+    
+    class MemoryBenchmark:
+        def __init__(self, base_url: str, api_key: str):
+            self.base_url = base_url
+            self.api_key = api_key
+            self.session = None
+            self.results = {
+                'timestamp': time.time(),
+                'operations': {},
+                'summary': {}
+            }
+    
+        async def __aenter__(self):
+            connector = aiohttp.TCPConnector(limit=1000, limit_per_host=100)
+            self.session = aiohttp.ClientSession(
+                connector=connector,
+                headers={'Authorization': f'Bearer {self.api_key}'}
+            )
+            return self
+    
+        async def __aexit__(self, exc_type, exc_val, exc_tb):
+            if self.session:
+                await self.session.close()
+    
+        async def create_memory(self, agent_id: str, content: str):
+            """Create a new memory and measure performance"""
+            start_time = time.time()
+            async with self.session.post(
+                f"{self.base_url}/mcp",
+                json={
+                    "jsonrpc": "2.0",
+                    "method": "remember",
+                    "params": {
+                        "agentId": agent_id,
+                        "content": content,
+                        "metadata": {
+                            "importance": 5,
+                            "tags": ["benchmark", "test"]
+                        }
+                    },
+                    "id": 1
+                }
+            ) as response:
+                response_time = (time.time() - start_time) * 1000
+                success = response.status == 200
+                return {
+                    'response_time_ms': response_time,
+                    'success': success,
+                    'operation': 'create'
+                }
+    
+        async def search_memories(self, agent_id: str, query: str, limit: int = 10):
+            """Search memories and measure performance"""
+            start_time = time.time()
+            async with self.session.post(
+                f"{self.base_url}/mcp",
+                json={
+                    "jsonrpc": "2.0",
+                    "method": "recall",
+                    "params": {
+                        "agentId": agent_id,
+                        "query": query,
+                        "limit": limit
+                    },
+                    "id": 2
+                }
+            ) as response:
+                response_time = (time.time() - start_time) * 1000
+                success = response.status == 200
+                result = await response.json() if success else None
+                return {
+                    'response_time_ms': response_time,
+                    'success': success,
+                    'operation': 'search',
+                    'results_count': len(result.get('result', {}).get('memories', [])) if result else 0
+                }
+    
+        async def run_benchmark(self, concurrent_users: list, duration_minutes: int, batch_sizes: list):
+            """Run comprehensive memory operations benchmark"""
+            print(f"🚀 Starting Memory Operations Benchmark")
+            print(f"📊 Concurrent Users: {concurrent_users}")
+            print(f"⏱️ Duration: {duration_minutes} minutes")
+            print(f"📦 Batch Sizes: {batch_sizes}")
+            
+            for users in concurrent_users:
+                print(f"\n🔄 Testing with {users} concurrent users...")
+                
+                # Create test agents
+                agent_ids = [f"benchmark_agent_{i}" for i in range(users)]
+                
+                # Run benchmark for specified duration
+                tasks = []
+                for agent_id in agent_ids:
+                    tasks.append(self.run_user_simulation(agent_id, duration_minutes))
+                
+                start_time = time.time()
+                results = await asyncio.gather(*tasks, return_exceptions=True)
+                total_time = time.time() - start_time
+                
+                # Aggregate results
+                self.aggregate_results(users, results, total_time)
+    
+        async def run_user_simulation(self, agent_id: str, duration_minutes: int):
+            """Simulate user operations for specified duration"""
+            end_time = time.time() + (duration_minutes * 60)
+            operations = []
+            
+            while time.time() < end_time:
+                # Create memory (30% of operations)
+                if time.time() % 10 < 3:
+                    content = f"Benchmark memory content {time.time()} for {agent_id}"
+                    result = await self.create_memory(agent_id, content)
+                    operations.append(result)
+                
+                # Search memories (40% of operations)
+                elif time.time() % 10 < 7:
+                    query = f"benchmark content {agent_id}"
+                    result = await self.search_memories(agent_id, query)
+                    operations.append(result)
+                
+                # Small delay to prevent overwhelming
+                await asyncio.sleep(0.1)
+            
+            return operations
+    
+        def aggregate_results(self, concurrent_users: int, results: list, total_time: float):
+            """Aggregate benchmark results"""
+            all_operations = []
+            for user_results in results:
+                if isinstance(user_results, list):
+                    all_operations.extend(user_results)
+            
+            if not all_operations:
+                return
+            
+            # Calculate statistics
+            response_times = [op['response_time_ms'] for op in all_operations if op['success']]
+            success_count = sum(1 for op in all_operations if op['success'])
+            total_operations = len(all_operations)
+            
+            stats = {
+                'concurrent_users': concurrent_users,
+                'total_operations': total_operations,
+                'successful_operations': success_count,
+                'failed_operations': total_operations - success_count,
+                'success_rate_percent': (success_count / total_operations * 100) if total_operations > 0 else 0,
+                'total_duration_seconds': total_time,
+                'throughput_ops_per_second': total_operations / total_time if total_time > 0 else 0,
+                'response_time_stats': {
+                    'min_ms': min(response_times) if response_times else 0,
+                    'max_ms': max(response_times) if response_times else 0,
+                    'mean_ms': statistics.mean(response_times) if response_times else 0,
+                    'median_ms': statistics.median(response_times) if response_times else 0,
+                    'p95_ms': statistics.quantiles(response_times, n=20)[18] if len(response_times) > 20 else 0,
+                    'p99_ms': statistics.quantiles(response_times, n=100)[98] if len(response_times) > 100 else 0
+                }
+            }
+            
+            self.results['operations'][f'{concurrent_users}_users'] = stats
+            print(f"✅ {concurrent_users} users: {success_count}/{total_operations} operations successful")
+            print(f"📊 Throughput: {stats['throughput_ops_per_second']:.1f} ops/sec")
+            print(f"⏱️ P95 Response Time: {stats['response_time_stats']['p95_ms']:.1f}ms")
+    
+        def save_results(self, output_file: str):
+            """Save benchmark results to file"""
+            # Calculate overall summary
+            if self.results['operations']:
+                all_ops = list(self.results['operations'].values())
+                self.results['summary'] = {
+                    'total_requests': sum(op['total_operations'] for op in all_ops),
+                    'successful_requests': sum(op['successful_operations'] for op in all_ops),
+                    'avg_response_time_ms': statistics.mean([
+                        op['response_time_stats']['mean_ms'] for op in all_ops
+                    ]),
+                    'max_throughput_ops_per_second': max(op['throughput_ops_per_second'] for op in all_ops),
+                    'avg_success_rate_percent': statistics.mean([op['success_rate_percent'] for op in all_ops])
+                }
+            
+            with open(output_file, 'w') as f:
+                json.dump(self.results, f, indent=2)
+            
+            print(f"💾 Results saved to: {output_file}")
+    
+    async def main():
+        parser = argparse.ArgumentParser(description='MemorAI Memory Operations Benchmark')
+        parser.add_argument('--concurrent-users', default='10,50,100', help='Comma-separated list of concurrent user counts')
+        parser.add_argument('--duration', type=int, default=5, help='Test duration in minutes')
+        parser.add_argument('--batch-sizes', default='10,50,100', help='Comma-separated list of batch sizes')
+        parser.add_argument('--base-url', default='http://localhost:4950', help='MemorAI base URL')
+        parser.add_argument('--api-key', default='memorai-dev-key-2025', help='API key')
+        parser.add_argument('--output', required=True, help='Output file path')
+        
+        args = parser.parse_args()
+        
+        concurrent_users = [int(x.strip()) for x in args.concurrent_users.split(',')]
+        batch_sizes = [int(x.strip()) for x in args.batch_sizes.split(',')]
+        
+        async with MemoryBenchmark(args.base_url, args.api_key) as benchmark:
+            await benchmark.run_benchmark(concurrent_users, args.duration, batch_sizes)
+            benchmark.save_results(args.output)
+    
+    if __name__ == "__main__":
+        asyncio.run(main())
+
+  generate_report.py: |
+    #!/usr/bin/env python3
+    """
+    Performance Report Generator
+    Generates comprehensive performance reports with charts and analysis
+    """
+    import json
+    import os
+    import glob
+    import argparse
+    from datetime import datetime
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    
+    class PerformanceReporter:
+        def __init__(self, input_dir: str, output_dir: str):
+            self.input_dir = input_dir
+            self.output_dir = output_dir
+            self.data = {}
+            
+        def load_data(self):
+            """Load all benchmark data files"""
+            json_files = glob.glob(os.path.join(self.input_dir, "*.json"))
+            for file_path in json_files:
+                filename = os.path.basename(file_path).replace('.json', '')
+                with open(file_path, 'r') as f:
+                    self.data[filename] = json.load(f)
+        
+        def generate_html_report(self):
+            """Generate comprehensive HTML report"""
+            html_content = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>MemorAI Performance Report - {datetime.now().strftime('%Y-%m-%d %H:%M')}</title>
+                <style>
+                    body {{ font-family: Arial, sans-serif; margin: 40px; }}
+                    h1, h2, h3 {{ color: #2c3e50; }}
+                    .summary {{ background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                    .metric {{ display: inline-block; margin: 10px 20px; }}
+                    .metric-value {{ font-size: 2em; font-weight: bold; color: #3498db; }}
+                    .metric-label {{ font-size: 0.9em; color: #7f8c8d; }}
+                    table {{ border-collapse: collapse; width: 100%; margin: 20px 0; }}
+                    th, td {{ border: 1px solid #bdc3c7; padding: 12px; text-align: left; }}
+                    th {{ background-color: #34495e; color: white; }}
+                    .pass {{ color: #27ae60; font-weight: bold; }}
+                    .fail {{ color: #e74c3c; font-weight: bold; }}
+                    .warn {{ color: #f39c12; font-weight: bold; }}
+                </style>
+            </head>
+            <body>
+                <h1>🚀 MemorAI Performance Benchmark Report</h1>
+                <p>Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+                
+                {self.generate_executive_summary()}
+                {self.generate_performance_tables()}
+                {self.generate_recommendations()}
+            </body>
+            </html>
+            """
+            
+            output_file = os.path.join(self.output_dir, "performance_report.html")
+            with open(output_file, 'w') as f:
+                f.write(html_content)
+            
+            print(f"📋 HTML report generated: {output_file}")
+        
+        def generate_executive_summary(self):
+            """Generate executive summary section"""
+            if not self.data:
+                return "<div class='summary'><h2>No data available</h2></div>"
+            
+            # Aggregate key metrics
+            total_requests = 0
+            total_errors = 0
+            avg_response_times = []
+            
+            for benchmark_name, data in self.data.items():
+                if 'summary' in data:
+                    summary = data['summary']
+                    total_requests += summary.get('total_requests', 0)
+                    if 'error_rate_percent' in summary:
+                        total_errors += summary['total_requests'] * summary['error_rate_percent'] / 100
+                    if 'avg_response_time_ms' in summary:
+                        avg_response_times.append(summary['avg_response_time_ms'])
+            
+            overall_error_rate = (total_errors / total_requests * 100) if total_requests > 0 else 0
+            overall_avg_response = sum(avg_response_times) / len(avg_response_times) if avg_response_times else 0
+            
+            return f"""
+            <div class="summary">
+                <h2>📊 Executive Summary</h2>
+                <div class="metric">
+                    <div class="metric-value">{total_requests:,}</div>
+                    <div class="metric-label">Total Requests</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">{overall_avg_response:.1f}ms</div>
+                    <div class="metric-label">Average Response Time</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">{overall_error_rate:.2f}%</div>
+                    <div class="metric-label">Error Rate</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">{len(self.data)}</div>
+                    <div class="metric-label">Benchmark Scenarios</div>
+                </div>
+            </div>
+            """
+        
+        def generate_performance_tables(self):
+            """Generate detailed performance tables"""
+            tables_html = "<h2>📈 Detailed Performance Metrics</h2>"
+            
+            for benchmark_name, data in self.data.items():
+                if 'operations' in data:
+                    tables_html += f"<h3>{benchmark_name.replace('_', ' ').title()}</h3>"
+                    tables_html += "<table>"
+                    tables_html += "<tr><th>Concurrent Users</th><th>Total Ops</th><th>Success Rate</th><th>Throughput (ops/sec)</th><th>P95 Response (ms)</th><th>P99 Response (ms)</th></tr>"
+                    
+                    for config, metrics in data['operations'].items():
+                        success_rate = metrics.get('success_rate_percent', 0)
+                        success_class = 'pass' if success_rate >= 99 else 'warn' if success_rate >= 95 else 'fail'
+                        
+                        p95 = metrics.get('response_time_stats', {}).get('p95_ms', 0)
+                        p99 = metrics.get('response_time_stats', {}).get('p99_ms', 0)
+                        
+                        tables_html += f"""
+                        <tr>
+                            <td>{metrics.get('concurrent_users', 'N/A')}</td>
+                            <td>{metrics.get('total_operations', 0):,}</td>
+                            <td class="{success_class}">{success_rate:.1f}%</td>
+                            <td>{metrics.get('throughput_ops_per_second', 0):.1f}</td>
+                            <td>{p95:.1f}</td>
+                            <td>{p99:.1f}</td>
+                        </tr>
+                        """
+                    
+                    tables_html += "</table>"
+            
+            return tables_html
+        
+        def generate_recommendations(self):
+            """Generate performance recommendations"""
+            recommendations = []
+            
+            # Analyze response times
+            high_response_times = []
+            for benchmark_name, data in self.data.items():
+                if 'operations' in data:
+                    for config, metrics in data['operations'].items():
+                        p95 = metrics.get('response_time_stats', {}).get('p95_ms', 0)
+                        if p95 > 500:  # Threshold from config
+                            high_response_times.append((benchmark_name, config, p95))
+            
+            if high_response_times:
+                recommendations.append("⚠️ High response times detected. Consider optimizing database queries and adding caching.")
+            
+            # Analyze error rates
+            high_error_rates = []
+            for benchmark_name, data in self.data.items():
+                if 'operations' in data:
+                    for config, metrics in data['operations'].items():
+                        error_rate = 100 - metrics.get('success_rate_percent', 100)
+                        if error_rate > 1:  # Threshold from config
+                            high_error_rates.append((benchmark_name, config, error_rate))
+            
+            if high_error_rates:
+                recommendations.append("🚨 High error rates detected. Review error logs and increase resource allocation.")
+            
+            if not recommendations:
+                recommendations.append("✅ All performance metrics are within acceptable thresholds.")
+            
+            rec_html = "<h2>💡 Recommendations</h2><ul>"
+            for rec in recommendations:
+                rec_html += f"<li>{rec}</li>"
+            rec_html += "</ul>"
+            
+            return rec_html
+    
+    def main():
+        parser = argparse.ArgumentParser(description='Generate Performance Report')
+        parser.add_argument('--input-dir', required=True, help='Input directory with JSON results')
+        parser.add_argument('--formats', default='html,json', help='Output formats (html,json,csv)')
+        parser.add_argument('--include-charts', default='true', help='Include performance charts')
+        parser.add_argument('--output', required=True, help='Output file prefix')
+        
+        args = parser.parse_args()
+        
+        output_dir = os.path.dirname(args.output) or '.'
+        os.makedirs(output_dir, exist_ok=True)
+        
+        reporter = PerformanceReporter(args.input_dir, output_dir)
+        reporter.load_data()
+        
+        if 'html' in args.formats:
+            reporter.generate_html_report()
+        
+        if 'json' in args.formats:
+            summary_data = {
+                'timestamp': datetime.now().isoformat(),
+                'benchmarks': reporter.data
+            }
+            with open(f"{args.output}.json", 'w') as f:
+                json.dump(summary_data, f, indent=2)
+    
+    if __name__ == "__main__":
+        main()
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memorai-performance-reports
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: performance
+    environment: production
+    version: v9.5.0
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: ssd-retain
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memorai-performance-service-account
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: performance
+    environment: production
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: memorai-performance-monitor
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: performance
+    environment: production
+    version: v9.5.0
+spec:
+  selector:
+    matchLabels:
+      app: memorai-mcp
+      component: mcp-server
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics
+  - port: health
+    interval: 30s
+    path: /health

@@ -1,90 +1,130 @@
-# ============================================
-# OPTIMIZED DOCKERIGNORE - BALANCED APPROACH  
-# ============================================
-
-# EXCLUDE LARGE DIRECTORIES AND FILES
+# Dependencies
+node_modules/
 **/node_modules/
-**/.turbo/
-**/.next/
-**/.cache/
-**/dist/
-!packages/api-utils/dist/
-!packages/shared-ui/dist/
-!packages/testing-utils/dist/
-!packages/config-consolidated/eslint-config/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# EXCLUDE DOCUMENTATION AND REPORTS
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+out/
+**/.next/
+**/.nuxt/
+**/.turbo/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Cache directories
+.cache/
+**/.cache/
+.tmp/
+**/.tmp/
+.temp/
+**/.temp/
+
+# Logs
+logs/
+*.log
+**/*.log
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage/
+**/coverage/
+**/*.tsbuildinfo
+
+# Documentation
 *.md
 !README.md
-*_REPORT.md
-*_PLAN.md
-*_STATUS.md
+docs/
+**/docs/
 
-# EXCLUDE BINARIES AND LARGE FILES
+# Archives and backups
 *.zip
-*.exe  
 *.tar.gz
-*.log
-*.db
-*.sqlite
-
-# EXCLUDE DEPLOYMENT AND INFRASTRUCTURE
+*.tgz
 archive*/
-deployment*/
+backup*/
+
+# Exclude everything except CAUTAI-related packages
+apps/*
+!apps/cautai-server/
+
+# Keep only essential packages for CAUTAI
+packages/*
+!packages/cautai-mcp/
+!packages/cautai-config/
+!packages/cautai-logger/
+!packages/cautai-i18n/
+!packages/cautai-client/
+!packages/cautai-ui/
+
+# Exclude other libs and configs
+libs/
+configs/
 infrastructure/
 monitoring/
-aws-*/
-memorai-*/
-cbd-*/
-research/
-docs/
-tests/
+load-balancing/
+scripts/*
+!scripts/init-cautai-databases.sh
 
-# EXCLUDE UNNECESSARY APPS (keep only the 5 we need + romai for neural builds)
-apps/*/node_modules/
-apps/*/.next/
-apps/*/.turbo/
-apps/aide/
-apps/ajutai/
-apps/analizai/
-apps/bancai/
-apps/bancai-mobile/
-apps/conversai/
-apps/dexai/
-apps/docs/
-apps/donai/
-apps/gateway/
-apps/hub/
-apps/id/
-apps/legalizai/
-apps/logai/
-apps/memorai/
-apps/memorai-landing/
-apps/metu/
-apps/mod/
-apps/publicai/
-apps/admin/
+# Exclude Docker files not needed for CAUTAI
+docker-compose*.yml
+!docker-compose.cautai.yml
+Dockerfile.*
+!apps/cautai-server/Dockerfile
 
-# EXCLUDE UNNECESSARY PACKAGES 
-packages/*/node_modules/
-packages/*/.turbo/
-packages/*/.next/
-packages/cbd/
-packages/memorai-mcp/
-packages/websocket-service/
-packages/ssl-proxy/
-packages/secure-gateway/
-packages/ai-mcp/
-packages/codai-sso-sdk/
-packages/logai-universal/
-packages/memorai-cli/
-packages/memorai-sdk/
-packages/service-registry/
-!packages/api-utils/
-!packages/shared-ui/
-!packages/testing-utils/
-!packages/config-consolidated/eslint-config/
-!packages/translations/
+# Exclude large data files
+*.db
+*.sqlite
+*.sqlite3
+**/*.db
+**/*.sqlite
+**/*.sqlite3
 
-# EXCLUDE LIBS
-libs/
+# Exclude media files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.webp
+
+# Exclude development files
+.prettierrc
+.eslintrc*
+jest.config.*
+vitest.config.*
+tsconfig.json
+!packages/cautai-mcp/tsconfig.json
+!apps/cautai-server/tsconfig.json

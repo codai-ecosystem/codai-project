@@ -77,8 +77,8 @@ export async function POST(request: NextRequest) {
             query: aiQuery.query,
             hasIntent: !!aiQuery.intent,
             hasContext: !!aiQuery.context,
-            personalizationEnabled: aiQuery.personalization.usePersonalization,
-            aiEnhancementsEnabled: Object.values(aiQuery.aiEnhancements).filter(Boolean).length
+            personalizationEnabled: aiQuery.personalization?.usePersonalization ?? false,
+            aiEnhancementsEnabled: aiQuery.aiEnhancements ? Object.values(aiQuery.aiEnhancements).filter(Boolean).length : 0
         });
 
         // Perform AI-powered search
@@ -104,11 +104,11 @@ export async function POST(request: NextRequest) {
                 averageRelevance: results.length > 0 ?
                     results.reduce((sum, r) => sum + r.relevanceScore, 0) / results.length : 0,
                 searchEnhancements: {
-                    naturalLanguageProcessed: aiQuery.aiEnhancements.useNaturalLanguage,
-                    queryExpanded: aiQuery.aiEnhancements.enableQueryExpansion,
-                    semanticSearchEnabled: aiQuery.aiEnhancements.enableSemanticSimilarity,
-                    contextualRankingApplied: aiQuery.aiEnhancements.useContextualRanking,
-                    personalizationApplied: aiQuery.personalization.usePersonalization
+                    naturalLanguageProcessed: aiQuery.aiEnhancements?.useNaturalLanguage ?? false,
+                    queryExpanded: aiQuery.aiEnhancements?.enableQueryExpansion ?? false,
+                    semanticSearchEnabled: aiQuery.aiEnhancements?.enableSemanticSimilarity ?? false,
+                    contextualRankingApplied: aiQuery.aiEnhancements?.useContextualRanking ?? false,
+                    personalizationApplied: aiQuery.personalization?.usePersonalization ?? false
                 },
                 intentAnalysis: aiQuery.intent ? {
                     detectedIntent: aiQuery.intent.type,

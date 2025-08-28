@@ -177,7 +177,6 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
             }));
 
             addNotification({
-                id: `search-${Date.now()}`,
                 type: 'success',
                 title: 'Search Complete',
                 message: `Found ${filteredResults.length} AI-powered results`,
@@ -188,7 +187,6 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
             console.error('AI search error:', error);
             setState(prev => ({ ...prev, isSearching: false }));
             addNotification({
-                id: `search-error-${Date.now()}`,
                 type: 'error',
                 title: 'Search Error',
                 message: 'Failed to perform AI search. Please try again.',
@@ -240,7 +238,6 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                     // Find related memories and show them
                     if (result.relatedMemories.length > 0) {
                         addNotification({
-                            id: `related-${Date.now()}`,
                             type: 'info',
                             title: 'Related Memories',
                             message: `Found ${result.relatedMemories.length} related memories`,
@@ -256,7 +253,6 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                 case ActionType.SAVE_SEARCH:
                     // Save search to favorites (would implement with backend)
                     addNotification({
-                        id: `save-${Date.now()}`,
                         type: 'success',
                         title: 'Search Saved',
                         message: 'Search query saved to your favorites',

@@ -16,7 +16,7 @@ export default defineConfig({
     globals: true, // Enable globals for expect, vi, etc.
     environment: 'jsdom',
     setupFiles: [
-      './tests/setup.ts', // RomAI-specific setup only
+      './tests/jest.setup.js', // RomAI-specific setup
     ],
 
     // Coverage configuration - workspace-consistent location
@@ -49,13 +49,16 @@ export default defineConfig({
 
     include: [
       'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-      'src/**/__tests__/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
+      'src/**/__tests__/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+      'tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+      'tests/**/__tests__/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
     ],
     exclude: [
       'node_modules/',
       'dist/',
       '.next/',
-      'e2e/**',
+      'tests/e2e/**',
+      'tests/performance/**',
       '**/*.e2e.{test,spec}.{js,ts}'
     ],
 
@@ -69,7 +72,7 @@ export default defineConfig({
     minWorkers: 1,
 
     // Enhanced reporting for AGI component testing
-    reporter: process.env.CI ? ['junit', 'github-actions'] : ['verbose'],
+    reporters: process.env.CI ? ['junit', 'github-actions'] : ['verbose'],
     outputFile: process.env.CI ? {
       junit: '../../test-results/romai/junit.xml'
     } : undefined,

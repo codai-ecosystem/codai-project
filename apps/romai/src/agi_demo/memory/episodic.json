@@ -1,0 +1,38 @@
+[
+  {
+    "type": "episodic",
+    "content": "Demonstrated tool usage capabilities successfully",
+    "timestamp": "2025-08-27T10:20:50.718474",
+    "importance_score": 0.8,
+    "tags": [
+      "demo",
+      "tools",
+      "success"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:20:50.734200",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:20:50.800164",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.300, Efficiency: 0.295",
+    "timestamp": "2025-08-27T10:20:50.815926",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  }
+]

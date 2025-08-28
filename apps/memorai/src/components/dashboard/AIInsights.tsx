@@ -281,7 +281,7 @@ const LoadingSkeleton = React.memo(() => (
 ));
 LoadingSkeleton.displayName = 'LoadingSkeleton';
 
-export default function AIInsights(): JSX.Element {
+export default function AIInsights(): React.JSX.Element {
     const [state, setState] = useState<AIInsightsState>({
         insights: [],
         stats: null,
@@ -299,7 +299,7 @@ export default function AIInsights(): JSX.Element {
         } catch (error) {
             setState(prev => ({
                 ...prev,
-                error: error instanceof APIError ? error : new APIError('Failed to generate insights'),
+                error: error instanceof APIError ? error : new APIError('Failed to generate insights', 'INSIGHTS_ERROR'),
                 isLoading: false
             }));
         }
@@ -327,7 +327,8 @@ export default function AIInsights(): JSX.Element {
                         description: 'You consistently create memories about team meetings on Mondays and Thursdays. Consider setting up automated meeting summaries.',
                         confidence: 0.89,
                         relevantMemories: ['meeting-alpha-team', 'weekly-standup', 'project-review'],
-                        createdAt: '2025-08-21T10:30:00Z'
+                        createdAt: '2025-08-21T10:30:00Z',
+                        updatedAt: '2025-08-21T10:30:00Z'
                     },
                     {
                         id: '2',
@@ -336,7 +337,8 @@ export default function AIInsights(): JSX.Element {
                         description: 'Your "mobile app redesign" memory shares concepts with "user experience improvements". Consider linking these for better organization.',
                         confidence: 0.76,
                         relevantMemories: ['mobile-app-redesign', 'ux-improvements'],
-                        createdAt: '2025-08-21T09:15:00Z'
+                        createdAt: '2025-08-21T09:15:00Z',
+                        updatedAt: '2025-08-21T09:15:00Z'
                     },
                     {
                         id: '3',
@@ -345,7 +347,8 @@ export default function AIInsights(): JSX.Element {
                         description: 'The solution you documented for Project Alpha could be applicable to the current challenge in Project Beta.',
                         confidence: 0.82,
                         relevantMemories: ['project-alpha-solution', 'project-beta-challenge'],
-                        createdAt: '2025-08-21T08:45:00Z'
+                        createdAt: '2025-08-21T08:45:00Z',
+                        updatedAt: '2025-08-21T08:45:00Z'
                     },
                     {
                         id: '4',
@@ -354,7 +357,8 @@ export default function AIInsights(): JSX.Element {
                         description: 'Your recent memories show increased interest in AI/ML topics. Consider creating a dedicated learning pathway.',
                         confidence: 0.71,
                         relevantMemories: ['ml-course-notes', 'ai-research-papers', 'neural-networks'],
-                        createdAt: '2025-08-21T07:20:00Z'
+                        createdAt: '2025-08-21T07:20:00Z',
+                        updatedAt: '2025-08-21T07:20:00Z'
                     }
                 ];
 
@@ -381,7 +385,7 @@ export default function AIInsights(): JSX.Element {
             } catch (error) {
                 const apiError = error instanceof APIError
                     ? error
-                    : new APIError('Failed to load AI insights');
+                    : new APIError('Failed to load AI insights', 'INSIGHTS_LOAD_ERROR');
 
                 setState(prev => ({
                     ...prev,

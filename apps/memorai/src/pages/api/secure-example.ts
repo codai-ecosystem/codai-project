@@ -6,7 +6,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { withAPIProtection } from '../../middleware/api-security-middleware';
 import { requireAuth } from '../../utils/auth-utils';
-import { validateInput, userRegistrationSchema } from '../../utils/validation-schemas';
+import { validateInput, userRegistrationSchema, profileUpdateSchema } from '../../utils/validation-schemas';
 import { InputSanitizer } from '../../middleware/sanitization-middleware';
 
 // Example protected API route
@@ -64,10 +64,10 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
             data: result
         });
     } catch (error) {
-        if (error.name === 'ValidationError') {
+        if (error instanceof Error && error.name === 'ValidationError') {
             return res.status(400).json({
                 error: 'Validation failed',
-                details: error.errors
+                details: (error as any).errors
             });
         }
         throw error;

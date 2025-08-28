@@ -2,9 +2,9 @@ name: "🚀 Continuous Integration"
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, dev]
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, dev]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -13,6 +13,8 @@ concurrency:
 env:
   NODE_VERSION: '18'
   PNPM_VERSION: '8'
+  CI_TIMEOUT_MINUTES: 10
+  COVERAGE_THRESHOLD: 80
 
 jobs:
   changes:

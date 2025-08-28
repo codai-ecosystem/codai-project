@@ -1,0 +1,180 @@
+# MemorAI MCP Server - Ingress Configuration
+# Traffic routing and SSL termination
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: memorai-mcp-ingress
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/version: "9.5.0"
+  annotations:
+    # Ingress class
+    kubernetes.io/ingress.class: "nginx"
+    
+    # SSL/TLS configuration
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    
+    # Rate limiting
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    
+    # Load balancing
+    nginx.ingress.kubernetes.io/load-balance: "round_robin"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$remote_addr"
+    
+    # Timeouts
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    
+    # Body size
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    
+    # CORS
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://memorai.codai.ro,https://api.codai.ro"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+    
+    # Security headers
+    nginx.ingress.kubernetes.io/custom-http-errors: "404,503"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      more_set_headers "X-Content-Type-Options: nosniff";
+      more_set_headers "X-Frame-Options: DENY";
+      more_set_headers "X-XSS-Protection: 1; mode=block";
+      more_set_headers "Referrer-Policy: strict-origin-when-cross-origin";
+      more_set_headers "Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';";
+
+spec:
+  ingressClassName: nginx
+  
+  tls:
+  - hosts:
+    - api.memorai.codai.ro
+    - memorai-mcp.codai.ro
+    secretName: memorai-mcp-tls
+  
+  rules:
+  # Production API endpoint
+  - host: api.memorai.codai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: memorai-mcp-service
+            port:
+              number: 4950
+      - path: /metrics
+        pathType: Exact
+        backend:
+          service:
+            name: memorai-mcp-service
+            port:
+              number: 9090
+  
+  # Alternative endpoint
+  - host: memorai-mcp.codai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: memorai-mcp-service
+            port:
+              number: 4950
+
+---
+# Grafana Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: grafana-ingress
+    app.kubernetes.io/version: "9.5.0"
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: grafana-basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: "MemorAI MCP Monitoring Dashboard"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - monitoring.memorai.codai.ro
+    secretName: grafana-tls
+  rules:
+  - host: monitoring.memorai.codai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana-service
+            port:
+              number: 3000
+
+---
+# Basic Auth Secret for Grafana
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-basic-auth
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: auth
+type: Opaque
+data:
+  # Generated with: htpasswd -nb admin your-password | base64
+  auth: YWRtaW46JGFwcjEkSDZaNnkrQmUkQlhDcFNrUkg0Z0VTMHY1TEVSaDhJMAo=  # admin:admin (change this!)
+
+---
+# Network Policy for ingress traffic
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: memorai-mcp-ingress-netpol
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: memorai-mcp
+      app.kubernetes.io/component: server
+  policyTypes:
+  - Ingress
+  ingress:
+  # Allow ingress controller
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    ports:
+    - protocol: TCP
+      port: 4950
+    - protocol: TCP
+      port: 9090
+  # Allow monitoring
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    ports:
+    - protocol: TCP
+      port: 9090

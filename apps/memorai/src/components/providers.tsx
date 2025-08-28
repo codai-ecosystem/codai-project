@@ -1,10 +1,7 @@
 'use client';
 
-import { SessionProvider } from 'next-auth/react';
 import { ReactNode } from 'react';
-import { NotificationProvider } from './notifications';
-import { AuthProvider } from '../lib/auth';
-import { PerformanceProvider } from '../lib/performance/PerformanceProvider';
+import { ThemeProvider } from './theme/ThemeProvider';
 
 interface ProvidersProps {
     children: ReactNode;
@@ -12,14 +9,8 @@ interface ProvidersProps {
 
 export default function Providers({ children }: ProvidersProps) {
     return (
-        <SessionProvider>
-            <AuthProvider>
-                <PerformanceProvider>
-                    <NotificationProvider>
-                        {children}
-                    </NotificationProvider>
-                </PerformanceProvider>
-            </AuthProvider>
-        </SessionProvider>
+        <ThemeProvider defaultTheme="system" storageKey="memorai-theme">
+            {children}
+        </ThemeProvider>
     );
 }

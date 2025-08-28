@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="MemorAI Integration Guides - Complete setup and usage examples for React, Vue, Angular, and Vanilla JS">
+    <title>Integration Guides - MemorAI Developer Documentation</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4F46E5;
+            --secondary-color: #10B981;
+            --accent-color: #F59E0B;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F9FAFB;
+            --bg-tertiary: #EFF6FF;
+            --border-color: #E5E7EB;
+            --success-color: #059669;
+            --warning-color: #D97706;
+            --error-color: #DC2626;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --code-bg: #1E293B;
+            --code-text: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            opacity: 0.9;
+        }
+
+        .nav {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .main {
+            padding: 3rem 0;
+        }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .framework-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .framework-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .framework-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .framework-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .framework-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .framework-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .react-icon {
+            background: #61DAFB;
+            color: #282C34;
+        }
+
+        .vue-icon {
+            background: #4FC08D;
+        }
+
+        .angular-icon {
+            background: #DD0031;
+        }
+
+        .vanilla-icon {
+            background: var(--accent-color);
+        }
+
+        .framework-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .framework-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .framework-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .framework-link:hover {
+            gap: 0.75rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 700px;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: var(--code-text);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            position: relative;
+            border: 1px solid #374151;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .quick-start {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .quick-start-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .installation-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .step {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -0.75rem;
+            left: 1rem;
+            background: var(--primary-color);
+            color: white;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .framework-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .installation-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>
+                <i class="fas fa-puzzle-piece"></i>
+                Integration Guides
+            </h1>
+            <p>Complete setup and usage examples for popular frontend frameworks</p>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="../developer-portal.html" class="nav-link">← Back to Portal</a></li>
+                <li><a href="#" class="nav-link active">Integration Guides</a></li>
+                <li><a href="../api-playground.html" class="nav-link">API Playground</a></li>
+                <li><a href="../examples/index.html" class="nav-link">Examples</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <!-- Overview Section -->
+            <section class="section">
+                <h2 class="section-title">Choose Your Framework</h2>
+                <p class="section-description">
+                    MemorAI provides dedicated integrations for popular frontend frameworks. Each integration is
+                    optimized for the framework's patterns and best practices.
+                </p>
+
+                <div class="framework-grid">
+                    <div class="framework-card">
+                        <div class="framework-header">
+                            <div class="framework-icon react-icon">
+                                <i class="fab fa-react"></i>
+                            </div>
+                            <h3 class="framework-title">React</h3>
+                        </div>
+                        <p class="framework-description">
+                            React hooks for memory management with automatic state synchronization and lifecycle
+                            management.
+                        </p>
+                        <ul class="features-list">
+                            <li>useMemorAI hook for SDK management</li>
+                            <li>useMemorySubscription for real-time updates</li>
+                            <li>useMemoryAnalytics for dashboard data</li>
+                            <li>Automatic cleanup and error handling</li>
+                        </ul>
+                        <a href="react.html" class="framework-link">
+                            View React Guide
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="framework-card">
+                        <div class="framework-header">
+                            <div class="framework-icon vue-icon">
+                                <i class="fab fa-vuejs"></i>
+                            </div>
+                            <h3 class="framework-title">Vue 3</h3>
+                        </div>
+                        <p class="framework-description">
+                            Vue 3 Composition API composables with reactive state management and seamless integration.
+                        </p>
+                        <ul class="features-list">
+                            <li>useMemorAI composable with reactive state</li>
+                            <li>useMemorySubscription for live updates</li>
+                            <li>useMemoryAnalytics with computed properties</li>
+                            <li>Perfect TypeScript support</li>
+                        </ul>
+                        <a href="vue.html" class="framework-link">
+                            View Vue Guide
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="framework-card">
+                        <div class="framework-header">
+                            <div class="framework-icon angular-icon">
+                                <i class="fab fa-angular"></i>
+                            </div>
+                            <h3 class="framework-title">Angular</h3>
+                        </div>
+                        <p class="framework-description">
+                            Angular service with dependency injection and observables for enterprise applications.
+                        </p>
+                        <ul class="features-list">
+                            <li>MemorAIService with DI support</li>
+                            <li>Observable-based state management</li>
+                            <li>Component base class for common patterns</li>
+                            <li>Enterprise-ready architecture</li>
+                        </ul>
+                        <a href="angular.html" class="framework-link">
+                            View Angular Guide
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="framework-card">
+                        <div class="framework-header">
+                            <div class="framework-icon vanilla-icon">
+                                <i class="fab fa-js-square"></i>
+                            </div>
+                            <h3 class="framework-title">Vanilla JS</h3>
+                        </div>
+                        <p class="framework-description">
+                            Pure JavaScript integration without framework dependencies for maximum flexibility.
+                        </p>
+                        <ul class="features-list">
+                            <li>Direct SDK usage patterns</li>
+                            <li>Event-driven architecture</li>
+                            <li>WebSocket integration examples</li>
+                            <li>Works with any framework or library</li>
+                        </ul>
+                        <a href="vanilla.html" class="framework-link">
+                            View JavaScript Guide
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Start Section -->
+            <section class="section">
+                <div class="quick-start">
+                    <h2 class="quick-start-title">Universal Quick Start</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        These steps apply to all framework integrations. Choose your specific framework guide for
+                        detailed examples.
+                    </p>
+
+                    <div class="installation-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <h3 class="step-title">Install the SDK</h3>
+                            <p class="step-description">Add MemorAI SDK to your project dependencies</p>
+                            <div class="code-block" data-lang="bash">
+                                npm install @memorai/sdk
+                                # or
+                                yarn add @memorai/sdk
+                                # or
+                                pnpm add @memorai/sdk</div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <h3 class="step-title">Environment Setup</h3>
+                            <p class="step-description">Configure your environment variables</p>
+                            <div class="code-block" data-lang="env">
+                                # .env
+                                MEMORAI_BASE_URL=http://localhost:4950
+                                MEMORAI_API_KEY=your-api-key-here
+                                MEMORAI_AGENT_ID=your-agent-id</div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <h3 class="step-title">Framework Integration</h3>
+                            <p class="step-description">Import and use the framework-specific integration</p>
+                            <div class="code-block" data-lang="javascript">
+                                // React
+                                import { useMemorAI } from '@memorai/react';
+
+                                // Vue
+                                import { useMemorAI } from '@memorai/vue';
+
+                                // Angular
+                                import { MemorAIService } from '@memorai/angular';
+
+                                // Vanilla JS
+                                import MemorAISDK from '@memorai/sdk';</div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <h3 class="step-title">Start Building</h3>
+                            <p class="step-description">Begin using memory operations in your application</p>
+                            <div class="code-block" data-lang="javascript">
+                                // Store a memory
+                                const memory = await memorai.remember({
+                                content: 'User preferences updated',
+                                agentId: 'user-001',
+                                metadata: { importance: 7 }
+                                });
+
+                                // Recall memories
+                                const results = await memorai.recall({
+                                query: 'user preferences',
+                                limit: 10
+                                });</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Overview -->
+            <section class="section">
+                <h2 class="section-title">Common Features Across All Integrations</h2>
+                <p class="section-description">
+                    Every framework integration includes these core capabilities
+                </p>
+
+                <div class="framework-grid">
+                    <div class="framework-card" style="border-left: 4px solid var(--success-color);">
+                        <h3 style="color: var(--success-color); margin-bottom: 1rem;">
+                            <i class="fas fa-memory"></i>
+                            Memory Operations
+                        </h3>
+                        <ul class="features-list">
+                            <li>Store, retrieve, update, and delete memories</li>
+                            <li>Advanced search with semantic understanding</li>
+                            <li>Metadata-based filtering and organization</li>
+                            <li>Bulk operations for efficiency</li>
+                        </ul>
+                    </div>
+
+                    <div class="framework-card" style="border-left: 4px solid var(--primary-color);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                            <i class="fas fa-bolt"></i>
+                            Real-time Updates
+                        </h3>
+                        <ul class="features-list">
+                            <li>WebSocket connections for live data</li>
+                            <li>Automatic reconnection handling</li>
+                            <li>Event-driven state synchronization</li>
+                            <li>Configurable update frequencies</li>
+                        </ul>
+                    </div>
+
+                    <div class="framework-card" style="border-left: 4px solid var(--accent-color);">
+                        <h3 style="color: var(--accent-color); margin-bottom: 1rem;">
+                            <i class="fas fa-chart-bar"></i>
+                            Analytics & Insights
+                        </h3>
+                        <ul class="features-list">
+                            <li>Memory usage patterns and trends</li>
+                            <li>Performance metrics and monitoring</li>
+                            <li>AI-powered clustering and summarization</li>
+                            <li>Custom dashboard components</li>
+                        </ul>
+                    </div>
+
+                    <div class="framework-card" style="border-left: 4px solid var(--secondary-color);">
+                        <h3 style="color: var(--secondary-color); margin-bottom: 1rem;">
+                            <i class="fas fa-shield-alt"></i>
+                            Enterprise Features
+                        </h3>
+                        <ul class="features-list">
+                            <li>Multi-tenant architecture support</li>
+                            <li>Cross-agent memory sharing</li>
+                            <li>Granular permission controls</li>
+                            <li>Audit logging and compliance</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Best Practices -->
+            <section class="section">
+                <h2 class="section-title">Integration Best Practices</h2>
+                <p class="section-description">
+                    Follow these guidelines for optimal performance and maintainability
+                </p>
+
+                <div class="quick-start">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div>
+                            <h3 style="color: var(--success-color); margin-bottom: 1rem;">
+                                <i class="fas fa-check-circle"></i>
+                                Performance
+                            </h3>
+                            <ul style="list-style: none; color: var(--text-secondary);">
+                                <li style="margin-bottom: 0.5rem;">• Use connection pooling for multiple requests</li>
+                                <li style="margin-bottom: 0.5rem;">• Implement proper caching strategies</li>
+                                <li style="margin-bottom: 0.5rem;">• Debounce frequent memory operations</li>
+                                <li style="margin-bottom: 0.5rem;">• Use pagination for large result sets</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                                <i class="fas fa-shield-alt"></i>
+                                Security
+                            </h3>
+                            <ul style="list-style: none; color: var(--text-secondary);">
+                                <li style="margin-bottom: 0.5rem;">• Store API keys securely (environment variables)
+                                </li>
+                                <li style="margin-bottom: 0.5rem;">• Validate all user inputs before storing</li>
+                                <li style="margin-bottom: 0.5rem;">• Use HTTPS for all API communications</li>
+                                <li style="margin-bottom: 0.5rem;">• Implement proper error handling</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 style="color: var(--accent-color); margin-bottom: 1rem;">
+                                <i class="fas fa-code"></i>
+                                Code Quality
+                            </h3>
+                            <ul style="list-style: none; color: var(--text-secondary);">
+                                <li style="margin-bottom: 0.5rem;">• Use TypeScript for better type safety</li>
+                                <li style="margin-bottom: 0.5rem;">• Implement comprehensive error boundaries</li>
+                                <li style="margin-bottom: 0.5rem;">• Write unit tests for memory operations</li>
+                                <li style="margin-bottom: 0.5rem;">• Document your memory schema</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Simple animations and interactions
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add hover effects to framework cards
+            const cards = document.querySelectorAll('.framework-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-8px)';
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(-4px)';
+                });
+            });
+
+            // Copy code blocks on click
+            const codeBlocks = document.querySelectorAll('.code-block');
+            codeBlocks.forEach(block => {
+                block.style.cursor = 'pointer';
+                block.title = 'Click to copy';
+
+                block.addEventListener('click', async function () {
+                    try {
+                        await navigator.clipboard.writeText(this.textContent);
+
+                        // Visual feedback
+                        const original = this.style.background;
+                        this.style.background = 'var(--success-color)';
+
+                        setTimeout(() => {
+                            this.style.background = original;
+                        }, 200);
+                    } catch (err) {
+                        console.error('Failed to copy text:', err);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

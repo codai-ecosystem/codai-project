@@ -9,7 +9,7 @@ import { searchRateLimit } from '../../../middleware/rateLimit';
 // Mock user ID - will be replaced with proper auth
 const MOCK_USER_ID = 'user-12345';
 
-export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<SearchMemoryResult[]>>> {
+export async function POST(request: NextRequest): Promise<NextResponse<any>> {
     try {
         // 🔐 Authentication check
         const authResponse = authenticateAPI(request);
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
 }
 
 // GET method for simple text searches via query parameters
-export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse<SearchMemoryResult[]>>> {
+export async function GET(request: NextRequest): Promise<NextResponse<any>> {
     try {
         // 🔐 Authentication check
         const authResponse = authenticateAPI(request);

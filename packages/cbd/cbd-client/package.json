@@ -1,5 +1,5 @@
 {
-    "name": "cbd-client",
+    "name": "@codai/cbd-client",
     "version": "1.0.0",
     "description": "CBD Enterprise Client SDK - TypeScript/JavaScript client library",
     "main": "dist/index.js",

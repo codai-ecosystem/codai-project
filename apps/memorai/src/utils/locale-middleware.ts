@@ -166,7 +166,7 @@ export class LocaleURLRewriter {
   private defaultLocale: string;
 
   constructor(baseUrl: string, defaultLocale: string = DEFAULT_LOCALE) {
-    this.baseUrl = baseUrl.replace(//$/, '');
+    this.baseUrl = baseUrl.replace(/\/$/, '');
     this.defaultLocale = defaultLocale;
   }
 

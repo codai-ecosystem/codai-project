@@ -1,0 +1,305 @@
+{
+  "timestamp": "2025-08-27T08:39:18.192266",
+  "overall_agi_score": 0.5991634106356842,
+  "capability_scores": {
+    "multimodal_reasoning": 0.8915500329627688,
+    "self_improvement": 0.1466340803202436,
+    "memory_consolidation": 0.9746423278324725,
+    "cross_domain_transfer": 0.7292405877301891,
+    "consciousness_simulation": 0.7429719570831714,
+    "real_world_grounding": 0.8529570865204352,
+    "meta_learning": 0.1441021093340623
+  },
+  "test_results": [
+    {
+      "test_id": "mr_001",
+      "timestamp": "2025-08-27T08:39:18.189897",
+      "success": true,
+      "score": 0.8642214933147135,
+      "execution_time_ms": 996.1455812450532,
+      "output_data": {
+        "test_output": "Executed Romanian Business Card Analysis",
+        "score": 0.8642214933147135
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 0.8642214933147135,
+        "efficiency": 0.9003854418754946,
+        "cultural_relevance": 0.9,
+        "complexity_handling": 1.0
+      }
+    },
+    {
+      "test_id": "mr_002",
+      "timestamp": "2025-08-27T08:39:18.189975",
+      "success": true,
+      "score": 0.9188785726108241,
+      "execution_time_ms": 918.8119307943,
+      "output_data": {
+        "test_output": "Executed Romanian Audio-Visual Processing",
+        "score": 0.9188785726108241
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 0.9188785726108241,
+        "efficiency": 0.90811880692057,
+        "cultural_relevance": 0.9,
+        "complexity_handling": 1.0
+      }
+    },
+    {
+      "test_id": "si_001",
+      "timestamp": "2025-08-27T08:39:18.190175",
+      "success": false,
+      "score": 0.13589728303416024,
+      "execution_time_ms": 1179.7156420884667,
+      "output_data": {
+        "test_output": "Executed Capability Gap Self-Assessment",
+        "score": 0.13589728303416024
+      },
+      "error_message": "Score 0.136 below threshold 0.630",
+      "performance_metrics": {
+        "accuracy": 0.13589728303416024,
+        "efficiency": 0.8820284357911533,
+        "cultural_relevance": 0.7,
+        "complexity_handling": 0.15099698114906693
+      }
+    },
+    {
+      "test_id": "si_002",
+      "timestamp": "2025-08-27T08:39:18.190239",
+      "success": false,
+      "score": 0.15737087760632695,
+      "execution_time_ms": 905.6806464974245,
+      "output_data": {
+        "test_output": "Executed Learning Strategy Optimization",
+        "score": 0.15737087760632695
+      },
+      "error_message": "Score 0.157 below threshold 0.560",
+      "performance_metrics": {
+        "accuracy": 0.15737087760632695,
+        "efficiency": 0.9094319353502576,
+        "cultural_relevance": 0.7,
+        "complexity_handling": 0.1967135970079087
+      }
+    },
+    {
+      "test_id": "mc_001",
+      "timestamp": "2025-08-27T08:39:18.190410",
+      "success": true,
+      "score": 1.0,
+      "execution_time_ms": 865.1633992048259,
+      "output_data": {
+        "test_output": "Executed Romanian Cultural Memory Integration",
+        "score": 1.0
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 1.0,
+        "efficiency": 0.9134836600795174,
+        "cultural_relevance": 0.9,
+        "complexity_handling": 1.0
+      }
+    },
+    {
+      "test_id": "mc_002",
+      "timestamp": "2025-08-27T08:39:18.190458",
+      "success": true,
+      "score": 0.9492846556649451,
+      "execution_time_ms": 1161.5069613761277,
+      "output_data": {
+        "test_output": "Executed Conversational Memory Persistence",
+        "score": 0.9492846556649451
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 0.9492846556649451,
+        "efficiency": 0.8838493038623872,
+        "cultural_relevance": 0.7,
+        "complexity_handling": 1.0
+      }
+    },
+    {
+      "test_id": "cd_001",
+      "timestamp": "2025-08-27T08:39:18.190625",
+      "success": true,
+      "score": 0.698781785232757,
+      "execution_time_ms": 974.9447060140624,
+      "output_data": {
+        "test_output": "Executed Financial to Cultural Transfer",
+        "score": 0.698781785232757
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 0.698781785232757,
+        "efficiency": 0.9025055293985937,
+        "cultural_relevance": 0.7,
+        "complexity_handling": 0.8734772315409463
+      }
+    },
+    {
+      "test_id": "cd_002",
+      "timestamp": "2025-08-27T08:39:18.190673",
+      "success": true,
+      "score": 0.7596993902276212,
+      "execution_time_ms": 1090.0824112109267,
+      "output_data": {
+        "test_output": "Executed Technical to Traditional Transfer",
+        "score": 0.7596993902276212
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 0.7596993902276212,
+        "efficiency": 0.8909917588789074,
+        "cultural_relevance": 0.9,
+        "complexity_handling": 0.8441104335862458
+      }
+    },
+    {
+      "test_id": "cs_001",
+      "timestamp": "2025-08-27T08:39:18.190833",
+      "success": true,
+      "score": 0.7649511259949459,
+      "execution_time_ms": 1177.0186489327748,
+      "output_data": {
+        "test_output": "Executed Self-Awareness Demonstration",
+        "score": 0.7649511259949459
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 0.7649511259949459,
+        "efficiency": 0.8822981351067225,
+        "cultural_relevance": 0.7,
+        "complexity_handling": 1.0
+      }
+    },
+    {
+      "test_id": "cs_002",
+      "timestamp": "2025-08-27T08:39:18.190879",
+      "success": true,
+      "score": 0.7209927881713971,
+      "execution_time_ms": 924.0820095798734,
+      "output_data": {
+        "test_output": "Executed Theory of Mind Reasoning",
+        "score": 0.7209927881713971
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 0.7209927881713971,
+        "efficiency": 0.9075917990420127,
+        "cultural_relevance": 0.9,
+        "complexity_handling": 0.9012409852142463
+      }
+    },
+    {
+      "test_id": "rw_001",
+      "timestamp": "2025-08-27T08:39:18.191127",
+      "success": true,
+      "score": 0.9189809459227037,
+      "execution_time_ms": 1112.6321281483692,
+      "output_data": {
+        "test_output": "Executed Romanian Startup Business Plan",
+        "score": 0.9189809459227037
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 0.9189809459227037,
+        "efficiency": 0.888736787185163,
+        "cultural_relevance": 0.9,
+        "complexity_handling": 1.0
+      }
+    },
+    {
+      "test_id": "rw_002",
+      "timestamp": "2025-08-27T08:39:18.191176",
+      "success": true,
+      "score": 0.7869332271181668,
+      "execution_time_ms": 1186.6134726986652,
+      "output_data": {
+        "test_output": "Executed Diaspora Community Solution",
+        "score": 0.7869332271181668
+      },
+      "error_message": null,
+      "performance_metrics": {
+        "accuracy": 0.7869332271181668,
+        "efficiency": 0.8813386527301335,
+        "cultural_relevance": 0.9,
+        "complexity_handling": 0.8743702523535186
+      }
+    },
+    {
+      "test_id": "ml_001",
+      "timestamp": "2025-08-27T08:39:18.191436",
+      "success": false,
+      "score": 0.1326439964966735,
+      "execution_time_ms": 1363.4723347360655,
+      "output_data": {
+        "test_output": "Executed Learning Strategy Selection",
+        "score": 0.1326439964966735
+      },
+      "error_message": "Score 0.133 below threshold 0.630",
+      "performance_metrics": {
+        "accuracy": 0.1326439964966735,
+        "efficiency": 0.8636527665263934,
+        "cultural_relevance": 0.9,
+        "complexity_handling": 0.14738221832963722
+      }
+    },
+    {
+      "test_id": "ml_002",
+      "timestamp": "2025-08-27T08:39:18.191497",
+      "success": false,
+      "score": 0.15556022217145116,
+      "execution_time_ms": 963.6344013157072,
+      "output_data": {
+        "test_output": "Executed Few-Shot Cultural Adaptation",
+        "score": 0.15556022217145116
+      },
+      "error_message": "Score 0.156 below threshold 0.560",
+      "performance_metrics": {
+        "accuracy": 0.15556022217145116,
+        "efficiency": 0.9036365598684293,
+        "cultural_relevance": 0.7,
+        "complexity_handling": 0.19445027771431395
+      }
+    }
+  ],
+  "progress_from_baseline": {
+    "multimodal_reasoning": 0.11155003296276877,
+    "self_improvement": -0.0833659196797564,
+    "memory_consolidation": 0.15464232783247256,
+    "cross_domain_transfer": 0.07924058773018905,
+    "consciousness_simulation": 0.09297195708317141,
+    "real_world_grounding": 0.10295708652043523,
+    "meta_learning": -0.0858978906659377
+  },
+  "romanian_cultural_accuracy": 0.93,
+  "hardware_efficiency": {
+    "vram_usage_gb": 1.08,
+    "vram_efficiency": 0.846,
+    "inference_speed_tokens_per_sec": 19.2,
+    "memory_overhead": 0.154,
+    "within_8gb_limit": 1.0
+  },
+  "demo_script_results": {
+    "north_star_demo": true,
+    "romanian_cultural_intelligence": true,
+    "multimodal_reasoning": true,
+    "self_improvement": true,
+    "cross_domain_transfer": true,
+    "hardware_efficiency": true,
+    "real_world_application": true
+  },
+  "recommendations": [
+    "Priority: Improve self improvement by 55.3% to reach AGI threshold",
+    "Priority: Improve cross domain transfer by 7.1% to reach AGI threshold",
+    "Priority: Improve meta learning by 60.6% to reach AGI threshold",
+    "Leverage strong Romanian cultural intelligence (93% accuracy) as foundation",
+    "Integrate cultural context into all AGI capabilities for enhanced performance",
+    "Use successful cross-domain transfer patterns for capability enhancement",
+    "Excellent hardware efficiency - scale up model complexity within 8GB limit",
+    "Consider ensemble approaches using available 6GB VRAM headroom",
+    "Implement model swapping for different AGI capability requirements",
+    "Critical Priority: Address meta-learning and self-improvement gaps for true AGI capability"
+  ]
+}

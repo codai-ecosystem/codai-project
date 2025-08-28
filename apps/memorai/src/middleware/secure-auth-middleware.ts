@@ -7,6 +7,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SessionSecurityManager, SecurityContext, DeviceFingerprinting } from '../utils/session-security';
 import { AuthenticationService } from '../utils/auth-utils';
 import { MultiFactorAuth } from '../utils/multi-factor-auth';
+import { JWTPayload } from 'jose';
+
+interface CustomJWTPayload extends JWTPayload {
+    type?: 'access' | 'refresh' | 'mfa';
+    permissions?: string[];
+    roles?: string[];
+}
 
 export interface AuthConfig {
     requireAuth: boolean;
@@ -159,7 +166,7 @@ export class SecureAuthMiddleware {
         // Validate MFA token if provided
         if (mfaToken) {
             try {
-                const decoded = await this.authService.verifyToken(mfaToken);
+                const decoded = await this.authService.verifyToken(mfaToken) as unknown as CustomJWTPayload;
                 if (decoded.type !== 'mfa' || decoded.sub !== user.sub) {
                     return this.errorResponse('Invalid MFA token', 403);
                 }

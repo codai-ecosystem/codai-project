@@ -1,0 +1,78 @@
+{
+  "name": "@codai/cautai-client",
+  "version": "1.0.0",
+  "description": "Cautai TypeScript Client SDK - HTTP API and MCP protocol client",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./http": {
+      "types": "./dist/http.d.ts",
+      "import": "./dist/http.mjs",
+      "require": "./dist/http.js"
+    },
+    "./mcp": {
+      "types": "./dist/mcp.d.ts",
+      "import": "./dist/mcp.mjs",
+      "require": "./dist/mcp.js"
+    }
+  },
+  "scripts": {
+    "build": "unbuild",
+    "build:watch": "unbuild --watch",
+    "test": "vitest",
+    "test:unit": "vitest run --reporter=verbose",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "clean": "rimraf dist",
+    "docs": "typedoc src --out docs",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "client",
+    "sdk",
+    "api-client",
+    "mcp-client",
+    "search-api",
+    "cautai",
+    "typescript"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.4",
+    "ky": "^1.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.10",
+    "typescript": "^5.9.2",
+    "unbuild": "^2.0.0",
+    "vitest": "^1.2.2",
+    "@vitest/coverage-v8": "^1.2.2",
+    "rimraf": "^5.0.5",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "typedoc": "^0.25.7",
+    "msw": "^2.1.5"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

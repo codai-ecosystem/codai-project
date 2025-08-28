@@ -18,8 +18,9 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const analytics = await aiInsightsService.generateUsageAnalytics(
+        const analytics = await aiInsightsService.analyzeUsagePatterns(
             memories,
+            userId,
             timeRange || {
                 start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
                 end: new Date()

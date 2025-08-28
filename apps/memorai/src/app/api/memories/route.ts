@@ -9,7 +9,7 @@ import { sensitiveRateLimit, createRateLimit } from '../../../middleware/rateLim
 import { v4 as uuidv4 } from 'uuid';
 
 // POST /api/memories - Create new memory
-export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<Memory>>> {
+export async function POST(request: NextRequest): Promise<NextResponse<any>> {
     try {
         // 🔐 Authentication check
         const authResponse = authenticateAPI(request);
@@ -60,11 +60,21 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
             id: uuidv4(),
             userId: userId,
             content: sanitizedContent,
-            title: sanitizedTitle,
-            category: sanitizedCategory,
+            title: sanitizedTitle || 'Untitled Memory',
+            type: 'note', // Default type
+            category: sanitizedCategory || 'general',
             tags: sanitizedTags,
+            priority: 'medium', // Default priority
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
+            isPrivate: false, // Default to public
+            isFavorite: false, // Default not favorited
+            collaborators: [], // No collaborators initially
+            attachments: [], // No attachments initially
+            linkedMemories: [], // No linked memories initially
+            aiScore: 0, // Default AI score
+            accessCount: 0, // Default access count
+            status: 'active', // Default status
         };
 
         // Auto-categorize if no category provided
@@ -96,7 +106,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
 
         // For tests: also store in test database if in test environment
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../tests/utils/test-database')).testDb;
+            const { testDb } = await import('../../../tests/utils/test-utils');
             await testDb.seedMemory({
                 ...memory,
                 userId: memory.userId // Ensure we use the correct userId field
@@ -104,13 +114,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
         }
 
         // Cache the created memory
-        const cacheKey = cacheHelpers.memoryKey(memory.userId, memory.id);
+        const cacheKey = cacheHelpers.memoryKey(memory.userId!, memory.id);
         memoryCache.set(cacheKey, memory, CACHE_CONFIGS.MEMORIES.TTL);
 
         // Invalidate user's memory list cache
-        cacheHelpers.invalidateUserCache(memory.userId);
+        cacheHelpers.invalidateUserCache(memory.userId!);
 
-        return addSecurityHeaders(NextResponse.json(memory, { status: 201 }));
+        return addSecurityHeaders(NextResponse.json({
+            success: true,
+            data: memory,
+            meta: {
+                timestamp: new Date().toISOString()
+            }
+        }, { status: 201 }));
 
     } catch (error) {
         console.error('Error creating memory:', error);
@@ -125,7 +141,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
 }
 
 // GET /api/memories - List user memories
-export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse<Memory[]>>> {
+export async function GET(request: NextRequest): Promise<NextResponse<any>> {
     try {
         // 🔐 Authentication check
         const authResponse = authenticateAPI(request);
@@ -159,7 +175,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
         } else {
             // For tests: get memories from test database
             if (process.env.NODE_ENV === 'test') {
-                const testDb = (await import('../../../tests/utils/test-database')).testDb;
+                const { testDb } = await import('../../../tests/utils/test-utils');
                 const testMemories = testDb.getMemories().filter(m => 
                     m.userId === userId
                 );
@@ -172,26 +188,26 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
 
             // Apply filters
             if (category) {
-                filteredMemories = filteredMemories.filter(memory =>
+                filteredMemories = filteredMemories?.filter(memory =>
                     memory.category?.toLowerCase() === category.toLowerCase()
-                );
+                ) || [];
             }
 
             if (tags && tags.length > 0) {
-                filteredMemories = filteredMemories.filter(memory =>
-                    tags.some(tag => memory.tags.some(memoryTag =>
+                filteredMemories = filteredMemories?.filter(memory =>
+                    tags.some(tag => memory.tags?.some(memoryTag =>
                         memoryTag.toLowerCase().includes(tag.toLowerCase())
                     ))
-                );
+                ) || [];
             }
 
             if (search) {
                 const searchLower = search.toLowerCase();
-                filteredMemories = filteredMemories.filter(memory =>
+                filteredMemories = filteredMemories?.filter(memory =>
                     memory.title?.toLowerCase().includes(searchLower) ||
                     memory.content.toLowerCase().includes(searchLower) ||
-                    memory.tags.some(tag => tag.toLowerCase().includes(searchLower))
-                );
+                    memory.tags?.some(tag => tag.toLowerCase().includes(searchLower))
+                ) || [];
             }
 
             // Cache the filtered results
@@ -199,23 +215,28 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
         }
 
         // Apply limit
-        if (limit && limit > 0) {
+        if (limit && limit > 0 && filteredMemories) {
             filteredMemories = filteredMemories.slice(0, limit);
         }
 
         // Sort by creation date (newest first)
-        filteredMemories.sort((a, b) =>
+        filteredMemories?.sort((a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
 
+        // Ensure filteredMemories is not null
+        const memories = filteredMemories || [];
+
         return addSecurityHeaders(NextResponse.json({
-            memories: filteredMemories,
-            total: filteredMemories.length,
-            page: 1,
-            limit: limit || 10,
-            totalPages: Math.ceil(filteredMemories.length / (limit || 10)),
+            success: true,
+            data: memories,
             meta: {
                 timestamp: new Date().toISOString(),
+                count: memories.length,
+                total: memories.length,
+                page: 1,
+                limit: limit || 10,
+                totalPages: Math.ceil(memories.length / (limit || 10)),
                 cached: fromCache,
                 filters: { category, tags, limit },
                 authenticated: true

@@ -11,7 +11,7 @@ import { cleanup } from '@testing-library/react';
 // Microsoft's recommended global test setup
 beforeAll(() => {
   // Mock environment variables for consistent testing
-  process.env.NODE_ENV = 'test';
+  (process.env as any).NODE_ENV = 'test';
   process.env.NEXT_PUBLIC_API_URL = 'http://localhost:3000/api';
   process.env.NEXT_PUBLIC_MCP_URL = 'http://localhost:4950';
   

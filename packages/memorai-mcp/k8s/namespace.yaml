@@ -1,0 +1,60 @@
+# MemorAI MCP Server - Kubernetes Namespace
+# Dedicated namespace for isolation and resource management
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: namespace
+    app.kubernetes.io/version: "9.5.0"
+    app.kubernetes.io/managed-by: kubernetes
+    environment: production
+    team: codai-ecosystem
+  annotations:
+    description: "MemorAI MCP Server production namespace"
+    contact: "team@codai.ro"
+---
+# Resource Quotas for the namespace
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: memorai-mcp-quota
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: resource-quota
+spec:
+  hard:
+    requests.cpu: "8"
+    requests.memory: 16Gi
+    limits.cpu: "16"
+    limits.memory: 32Gi
+    persistentvolumeclaims: "10"
+    services: "10"
+    secrets: "20"
+    configmaps: "20"
+    pods: "50"
+---
+# Limit Ranges for default resource constraints
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: memorai-mcp-limits
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: limit-range
+spec:
+  limits:
+  - default:
+      cpu: "1000m"
+      memory: "2Gi"
+    defaultRequest:
+      cpu: "500m"
+      memory: "1Gi"
+    type: Container
+  - default:
+      storage: "10Gi"
+    type: PersistentVolumeClaim

@@ -1,0 +1,5 @@
+{
+  "query": "Test MOE system with mathematical reasoning: What is the square root of 144?",
+  "context": "mathematical",
+  "romanian_context": true
+}

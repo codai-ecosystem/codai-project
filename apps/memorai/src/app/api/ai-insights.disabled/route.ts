@@ -77,8 +77,7 @@ export async function POST(request: NextRequest) {
             timeRange || {
                 start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
                 end: new Date()
-            },
-            options
+            }
         );
 
         return NextResponse.json({

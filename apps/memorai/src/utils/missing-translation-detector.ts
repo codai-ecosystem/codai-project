@@ -277,8 +277,8 @@ export class MissingTranslationDetector {
   private isUntranslatedValue(value: string, key: string): boolean {
     // Check for common placeholder patterns
     const placeholderPatterns = [
-      /^[TRANSLATE:/i,
-      /^[TODO:/i,
+      /^\[TRANSLATE:/i,
+      /^\[TODO:/i,
       /^TODO:/i,
       new RegExp(`^${key}$`, 'i'), // Same as key
       /^\s*$/ // Empty or whitespace only

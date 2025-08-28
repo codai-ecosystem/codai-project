@@ -110,20 +110,8 @@ export class ApiError extends Error {
 
 // Utility Types
 export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
-export type Required<T, K extends keyof T> = T & Required<Pick<T, K>>
+// Required utility type to make specific fields required
+export type MakeRequired<T, K extends keyof T> = T & globalThis.Required<Pick<T, K>>
 
 // Export all types
-export type {
-  ApiResponse,
-  PaginatedResponse,
-  ErrorResponse,
-  SuccessResponse,
-  PaginationParams,
-  SortParams,
-  FilterParams,
-  SearchParams,
-  HttpMethod,
-  ApiClientConfig,
-  AuthTokens,
-  User
-}
+// (Types are already exported via individual declarations above)

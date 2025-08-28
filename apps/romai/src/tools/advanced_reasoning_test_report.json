@@ -1,0 +1,126 @@
+{
+  "test_summary": {
+    "total_tests": 12,
+    "passed_tests": 8,
+    "failed_tests": 4,
+    "success_rate": 66.66666666666666,
+    "total_execution_time": 0.019112348556518555
+  },
+  "module_availability": {
+    "reasoning_orchestrator": true,
+    "causal_inference": true,
+    "analogical_reasoning": true,
+    "metacognitive_awareness": true,
+    "tool_guided_reasoning": true
+  },
+  "test_categories": {
+    "individual_module_tests": {
+      "count": 5,
+      "passed": 2,
+      "success_rate": 40.0
+    },
+    "integration_tests": {
+      "count": 5,
+      "passed": 4,
+      "success_rate": 80.0
+    },
+    "performance_tests": {
+      "count": 2,
+      "passed": 2,
+      "success_rate": 100.0
+    }
+  },
+  "performance_metrics": {
+    "start_time": 1756335084.778157,
+    "individual_tests": {
+      "orchestrator": 0.0009403228759765625,
+      "tool_guided": 0.0016584396362304688
+    },
+    "integration_tests": {
+      "orchestrator_analogical": 0.00046944618225097656,
+      "orchestrator_metacognitive": 0.0007658004760742188,
+      "orchestrator_tool_guided": 0.0005283355712890625,
+      "full_system": 0.0035250186920166016,
+      "concurrent": 0.0017113685607910156,
+      "scalability": 0.005400419235229492
+    },
+    "overall_performance": {}
+  },
+  "detailed_results": [
+    {
+      "test_name": "orchestrator_basic",
+      "passed": true,
+      "details": "Completed in 0.00s",
+      "timestamp": "2025-08-28T01:51:24.779488"
+    },
+    {
+      "test_name": "causal_basic",
+      "passed": false,
+      "details": "Error: ",
+      "timestamp": "2025-08-28T01:51:24.779829"
+    },
+    {
+      "test_name": "analogical_basic",
+      "passed": false,
+      "details": "Error: ",
+      "timestamp": "2025-08-28T01:51:24.780528"
+    },
+    {
+      "test_name": "metacognitive_basic",
+      "passed": false,
+      "details": "Error: ",
+      "timestamp": "2025-08-28T01:51:24.781528"
+    },
+    {
+      "test_name": "tool_guided_basic",
+      "passed": true,
+      "details": "Completed in 0.00s",
+      "timestamp": "2025-08-28T01:51:24.783403"
+    },
+    {
+      "test_name": "orchestrator_causal_integration",
+      "passed": false,
+      "details": "Error: Causal reasoning should be triggered",
+      "timestamp": "2025-08-28T01:51:24.783996"
+    },
+    {
+      "test_name": "orchestrator_analogical_integration",
+      "passed": true,
+      "details": "Integration working (0.00s)",
+      "timestamp": "2025-08-28T01:51:24.784582"
+    },
+    {
+      "test_name": "orchestrator_metacognitive_integration",
+      "passed": true,
+      "details": "Integration working (0.00s)",
+      "timestamp": "2025-08-28T01:51:24.785437"
+    },
+    {
+      "test_name": "orchestrator_tool_guided_integration",
+      "passed": true,
+      "details": "Integration working (0.00s)",
+      "timestamp": "2025-08-28T01:51:24.786122"
+    },
+    {
+      "test_name": "full_system_integration",
+      "passed": true,
+      "details": "All systems working together (0.00s, 6 components)",
+      "timestamp": "2025-08-28T01:51:24.789789"
+    },
+    {
+      "test_name": "concurrent_reasoning",
+      "passed": true,
+      "details": "5 tasks in 0.00s (0.00s avg)",
+      "timestamp": "2025-08-28T01:51:24.791691"
+    },
+    {
+      "test_name": "scalability",
+      "passed": true,
+      "details": "Scalability test completed (0.01s)",
+      "timestamp": "2025-08-28T01:51:24.797200"
+    }
+  ],
+  "recommendations": [
+    "Address 4 failed tests for full system functionality"
+  ]
+}

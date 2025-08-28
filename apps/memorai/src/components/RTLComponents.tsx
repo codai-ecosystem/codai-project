@@ -3,14 +3,14 @@
  * @description Components that handle RTL layout automatically
  */
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, ElementType } from 'react';
 import { useI18n } from './I18nProvider';
 import { RTL_LOCALES } from '../../../../i18n/shared-config';
 
 interface RTLSupportProps {
   children: ReactNode;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
 }
 
 /**
@@ -27,6 +27,7 @@ export const RTLContainer: React.FC<RTLSupportProps> = ({
     <Component
       dir={isRTL ? 'rtl' : 'ltr'}
       className={`rtl-container ${className}`}
+      {...({} as any)}
     >
       {children}
     </Component>
@@ -79,7 +80,7 @@ interface RTLTextProps {
   children: ReactNode;
   className?: string;
   align?: 'left' | 'center' | 'right' | 'justify' | 'auto';
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
 }
 
 /**
@@ -103,7 +104,7 @@ export const RTLText: React.FC<RTLTextProps> = ({
   };
 
   return (
-    <Component className={`${getAlignmentClass()} ${className}`}>
+    <Component className={`${getAlignmentClass()} ${className}`} {...({} as any)}>
       {children}
     </Component>
   );

@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const healthScore = await aiInsightsService.calculateMemoryHealthScore(memories);
+        const healthScore = await aiInsightsService.calculateMemoryHealthScore(memories, userId);
 
         return NextResponse.json({
             success: true,

@@ -1,0 +1,45 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="memorai-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8edea" />
+      <stop offset="100%" style="stop-color:#fed6e3" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Memory chip base -->
+  <rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="url(#memorai-gradient)" stroke-width="2"/>
+  
+  <!-- Memory banks -->
+  <g fill="url(#memorai-gradient)">
+    <rect x="5" y="8" width="2" height="8" rx="1"/>
+    <rect x="8" y="8" width="2" height="8" rx="1"/>
+    <rect x="11" y="8" width="2" height="8" rx="1"/>
+    <rect x="14" y="8" width="2" height="8" rx="1"/>
+    <rect x="17" y="8" width="2" height="8" rx="1"/>
+  </g>
+  
+  <!-- Connection pins -->
+  <g stroke="url(#memorai-gradient)" stroke-width="2" stroke-linecap="round">
+    <!-- Top pins -->
+    <line x1="6" y1="6" x2="6" y2="4"/>
+    <line x1="9" y1="6" x2="9" y2="4"/>
+    <line x1="12" y1="6" x2="12" y2="4"/>
+    <line x1="15" y1="6" x2="15" y2="4"/>
+    <line x1="18" y1="6" x2="18" y2="4"/>
+    
+    <!-- Bottom pins -->
+    <line x1="6" y1="18" x2="6" y2="20"/>
+    <line x1="9" y1="18" x2="9" y2="20"/>
+    <line x1="12" y1="18" x2="12" y2="20"/>
+    <line x1="15" y1="18" x2="15" y2="20"/>
+    <line x1="18" y1="18" x2="18" y2="20"/>
+  </g>
+  
+  <!-- Data flow indicator -->
+  <g stroke="url(#memorai-gradient)" stroke-width="1.5" fill="none" opacity="0.7">
+    <path d="M1 12 L3 12" stroke-linecap="round"/>
+    <path d="M21 12 L23 12" stroke-linecap="round"/>
+    <circle cx="1.5" cy="12" r="0.5" fill="url(#memorai-gradient)"/>
+    <circle cx="22.5" cy="12" r="0.5" fill="url(#memorai-gradient)"/>
+  </g>
+</svg>

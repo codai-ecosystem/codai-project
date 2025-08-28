@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Brain, Search, Star, Tag, Users, Settings, BarChart3, Plus, Filter, Archive, Download, Upload, Trash2 } from 'lucide-react';
 import { Memory } from '@/types/memory';
-import memoraiApiClientClient from '@/lib/memorai-api';
+import memoraiApiClient from '@/lib/memorai-api';
 
 const MemorAIPlatform = () => {
     const [memories, setMemories] = useState<Memory[]>([]);
@@ -30,7 +30,7 @@ const MemorAIPlatform = () => {
 
         try {
             // Load memories
-            const memoriesResponse = await memoraiApiClientClient.getAllMemories(currentUser);
+            const memoriesResponse = await memoraiApiClient.getAllMemories(currentUser);
             if (memoriesResponse.success && memoriesResponse.data) {
                 setMemories(memoriesResponse.data);
                 setFilteredMemories(memoriesResponse.data);

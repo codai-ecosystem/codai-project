@@ -110,7 +110,7 @@ const AISearchInterface = memo(({
 
             {/* Conversation area */}
             <ConversationView
-                messages={conversation}
+                messages={conversation as any}
                 onResultSelect={handleResultSelect}
                 onCopy={handleCopy}
                 showTimestamps={true}
@@ -160,7 +160,7 @@ const AISearchInterface = memo(({
                     onChange={handleQueryChange}
                     onSubmit={handleQuerySubmit}
                     isLoading={isLoading}
-                    suggestions={suggestions}
+                    suggestions={[...suggestions]}
                     onSuggestionClick={handleSuggestionClick}
                     placeholder="Ask me anything about your memories..."
                     showSuggestions={showSuggestions && suggestions.length > 0}

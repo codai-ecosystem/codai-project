@@ -1,0 +1,535 @@
+# Environment Validation and Parity Scripts
+# MemorAI MCP Server v9.5.0 - Multi-Environment Validation
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-environment-validation-scripts
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: validation
+data:
+  validate-environment.sh: |
+    #!/bin/bash
+    set -e
+    
+    # MemorAI Environment Validation Script
+    # Usage: ./validate-environment.sh [development|staging|production]
+    
+    ENVIRONMENT=${1:-development}
+    NAMESPACE="memorai-${ENVIRONMENT}"
+    EXPECTED_VERSION="v9.5.0"
+    
+    echo "🔍 MemorAI Environment Validation - ${ENVIRONMENT^^}"
+    echo "=================================================="
+    
+    # Color codes for output
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    CYAN='\033[0;36m'
+    NC='\033[0m' # No Color
+    
+    # Validation counters
+    PASSED=0
+    FAILED=0
+    WARNINGS=0
+    
+    validate_item() {
+        local description=$1
+        local command=$2
+        local expected_result=$3
+        
+        echo -n "  🧪 ${description}... "
+        
+        if result=$(eval "$command" 2>/dev/null); then
+            if [[ -z "$expected_result" ]] || [[ "$result" == *"$expected_result"* ]]; then
+                echo -e "${GREEN}✅ PASS${NC}"
+                ((PASSED++))
+            else
+                echo -e "${RED}❌ FAIL${NC} (Expected: $expected_result, Got: $result)"
+                ((FAILED++))
+            fi
+        else
+            echo -e "${RED}❌ FAIL${NC} (Command failed)"
+            ((FAILED++))
+        fi
+    }
+    
+    validate_warning() {
+        local description=$1
+        local command=$2
+        local warning_condition=$3
+        
+        echo -n "  ⚠️  ${description}... "
+        
+        if result=$(eval "$command" 2>/dev/null); then
+            if [[ "$result" == *"$warning_condition"* ]]; then
+                echo -e "${YELLOW}⚠️ WARNING${NC} ($result)"
+                ((WARNINGS++))
+            else
+                echo -e "${GREEN}✅ OK${NC}"
+                ((PASSED++))
+            fi
+        else
+            echo -e "${RED}❌ FAIL${NC} (Command failed)"
+            ((FAILED++))
+        fi
+    }
+    
+    # 1. Kubernetes Cluster Validation
+    echo ""
+    echo "🏗️ Kubernetes Cluster Validation"
+    echo "================================"
+    
+    validate_item "Cluster connectivity" "kubectl cluster-info --request-timeout=10s" "Kubernetes control plane"
+    validate_item "Namespace exists" "kubectl get namespace $NAMESPACE" "$NAMESPACE"
+    validate_item "RBAC permissions" "kubectl auth can-i create pods --namespace=$NAMESPACE" "yes"
+    
+    # 2. Application Deployment Validation
+    echo ""
+    echo "🚀 Application Deployment Validation"
+    echo "===================================="
+    
+    validate_item "MemorAI deployment exists" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE" "memorai-mcp-${ENVIRONMENT}"
+    validate_item "Deployment ready" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.status.readyReplicas}'" 
+    validate_item "Correct image version" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].image}'" "$EXPECTED_VERSION"
+    validate_item "Service accessible" "kubectl get service memorai-mcp-service-${ENVIRONMENT} -n $NAMESPACE" "memorai-mcp-service"
+    
+    # 3. Configuration Validation
+    echo ""
+    echo "⚙️ Configuration Validation"
+    echo "==========================="
+    
+    validate_item "ConfigMap present" "kubectl get configmap memorai-env-config-${ENVIRONMENT} -n $NAMESPACE" "memorai-env-config-${ENVIRONMENT}"
+    validate_item "Secrets present" "kubectl get secret memorai-secrets-${ENVIRONMENT} -n $NAMESPACE" "memorai-secrets-${ENVIRONMENT}"
+    validate_item "Feature flags present" "kubectl get configmap memorai-feature-flags-${ENVIRONMENT} -n $NAMESPACE" "memorai-feature-flags-${ENVIRONMENT}"
+    
+    # 4. Resource Validation
+    echo ""
+    echo "💾 Resource Validation"
+    echo "====================="
+    
+    case $ENVIRONMENT in
+        "development")
+            validate_item "CPU requests (250m)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].resources.requests.cpu}'" "250m"
+            validate_item "Memory requests (512Mi)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].resources.requests.memory}'" "512Mi"
+            validate_item "Replica count (1)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.replicas}'" "1"
+            ;;
+        "staging")
+            validate_item "CPU requests (500m)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].resources.requests.cpu}'" "500m"
+            validate_item "Memory requests (1Gi)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].resources.requests.memory}'" "1Gi"
+            validate_item "Replica count (2)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.replicas}'" "2"
+            ;;
+        "production")
+            validate_item "CPU requests (1000m)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].resources.requests.cpu}'" "1000m"
+            validate_item "Memory requests (2Gi)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].resources.requests.memory}'" "2Gi"
+            validate_item "Replica count (5)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.replicas}'" "5"
+            validate_item "Pod anti-affinity" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.affinity.podAntiAffinity}'" "preferredDuringSchedulingIgnoredDuringExecution"
+            ;;
+    esac
+    
+    # 5. Health Check Validation
+    echo ""
+    echo "🏥 Health Check Validation"
+    echo "========================="
+    
+    validate_item "Liveness probe configured" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].livenessProbe.httpGet.path}'" "/health"
+    validate_item "Readiness probe configured" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].readinessProbe.httpGet.path}'" "/health"
+    
+    # Port-forward and test actual health endpoint
+    echo -n "  🌐 Health endpoint response... "
+    if kubectl port-forward svc/memorai-mcp-service-${ENVIRONMENT} 8080:4950 -n $NAMESPACE >/dev/null 2>&1 &
+    then
+        PORT_FORWARD_PID=$!
+        sleep 5
+        
+        if curl -s -f http://localhost:8080/health >/dev/null 2>&1; then
+            echo -e "${GREEN}✅ PASS${NC}"
+            ((PASSED++))
+        else
+            echo -e "${RED}❌ FAIL${NC} (Health endpoint not responding)"
+            ((FAILED++))
+        fi
+        
+        kill $PORT_FORWARD_PID >/dev/null 2>&1
+    else
+        echo -e "${RED}❌ FAIL${NC} (Cannot port-forward)"
+        ((FAILED++))
+    fi
+    
+    # 6. Security Validation
+    echo ""
+    echo "🔒 Security Validation"
+    echo "====================="
+    
+    if [[ "$ENVIRONMENT" == "production" ]]; then
+        validate_item "Security context (non-root)" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].securityContext.runAsNonRoot}'" "true"
+        validate_item "Drop all capabilities" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].securityContext.capabilities.drop[0]}'" "ALL"
+        validate_item "No privilege escalation" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].securityContext.allowPrivilegeEscalation}'" "false"
+    fi
+    
+    validate_item "Service account exists" "kubectl get serviceaccount memorai-mcp-${ENVIRONMENT} -n $NAMESPACE" "memorai-mcp-${ENVIRONMENT}"
+    
+    # 7. Network Validation
+    echo ""
+    echo "🌐 Network Validation"
+    echo "===================="
+    
+    validate_item "Service endpoints" "kubectl get endpoints memorai-mcp-service-${ENVIRONMENT} -n $NAMESPACE" "memorai-mcp-service"
+    validate_item "Pod network connectivity" "kubectl get pods -l app=memorai-mcp,environment=${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.items[0].status.podIP}'"
+    
+    # 8. Monitoring Validation
+    echo ""
+    echo "📊 Monitoring Validation"
+    echo "======================="
+    
+    validate_item "Prometheus annotations" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.metadata.annotations.prometheus\.io/scrape}'" "true"
+    validate_item "Metrics port annotation" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.metadata.annotations.prometheus\.io/port}'" "4950"
+    
+    # 9. Feature Flag Validation
+    echo ""
+    echo "🚩 Feature Flag Validation"
+    echo "=========================="
+    
+    # Check feature flag configuration based on environment
+    case $ENVIRONMENT in
+        "development")
+            validate_item "Debug mode enabled" "kubectl get configmap memorai-feature-flags-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.data.feature-flags\.json}' | jq -r '.features.debug_mode.enabled'" "true"
+            validate_item "WebRTC networking enabled" "kubectl get configmap memorai-feature-flags-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.data.feature-flags\.json}' | jq -r '.features.webrtc_peer_networking.enabled'" "true"
+            ;;
+        "staging")
+            validate_item "Debug mode disabled" "kubectl get configmap memorai-feature-flags-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.data.feature-flags\.json}' | jq -r '.features.debug_mode.enabled'" "false"
+            validate_item "Security audit logging enabled" "kubectl get configmap memorai-feature-flags-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.data.feature-flags\.json}' | jq -r '.features.security_audit_logging.enabled'" "true"
+            ;;
+        "production")
+            validate_item "Debug mode disabled" "kubectl get configmap memorai-feature-flags-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.data.feature-flags\.json}' | jq -r '.features.debug_mode.enabled'" "false"
+            validate_item "WebRTC networking disabled" "kubectl get configmap memorai-feature-flags-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.data.feature-flags\.json}' | jq -r '.features.webrtc_peer_networking.enabled'" "false"
+            validate_item "Enterprise SSO enabled" "kubectl get configmap memorai-feature-flags-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.data.feature-flags\.json}' | jq -r '.features.enterprise_sso.enabled'" "true"
+            validate_warning "Experimental features" "kubectl get configmap memorai-feature-flags-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.data.feature-flags\.json}' | jq -r '[.features[] | select(.metadata.phase == \"experimental\" and .enabled == true)] | length'" "0"
+            ;;
+    esac
+    
+    # 10. Environment-Specific Validation
+    echo ""
+    echo "🎯 Environment-Specific Validation"
+    echo "================================="
+    
+    case $ENVIRONMENT in
+        "development")
+            validate_warning "Resource limits" "kubectl get deployment memorai-mcp-${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].resources.limits}'" ""
+            ;;
+        "staging")
+            validate_item "PVC for cache storage" "kubectl get pvc memorai-cache-staging -n $NAMESPACE" "memorai-cache-staging"
+            ;;
+        "production")
+            validate_item "PVC for cache storage" "kubectl get pvc memorai-cache-production -n $NAMESPACE" "memorai-cache-production"
+            validate_item "PVC for audit logs" "kubectl get pvc memorai-audit-logs-production -n $NAMESPACE" "memorai-audit-logs-production"
+            validate_item "Pod disruption budget" "kubectl get pdb memorai-mcp-pdb -n $NAMESPACE" "memorai-mcp-pdb"
+            validate_item "HPA configured" "kubectl get hpa memorai-mcp-hpa -n $NAMESPACE" "memorai-mcp-hpa"
+            ;;
+    esac
+    
+    # Summary
+    echo ""
+    echo "📋 Validation Summary"
+    echo "===================="
+    echo -e "  ${GREEN}✅ Passed: ${PASSED}${NC}"
+    echo -e "  ${RED}❌ Failed: ${FAILED}${NC}"
+    echo -e "  ${YELLOW}⚠️ Warnings: ${WARNINGS}${NC}"
+    echo ""
+    
+    if [[ $FAILED -eq 0 ]]; then
+        if [[ $WARNINGS -eq 0 ]]; then
+            echo -e "${GREEN}🎉 Environment validation completed successfully!${NC}"
+            echo -e "${GREEN}   All checks passed. Environment is ready for use.${NC}"
+            exit 0
+        else
+            echo -e "${YELLOW}⚠️ Environment validation completed with warnings.${NC}"
+            echo -e "${YELLOW}   Review warnings before proceeding to production.${NC}"
+            exit 0
+        fi
+    else
+        echo -e "${RED}🚨 Environment validation failed!${NC}"
+        echo -e "${RED}   ${FAILED} critical issues must be resolved before deployment.${NC}"
+        exit 1
+    fi
+
+  compare-environments.sh: |
+    #!/bin/bash
+    set -e
+    
+    # Environment Parity Comparison Script
+    # Usage: ./compare-environments.sh [source_env] [target_env]
+    
+    SOURCE_ENV=${1:-staging}
+    TARGET_ENV=${2:-production}
+    
+    echo "🔍 Environment Parity Comparison: ${SOURCE_ENV^^} → ${TARGET_ENV^^}"
+    echo "======================================================"
+    
+    # Color codes
+    GREEN='\033[0;32m'
+    RED='\033[0;31m'
+    YELLOW='\033[1;33m'
+    CYAN='\033[0;36m'
+    NC='\033[0m'
+    
+    MATCHES=0
+    DIFFERENCES=0
+    
+    compare_item() {
+        local description=$1
+        local source_command=$2
+        local target_command=$3
+        
+        echo -n "  🔍 ${description}... "
+        
+        source_result=$(eval "$source_command" 2>/dev/null || echo "N/A")
+        target_result=$(eval "$target_command" 2>/dev/null || echo "N/A")
+        
+        if [[ "$source_result" == "$target_result" ]]; then
+            echo -e "${GREEN}✅ MATCH${NC}"
+            ((MATCHES++))
+        else
+            echo -e "${YELLOW}⚠️ DIFFERENT${NC}"
+            echo "    ${SOURCE_ENV^^}: $source_result"
+            echo "    ${TARGET_ENV^^}: $target_result"
+            ((DIFFERENCES++))
+        fi
+    }
+    
+    # Configuration Comparison
+    echo ""
+    echo "⚙️ Configuration Comparison"
+    echo "=========================="
+    
+    compare_item "Application image tag" \
+        "kubectl get deployment memorai-mcp-${SOURCE_ENV} -n memorai-${SOURCE_ENV} -o jsonpath='{.spec.template.spec.containers[0].image}'" \
+        "kubectl get deployment memorai-mcp-${TARGET_ENV} -n memorai-${TARGET_ENV} -o jsonpath='{.spec.template.spec.containers[0].image}'"
+    
+    compare_item "Environment variables count" \
+        "kubectl get configmap memorai-env-config-${SOURCE_ENV} -n memorai-${SOURCE_ENV} -o jsonpath='{.data}' | jq 'keys | length'" \
+        "kubectl get configmap memorai-env-config-${TARGET_ENV} -n memorai-${TARGET_ENV} -o jsonpath='{.data}' | jq 'keys | length'"
+    
+    compare_item "Secrets count" \
+        "kubectl get secret memorai-secrets-${SOURCE_ENV} -n memorai-${SOURCE_ENV} -o jsonpath='{.data}' | jq 'keys | length'" \
+        "kubectl get secret memorai-secrets-${TARGET_ENV} -n memorai-${TARGET_ENV} -o jsonpath='{.data}' | jq 'keys | length'"
+    
+    # Resource Comparison
+    echo ""
+    echo "💾 Resource Comparison"
+    echo "===================="
+    
+    compare_item "CPU limits" \
+        "kubectl get deployment memorai-mcp-${SOURCE_ENV} -n memorai-${SOURCE_ENV} -o jsonpath='{.spec.template.spec.containers[0].resources.limits.cpu}'" \
+        "kubectl get deployment memorai-mcp-${TARGET_ENV} -n memorai-${TARGET_ENV} -o jsonpath='{.spec.template.spec.containers[0].resources.limits.cpu}'"
+    
+    compare_item "Memory limits" \
+        "kubectl get deployment memorai-mcp-${SOURCE_ENV} -n memorai-${SOURCE_ENV} -o jsonpath='{.spec.template.spec.containers[0].resources.limits.memory}'" \
+        "kubectl get deployment memorai-mcp-${TARGET_ENV} -n memorai-${TARGET_ENV} -o jsonpath='{.spec.template.spec.containers[0].resources.limits.memory}'"
+    
+    # Feature Flags Comparison
+    echo ""
+    echo "🚩 Feature Flags Comparison"
+    echo "=========================="
+    
+    echo "📊 Feature Flag Status Summary:"
+    echo ""
+    
+    # Get all feature names from both environments
+    SOURCE_FEATURES=$(kubectl get configmap memorai-feature-flags-${SOURCE_ENV} -n memorai-${SOURCE_ENV} -o jsonpath='{.data.feature-flags\.json}' | jq -r '.features | keys[]' 2>/dev/null || echo "")
+    TARGET_FEATURES=$(kubectl get configmap memorai-feature-flags-${TARGET_ENV} -n memorai-${TARGET_ENV} -o jsonpath='{.data.feature-flags\.json}' | jq -r '.features | keys[]' 2>/dev/null || echo "")
+    
+    ALL_FEATURES=$(echo -e "$SOURCE_FEATURES\n$TARGET_FEATURES" | sort -u)
+    
+    printf "%-30s %-12s %-12s %-8s\n" "Feature" "${SOURCE_ENV^^}" "${TARGET_ENV^^}" "Status"
+    printf "%-30s %-12s %-12s %-8s\n" "-------" "----------" "----------" "------"
+    
+    for feature in $ALL_FEATURES; do
+        if [[ -n "$feature" ]]; then
+            source_enabled=$(kubectl get configmap memorai-feature-flags-${SOURCE_ENV} -n memorai-${SOURCE_ENV} -o jsonpath="{.data.feature-flags\.json}" 2>/dev/null | jq -r ".features.$feature.enabled" 2>/dev/null || echo "N/A")
+            target_enabled=$(kubectl get configmap memorai-feature-flags-${TARGET_ENV} -n memorai-${TARGET_ENV} -o jsonpath="{.data.feature-flags\.json}" 2>/dev/null | jq -r ".features.$feature.enabled" 2>/dev/null || echo "N/A")
+            
+            if [[ "$source_enabled" == "$target_enabled" ]]; then
+                status="✅ MATCH"
+                ((MATCHES++))
+            else
+                status="⚠️ DIFF"
+                ((DIFFERENCES++))
+            fi
+            
+            printf "%-30s %-12s %-12s %-8s\n" "$feature" "$source_enabled" "$target_enabled" "$status"
+        fi
+    done
+    
+    # Summary
+    echo ""
+    echo "📋 Parity Summary"
+    echo "================"
+    echo -e "  ${GREEN}✅ Matches: ${MATCHES}${NC}"
+    echo -e "  ${YELLOW}⚠️ Differences: ${DIFFERENCES}${NC}"
+    echo ""
+    
+    if [[ $DIFFERENCES -eq 0 ]]; then
+        echo -e "${GREEN}🎉 Environments are in complete parity!${NC}"
+        exit 0
+    else
+        echo -e "${YELLOW}⚠️ Environments have ${DIFFERENCES} differences.${NC}"
+        echo -e "${YELLOW}   Review differences before promoting to ${TARGET_ENV^^}.${NC}"
+        exit 1
+    fi
+
+  performance-baseline.sh: |
+    #!/bin/bash
+    set -e
+    
+    # Performance Baseline Validation
+    # Usage: ./performance-baseline.sh [environment]
+    
+    ENVIRONMENT=${1:-development}
+    NAMESPACE="memorai-${ENVIRONMENT}"
+    
+    echo "📊 Performance Baseline Validation - ${ENVIRONMENT^^}"
+    echo "=============================================="
+    
+    # Performance thresholds by environment
+    case $ENVIRONMENT in
+        "development")
+            RESPONSE_TIME_THRESHOLD=2000  # 2 seconds
+            THROUGHPUT_THRESHOLD=50      # 50 requests/second
+            CPU_THRESHOLD=70             # 70% CPU usage
+            MEMORY_THRESHOLD=80          # 80% memory usage
+            ;;
+        "staging")
+            RESPONSE_TIME_THRESHOLD=1000  # 1 second
+            THROUGHPUT_THRESHOLD=100     # 100 requests/second
+            CPU_THRESHOLD=60             # 60% CPU usage
+            MEMORY_THRESHOLD=70          # 70% memory usage
+            ;;
+        "production")
+            RESPONSE_TIME_THRESHOLD=500   # 500ms
+            THROUGHPUT_THRESHOLD=500     # 500 requests/second
+            CPU_THRESHOLD=50             # 50% CPU usage
+            MEMORY_THRESHOLD=60          # 60% memory usage
+            ;;
+    esac
+    
+    echo "🎯 Performance Thresholds:"
+    echo "  Response Time: < ${RESPONSE_TIME_THRESHOLD}ms"
+    echo "  Throughput: > ${THROUGHPUT_THRESHOLD} req/s"
+    echo "  CPU Usage: < ${CPU_THRESHOLD}%"
+    echo "  Memory Usage: < ${MEMORY_THRESHOLD}%"
+    echo ""
+    
+    # Port forward for testing
+    echo "🔌 Setting up port forwarding..."
+    kubectl port-forward svc/memorai-mcp-service-${ENVIRONMENT} 8080:4950 -n $NAMESPACE >/dev/null 2>&1 &
+    PORT_FORWARD_PID=$!
+    sleep 5
+    
+    # Health check response time
+    echo "⏱️ Measuring health check response time..."
+    HEALTH_RESPONSE_TIME=$(curl -w "%{time_total}" -s -o /dev/null http://localhost:8080/health | awk '{print $1 * 1000}')
+    echo "   Response time: ${HEALTH_RESPONSE_TIME}ms"
+    
+    if (( $(echo "$HEALTH_RESPONSE_TIME < $RESPONSE_TIME_THRESHOLD" | bc -l) )); then
+        echo "   ✅ Within threshold"
+    else
+        echo "   ❌ Exceeds threshold"
+    fi
+    
+    # Basic load test
+    echo ""
+    echo "🚀 Running basic load test..."
+    LOAD_TEST_RESULT=$(ab -n 100 -c 10 -q http://localhost:8080/health 2>&1 | grep "Requests per second" | awk '{print $4}')
+    echo "   Throughput: ${LOAD_TEST_RESULT} req/s"
+    
+    if (( $(echo "$LOAD_TEST_RESULT > $THROUGHPUT_THRESHOLD" | bc -l) )); then
+        echo "   ✅ Meets throughput requirement"
+    else
+        echo "   ❌ Below throughput requirement"
+    fi
+    
+    # Resource usage check
+    echo ""
+    echo "💾 Checking resource usage..."
+    
+    # Get pod metrics (requires metrics-server)
+    POD_NAME=$(kubectl get pods -l app=memorai-mcp,environment=${ENVIRONMENT} -n $NAMESPACE -o jsonpath='{.items[0].metadata.name}')
+    
+    if kubectl top pod $POD_NAME -n $NAMESPACE >/dev/null 2>&1; then
+        CPU_USAGE=$(kubectl top pod $POD_NAME -n $NAMESPACE --no-headers | awk '{print $2}' | sed 's/m//')
+        MEMORY_USAGE=$(kubectl top pod $POD_NAME -n $NAMESPACE --no-headers | awk '{print $3}' | sed 's/Mi//')
+        
+        echo "   CPU usage: ${CPU_USAGE}m"
+        echo "   Memory usage: ${MEMORY_USAGE}Mi"
+        
+        # Calculate percentages (simplified)
+        CPU_PCT=$(($CPU_USAGE / 10))  # Rough calculation
+        
+        if (( $CPU_PCT < $CPU_THRESHOLD )); then
+            echo "   ✅ CPU within limits"
+        else
+            echo "   ❌ CPU usage high"
+        fi
+        
+        if (( $MEMORY_USAGE < 1000 )); then  # Basic memory check
+            echo "   ✅ Memory within limits"
+        else
+            echo "   ⚠️ Memory usage elevated"
+        fi
+    else
+        echo "   ⚠️ Cannot get resource metrics (metrics-server not available)"
+    fi
+    
+    # Cleanup
+    kill $PORT_FORWARD_PID >/dev/null 2>&1
+    
+    echo ""
+    echo "📋 Performance validation completed"
+
+---
+# Validation CronJob for continuous monitoring
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memorai-environment-validation
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: validation
+spec:
+  schedule: "0 */4 * * *"  # Every 4 hours
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: memorai-validation-sa
+          containers:
+          - name: validation
+            image: memorai/validation-tools:latest
+            command:
+            - /bin/bash
+            - -c
+            - |
+              echo "🔍 Automated Environment Validation"
+              /scripts/validate-environment.sh production
+              /scripts/performance-baseline.sh production
+            volumeMounts:
+            - name: validation-scripts
+              mountPath: /scripts
+            resources:
+              requests:
+                memory: "128Mi"
+                cpu: "100m"
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
+          volumes:
+          - name: validation-scripts
+            configMap:
+              name: memorai-environment-validation-scripts
+              defaultMode: 0755
+          restartPolicy: OnFailure

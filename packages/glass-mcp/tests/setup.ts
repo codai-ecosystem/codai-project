@@ -175,15 +175,15 @@ export const delay = (ms: number): Promise<void> => {
 // Performance testing utilities
 export const measurePerformance = async (fn: () => Promise<any>, iterations: number = 1) => {
   const start = performance.now();
-  
+
   for (let i = 0; i < iterations; i++) {
     await fn();
   }
-  
+
   const end = performance.now();
   const totalTime = end - start;
   const averageTime = totalTime / iterations;
-  
+
   return {
     totalTime,
     averageTime,

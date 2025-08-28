@@ -20,7 +20,6 @@ from dataclasses import dataclass
 from enum import Enum
 import json
 from datetime import datetime
-from .real_confidence_system import get_confidence_system
 
 logger = logging.getLogger(__name__)
 
@@ -348,12 +347,9 @@ class CreativeIntelligenceSystem:
         innovation_level = random.choice(list(InnovationLevel))
         
         # Calculate scores
-        evaluation_data = {"concept": concept, "domain": domain}
-        solution_context = {"domain": domain, "creativity_type": creativity_type.value}
-        
-        originality_score = self._get_real_quality_score(context, evaluation_data)
-        feasibility_score = self._get_real_quality_score(context, evaluation_data)
-        impact_potential = self._get_real_impact_assessment(solution_context)
+        originality_score = 0.5 + random.uniform(0.0, 0.4)
+        feasibility_score = 0.6 + random.uniform(-0.2, 0.3)
+        impact_potential = 0.4 + random.uniform(0.0, 0.5)
         
         idea = CreativeIdea(
             concept=concept,
@@ -620,7 +616,7 @@ class CreativeIntelligenceSystem:
                 "Future enhancement possibilities"
             ],
             novelty_assessment="High novelty with practical applicability",
-            creative_confidence=self._get_real_creative_confidence(problem, solution.title, solution.approach)
+            creative_confidence=0.6 + random.uniform(-0.1, 0.3)
         )
         
         return solution
@@ -815,17 +811,13 @@ class CreativeIntelligenceSystem:
         innovative_ideas = []
         
         for concept in concepts:
-            # Define context variables for scoring
-            evaluation_data = {"concept": concept}
-            solution_context = {"concept": concept, "innovation_type": "transformational"}
-            
             idea = CreativeIdea(
                 concept=f"Innovative enhancement: {concept}",
                 creativity_type=CreativityType.TRANSFORMATIONAL,
                 innovation_level=InnovationLevel.SUBSTANTIAL,
-                originality_score = self._get_real_quality_score({}, evaluation_data),
-                feasibility_score = self._get_real_quality_score({}, evaluation_data),
-                impact_potential = self._get_real_impact_assessment(solution_context),
+                originality_score=0.7 + random.uniform(-0.1, 0.2),
+                feasibility_score=0.6 + random.uniform(-0.1, 0.3),
+                impact_potential=0.8 + random.uniform(-0.2, 0.2),
                 inspiration_sources=["concept_expansion", "innovation_injection"],
                 development_path=[
                     "Concept validation",
@@ -856,17 +848,13 @@ class CreativeIntelligenceSystem:
         enhanced_ideas = []
         
         for application in applications:
-            # Define context variables for scoring
-            evaluation_data = {"concept": application}
-            solution_context = {"application": application, "enhancement_type": "breakthrough"}
-            
             idea = CreativeIdea(
                 concept=f"Creatively enhanced: {application}",
                 creativity_type=CreativityType.TRANSFORMATIONAL,
                 innovation_level=InnovationLevel.BREAKTHROUGH,
-                originality_score = self._get_real_quality_score({}, evaluation_data),
-                feasibility_score = self._get_real_quality_score({}, evaluation_data),
-                impact_potential = self._get_real_impact_assessment(solution_context),
+                originality_score=0.8 + random.uniform(-0.1, 0.2),
+                feasibility_score=0.7 + random.uniform(-0.2, 0.2),
+                impact_potential=0.9 + random.uniform(-0.1, 0.1),
                 inspiration_sources=["application_discovery", "creativity_enhancement"],
                 development_path=[
                     "Creative validation",
@@ -948,109 +936,6 @@ class CreativeIntelligenceSystem:
             "inspiration_sources": idea.inspiration_sources,
             "development_path": idea.development_path
         }
-    
-    def _get_real_creative_confidence(self, problem: str, solution_title: str, approach: str) -> float:
-        """
-        Get real neural-based creative confidence instead of random values
-        """
-        try:
-            # Analyze creativity factors for confidence
-            problem_creativity_level = len(problem.split()) / 30.0  # Complexity factor
-            solution_novelty = len(set(solution_title.lower().split())) / len(solution_title.split() or [1])  # Uniqueness
-            approach_innovation = 1.0 if "novel" in approach.lower() or "innovative" in approach.lower() else 0.7
-            
-            # Base confidence calculation for creative tasks
-            creativity_features = [
-                min(1.0, problem_creativity_level),  # Problem complexity
-                min(1.0, solution_novelty * 2.0),    # Solution novelty
-                approach_innovation,                  # Approach innovation
-                0.65,  # Base creativity domain expertise  
-                0.7,   # Historical creative accuracy
-                0.8,   # Creative methodology strength
-                0.75   # Innovation potential
-            ]
-            
-            # Calculate confidence using feature analysis
-            confidence = sum(creativity_features) / len(creativity_features)
-            
-            # Add creativity boost for longer, more complex solutions
-            if len(solution_title.split()) > 5:
-                confidence += 0.05
-            
-            # Creative tasks typically have higher uncertainty
-            confidence *= 0.9  # Slight reduction for creative uncertainty
-            
-            return max(0.3, min(0.85, confidence))
-            
-        except Exception as e:
-            logger.warning(f"Failed to calculate creative confidence: {e}")
-            # Fallback confidence for creative tasks
-            return 0.65
-    
-    def _get_real_quality_score(self, context: Dict, evaluation_data: Dict) -> float:
-        """
-        Calculate real quality score for creative concepts based on neural analysis
-        """
-        try:
-            # Extract relevant features for quality assessment
-            concept_length = len(str(evaluation_data.get("concept", "")))
-            context_complexity = len(str(context))
-            
-            # Quality factors for creative concepts
-            quality_factors = [
-                min(1.0, concept_length / 50.0),  # Concept detail
-                min(1.0, context_complexity / 200.0),  # Context richness
-                0.72,  # Base creative quality
-                0.68,  # Innovation potential
-                0.75,  # Feasibility baseline
-                0.8,   # Implementation clarity
-                0.65   # Market viability
-            ]
-            
-            # Calculate weighted quality score
-            quality_score = sum(quality_factors) / len(quality_factors)
-            
-            # Add variability for different concepts
-            variability = hash(str(evaluation_data)) % 100 / 1000.0  # 0.0-0.099
-            quality_score += variability
-            
-            return max(0.4, min(0.9, quality_score))
-            
-        except Exception as e:
-            logger.warning(f"Failed to calculate quality score: {e}")
-            return 0.65
-    
-    def _get_real_impact_assessment(self, solution_context: Dict) -> float:
-        """
-        Calculate real impact assessment for creative solutions
-        """
-        try:
-            # Extract context features for impact assessment
-            context_scope = len(str(solution_context))
-            
-            # Impact assessment factors
-            impact_factors = [
-                min(1.0, context_scope / 300.0),  # Solution scope
-                0.78,  # Base market impact
-                0.72,  # Social benefit potential
-                0.68,  # Economic value creation
-                0.75,  # Innovation disruption
-                0.82,  # Implementation feasibility
-                0.7    # Long-term sustainability
-            ]
-            
-            # Calculate weighted impact score
-            impact_score = sum(impact_factors) / len(impact_factors)
-            
-            # Add context-based variability
-            context_variability = hash(str(solution_context)) % 80 / 1000.0  # 0.0-0.079
-            impact_score += context_variability
-            
-            return max(0.5, min(0.95, impact_score))
-            
-        except Exception as e:
-            logger.warning(f"Failed to calculate impact assessment: {e}")
-            return 0.72
     
     def _solution_to_dict(self, solution: CreativeSolution) -> Dict[str, Any]:
         """Convert creative solution to dictionary"""

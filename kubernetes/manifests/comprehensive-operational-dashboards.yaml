@@ -1,0 +1,1150 @@
+# Comprehensive Operational Dashboards for Essential CodAI Services
+# Version: 1.0
+# Executive | Operations | Development | Security Dashboards
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: operational-dashboards-config
+  namespace: codai-production
+data:
+  dashboard-architecture.json: |
+    {
+      "dashboard_architecture": {
+        "executive_dashboard": {
+          "purpose": "High-level business metrics and KPIs for leadership",
+          "audience": ["CEO", "CTO", "COO", "Board Members"],
+          "refresh_interval": "30s",
+          "data_retention": "90d",
+          "key_metrics": [
+            "System Uptime & Availability",
+            "User Growth & Engagement",
+            "Revenue Impact & Business KPIs",
+            "Security Posture Summary",
+            "Cost Optimization Metrics",
+            "Customer Satisfaction Score",
+            "Platform Performance Score",
+            "Incident Impact & Resolution"
+          ],
+          "visualization_types": ["cards", "charts", "gauges", "heatmaps"],
+          "alert_levels": ["critical", "warning"],
+          "mobile_optimized": true
+        },
+        "operations_dashboard": {
+          "purpose": "Real-time infrastructure and service monitoring",
+          "audience": ["DevOps Engineers", "SRE", "Operations Team"],
+          "refresh_interval": "10s",
+          "data_retention": "30d",
+          "key_metrics": [
+            "Infrastructure Resource Utilization",
+            "Service Health & Performance",
+            "Alert Status & Incident Metrics",
+            "Deployment Pipeline Status",
+            "Database Performance & Queries",
+            "Cache Hit Rates & Performance",
+            "Network Traffic & Latency",
+            "Container & Pod Status"
+          ],
+          "visualization_types": ["time_series", "tables", "logs", "topology"],
+          "alert_levels": ["critical", "warning", "info"],
+          "real_time_updates": true
+        },
+        "development_dashboard": {
+          "purpose": "Development lifecycle and code quality metrics",
+          "audience": ["Developers", "Tech Leads", "QA Engineers"],
+          "refresh_interval": "1m",
+          "data_retention": "180d",
+          "key_metrics": [
+            "Build & Deployment Success Rates",
+            "Code Quality & Coverage Metrics",
+            "Test Results & Coverage",
+            "Feature Flag Status & Usage",
+            "API Usage & Performance",
+            "Error Rates & Exception Tracking",
+            "Performance Regressions",
+            "Technical Debt Metrics"
+          ],
+          "visualization_types": ["trend_charts", "tables", "heatmaps", "pie_charts"],
+          "alert_levels": ["warning", "info"],
+          "integration_tools": ["GitHub", "SonarQube", "Jest", "Playwright"]
+        },
+        "security_dashboard": {
+          "purpose": "Security posture and compliance monitoring",
+          "audience": ["Security Team", "Compliance Officers", "Risk Management"],
+          "refresh_interval": "5m",
+          "data_retention": "2555d",
+          "key_metrics": [
+            "Vulnerability Scan Results",
+            "Compliance Framework Status",
+            "Security Incident Metrics",
+            "Threat Detection & Response",
+            "Authentication & Authorization",
+            "Data Protection & Privacy",
+            "Audit Trail & Compliance",
+            "Security Training & Awareness"
+          ],
+          "visualization_types": ["risk_matrix", "compliance_cards", "timeline", "alerts"],
+          "alert_levels": ["critical", "high", "medium", "low"],
+          "compliance_frameworks": ["SOC2", "GDPR", "HIPAA", "PCI-DSS"]
+        }
+      },
+      "data_sources": {
+        "prometheus": {
+          "url": "http://prometheus:9090",
+          "retention": "30d",
+          "scrape_interval": "30s"
+        },
+        "grafana": {
+          "url": "http://grafana:3000",
+          "admin_user": "admin",
+          "dashboards_path": "/var/lib/grafana/dashboards"
+        },
+        "elasticsearch": {
+          "url": "http://elasticsearch:9200",
+          "index_pattern": "codai-logs-*",
+          "retention": "90d"
+        },
+        "jaeger": {
+          "url": "http://jaeger-query:16686",
+          "trace_retention": "7d"
+        },
+        "github_api": {
+          "url": "https://api.github.com",
+          "org": "codai-project",
+          "rate_limit": "5000/hour"
+        },
+        "azure_monitor": {
+          "workspace_id": "${AZURE_LOG_ANALYTICS_WORKSPACE_ID}",
+          "application_insights": "${AZURE_APPLICATION_INSIGHTS_KEY}"
+        }
+      },
+      "alert_configuration": {
+        "channels": {
+          "slack": {
+            "webhook_url": "${SLACK_WEBHOOK_URL}",
+            "channels": {
+              "critical": "#critical-alerts",
+              "warning": "#alerts",
+              "info": "#monitoring"
+            }
+          },
+          "email": {
+            "smtp_server": "${SMTP_SERVER}",
+            "recipients": {
+              "critical": ["devops@codai.ro", "cto@codai.ro"],
+              "warning": ["devops@codai.ro"],
+              "info": ["monitoring@codai.ro"]
+            }
+          },
+          "pagerduty": {
+            "integration_key": "${PAGERDUTY_INTEGRATION_KEY}",
+            "escalation_policy": "P1 Critical Issues"
+          }
+        },
+        "thresholds": {
+          "response_time": {
+            "warning": 500,
+            "critical": 1000
+          },
+          "error_rate": {
+            "warning": 1,
+            "critical": 5
+          },
+          "availability": {
+            "warning": 99.9,
+            "critical": 99.5
+          },
+          "cpu_usage": {
+            "warning": 80,
+            "critical": 90
+          },
+          "memory_usage": {
+            "warning": 85,
+            "critical": 95
+          }
+        }
+      }
+    }
+
+  grafana-provisioning-datasources.yaml: |
+    apiVersion: 1
+    
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus:9090
+        isDefault: true
+        editable: true
+        
+      - name: Elasticsearch
+        type: elasticsearch
+        access: proxy
+        url: http://elasticsearch:9200
+        database: "codai-logs-*"
+        basicAuth: true
+        basicAuthUser: elastic
+        secureJsonData:
+          basicAuthPassword: ${ELASTICSEARCH_PASSWORD}
+        jsonData:
+          interval: Daily
+          timeField: "@timestamp"
+          esVersion: 70
+          
+      - name: Jaeger
+        type: jaeger
+        access: proxy
+        url: http://jaeger-query:16686
+        
+      - name: Azure Monitor
+        type: grafana-azure-monitor-datasource
+        access: proxy
+        jsonData:
+          subscriptionId: ${AZURE_SUBSCRIPTION_ID}
+          tenantId: ${AZURE_TENANT_ID}
+          clientId: ${AZURE_CLIENT_ID}
+        secureJsonData:
+          clientSecret: ${AZURE_CLIENT_SECRET}
+
+  grafana-provisioning-dashboards.yaml: |
+    apiVersion: 1
+
+    providers:
+      - name: 'Executive Dashboards'
+        orgId: 1
+        folder: 'Executive'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 60
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards/executive
+          
+      - name: 'Operations Dashboards'
+        orgId: 1
+        folder: 'Operations'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards/operations
+          
+      - name: 'Development Dashboards'
+        orgId: 1
+        folder: 'Development'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 60
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards/development
+          
+      - name: 'Security Dashboards'
+        orgId: 1
+        folder: 'Security'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 300
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards/security
+
+---
+# Executive Dashboard ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: executive-dashboards
+  namespace: codai-production
+data:
+  executive-overview.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Executive Overview - CodAI Platform",
+        "tags": ["executive", "overview", "kpi"],
+        "timezone": "browser",
+        "refresh": "30s",
+        "time": {
+          "from": "now-24h",
+          "to": "now"
+        },
+        "panels": [
+          {
+            "id": 1,
+            "title": "Platform Uptime",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "avg(up{job=\"codai-services\"}) * 100",
+                "legendFormat": "Uptime %"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percent",
+                "min": 0,
+                "max": 100,
+                "thresholds": {
+                  "steps": [
+                    {"color": "red", "value": 0},
+                    {"color": "yellow", "value": 99},
+                    {"color": "green", "value": 99.9}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Active Users (24h)",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "sum(increase(user_sessions_total[24h]))",
+                "legendFormat": "Active Users"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "color": {"mode": "value"},
+                "mappings": [],
+                "thresholds": {
+                  "steps": [
+                    {"color": "red", "value": 0},
+                    {"color": "yellow", "value": 1000},
+                    {"color": "green", "value": 5000}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 6, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Revenue Impact",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "sum(increase(revenue_total[24h]))",
+                "legendFormat": "Daily Revenue"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "currencyUSD",
+                "color": {"mode": "value"},
+                "thresholds": {
+                  "steps": [
+                    {"color": "red", "value": 0},
+                    {"color": "yellow", "value": 10000},
+                    {"color": "green", "value": 50000}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 12, "y": 0}
+          },
+          {
+            "id": 4,
+            "title": "Security Score",
+            "type": "gauge",
+            "targets": [
+              {
+                "expr": "security_score",
+                "legendFormat": "Security Score"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percent",
+                "min": 0,
+                "max": 100,
+                "thresholds": {
+                  "steps": [
+                    {"color": "red", "value": 0},
+                    {"color": "yellow", "value": 70},
+                    {"color": "green", "value": 90}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 18, "y": 0}
+          },
+          {
+            "id": 5,
+            "title": "Response Time Trend",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+                "legendFormat": "95th Percentile"
+              },
+              {
+                "expr": "histogram_quantile(0.50, rate(http_request_duration_seconds_bucket[5m]))",
+                "legendFormat": "Median"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "ms",
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth",
+                  "fillOpacity": 10
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "id": 6,
+            "title": "Error Rate",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "rate(http_requests_total{status=~\"5..\"}[5m]) * 100",
+                "legendFormat": "5xx Errors"
+              },
+              {
+                "expr": "rate(http_requests_total{status=~\"4..\"}[5m]) * 100",
+                "legendFormat": "4xx Errors"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percent",
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth",
+                  "fillOpacity": 20
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          }
+        ]
+      }
+    }
+
+  business-kpis.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Business KPIs - CodAI Platform",
+        "tags": ["business", "kpi", "revenue"],
+        "timezone": "browser",
+        "refresh": "5m",
+        "time": {
+          "from": "now-7d",
+          "to": "now"
+        },
+        "panels": [
+          {
+            "id": 1,
+            "title": "User Growth",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "increase(user_registrations_total[1d])",
+                "legendFormat": "Daily Registrations"
+              },
+              {
+                "expr": "sum(user_active_total)",
+                "legendFormat": "Total Active Users"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth"
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Revenue Metrics",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "increase(revenue_total[1d])",
+                "legendFormat": "Daily Revenue"
+              },
+              {
+                "expr": "increase(subscription_revenue_total[1d])",
+                "legendFormat": "Subscription Revenue"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "currencyUSD",
+                "custom": {
+                  "drawStyle": "bars",
+                  "fillOpacity": 80
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          }
+        ]
+      }
+    }
+
+---
+# Operations Dashboard ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: operations-dashboards
+  namespace: codai-production
+data:
+  infrastructure-overview.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Infrastructure Overview - CodAI Services",
+        "tags": ["infrastructure", "kubernetes", "monitoring"],
+        "timezone": "browser",
+        "refresh": "10s",
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        },
+        "panels": [
+          {
+            "id": 1,
+            "title": "Cluster CPU Usage",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "100 - (avg by (instance) (irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+                "legendFormat": "{{instance}}"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percent",
+                "min": 0,
+                "max": 100,
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth",
+                  "fillOpacity": 10
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Memory Usage",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100",
+                "legendFormat": "{{instance}}"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percent",
+                "min": 0,
+                "max": 100,
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth",
+                  "fillOpacity": 10
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Pod Status",
+            "type": "table",
+            "targets": [
+              {
+                "expr": "kube_pod_status_phase{namespace=\"codai-production\"}",
+                "format": "table",
+                "instant": true
+              }
+            ],
+            "transformations": [
+              {
+                "id": "organize",
+                "options": {
+                  "columns": [
+                    {"text": "Pod", "value": "pod"},
+                    {"text": "Status", "value": "phase"},
+                    {"text": "Node", "value": "node"}
+                  ]
+                }
+              }
+            ],
+            "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8}
+          }
+        ]
+      }
+    }
+
+  service-performance.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Service Performance - CodAI APIs",
+        "tags": ["performance", "api", "latency"],
+        "timezone": "browser",
+        "refresh": "10s",
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        },
+        "panels": [
+          {
+            "id": 1,
+            "title": "Request Rate",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "sum by (job) (rate(http_requests_total[5m]))",
+                "legendFormat": "{{job}}"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "reqps",
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth"
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Response Time (95th percentile)",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "histogram_quantile(0.95, sum by (job, le) (rate(http_request_duration_seconds_bucket[5m])))",
+                "legendFormat": "{{job}}"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "ms",
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth"
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Error Rate",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "sum by (job) (rate(http_requests_total{status=~\"5..\"}[5m])) / sum by (job) (rate(http_requests_total[5m])) * 100",
+                "legendFormat": "{{job}}"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percent",
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth"
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 8, "x": 16, "y": 0}
+          }
+        ]
+      }
+    }
+
+---
+# Development Dashboard ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: development-dashboards
+  namespace: codai-production
+data:
+  build-pipeline.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Build & Deployment Pipeline - CodAI",
+        "tags": ["ci/cd", "deployment", "build"],
+        "timezone": "browser",
+        "refresh": "1m",
+        "time": {
+          "from": "now-7d",
+          "to": "now"
+        },
+        "panels": [
+          {
+            "id": 1,
+            "title": "Build Success Rate",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "sum(increase(github_workflow_run_conclusion_total{conclusion=\"success\"}[7d])) / sum(increase(github_workflow_run_conclusion_total[7d])) * 100",
+                "legendFormat": "Success Rate"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percent",
+                "thresholds": {
+                  "steps": [
+                    {"color": "red", "value": 0},
+                    {"color": "yellow", "value": 80},
+                    {"color": "green", "value": 95}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Deployment Frequency",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "sum(increase(deployment_total[7d]))",
+                "legendFormat": "Deployments (7d)"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "color": {"mode": "value"}
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 6, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Test Coverage",
+            "type": "gauge",
+            "targets": [
+              {
+                "expr": "test_coverage_percentage",
+                "legendFormat": "Coverage %"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percent",
+                "min": 0,
+                "max": 100,
+                "thresholds": {
+                  "steps": [
+                    {"color": "red", "value": 0},
+                    {"color": "yellow", "value": 70},
+                    {"color": "green", "value": 80}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 12, "y": 0}
+          },
+          {
+            "id": 4,
+            "title": "Lead Time for Changes",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "avg(lead_time_for_changes_hours)",
+                "legendFormat": "Hours"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "h",
+                "thresholds": {
+                  "steps": [
+                    {"color": "green", "value": 0},
+                    {"color": "yellow", "value": 24},
+                    {"color": "red", "value": 168}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 18, "y": 0}
+          }
+        ]
+      }
+    }
+
+  code-quality.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Code Quality Metrics - CodAI",
+        "tags": ["quality", "technical-debt", "sonarqube"],
+        "timezone": "browser",
+        "refresh": "1h",
+        "time": {
+          "from": "now-30d",
+          "to": "now"
+        },
+        "panels": [
+          {
+            "id": 1,
+            "title": "Technical Debt",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "sonarqube_technical_debt_minutes",
+                "legendFormat": "Technical Debt (min)"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "m",
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth"
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Code Smells",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "sonarqube_code_smells_total",
+                "legendFormat": "Code Smells"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "custom": {
+                  "drawStyle": "line",
+                  "lineInterpolation": "smooth"
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          }
+        ]
+      }
+    }
+
+---
+# Security Dashboard ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security-dashboards
+  namespace: codai-production
+data:
+  security-overview.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Security Overview - CodAI Platform",
+        "tags": ["security", "vulnerabilities", "compliance"],
+        "timezone": "browser",
+        "refresh": "5m",
+        "time": {
+          "from": "now-24h",
+          "to": "now"
+        },
+        "panels": [
+          {
+            "id": 1,
+            "title": "Security Incidents",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "sum(increase(security_incidents_total[24h]))",
+                "legendFormat": "Incidents (24h)"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "color": {"mode": "value"},
+                "thresholds": {
+                  "steps": [
+                    {"color": "green", "value": 0},
+                    {"color": "yellow", "value": 1},
+                    {"color": "red", "value": 5}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Vulnerability Score",
+            "type": "gauge",
+            "targets": [
+              {
+                "expr": "vulnerability_score",
+                "legendFormat": "Score"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "min": 0,
+                "max": 10,
+                "thresholds": {
+                  "steps": [
+                    {"color": "green", "value": 0},
+                    {"color": "yellow", "value": 4},
+                    {"color": "red", "value": 7}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 6, "x": 6, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Compliance Status",
+            "type": "table",
+            "targets": [
+              {
+                "expr": "compliance_framework_status",
+                "format": "table",
+                "instant": true
+              }
+            ],
+            "transformations": [
+              {
+                "id": "organize",
+                "options": {
+                  "columns": [
+                    {"text": "Framework", "value": "framework"},
+                    {"text": "Status", "value": "status"},
+                    {"text": "Score", "value": "Value"}
+                  ]
+                }
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          }
+        ]
+      }
+    }
+
+---
+# Dashboard Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-manager
+  namespace: codai-production
+  labels:
+    app: dashboard-manager
+    component: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard-manager
+  template:
+    metadata:
+      labels:
+        app: dashboard-manager
+        component: monitoring
+    spec:
+      serviceAccountName: dashboard-manager
+      containers:
+      - name: manager
+        image: codai/dashboard-manager:v1.0.0
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: GRAFANA_URL
+          value: "http://grafana:3000"
+        - name: GRAFANA_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: grafana-admin-password
+        - name: DASHBOARD_UPDATE_INTERVAL
+          value: "300s"
+        command:
+        - /app/dashboard-manager
+        args:
+        - --config-file=/etc/config/dashboard-architecture.json
+        - --log-level=info
+        - --metrics-addr=0.0.0.0:8080
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+        - name: executive-dashboards
+          mountPath: /dashboards/executive
+        - name: operations-dashboards
+          mountPath: /dashboards/operations
+        - name: development-dashboards
+          mountPath: /dashboards/development
+        - name: security-dashboards
+          mountPath: /dashboards/security
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: config
+        configMap:
+          name: operational-dashboards-config
+      - name: executive-dashboards
+        configMap:
+          name: executive-dashboards
+      - name: operations-dashboards
+        configMap:
+          name: operations-dashboards
+      - name: development-dashboards
+        configMap:
+          name: development-dashboards
+      - name: security-dashboards
+        configMap:
+          name: security-dashboards
+
+---
+# Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dashboard-manager
+  namespace: codai-production
+
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-manager
+  namespace: codai-production
+  labels:
+    app: dashboard-manager
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+  selector:
+    app: dashboard-manager
+
+---
+# Grafana Provisioning ConfigMaps
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-provisioning
+  namespace: codai-production
+data:
+  datasources.yml: |
+    apiVersion: 1
+    
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus:9090
+        isDefault: true
+        editable: true
+        
+      - name: Elasticsearch
+        type: elasticsearch
+        access: proxy
+        url: http://elasticsearch:9200
+        database: "codai-logs-*"
+        basicAuth: true
+        basicAuthUser: elastic
+        secureJsonData:
+          basicAuthPassword: ${ELASTICSEARCH_PASSWORD}
+        jsonData:
+          interval: Daily
+          timeField: "@timestamp"
+          esVersion: 70
+          
+      - name: Jaeger
+        type: jaeger
+        access: proxy
+        url: http://jaeger-query:16686
+
+  dashboards.yml: |
+    apiVersion: 1
+
+    providers:
+      - name: 'Executive Dashboards'
+        orgId: 1
+        folder: 'Executive'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 60
+        allowUiUpdates: true
+        options:
+          path: /dashboards/executive
+          
+      - name: 'Operations Dashboards'
+        orgId: 1
+        folder: 'Operations'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        allowUiUpdates: true
+        options:
+          path: /dashboards/operations
+          
+      - name: 'Development Dashboards'
+        orgId: 1
+        folder: 'Development'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 60
+        allowUiUpdates: true
+        options:
+          path: /dashboards/development
+          
+      - name: 'Security Dashboards'
+        orgId: 1
+        folder: 'Security'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 300
+        allowUiUpdates: true
+        options:
+          path: /dashboards/security

@@ -1,0 +1,71 @@
+# CAUTAI MCP HTTP Server Dockerfile
+# Optimized for production HTTP MCP server with SSE transport
+
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache curl git python3 make g++
+
+# Copy only CAUTAI MCP package files
+COPY packages/cautai-mcp/package.json ./packages/cautai-mcp/
+COPY package.json pnpm-lock.yaml ./
+
+# Install pnpm and dependencies
+RUN npm install -g pnpm@8.15.6 tsx
+RUN pnpm install --no-frozen-lockfile
+
+# Copy CAUTAI MCP source
+COPY packages/cautai-mcp ./packages/cautai-mcp
+
+# Install CAUTAI MCP specific dependencies
+WORKDIR /app/packages/cautai-mcp
+RUN pnpm install --no-frozen-lockfile
+
+# Production stage
+FROM node:20-alpine AS runtime
+
+WORKDIR /app
+
+# Install runtime dependencies
+RUN apk add --no-cache curl tini
+RUN npm install -g tsx
+
+# Create non-root user
+RUN addgroup -g 1001 -S cautai && \
+    adduser -S cautai -u 1001 -G cautai
+
+# Copy built application
+COPY --from=builder --chown=cautai:cautai /app/packages/cautai-mcp ./packages/cautai-mcp
+COPY --from=builder --chown=cautai:cautai /app/node_modules ./node_modules
+COPY --from=builder --chown=cautai:cautai /app/package.json ./
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/cache && \
+    chown -R cautai:cautai /app/logs /app/cache
+
+# Environment variables
+ENV NODE_ENV=production
+ENV PORT=4952
+ENV HTTP_PORT=4952
+ENV LOG_LEVEL=info
+ENV MCP_TRANSPORT=http
+ENV CAUTAI_LOG_DIR=/app/logs
+ENV CAUTAI_CACHE_DIR=/app/cache
+
+# Switch to non-root user
+USER cautai
+
+# Expose HTTP port
+EXPOSE 4952
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:4952/health || exit 1
+
+# Use tini for proper signal handling
+ENTRYPOINT ["tini", "--"]
+
+# Start CAUTAI MCP HTTP Server
+CMD ["tsx", "packages/cautai-mcp/src/http-server.ts"]

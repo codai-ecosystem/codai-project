@@ -15,12 +15,15 @@ export interface Memory {
     linkedMemories: string[];
     aiScore: number; // AI relevance/importance score 0-100
     accessCount: number;
+    viewCount?: number; // Number of times memory has been viewed
     status: 'active' | 'archived' | 'deleted';
     structuredKey?: string;
     embedding?: number[];
     userId?: string;
     importance?: number; // Legacy field for backward compatibility
     isPublic?: boolean; // Legacy field for backward compatibility
+    archivedAt?: string | Date; // When memory was archived
+    restoredAt?: string | Date; // When memory was restored from archive
     metadata?: Record<string, any>;
 }
 

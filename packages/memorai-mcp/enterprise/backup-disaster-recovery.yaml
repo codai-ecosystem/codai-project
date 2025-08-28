@@ -1,0 +1,405 @@
+# Enterprise Backup & Disaster Recovery
+# MemorAI MCP Server v9.5.0 - Phase 6 Task 11: Enterprise Integration
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-backup-config
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: backup
+    environment: production
+    version: v9.5.0
+data:
+  # Backup Configuration
+  BACKUP_ENABLED: "true"
+  BACKUP_SCHEDULE: "0 2 * * *"  # Daily at 2 AM
+  BACKUP_RETENTION_DAYS: "90"
+  BACKUP_RETENTION_WEEKS: "52"
+  BACKUP_RETENTION_MONTHS: "24"
+  BACKUP_RETENTION_YEARS: "7"
+  
+  # Storage Configuration
+  PRIMARY_BACKUP_STORAGE: "s3"
+  SECONDARY_BACKUP_STORAGE: "azure-blob"
+  LOCAL_BACKUP_STORAGE: "/backup/local"
+  
+  # S3 Configuration
+  S3_BUCKET: "memorai-enterprise-backups"
+  S3_REGION: "us-east-1"
+  S3_STORAGE_CLASS: "STANDARD_IA"
+  S3_ENCRYPTION: "AES256"
+  
+  # Azure Blob Configuration
+  AZURE_CONTAINER: "memorai-backups"
+  AZURE_STORAGE_ACCOUNT: "memoraibackups"
+  AZURE_ACCESS_TIER: "Cool"
+  
+  # Database Backup
+  DB_BACKUP_TYPE: "full"
+  DB_BACKUP_COMPRESSION: "gzip"
+  DB_BACKUP_ENCRYPTION: "true"
+  DB_PARALLEL_JOBS: "4"
+  
+  # Application Backup
+  APP_BACKUP_INCLUDE: "/data,/config,/logs"
+  APP_BACKUP_EXCLUDE: "/tmp,/cache,*.tmp,*.log"
+  
+  # Disaster Recovery
+  DR_ENABLED: "true"
+  DR_SITE_LOCATION: "us-west-2"
+  DR_RTO_MINUTES: "240"  # 4 hours
+  DR_RPO_MINUTES: "60"   # 1 hour
+  
+  # Validation & Testing
+  BACKUP_VALIDATION: "true"
+  RESTORE_TEST_FREQUENCY: "weekly"
+  DR_TEST_FREQUENCY: "monthly"
+  
+  # Monitoring & Alerting
+  BACKUP_MONITORING: "true"
+  ALERT_ON_FAILURE: "true"
+  ALERT_ON_LONG_DURATION: "true"
+  MAX_BACKUP_DURATION_HOURS: "6"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: memorai-backup-secrets
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: backup
+    environment: production
+    version: v9.5.0
+type: Opaque
+stringData:
+  # S3 Credentials
+  AWS_ACCESS_KEY_ID: "AKIA-MEMORAI-BACKUP-KEY"
+  AWS_SECRET_ACCESS_KEY: "super-secure-aws-secret-key-for-backups"
+  
+  # Azure Credentials
+  AZURE_STORAGE_KEY: "azure-storage-account-key-for-backups"
+  AZURE_CONNECTION_STRING: "DefaultEndpointsProtocol=https;AccountName=memoraibackups;AccountKey=..."
+  
+  # Database Credentials
+  DB_BACKUP_USERNAME: "backup_user"
+  DB_BACKUP_PASSWORD: "secure-db-backup-password"
+  
+  # Encryption Keys
+  BACKUP_ENCRYPTION_KEY: "backup-encryption-key-32-characters"
+  DR_ENCRYPTION_KEY: "disaster-recovery-encryption-key-32"
+  
+  # API Keys
+  BACKUP_SERVICE_API_KEY: "memorai-backup-service-api-key-2025"
+  MONITORING_API_KEY: "backup-monitoring-webhook-api-key"
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memorai-database-backup
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: backup
+    type: database
+    environment: production
+    version: v9.5.0
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: memorai-backup-service-account
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1002
+            runAsGroup: 3002
+            fsGroup: 2002
+          containers:
+          - name: db-backup
+            image: memorai/backup-service:v9.5.0
+            command:
+            - /bin/bash
+            - -c
+            - |
+              set -euo pipefail
+              
+              echo "🗄️ Starting MemorAI Database Backup - $(date)"
+              echo "================================================"
+              
+              # Create backup directory
+              BACKUP_DATE=$(date +%Y%m%d_%H%M%S)
+              BACKUP_DIR="/backup/local/database/$BACKUP_DATE"
+              mkdir -p "$BACKUP_DIR"
+              
+              # Database backup with parallel jobs
+              echo "📊 Starting database backup..."
+              pg_dump \
+                --host="$DB_HOST" \
+                --port="$DB_PORT" \
+                --username="$DB_BACKUP_USERNAME" \
+                --dbname="$DB_NAME" \
+                --format=custom \
+                --compress=9 \
+                --jobs=$DB_PARALLEL_JOBS \
+                --verbose \
+                --file="$BACKUP_DIR/memorai_database_$BACKUP_DATE.dump"
+              
+              # Verify backup integrity
+              echo "🔍 Verifying backup integrity..."
+              pg_restore --list "$BACKUP_DIR/memorai_database_$BACKUP_DATE.dump" > /dev/null
+              
+              # Calculate checksums
+              echo "🔐 Calculating checksums..."
+              cd "$BACKUP_DIR"
+              sha256sum *.dump > checksums.sha256
+              
+              # Encrypt backup if enabled
+              if [[ "$DB_BACKUP_ENCRYPTION" == "true" ]]; then
+                echo "🔒 Encrypting backup..."
+                gpg --cipher-algo AES256 \
+                    --compress-algo 2 \
+                    --symmetric \
+                    --batch \
+                    --yes \
+                    --passphrase="$BACKUP_ENCRYPTION_KEY" \
+                    --output "memorai_database_$BACKUP_DATE.dump.gpg" \
+                    "memorai_database_$BACKUP_DATE.dump"
+                rm "memorai_database_$BACKUP_DATE.dump"
+              fi
+              
+              # Upload to S3
+              echo "☁️ Uploading to S3..."
+              aws s3 cp "$BACKUP_DIR/" "s3://$S3_BUCKET/database/$BACKUP_DATE/" \
+                --recursive \
+                --storage-class "$S3_STORAGE_CLASS" \
+                --server-side-encryption AES256
+              
+              # Upload to Azure (secondary)
+              echo "🔄 Uploading to Azure Blob Storage..."
+              az storage blob upload-batch \
+                --destination "$AZURE_CONTAINER/database/$BACKUP_DATE" \
+                --source "$BACKUP_DIR/" \
+                --account-name "$AZURE_STORAGE_ACCOUNT" \
+                --account-key "$AZURE_STORAGE_KEY" \
+                --tier "$AZURE_ACCESS_TIER"
+              
+              # Cleanup old local backups
+              echo "🧹 Cleaning up old local backups..."
+              find /backup/local/database -type d -mtime +7 -exec rm -rf {} +
+              
+              # Update backup metadata
+              BACKUP_SIZE=$(du -sh "$BACKUP_DIR" | cut -f1)
+              BACKUP_COUNT=$(find "$BACKUP_DIR" -type f | wc -l)
+              
+              echo "✅ Database backup completed successfully!"
+              echo "📊 Backup Statistics:"
+              echo "  - Date: $BACKUP_DATE"
+              echo "  - Size: $BACKUP_SIZE"
+              echo "  - Files: $BACKUP_COUNT"
+              echo "  - Location: s3://$S3_BUCKET/database/$BACKUP_DATE/"
+              
+              # Send success notification
+              curl -X POST "$MONITORING_API_KEY" \
+                -H "Content-Type: application/json" \
+                -d "{
+                  \"event\": \"backup_success\",
+                  \"type\": \"database\",
+                  \"date\": \"$BACKUP_DATE\",
+                  \"size\": \"$BACKUP_SIZE\",
+                  \"duration_minutes\": $(( ($(date +%s) - $(date -d \"$BACKUP_DATE\" +%s)) / 60 ))
+                }"
+            envFrom:
+            - configMapRef:
+                name: memorai-backup-config
+            - secretRef:
+                name: memorai-backup-secrets
+            env:
+            - name: DB_HOST
+              value: "postgres-prod"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "memorai_prod"
+            resources:
+              requests:
+                memory: "2Gi"
+                cpu: "1000m"
+              limits:
+                memory: "4Gi"
+                cpu: "2000m"
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backup/local
+            - name: temp-storage
+              mountPath: /tmp
+          volumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: memorai-backup-storage
+          - name: temp-storage
+            emptyDir:
+              sizeLimit: 10Gi
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memorai-application-backup
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: backup
+    type: application
+    environment: production
+    version: v9.5.0
+spec:
+  schedule: "0 3 * * *"  # Daily at 3 AM
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: memorai-backup-service-account
+          containers:
+          - name: app-backup
+            image: memorai/backup-service:v9.5.0
+            command:
+            - /bin/bash
+            - -c
+            - |
+              set -euo pipefail
+              
+              echo "📱 Starting MemorAI Application Backup - $(date)"
+              echo "================================================"
+              
+              BACKUP_DATE=$(date +%Y%m%d_%H%M%S)
+              BACKUP_DIR="/backup/local/application/$BACKUP_DATE"
+              mkdir -p "$BACKUP_DIR"
+              
+              # Backup Kubernetes resources
+              echo "☸️ Backing up Kubernetes resources..."
+              kubectl get all,configmaps,secrets,pvc -n memorai-production -o yaml > \
+                "$BACKUP_DIR/kubernetes_resources_$BACKUP_DATE.yaml"
+              
+              # Backup application configurations
+              echo "⚙️ Backing up application configurations..."
+              tar czf "$BACKUP_DIR/app_config_$BACKUP_DATE.tar.gz" \
+                -C /data config/ \
+                --exclude="*.tmp" \
+                --exclude="*.log"
+              
+              # Backup user data
+              echo "👥 Backing up user data..."
+              tar czf "$BACKUP_DIR/user_data_$BACKUP_DATE.tar.gz" \
+                -C /data users/ \
+                --exclude="*/cache/*" \
+                --exclude="*/tmp/*"
+              
+              # Backup memory storage
+              echo "🧠 Backing up memory storage..."
+              tar czf "$BACKUP_DIR/memory_data_$BACKUP_DATE.tar.gz" \
+                -C /data memories/ \
+                --exclude="*.tmp"
+              
+              # Calculate checksums
+              cd "$BACKUP_DIR"
+              sha256sum *.tar.gz *.yaml > checksums.sha256
+              
+              # Upload to cloud storage
+              echo "☁️ Uploading to cloud storage..."
+              aws s3 cp "$BACKUP_DIR/" "s3://$S3_BUCKET/application/$BACKUP_DATE/" \
+                --recursive \
+                --storage-class "$S3_STORAGE_CLASS"
+              
+              echo "✅ Application backup completed!"
+            envFrom:
+            - configMapRef:
+                name: memorai-backup-config
+            - secretRef:
+                name: memorai-backup-secrets
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backup/local
+            - name: app-data
+              mountPath: /data
+              readOnly: true
+          volumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: memorai-backup-storage
+          - name: app-data
+            persistentVolumeClaim:
+              claimName: memorai-app-data
+          restartPolicy: OnFailure
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memorai-backup-storage
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: backup
+    environment: production
+    version: v9.5.0
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Ti
+  storageClassName: ssd-retain
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memorai-backup-service-account
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: backup
+    environment: production
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: memorai-production
+  name: memorai-backup-role
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["batch"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: memorai-backup-rolebinding
+  namespace: memorai-production
+subjects:
+- kind: ServiceAccount
+  name: memorai-backup-service-account
+  namespace: memorai-production
+roleRef:
+  kind: Role
+  name: memorai-backup-role
+  apiGroup: rbac.authorization.k8s.io

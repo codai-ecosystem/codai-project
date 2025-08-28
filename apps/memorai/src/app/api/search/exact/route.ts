@@ -1,7 +1,14 @@
 // API Route: /api/search/exact - Exact phrase matching
 import { NextRequest, NextResponse } from 'next/server';
-import { vectorOperations } from '@/lib/vector-operations';
-import { userIsolation } from '@/middleware';
+import { cbdClient } from '@/lib/cbd-client';
+
+// Simple helper to add basic security headers
+function addSecurityHeaders<T>(response: NextResponse<T>): NextResponse<T> {
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
+  return response;
+}
 
 export async function POST(request: NextRequest) {
     try {
@@ -24,8 +31,12 @@ export async function POST(request: NextRequest) {
             limit: 20
         });
 
+        // Handle CBD response - extract documents array
+        const documents = searchResults.success && searchResults.data ? 
+                         (Array.isArray(searchResults.data) ? searchResults.data : []) : [];
+
         // Process and score results
-        const results = searchResults.map((doc: any) => {
+        const results = documents.map((doc: any) => {
             const content = doc.content || '';
             const title = doc.title || '';
 
@@ -58,7 +69,7 @@ export async function POST(request: NextRequest) {
 
             if (filters.tags && filters.tags.length > 0) {
                 const docTags = doc.tags || [];
-                const hasMatchingTag = filters.tags.some(tag => docTags.includes(tag));
+                const hasMatchingTag = filters.tags.some((tag: string) => docTags.includes(tag));
                 if (!hasMatchingTag) {
                     relevanceScore *= 0.5;
                 }
@@ -83,11 +94,11 @@ export async function POST(request: NextRequest) {
 
         // Filter by minimum score if specified
         const filteredResults = filters.minScore
-            ? results.filter(r => r.relevanceScore >= filters.minScore)
+            ? results.filter((r: any) => r.relevanceScore >= filters.minScore)
             : results;
 
         // Sort by relevance score
-        const sortedResults = filteredResults.sort((a, b) => b.relevanceScore - a.relevanceScore);
+        const sortedResults = filteredResults.sort((a: any, b: any) => b.relevanceScore - a.relevanceScore);
 
         return NextResponse.json({
             results: sortedResults,

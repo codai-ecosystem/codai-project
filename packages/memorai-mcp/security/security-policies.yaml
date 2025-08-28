@@ -1,0 +1,390 @@
+# =================================================================
+# MemorAI MCP Server - Enterprise Security Policies Configuration
+# Version: 1.0.0
+# Purpose: Comprehensive enterprise security hardening policies
+# =================================================================
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security-policies
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+    version: v9.5.0
+    compliance: "soc2,gdpr,iso27001"
+data:
+  # Security Configuration
+  security.yaml: |
+    security:
+      # Authentication & Authorization
+      authentication:
+        # JWT Token Configuration
+        jwt:
+          algorithm: "RS256"
+          issuer: "memorai-mcp-server"
+          audience: "memorai-mcp-api"
+          expiration: "24h"
+          refresh_expiration: "7d"
+          secret_rotation_interval: "30d"
+        
+        # OAuth2/OIDC Configuration
+        oauth2:
+          enabled: true
+          providers:
+            - name: "azure-ad"
+              client_id_secret: "oauth-azure-client-id"
+              client_secret_secret: "oauth-azure-client-secret"
+              discovery_url: "https://login.microsoftonline.com/common/v2.0/.well-known/openid_configuration"
+              scopes: ["openid", "profile", "email"]
+            - name: "google"
+              client_id_secret: "oauth-google-client-id"
+              client_secret_secret: "oauth-google-client-secret"
+              discovery_url: "https://accounts.google.com/.well-known/openid_configuration"
+              scopes: ["openid", "profile", "email"]
+        
+        # Multi-Factor Authentication
+        mfa:
+          enabled: true
+          providers: ["totp", "sms", "email"]
+          enforcement: "conditional" # none, conditional, always
+          grace_period: "24h"
+      
+      # Role-Based Access Control (RBAC)
+      rbac:
+        enabled: true
+        default_role: "user"
+        roles:
+          - name: "super_admin"
+            permissions:
+              - "system:*"
+              - "memory:*"
+              - "user:*"
+              - "audit:*"
+            resources: ["*"]
+          
+          - name: "admin"
+            permissions:
+              - "system:read"
+              - "system:config"
+              - "memory:*"
+              - "user:read"
+              - "user:update"
+              - "audit:read"
+            resources: ["api", "dashboard", "monitoring"]
+          
+          - name: "memory_manager"
+            permissions:
+              - "memory:create"
+              - "memory:read"
+              - "memory:update"
+              - "memory:delete"
+              - "memory:search"
+            resources: ["api/memory", "dashboard/memory"]
+          
+          - name: "user"
+            permissions:
+              - "memory:read"
+              - "memory:search"
+              - "profile:read"
+              - "profile:update"
+            resources: ["api/user", "dashboard/user"]
+          
+          - name: "read_only"
+            permissions:
+              - "memory:read"
+              - "system:status"
+            resources: ["api/read", "monitoring/read"]
+      
+      # Data Protection & Privacy
+      data_protection:
+        # Encryption Configuration
+        encryption:
+          data_at_rest:
+            enabled: true
+            algorithm: "AES-256-GCM"
+            key_rotation_interval: "90d"
+          
+          data_in_transit:
+            enabled: true
+            tls_version: "1.3"
+            cipher_suites:
+              - "TLS_AES_256_GCM_SHA384"
+              - "TLS_CHACHA20_POLY1305_SHA256"
+              - "TLS_AES_128_GCM_SHA256"
+          
+          field_level:
+            enabled: true
+            fields: ["email", "phone", "personal_data", "sensitive_content"]
+            algorithm: "AES-256-GCM"
+        
+        # Data Classification
+        classification:
+          levels:
+            - name: "public"
+              retention: "unlimited"
+              access: "all"
+            - name: "internal"
+              retention: "7y"
+              access: "authenticated"
+            - name: "confidential"
+              retention: "3y"
+              access: "authorized"
+            - name: "restricted"
+              retention: "1y"
+              access: "admin"
+        
+        # GDPR Compliance
+        gdpr:
+          enabled: true
+          data_subject_rights:
+            - "right_of_access"
+            - "right_to_rectification"
+            - "right_to_erasure"
+            - "right_to_portability"
+            - "right_to_restrict_processing"
+          consent_management: true
+          data_retention_policies: true
+          privacy_by_design: true
+      
+      # Network Security
+      network:
+        # Firewall Rules
+        firewall:
+          default_policy: "deny"
+          rules:
+            - name: "allow-https"
+              protocol: "tcp"
+              port: 443
+              source: "0.0.0.0/0"
+              action: "allow"
+            - name: "allow-monitoring"
+              protocol: "tcp"
+              ports: [9090, 3000]
+              source: "monitoring-subnet"
+              action: "allow"
+            - name: "allow-health-check"
+              protocol: "tcp"
+              port: 8080
+              source: "load-balancer-subnet"
+              action: "allow"
+        
+        # Rate Limiting
+        rate_limiting:
+          enabled: true
+          global:
+            requests_per_minute: 1000
+            requests_per_hour: 10000
+          per_user:
+            requests_per_minute: 60
+            requests_per_hour: 1000
+          per_endpoint:
+            "/api/memory/search":
+              requests_per_minute: 30
+            "/api/memory/create":
+              requests_per_minute: 10
+        
+        # DDoS Protection
+        ddos_protection:
+          enabled: true
+          threshold_rps: 100
+          block_duration: "1h"
+          whitelist_ips: []
+          blacklist_ips: []
+      
+      # Vulnerability Management
+      vulnerability_management:
+        scanning:
+          enabled: true
+          schedule: "0 2 * * *" # Daily at 2 AM
+          tools:
+            - "trivy"
+            - "snyk"
+            - "clair"
+          severity_threshold: "medium"
+          auto_remediation: false
+        
+        dependency_scanning:
+          enabled: true
+          schedule: "0 3 * * 1" # Weekly on Monday at 3 AM
+          package_managers: ["npm", "pip", "go"]
+          vulnerability_databases:
+            - "nvd"
+            - "github-advisories"
+            - "snyk-db"
+      
+      # Compliance Frameworks
+      compliance:
+        frameworks:
+          soc2:
+            enabled: true
+            controls:
+              - "CC1.1" # Control Environment
+              - "CC2.1" # Communication and Information
+              - "CC3.1" # Risk Assessment
+              - "CC4.1" # Monitoring Activities
+              - "CC5.1" # Control Activities
+            reporting: true
+            audit_trail: true
+          
+          iso27001:
+            enabled: true
+            controls:
+              - "A.5" # Information Security Policies
+              - "A.6" # Organization of Information Security
+              - "A.7" # Human Resource Security
+              - "A.8" # Asset Management
+              - "A.9" # Access Control
+              - "A.10" # Cryptography
+              - "A.11" # Physical and Environmental Security
+              - "A.12" # Operations Security
+              - "A.13" # Communications Security
+              - "A.14" # System Acquisition, Development and Maintenance
+            risk_assessment: true
+            continuous_monitoring: true
+          
+          gdpr:
+            enabled: true
+            requirements:
+              - "lawful_basis_for_processing"
+              - "consent_management"
+              - "data_subject_rights"
+              - "privacy_by_design"
+              - "data_protection_impact_assessment"
+              - "breach_notification"
+            data_processing_records: true
+            privacy_officer: true
+      
+      # Incident Response
+      incident_response:
+        enabled: true
+        escalation_matrix:
+          - severity: "critical"
+            response_time: "15m"
+            notification: ["security-team", "management", "legal"]
+          - severity: "high"
+            response_time: "1h"
+            notification: ["security-team", "ops-team"]
+          - severity: "medium"
+            response_time: "4h"
+            notification: ["security-team"]
+          - severity: "low"
+            response_time: "24h"
+            notification: ["security-team"]
+        
+        playbooks:
+          - name: "data-breach"
+            steps: ["isolate", "assess", "notify", "remediate", "report"]
+            sla: "4h"
+          - name: "unauthorized-access"
+            steps: ["revoke-access", "investigate", "secure", "report"]
+            sla: "1h"
+          - name: "malware-detection"
+            steps: ["quarantine", "analyze", "clean", "monitor"]
+            sla: "30m"
+
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: memorai-mcp-psp
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  readOnlyRootFilesystem: true
+  seLinux:
+    rule: 'RunAsAny'
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: memorai-mcp-network-policy
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+spec:
+  podSelector:
+    matchLabels:
+      app: memorai-mcp-server
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - podSelector:
+        matchLabels:
+          app: prometheus
+    - podSelector:
+        matchLabels:
+          app: grafana
+    ports:
+    - protocol: TCP
+      port: 4950
+    - protocol: TCP
+      port: 8080
+  - from:
+    - podSelector:
+        matchLabels:
+          app: memorai-mcp-server
+    ports:
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 6379  # Redis
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: postgresql
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to:
+    - podSelector:
+        matchLabels:
+          app: redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  - to: []  # Allow external DNS and HTTPS
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53

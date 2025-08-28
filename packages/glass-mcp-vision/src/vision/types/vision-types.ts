@@ -6,11 +6,34 @@
  * @author Glass MCP Vision Team
  */
 
-// Re-export core vision interfaces
-export * from './screen-capture-engine';
-export * from './ocr-analysis-engine';
-export * from './object-detection-engine';
-export * from './visual-intelligence-coordinator';
+/**
+ * 🔮 Vision System Type Definitions for Glass MCP Vision
+ * Comprehensive TypeScript interfaces for all vision components
+ * 
+ * @version 9.0.0
+ * @author Glass MCP Vision Team
+ */
+
+// Vision configuration interfaces
+export interface VisionScreenCaptureConfig {
+  captureMethod: 'graphics-api' | 'gdi' | 'directx';
+  quality: 'low' | 'medium' | 'high' | 'ultra';
+  fps: number;
+  multiDisplay: boolean;
+}
+
+export interface VisionOCRConfig {
+  engine: 'maskocr' | 'tesseract' | 'windows-ocr';
+  accuracy: 'low' | 'medium' | 'high';
+  languages: string[];
+  confidence: number;
+}
+
+export interface VisionObjectDetectionConfig {
+  model: 'yolo-v8' | 'rcnn' | 'ssd';
+  inferenceTime: number;
+  confidence: number;
+}
 
 // Additional shared types and utilities
 

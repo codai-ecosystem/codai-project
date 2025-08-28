@@ -1,0 +1,653 @@
+# =================================================================
+# MemorAI MCP Server - Audit Logging Configuration
+# Version: 1.0.0
+# Purpose: Comprehensive audit logging for security and compliance
+# =================================================================
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: audit-logging-config
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+    audit-type: configuration
+data:
+  audit-policy.yaml: |
+    apiVersion: audit.k8s.io/v1
+    kind: Policy
+    rules:
+    # Log all requests at the namespace level for memorai-mcp
+    - level: Metadata
+      namespaces: ["memorai-mcp"]
+      verbs: ["get", "list", "create", "update", "patch", "delete"]
+      resources:
+      - group: ""
+        resources: ["pods", "services", "configmaps", "secrets"]
+      - group: "apps"
+        resources: ["deployments", "replicasets"]
+      - group: "networking.k8s.io"
+        resources: ["networkpolicies", "ingresses"]
+    
+    # Log security-sensitive operations at Request level
+    - level: Request
+      verbs: ["create", "update", "patch", "delete"]
+      resources:
+      - group: "rbac.authorization.k8s.io"
+        resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+      - group: "policy"
+        resources: ["podsecuritypolicies"]
+      - group: ""
+        resources: ["secrets"]
+    
+    # Log privileged operations
+    - level: RequestResponse
+      verbs: ["create", "update", "patch"]
+      users: ["system:admin", "admin@company.com"]
+      resources:
+      - group: ""
+        resources: ["*"]
+      - group: "apps"
+        resources: ["*"]
+    
+    # Don't log requests to certain non-sensitive endpoints
+    - level: None
+      users: ["system:kube-proxy"]
+      verbs: ["watch"]
+      resources:
+      - group: ""
+        resources: ["endpoints", "services", "services/status"]
+
+  fluent-bit.conf: |
+    [SERVICE]
+        Flush         1
+        Log_Level     info
+        Daemon        off
+        Parsers_File  parsers.conf
+        HTTP_Server   On
+        HTTP_Listen   0.0.0.0
+        HTTP_Port     2020
+
+    [INPUT]
+        Name              tail
+        Path              /var/log/audit/*.log
+        Parser            audit
+        Tag               audit.kubernetes
+        Refresh_Interval  5
+        Mem_Buf_Limit     50MB
+
+    [INPUT]
+        Name              tail
+        Path              /app/logs/application.log
+        Parser            json
+        Tag               audit.application
+        Refresh_Interval  5
+        Mem_Buf_Limit     50MB
+
+    [INPUT]
+        Name              tail
+        Path              /app/logs/access.log
+        Parser            nginx
+        Tag               audit.access
+        Refresh_Interval  5
+        Mem_Buf_Limit     50MB
+
+    [INPUT]
+        Name              tail
+        Path              /app/logs/security.log
+        Parser            json
+        Tag               audit.security
+        Refresh_Interval  5
+        Mem_Buf_Limit     50MB
+
+    [FILTER]
+        Name                kubernetes
+        Match               audit.*
+        Kube_URL            https://kubernetes.default.svc:443
+        Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
+        Kube_Tag_Prefix     audit.kubernetes.
+        Merge_Log           On
+        Keep_Log            Off
+        K8S-Logging.Parser  On
+        K8S-Logging.Exclude Off
+        Annotations         Off
+
+    [FILTER]
+        Name                grep
+        Match               audit.*
+        Regex               verb (create|update|patch|delete|get|list)
+
+    [FILTER]
+        Name                record_modifier
+        Match               *
+        Record              hostname ${HOSTNAME}
+        Record              service memorai-mcp-server
+        Record              version v9.5.0
+
+    [OUTPUT]
+        Name                elasticsearch
+        Match               audit.*
+        Host                elasticsearch.monitoring.svc.cluster.local
+        Port                9200
+        Index               memorai-audit-logs
+        Type                _doc
+        Logstash_Format     On
+        Logstash_Prefix     memorai-audit
+        Logstash_DateFormat %Y.%m.%d
+        Include_Tag_Key     On
+        Tag_Key             @tag
+        Generate_ID         On
+
+    [OUTPUT]
+        Name                s3
+        Match               audit.*
+        bucket              memorai-audit-logs-backup
+        region              us-east-1
+        total_file_size     50M
+        upload_timeout      10m
+        use_put_object      On
+        s3_key_format       /audit-logs/year=%Y/month=%m/day=%d/hour=%H/%Y%m%d_%H%M%S_$UUID.json
+
+    [OUTPUT]
+        Name                syslog
+        Match               audit.security
+        Host                siem.company.com
+        Port                514
+        Mode                tcp
+        Syslog_Format       rfc3164
+        Syslog_Hostname_Key hostname
+        Syslog_Appname_Key  service
+
+  parsers.conf: |
+    [PARSER]
+        Name        audit
+        Format      json
+        Time_Key    timestamp
+        Time_Format %Y-%m-%dT%H:%M:%S.%L%z
+        Time_Keep   On
+
+    [PARSER]
+        Name        nginx
+        Format      regex
+        Regex       ^(?<remote>[^ ]*) (?<host>[^ ]*) (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$
+        Time_Key    time
+        Time_Format %d/%b/%Y:%H:%M:%S %z
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: audit-log-collector
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+    audit-type: collector
+spec:
+  selector:
+    matchLabels:
+      app: audit-log-collector
+  template:
+    metadata:
+      labels:
+        app: audit-log-collector
+        component: security
+    spec:
+      serviceAccountName: audit-log-collector
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: fluent-bit
+        image: fluent/fluent-bit:2.2.0
+        ports:
+        - containerPort: 2020
+        resources:
+          limits:
+            memory: 200Mi
+            cpu: 100m
+          requests:
+            memory: 100Mi
+            cpu: 50m
+        volumeMounts:
+        - name: config
+          mountPath: /fluent-bit/etc
+        - name: varlog
+          mountPath: /var/log
+          readOnly: true
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+        - name: audit-logs
+          mountPath: /var/log/audit
+          readOnly: true
+        - name: app-logs
+          mountPath: /app/logs
+          readOnly: true
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: config
+        configMap:
+          name: audit-logging-config
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+      - name: audit-logs
+        hostPath:
+          path: /var/log/audit
+      - name: app-logs
+        persistentVolumeClaim:
+          claimName: memorai-mcp-logs
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audit-processor
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+    audit-type: processor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: audit-processor
+  template:
+    metadata:
+      labels:
+        app: audit-processor
+        component: security
+    spec:
+      serviceAccountName: audit-processor
+      containers:
+      - name: audit-processor
+        image: python:3.11-slim
+        command:
+        - /bin/bash
+        - -c
+        - |
+          pip install elasticsearch kafka-python cryptography
+          
+          cat > /app/audit_processor.py << 'EOF'
+          import json
+          import time
+          import hashlib
+          import hmac
+          import datetime
+          from elasticsearch import Elasticsearch
+          from kafka import KafkaConsumer
+          from cryptography.fernet import Fernet
+          import logging
+          
+          # Configure logging
+          logging.basicConfig(level=logging.INFO)
+          logger = logging.getLogger(__name__)
+          
+          class AuditProcessor:
+              def __init__(self):
+                  self.es = Elasticsearch(['elasticsearch.monitoring.svc.cluster.local:9200'])
+                  self.consumer = KafkaConsumer(
+                      'audit-events',
+                      bootstrap_servers=['kafka.monitoring.svc.cluster.local:9092'],
+                      value_deserializer=lambda m: json.loads(m.decode('utf-8'))
+                  )
+                  self.fernet = Fernet(os.environ.get('AUDIT_ENCRYPTION_KEY').encode())
+                  
+              def process_audit_event(self, event):
+                  """Process and enrich audit events"""
+                  try:
+                      # Add processing timestamp
+                      event['processed_at'] = datetime.datetime.utcnow().isoformat()
+                      
+                      # Calculate event hash for integrity
+                      event_str = json.dumps(event, sort_keys=True)
+                      event['integrity_hash'] = hashlib.sha256(event_str.encode()).hexdigest()
+                      
+                      # Add risk score
+                      event['risk_score'] = self.calculate_risk_score(event)
+                      
+                      # Encrypt sensitive data
+                      if 'sensitive_data' in event:
+                          event['sensitive_data'] = self.fernet.encrypt(
+                              json.dumps(event['sensitive_data']).encode()
+                          ).decode()
+                      
+                      # Index to Elasticsearch
+                      index_name = f"memorai-audit-{datetime.datetime.utcnow().strftime('%Y.%m.%d')}"
+                      self.es.index(index=index_name, body=event)
+                      
+                      # Check for security alerts
+                      if event['risk_score'] >= 8:
+                          self.trigger_security_alert(event)
+                      
+                      logger.info(f"Processed audit event: {event['event_id']}")
+                      
+                  except Exception as e:
+                      logger.error(f"Error processing audit event: {str(e)}")
+              
+              def calculate_risk_score(self, event):
+                  """Calculate risk score for audit event"""
+                  score = 0
+                  
+                  # High-risk operations
+                  if event.get('verb') in ['create', 'update', 'patch', 'delete']:
+                      score += 3
+                  
+                  # Sensitive resources
+                  if 'secrets' in event.get('resource', ''):
+                      score += 4
+                  
+                  # Administrative actions
+                  if 'admin' in event.get('user', '').lower():
+                      score += 2
+                  
+                  # Off-hours access
+                  hour = datetime.datetime.utcnow().hour
+                  if hour < 6 or hour > 22:
+                      score += 2
+                  
+                  # Failed operations
+                  if event.get('response_code', 200) >= 400:
+                      score += 3
+                  
+                  return min(score, 10)  # Cap at 10
+              
+              def trigger_security_alert(self, event):
+                  """Trigger security alert for high-risk events"""
+                  alert = {
+                      'alert_id': f"security-{int(time.time())}",
+                      'timestamp': datetime.datetime.utcnow().isoformat(),
+                      'severity': 'HIGH',
+                      'event_id': event['event_id'],
+                      'risk_score': event['risk_score'],
+                      'description': f"High-risk audit event detected: {event.get('verb')} on {event.get('resource')}",
+                      'user': event.get('user'),
+                      'source_ip': event.get('source_ip'),
+                      'resource': event.get('resource'),
+                      'action': event.get('verb')
+                  }
+                  
+                  # Send to SIEM
+                  self.es.index(index='memorai-security-alerts', body=alert)
+                  
+                  # Send webhook notification
+                  import requests
+                  webhook_url = os.environ.get('SECURITY_WEBHOOK_URL')
+                  if webhook_url:
+                      requests.post(webhook_url, json=alert)
+                  
+                  logger.warning(f"Security alert triggered: {alert['alert_id']}")
+              
+              def run(self):
+                  """Main processing loop"""
+                  logger.info("Starting audit processor...")
+                  
+                  for message in self.consumer:
+                      self.process_audit_event(message.value)
+          
+          if __name__ == "__main__":
+              processor = AuditProcessor()
+              processor.run()
+          EOF
+          
+          python /app/audit_processor.py
+        env:
+        - name: AUDIT_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: memorai-mcp-secrets
+              key: AUDIT_SIGNING_KEY
+        - name: SECURITY_WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: memorai-mcp-secrets
+              key: WEBHOOK_SECRET
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: 500m
+          requests:
+            memory: 256Mi
+            cpu: 200m
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: audit-log-collector
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: audit-processor
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: audit-log-collector
+  labels:
+    app: memorai-mcp-server
+    component: security
+rules:
+- apiGroups: [""]
+  resources: ["pods", "nodes"]
+  verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: audit-log-collector
+  labels:
+    app: memorai-mcp-server
+    component: security
+subjects:
+- kind: ServiceAccount
+  name: audit-log-collector
+  namespace: memorai-mcp
+roleRef:
+  kind: ClusterRole
+  name: audit-log-collector
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Audit Log Retention Policy
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: audit-log-retention
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+    audit-type: retention
+spec:
+  schedule: "0 2 * * 0"  # Weekly on Sunday at 2 AM
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: memorai-mcp-server
+            component: security
+            audit-type: retention
+        spec:
+          serviceAccountName: audit-processor
+          restartPolicy: OnFailure
+          containers:
+          - name: retention-manager
+            image: python:3.11-slim
+            command:
+            - /bin/bash
+            - -c
+            - |
+              pip install elasticsearch boto3
+              
+              cat > /app/retention_manager.py << 'EOF'
+              import os
+              import datetime
+              from elasticsearch import Elasticsearch
+              import boto3
+              import logging
+              
+              logging.basicConfig(level=logging.INFO)
+              logger = logging.getLogger(__name__)
+              
+              class AuditRetentionManager:
+                  def __init__(self):
+                      self.es = Elasticsearch(['elasticsearch.monitoring.svc.cluster.local:9200'])
+                      self.s3 = boto3.client('s3')
+                      self.retention_days = 2555  # 7 years for compliance
+                      self.archive_days = 365     # 1 year before archiving
+                  
+                  def manage_retention(self):
+                      """Manage audit log retention and archiving"""
+                      cutoff_date = datetime.datetime.utcnow() - datetime.timedelta(days=self.retention_days)
+                      archive_date = datetime.datetime.utcnow() - datetime.timedelta(days=self.archive_days)
+                      
+                      # Archive old logs to S3
+                      self.archive_old_logs(archive_date)
+                      
+                      # Delete expired logs
+                      self.delete_expired_logs(cutoff_date)
+                      
+                      logger.info("Audit log retention management completed")
+                  
+                  def archive_old_logs(self, archive_date):
+                      """Archive old audit logs to S3"""
+                      index_pattern = f"memorai-audit-*"
+                      indices = self.es.cat.indices(index=index_pattern, h='index,creation.date.string')
+                      
+                      for line in indices.split('\n'):
+                          if not line.strip():
+                              continue
+                          
+                          parts = line.strip().split()
+                          if len(parts) >= 2:
+                              index_name = parts[0]
+                              creation_date_str = parts[1]
+                              
+                              try:
+                                  creation_date = datetime.datetime.strptime(creation_date_str, '%Y-%m-%dT%H:%M:%S.%fZ')
+                                  
+                                  if creation_date < archive_date:
+                                      self.archive_index_to_s3(index_name)
+                              except Exception as e:
+                                  logger.error(f"Error processing index {index_name}: {str(e)}")
+                  
+                  def archive_index_to_s3(self, index_name):
+                      """Archive specific index to S3"""
+                      try:
+                          # Export index data
+                          export_data = self.es.search(
+                              index=index_name,
+                              body={"query": {"match_all": {}}},
+                              size=10000,
+                              scroll='5m'
+                          )
+                          
+                          # Upload to S3
+                          s3_key = f"archived-audit-logs/{index_name}.json"
+                          self.s3.put_object(
+                              Bucket='memorai-audit-logs-archive',
+                              Key=s3_key,
+                              Body=json.dumps(export_data),
+                              StorageClass='GLACIER'
+                          )
+                          
+                          logger.info(f"Archived index {index_name} to S3")
+                      except Exception as e:
+                          logger.error(f"Error archiving index {index_name}: {str(e)}")
+                  
+                  def delete_expired_logs(self, cutoff_date):
+                      """Delete expired audit logs"""
+                      index_pattern = f"memorai-audit-*"
+                      indices = self.es.cat.indices(index=index_pattern, h='index,creation.date.string')
+                      
+                      for line in indices.split('\n'):
+                          if not line.strip():
+                              continue
+                          
+                          parts = line.strip().split()
+                          if len(parts) >= 2:
+                              index_name = parts[0]
+                              creation_date_str = parts[1]
+                              
+                              try:
+                                  creation_date = datetime.datetime.strptime(creation_date_str, '%Y-%m-%dT%H:%M:%S.%fZ')
+                                  
+                                  if creation_date < cutoff_date:
+                                      self.es.indices.delete(index=index_name)
+                                      logger.info(f"Deleted expired index: {index_name}")
+                              except Exception as e:
+                                  logger.error(f"Error deleting index {index_name}: {str(e)}")
+              
+              if __name__ == "__main__":
+                  manager = AuditRetentionManager()
+                  manager.manage_retention()
+              EOF
+              
+              python /app/retention_manager.py
+            env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: secret-access-key
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "200m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL

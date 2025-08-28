@@ -14,7 +14,7 @@ const testServer = () => {
     return new Promise((resolve, reject) => {
         // Test with local server
         console.log('1. Testing local server...');
-        
+
         const serverPath = join(__dirname, 'dist', 'mcp-server.js');
         const child = spawn('node', [serverPath], {
             stdio: ['pipe', 'pipe', 'pipe']
@@ -36,13 +36,13 @@ const testServer = () => {
         // Send MCP initialization
         setTimeout(() => {
             console.log('2. Sending MCP tools/list request...');
-            const request = JSON.stringify({"jsonrpc":"2.0","method":"tools/list","id":1}) + '\n';
+            const request = JSON.stringify({ "jsonrpc": "2.0", "method": "tools/list", "id": 1 }) + '\n';
             child.stdin.write(request);
-            
+
             setTimeout(() => {
                 console.log('3. Sending second request...');
                 child.stdin.write(request);
-                
+
                 setTimeout(() => {
                     child.kill();
                     console.log('4. Final Results:');

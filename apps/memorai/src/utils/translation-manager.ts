@@ -387,8 +387,8 @@ export class TranslationManager {
    */
   private isPlaceholderValue(value: string, key: string): boolean {
     const placeholderPatterns = [
-      /^[TRANSLATE:/i,
-      /^[TODO:/i,
+      /^\[TRANSLATE:/i,
+      /^\[TODO:/i,
       /^TODO:/i,
       new RegExp(`^${key}$`, 'i'),
       /^\s*$/

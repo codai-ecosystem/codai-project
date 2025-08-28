@@ -1,0 +1,317 @@
+# Environment-Specific Deployment Configurations
+# MemorAI MCP Server v9.5.0 - Phase 6 Task 9
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai-mcp-development
+  namespace: memorai-development
+  labels:
+    app: memorai-mcp
+    environment: development
+    version: v9.5.0
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: memorai-mcp
+      environment: development
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp
+        environment: development
+        version: v9.5.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4950"
+    spec:
+      serviceAccountName: memorai-mcp-development
+      containers:
+      - name: memorai-mcp
+        image: memorai/mcp-server:v9.5.0-dev
+        ports:
+        - containerPort: 4950
+          name: http
+        envFrom:
+        - configMapRef:
+            name: memorai-env-config-development
+        - secretRef:
+            name: memorai-secrets-development
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4950
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4950
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+        volumeMounts:
+        - name: temp-storage
+          mountPath: /tmp
+      volumes:
+      - name: temp-storage
+        emptyDir: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai-mcp-staging
+  namespace: memorai-staging
+  labels:
+    app: memorai-mcp
+    environment: staging
+    version: v9.5.0
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: memorai-mcp
+      environment: staging
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp
+        environment: staging
+        version: v9.5.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4950"
+    spec:
+      serviceAccountName: memorai-mcp-staging
+      containers:
+      - name: memorai-mcp
+        image: memorai/mcp-server:v9.5.0-staging
+        ports:
+        - containerPort: 4950
+          name: http
+        envFrom:
+        - configMapRef:
+            name: memorai-env-config-staging
+        - secretRef:
+            name: memorai-secrets-staging
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4950
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4950
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+        volumeMounts:
+        - name: temp-storage
+          mountPath: /tmp
+        - name: cache-storage
+          mountPath: /app/cache
+      volumes:
+      - name: temp-storage
+        emptyDir: {}
+      - name: cache-storage
+        persistentVolumeClaim:
+          claimName: memorai-cache-staging
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai-mcp-production
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    environment: production
+    version: v9.5.0
+spec:
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  selector:
+    matchLabels:
+      app: memorai-mcp
+      environment: production
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp
+        environment: production
+        version: v9.5.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4950"
+    spec:
+      serviceAccountName: memorai-mcp-production
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - memorai-mcp
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: memorai-mcp
+        image: memorai/mcp-server:v9.5.0
+        ports:
+        - containerPort: 4950
+          name: http
+        envFrom:
+        - configMapRef:
+            name: memorai-env-config-production
+        - secretRef:
+            name: memorai-secrets-production
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4950
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4950
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: temp-storage
+          mountPath: /tmp
+        - name: cache-storage
+          mountPath: /app/cache
+        - name: audit-logs
+          mountPath: /app/logs
+      volumes:
+      - name: temp-storage
+        emptyDir: {}
+      - name: cache-storage
+        persistentVolumeClaim:
+          claimName: memorai-cache-production
+      - name: audit-logs
+        persistentVolumeClaim:
+          claimName: memorai-audit-logs-production
+
+---
+# Development Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-mcp-service-dev
+  namespace: memorai-development
+  labels:
+    app: memorai-mcp
+    environment: development
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4950
+    targetPort: 4950
+    protocol: TCP
+    name: http
+  selector:
+    app: memorai-mcp
+    environment: development
+
+---
+# Staging Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-mcp-service-staging
+  namespace: memorai-staging
+  labels:
+    app: memorai-mcp
+    environment: staging
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4950
+    targetPort: 4950
+    protocol: TCP
+    name: http
+  selector:
+    app: memorai-mcp
+    environment: staging
+
+---
+# Production Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-mcp-service-prod
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    environment: production
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4950
+    targetPort: 4950
+    protocol: TCP
+    name: http
+  selector:
+    app: memorai-mcp
+    environment: production

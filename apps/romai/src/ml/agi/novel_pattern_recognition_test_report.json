@@ -1,0 +1,173 @@
+{
+  "test_summary": {
+    "total_tests": 10,
+    "successful_tests": 6,
+    "success_rate": 0.6,
+    "overall_success": false
+  },
+  "performance_metrics": {
+    "average_accuracy": 0.652536939131057,
+    "average_latency_ms": 0.8356107076009114,
+    "accuracy_target": 0.8,
+    "latency_target_ms": 100.0,
+    "accuracy_acceptable": "False",
+    "latency_acceptable": "True"
+  },
+  "detailed_results": [
+    {
+      "test_name": "test_pattern_encoding_accuracy",
+      "success": false,
+      "accuracy_score": 0.0,
+      "latency_ms": 0.0,
+      "memory_usage_mb": 0.0,
+      "details": {
+        "error": "operands could not be broadcast together with shapes (3,3) (9,) "
+      }
+    },
+    {
+      "test_name": "test_visual_pattern_recognition",
+      "success": false,
+      "accuracy_score": 0.0,
+      "latency_ms": 0.0,
+      "memory_usage_mb": 0.0,
+      "details": {
+        "error": "operands could not be broadcast together with shapes (3,3) (9,) "
+      }
+    },
+    {
+      "test_name": "linguistic_pattern_recognition",
+      "success": [
+        [
+          "LIN_6ecc27bb_20250827222046",
+          0.9996680430408517
+        ],
+        [
+          "LIN_39818379_20250827222046",
+          0.9936674713233746
+        ],
+        [
+          "LIN_5e82dc83_20250827222046",
+          0.9935201637972181
+        ],
+        [
+          "LIN_e97218f2_20250827222046",
+          0.9865196187850676
+        ],
+        [
+          "LIN_4cc78cf1_20250827222046",
+          0.9379603681759563
+        ]
+      ],
+      "accuracy_score": 0.6929105528428172,
+      "latency_ms": 0.9963035583496094,
+      "memory_usage_mb": 0.0,
+      "details": {
+        "texts_tested": 5,
+        "average_confidence": 0.6929105528428172,
+        "similarity_detection": true
+      }
+    },
+    {
+      "test_name": "novelty_assessment",
+      "success": false,
+      "accuracy_score": 0.5,
+      "latency_ms": 0.0,
+      "memory_usage_mb": 0.0,
+      "details": {
+        "detection_accuracy": 0.5,
+        "avg_novelty_score": -0.07389898244892623,
+        "test_cases": 4,
+        "correct_predictions": 2
+      }
+    },
+    {
+      "test_name": "adaptation_strategy_selection",
+      "success": true,
+      "accuracy_score": 0.75,
+      "latency_ms": 0.0,
+      "memory_usage_mb": 0.0,
+      "details": {
+        "selection_accuracy": 0.75,
+        "scenarios_tested": 4,
+        "correct_selections": 3
+      }
+    },
+    {
+      "test_name": "analogical_reasoning",
+      "success": true,
+      "accuracy_score": 0.7498165975682275,
+      "latency_ms": 0.9171962738037109,
+      "memory_usage_mb": 0.0,
+      "details": {
+        "used_analogy": true,
+        "similarity_matches": 3,
+        "confidence_score": 0.7498165975682275,
+        "explanation": "Analogical reasoning: Found 1.00 similarity with pattern LIN_270cba82_20250827222046 from natural_phenomena domain"
+      }
+    },
+    {
+      "test_name": "zero_shot_generalization",
+      "success": "True",
+      "accuracy_score": 0.9308946419269167,
+      "latency_ms": 0.7900396982828776,
+      "memory_usage_mb": 0.0,
+      "details": {
+        "test_cases": 3,
+        "avg_generalization_score": 0.9308946419269167,
+        "individual_scores": [
+          0.8953502694475588,
+          0.9582642692329624,
+          0.939069387100229
+        ]
+      }
+    },
+    {
+      "test_name": "cross_domain_transfer",
+      "success": "True",
+      "accuracy_score": 0.924136781579438,
+      "latency_ms": 0.7905960083007812,
+      "memory_usage_mb": 0.0,
+      "details": {
+        "source_domain": "animal_behavior",
+        "target_domain": "technical_systems",
+        "transfer_effectiveness": 0.924136781579438,
+        "individual_scores": [
+          0.8745510465909871,
+          0.9488797335659835,
+          0.9489795645813435
+        ]
+      }
+    },
+    {
+      "test_name": "memory_efficiency",
+      "success": true,
+      "accuracy_score": 0.02,
+      "latency_ms": 0.6839179992675781,
+      "memory_usage_mb": 0.003,
+      "details": {
+        "patterns_processed": 150,
+        "patterns_stored": 3,
+        "memory_cleanup_occurred": true,
+        "avg_processing_time_ms": 0.6839179992675781,
+        "retrieval_time_ms": 0.4620552062988281
+      }
+    },
+    {
+      "test_name": "test_real_time_performance",
+      "success": false,
+      "accuracy_score": 0.0,
+      "latency_ms": 0.0,
+      "memory_usage_mb": 0.0,
+      "details": {
+        "error": "operands could not be broadcast together with shapes (3,3) (9,) "
+      }
+    }
+  ],
+  "recommendations": [
+    "\ud83d\udd27 Review failed test cases and implement fixes",
+    "\ud83d\udcda Consider adjusting pattern recognition parameters",
+    "\ud83c\udfaf Improve pattern encoding and similarity matching",
+    "\ud83e\udde0 Enhance adaptation strategy selection logic",
+    "\ud83d\udcca Increase training data diversity"
+  ]
+}

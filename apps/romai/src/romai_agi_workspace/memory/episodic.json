@@ -1,0 +1,492 @@
+[
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:15:13.219560",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:15:13.288553",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.300, Efficiency: 0.295",
+    "timestamp": "2025-08-27T10:15:13.291665",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:15:40.269972",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:15:40.331445",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.300, Efficiency: 0.295",
+    "timestamp": "2025-08-27T10:15:40.333514",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Optimize memory usage and implement resource-aware computation. Rationale: Efficiency critically low - need basic resource management. Target area: efficiency (current score: 0.295)",
+    "timestamp": "2025-08-27T10:15:40.336239",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "efficiency",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:15:50.464623",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.310, Efficiency: 0.507",
+    "timestamp": "2025-08-27T10:15:50.467545",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.310)",
+    "timestamp": "2025-08-27T10:15:50.471595",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:16:00.601154",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.317, Efficiency: 0.655",
+    "timestamp": "2025-08-27T10:16:00.602809",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.317)",
+    "timestamp": "2025-08-27T10:16:00.606183",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:16:10.714484",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.322, Efficiency: 0.758",
+    "timestamp": "2025-08-27T10:16:10.716429",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.322)",
+    "timestamp": "2025-08-27T10:16:10.718673",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:16:20.856015",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.325, Efficiency: 0.829",
+    "timestamp": "2025-08-27T10:16:20.857682",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:18:51.908213",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:18:51.975095",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.300, Efficiency: 0.295",
+    "timestamp": "2025-08-27T10:18:51.977904",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:24:53.572037",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:24:53.637638",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.300, Efficiency: 0.295",
+    "timestamp": "2025-08-27T10:24:53.639883",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Optimize memory usage and implement resource-aware computation. Rationale: Efficiency critically low - need basic resource management. Target area: efficiency (current score: 0.295)",
+    "timestamp": "2025-08-27T10:24:53.641905",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "efficiency",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:25:08.803533",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.310, Efficiency: 0.506",
+    "timestamp": "2025-08-27T10:25:08.805615",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.310)",
+    "timestamp": "2025-08-27T10:25:08.808122",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:25:23.991155",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.317, Efficiency: 0.654",
+    "timestamp": "2025-08-27T10:25:23.992797",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.317)",
+    "timestamp": "2025-08-27T10:25:23.995392",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:25:39.130624",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.322, Efficiency: 0.758",
+    "timestamp": "2025-08-27T10:25:39.132938",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.322)",
+    "timestamp": "2025-08-27T10:25:39.135193",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:25:54.262409",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.325, Efficiency: 0.831",
+    "timestamp": "2025-08-27T10:25:54.264447",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.325)",
+    "timestamp": "2025-08-27T10:25:54.266783",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:26:09.400223",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.428, Efficiency: 0.881",
+    "timestamp": "2025-08-27T10:26:09.402831",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.428)",
+    "timestamp": "2025-08-27T10:26:09.405870",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:26:24.579164",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.499, Efficiency: 0.917",
+    "timestamp": "2025-08-27T10:26:24.581212",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.499)",
+    "timestamp": "2025-08-27T10:26:24.583211",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:26:39.762326",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.550, Efficiency: 0.942",
+    "timestamp": "2025-08-27T10:26:39.764273",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.550)",
+    "timestamp": "2025-08-27T10:26:39.766506",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:26:54.943048",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.585, Efficiency: 0.959",
+    "timestamp": "2025-08-27T10:26:54.944899",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Critical growth task proposed: Implement goal-setting and multi-step plan execution. Rationale: Building autonomy - need self-directed behavior. Target area: autonomy (current score: 0.585)",
+    "timestamp": "2025-08-27T10:26:54.947496",
+    "importance_score": 0.95,
+    "tags": [
+      "growth_task",
+      "critical",
+      "autonomy",
+      "self_improvement"
+    ]
+  },
+  {
+    "type": "episodic",
+    "content": "Test memory entry",
+    "timestamp": "2025-08-27T10:27:10.129381",
+    "importance_score": 0.8,
+    "tags": []
+  },
+  {
+    "type": "episodic",
+    "content": "Self-improvement cycle completed. Intelligence: 1.000, Autonomy: 0.609, Efficiency: 0.971",
+    "timestamp": "2025-08-27T10:27:10.130913",
+    "importance_score": 0.9,
+    "tags": [
+      "self_improvement",
+      "benchmark",
+      "growth"
+    ]
+  }
+]

@@ -9,7 +9,7 @@ import { ApiResponse } from '@/types/memory';
 
 export async function POST(
     request: NextRequest
-): Promise<NextResponse<ApiResponse<{ cleared: boolean; timestamp: string }>>> {
+): Promise<NextResponse<any>> {
     try {
         // Clear different types of cache
         const results = {

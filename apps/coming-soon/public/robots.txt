@@ -1,0 +1,66 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://codai.ro/sitemap.xml
+
+# Allow all crawlers access to CSS & JS
+Allow: /_next/static/
+Allow: /icons/
+Allow: /images/
+Allow: /fonts/
+
+# Block sensitive areas
+Disallow: /api/
+Disallow: /_next/webpack-hmr
+Disallow: /test
+
+# Crawl-delay (optional, in seconds)
+Crawl-delay: 1
+
+# Specific bot configurations
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 3
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Block abusive bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

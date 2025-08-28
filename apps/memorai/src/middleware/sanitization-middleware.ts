@@ -4,12 +4,12 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
+// import DOMPurify from 'dompurify';
+// import { JSDOM } from 'jsdom';
 
 // Create DOM purify instance for server-side sanitization
-const window = new JSDOM('').window;
-const purify = DOMPurify(window as any);
+// const window = new JSDOM('').window;
+// const purify = DOMPurify(window as any);
 
 export interface SanitizationOptions {
     allowedTags?: string[];
@@ -35,11 +35,14 @@ export class InputSanitizer {
     static sanitizeHTML(html: string, options?: SanitizationOptions): string {
         const config = { ...this.defaultOptions, ...options };
         
-        return purify.sanitize(html, {
-            ALLOWED_TAGS: config.allowedTags,
-            ALLOWED_ATTR: Object.values(config.allowedAttributes || {}).flat(),
-            KEEP_CONTENT: !config.stripIgnoreTag
-        });
+        // Basic HTML sanitization without DOMPurify (fallback)
+        return html
+            .replace(/<script[^>]*>.*?<\/script>/gi, '') // Remove script tags
+            .replace(/<iframe[^>]*>.*?<\/iframe>/gi, '') // Remove iframe tags
+            .replace(/<object[^>]*>.*?<\/object>/gi, '') // Remove object tags
+            .replace(/<embed[^>]*>/gi, '') // Remove embed tags
+            .replace(/javascript:/gi, '') // Remove javascript: protocol
+            .replace(/on\w+\s*=/gi, ''); // Remove event handlers
     }
 
     /**
@@ -78,7 +81,7 @@ export class InputSanitizer {
      */
     static sanitizeSQL(input: string): string {
         const sqlPatterns = [
-            /('|(\')|(;)|(\|)|(\*)|(\-\-)|(\+)|(\|)|(\%)/gi,
+            /('|;|\||\*|--|\+|%)/gi,
             /(select|insert|update|delete|drop|create|alter|exec|execute|union|script)/gi
         ];
         

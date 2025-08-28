@@ -1,0 +1,92 @@
+{
+  "name": "@codai/cautai-mcp",
+  "version": "1.0.0",
+  "description": "Cautai MCP Server Core - AI-first search engine with Model Context Protocol integration",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.mjs",
+      "require": "./dist/server.js"
+    },
+    "./tools": {
+      "types": "./dist/tools/index.d.ts",
+      "import": "./dist/tools/index.mjs",
+      "require": "./dist/tools/index.js"
+    }
+  },
+  "scripts": {
+    "build": "unbuild",
+    "build:watch": "unbuild --watch",
+    "dev": "tsx src/server.ts",
+    "start:mcp": "tsx src/standalone-server.ts",
+    "start:http": "tsx src/mcp-http-server.ts",
+    "test": "vitest run --reporter=verbose",
+    "test:unit": "vitest run --reporter=verbose",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "search-engine",
+    "ai-search",
+    "cautai",
+    "typescript"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.4",
+    "fast-xml-parser": "^4.3.5",
+    "cheerio": "^1.0.0-rc.12",
+    "node-fetch": "^3.3.2",
+    "robots-parser": "^3.0.1",
+    "sitemap": "^7.1.1",
+    "pdfjs-dist": "^4.0.269",
+    "compromise": "^14.13.0",
+    "natural": "^6.12.0",
+    "express": "^4.18.2",
+    "chalk": "^5.3.0",
+    "debug": "^4.3.4",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.10",
+    "@types/cheerio": "^0.22.31",
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/debug": "^4.1.12",
+    "typescript": "^5.9.2",
+    "tsx": "^4.7.1",
+    "unbuild": "^2.0.0",
+    "vitest": "^1.2.2",
+    "@vitest/coverage-v8": "^1.2.2",
+    "rimraf": "^5.0.5",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

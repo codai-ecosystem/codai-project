@@ -1,0 +1,176 @@
+{
+  "navigation": {
+    "hero": "Home",
+    "ecosystem": "Ecosystem", 
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact",
+    "menu": "Menu",
+    "theme": "Theme",
+    "language": "Language",
+    "get_started": "Get Started",
+    "open_menu": "Open menu",
+    "skip_to_main": "Skip to main content",
+    "submenu": {
+      "ai": "AI & Machine Learning",
+      "financial": "Financial Services",
+      "development": "Development Tools", 
+      "infrastructure": "Infrastructure",
+      "admin": "Administration"
+    }
+  },
+  "hero": {
+    "title": "The Future of AI Development",
+    "subtitle": "CODAI Ecosystem",
+    "description": "Discover the next generation of AI-powered development tools and platforms designed to transform how we build, deploy, and scale intelligent applications.",
+    "cta": {
+      "primary": "Explore Ecosystem",
+      "secondary": "View Projects"
+    },
+    "stats": {
+      "projects": "Active Projects",
+      "services": "Microservices",
+      "users": "Users",
+      "uptime": "Uptime"
+    }
+  },
+  "ecosystem": {
+    "title": "Interconnected AI Ecosystem",
+    "subtitle": "Powering the Next Generation",
+    "description": "Our comprehensive ecosystem of AI services, tools, and platforms work together to create seamless development experiences.",
+    "categories": {
+      "ai": {
+        "title": "AI & ML",
+        "description": "Advanced artificial intelligence and machine learning solutions"
+      },
+      "blockchain": {
+        "title": "Blockchain",
+        "description": "Secure and transparent blockchain technologies"
+      },
+      "security": {
+        "title": "Security",
+        "description": "Enterprise-grade security and compliance tools"
+      },
+      "automation": {
+        "title": "Automation",
+        "description": "Intelligent automation and orchestration"
+      }
+    }
+  },
+  "projects": {
+    "title": "Our Projects",
+    "subtitle": "Building the Future",
+    "description": "Explore our comprehensive suite of projects spanning AI, blockchain, security, and automation technologies.",
+    "categories": {
+      "ai_platform": {
+        "title": "AI Platform",
+        "description": "Core artificial intelligence platform and services"
+      },
+      "development_tools": {
+        "title": "Development Tools",
+        "description": "Advanced development and deployment tools"
+      },
+      "enterprise_solutions": {
+        "title": "Enterprise Solutions",
+        "description": "Scalable enterprise-grade applications"
+      },
+      "specialized_apps": {
+        "title": "Specialized Applications",
+        "description": "Domain-specific intelligent applications"
+      }
+    },
+    "details": {
+      "techStack": "Tech Stack",
+      "status": "Status",
+      "learnMore": "Learn More",
+      "comingSoon": "Coming Soon",
+      "inDevelopment": "In Development",
+      "beta": "Beta",
+      "production": "Production"
+    }
+  },
+  "footer": {
+    "title": "CODAI Ecosystem",
+    "description": "Building the future of AI-powered development.",
+    "sections": {
+      "products": {
+        "title": "Products",
+        "links": {
+          "platform": "AI Platform",
+          "tools": "Development Tools",
+          "enterprise": "Enterprise Solutions"
+        }
+      },
+      "company": {
+        "title": "Company",
+        "links": {
+          "about": "About Us",
+          "careers": "Careers",
+          "contact": "Contact"
+        }
+      },
+      "resources": {
+        "title": "Resources",
+        "links": {
+          "documentation": "Documentation",
+          "support": "Support",
+          "community": "Community"
+        }
+      },
+      "legal": {
+        "title": "Legal",
+        "links": {
+          "privacy": "Privacy Policy",
+          "terms": "Terms of Service",
+          "cookies": "Cookie Policy"
+        }
+      }
+    },
+    "social": {
+      "github": "GitHub",
+      "twitter": "Twitter",
+      "linkedin": "LinkedIn"
+    },
+    "copyright": "© {{year}} CODAI. All rights reserved.",
+    "madeWith": "Made with ❤️ by the CODAI team"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light mode",
+    "dark": "Dark mode",
+    "system": "System"
+  },
+  "language": {
+    "toggle": "Change language",
+    "english": "English",
+    "romanian": "Română"
+  },
+  "accessibility": {
+    "skipToMain": "Skip to main content",
+    "menu": "Main menu",
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu"
+  },
+  "loading": {
+    "title": "Loading...",
+    "ecosystem": "Loading ecosystem...",
+    "projects": "Loading projects..."
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "notFound": "Page not found."
+  },
+  "social": {
+    "followUs": "Follow CODAI",
+    "followDescription": "Stay updated with our latest developments and AI innovations across all platforms",
+    "shareThis": "Share This Page",
+    "communitySupport": "Community & Growth",
+    "github": "Open Source Projects",
+    "linkedin": "Professional Network",
+    "twitter": "Latest Updates",
+    "youtube": "Video Content",
+    "instagram": "Visual Stories",
+    "facebook": "Community Discussions"
+  }
+}

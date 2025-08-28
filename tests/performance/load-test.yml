@@ -1,0 +1,159 @@
+config:
+  target: 'http://localhost:3001'
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      name: "Warm-up phase"
+    - duration: 120
+      arrivalRate: 50
+      name: "Ramp-up load"
+    - duration: 300
+      arrivalRate: 100
+      name: "Sustained load"
+    - duration: 60
+      arrivalRate: 200
+      name: "Peak load"
+  processor: "./load-test-processor.js"
+  
+scenarios:
+  - name: "Basic Search Flow"
+    weight: 70
+    flow:
+      - get:
+          url: "/"
+          capture:
+            - json: "$.csrfToken"
+              as: "csrfToken"
+      - think: 2
+      - post:
+          url: "/api/search"
+          headers:
+            Content-Type: "application/json"
+            X-CSRF-Token: "{{ csrfToken }}"
+          json:
+            query: "{{ $randomSearchQuery() }}"
+            maxResults: 10
+            language: "en"
+          capture:
+            - json: "$.results.length"
+              as: "resultCount"
+      - think: 3
+      - get:
+          url: "/api/search/{{ $randomString() }}"
+          ifTrue: "{{ resultCount > 0 }}"
+
+  - name: "Advanced Search with Filters"
+    weight: 20
+    flow:
+      - get:
+          url: "/"
+      - think: 1
+      - post:
+          url: "/api/search"
+          headers:
+            Content-Type: "application/json"
+          json:
+            query: "{{ $randomAdvancedQuery() }}"
+            maxResults: 20
+            language: "{{ $randomLanguage() }}"
+            filters:
+              type: "{{ $randomContentType() }}"
+              dateRange: "{{ $randomDateRange() }}"
+      - think: 5
+
+  - name: "Compose Results"
+    weight: 8
+    flow:
+      - post:
+          url: "/api/search"
+          headers:
+            Content-Type: "application/json"
+          json:
+            query: "{{ $randomCompositionQuery() }}"
+            maxResults: 5
+          capture:
+            - json: "$.results"
+              as: "searchResults"
+      - think: 2
+      - post:
+          url: "/api/compose"
+          headers:
+            Content-Type: "application/json"
+          json:
+            results: "{{ searchResults }}"
+            query: "{{ $randomCompositionQuery() }}"
+            style: "{{ $randomCompositionStyle() }}"
+      - think: 3
+
+  - name: "Citation Generation"
+    weight: 2
+    flow:
+      - post:
+          url: "/api/search"
+          headers:
+            Content-Type: "application/json"
+          json:
+            query: "research papers"
+            maxResults: 3
+          capture:
+            - json: "$.results"
+              as: "sources"
+      - think: 1
+      - post:
+          url: "/api/cite"
+          headers:
+            Content-Type: "application/json"
+          json:
+            sources: "{{ sources }}"
+            style: "{{ $randomCitationStyle() }}"
+
+# Custom metrics
+metrics:
+  - search_response_time
+  - compose_response_time  
+  - citation_response_time
+  - error_rate
+  - results_per_query
+
+# Performance expectations
+expect:
+  - http.response_time:
+      p95: 500  # 95% of requests under 500ms
+      p99: 1000 # 99% of requests under 1000ms
+  - http.codes.200: 95%  # 95% success rate
+  - http.codes.4xx: 5%   # Max 5% client errors
+  - http.codes.5xx: 1%   # Max 1% server errors
+
+# Additional monitoring
+plugins:
+  - expect: {}
+  - metrics-by-endpoint: {}
+  - publish-metrics:
+      - type: cloudwatch
+        region: us-east-1
+
+# Environment variables for different test environments
+environments:
+  development:
+    target: 'http://localhost:3001'
+    phases:
+      - duration: 30
+        arrivalRate: 5
+  
+  staging:
+    target: 'https://staging.romcp.ro'
+    phases:
+      - duration: 60
+        arrivalRate: 20
+      - duration: 120
+        arrivalRate: 50
+  
+  production:
+    target: 'https://romcp.ro'
+    phases:
+      - duration: 120
+        arrivalRate: 100
+      - duration: 300
+        arrivalRate: 200
+      - duration: 60
+        arrivalRate: 500

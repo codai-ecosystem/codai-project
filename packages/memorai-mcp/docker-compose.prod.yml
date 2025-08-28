@@ -1,0 +1,315 @@
+# MemorAI MCP Server - Production Docker Compose Configuration
+# Enterprise-grade deployment with monitoring, logging, and scalability
+
+version: '3.8'
+
+services:
+  # MemorAI MCP Server - Main Application
+  memorai-mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_DATE: ${BUILD_DATE:-$(date -u +"%Y-%m-%dT%H:%M:%SZ")}
+        VCS_REF: ${VCS_REF:-$(git rev-parse HEAD)}
+        VERSION: ${VERSION:-9.5.0}
+      target: production
+    image: codai/memorai-mcp-server:${VERSION:-9.5.0}
+    container_name: memorai-mcp-production
+    restart: unless-stopped
+    
+    # Resource limits for production
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 4G
+        reservations:
+          cpus: '2.0'
+          memory: 2G
+    
+    # Environment configuration
+    environment:
+      - NODE_ENV=production
+      - PORT=4950
+      - MEMORAI_MCP_PORT=4950
+      - MEMORAI_LOG_LEVEL=info
+      - MEMORAI_DEBUG=false
+      - MEMORY_LIMIT_MB=3584
+      
+      # Database connections
+      - CBD_BASE_URL=http://cbd-database:4180
+      - REDIS_URL=redis://redis-cache:6379
+      - POSTGRES_URL=postgresql://memorai:${POSTGRES_PASSWORD:-secure_password}@postgresql-db:5432/memorai_production
+      
+      # AI Integration
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-text-embedding-3-large}
+      - AZURE_OPENAI_API_VERSION=2024-02-01
+      
+      # Security
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-$(openssl rand -base64 32)}
+      - JWT_SECRET=${JWT_SECRET:-$(openssl rand -base64 64)}
+      
+      # Performance
+      - NODE_OPTIONS=--max-old-space-size=3584 --enable-source-maps
+      - HEALTH_CHECK_TIMEOUT=15000
+      - GRACEFUL_SHUTDOWN_TIMEOUT=20000
+      
+      # Monitoring
+      - ENABLE_METRICS=true
+      - PROMETHEUS_PORT=9090
+      - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    
+    # Port mappings
+    ports:
+      - "4950:4950"    # Main MCP server
+      - "9090:9090"    # Prometheus metrics
+    
+    # Volume mounts
+    volumes:
+      - memorai-data:/app/data
+      - memorai-logs:/app/logs
+      - memorai-cache:/app/.cache
+      - ./config/production:/app/config:ro
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "./health-check.sh"]
+      interval: 30s
+      timeout: 15s
+      start_period: 60s
+      retries: 3
+    
+    # Dependencies
+    depends_on:
+      postgresql-db:
+        condition: service_healthy
+      redis-cache:
+        condition: service_healthy
+      cbd-database:
+        condition: service_healthy
+    
+    # Network
+    networks:
+      - memorai-network
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+        labels: "service=memorai-mcp,env=production"
+
+  # PostgreSQL Database
+  postgresql-db:
+    image: postgres:15-alpine
+    container_name: memorai-postgresql-production
+    restart: unless-stopped
+    
+    environment:
+      - POSTGRES_DB=memorai_production
+      - POSTGRES_USER=memorai
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-secure_password}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+      - ./docker/init-scripts:/docker-entrypoint-initdb.d:ro
+    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U memorai -d memorai_production"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+    networks:
+      - memorai-network
+    
+    # Security hardening
+    security_opt:
+      - no-new-privileges:true
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  # Redis Cache
+  redis-cache:
+    image: redis:7-alpine
+    container_name: memorai-redis-production
+    restart: unless-stopped
+    
+    command: >
+      redis-server 
+      --appendonly yes 
+      --appendfsync everysec 
+      --maxmemory 512mb 
+      --maxmemory-policy allkeys-lru
+      --tcp-keepalive 60
+      --timeout 300
+    
+    volumes:
+      - redis-data:/data
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+    networks:
+      - memorai-network
+    
+    security_opt:
+      - no-new-privileges:true
+
+  # CBD Database Service
+  cbd-database:
+    image: codai/cbd-database:latest
+    container_name: memorai-cbd-production
+    restart: unless-stopped
+    
+    environment:
+      - NODE_ENV=production
+      - PORT=4180
+      - LOG_LEVEL=info
+    
+    volumes:
+      - cbd-data:/app/data
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+    networks:
+      - memorai-network
+
+  # Monitoring Stack
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: memorai-prometheus-production
+    restart: unless-stopped
+    
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    
+    ports:
+      - "9091:9090"
+    
+    networks:
+      - memorai-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: memorai-grafana-production
+    restart: unless-stopped
+    
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+      - GF_ANALYTICS_CHECK_FOR_UPDATES=false
+    
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    
+    ports:
+      - "3001:3000"
+    
+    networks:
+      - memorai-network
+    
+    depends_on:
+      - prometheus
+
+  # Reverse Proxy for Load Balancing
+  nginx:
+    image: nginx:alpine
+    container_name: memorai-nginx-production
+    restart: unless-stopped
+    
+    volumes:
+      - ./nginx/production.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl/certificates:/etc/ssl/certificates:ro
+      - nginx-logs:/var/log/nginx
+    
+    ports:
+      - "80:80"
+      - "443:443"
+    
+    depends_on:
+      - memorai-mcp-server
+    
+    networks:
+      - memorai-network
+    
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# Named volumes for persistent data
+volumes:
+  memorai-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/production
+      o: bind
+  
+  memorai-logs:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/logs/production
+      o: bind
+  
+  memorai-cache:
+    driver: local
+  
+  postgresql-data:
+    driver: local
+  
+  redis-data:
+    driver: local
+  
+  cbd-data:
+    driver: local
+  
+  prometheus-data:
+    driver: local
+  
+  grafana-data:
+    driver: local
+  
+  nginx-logs:
+    driver: local
+
+# Networks
+networks:
+  memorai-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+    driver_opts:
+      com.docker.network.bridge.name: memorai-prod

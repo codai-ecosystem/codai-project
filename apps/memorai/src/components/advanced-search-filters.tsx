@@ -74,7 +74,7 @@ export default function AdvancedSearch() {
                 new Set(
                     allMemories
                         .map(m => m.project)
-                        .filter(p => p && p.trim() !== '')
+                        .filter((p): p is string => p != null && p.trim() !== '')
                 )
             ).sort();
 
@@ -82,8 +82,7 @@ export default function AdvancedSearch() {
             const tags = Array.from(
                 new Set(
                     allMemories
-                        .flatMap(m => m.tags || [])
-                        .filter(t => t && t.trim() !== '')
+                        .flatMap(m => (m.tags || []).filter((t): t is string => t != null && t.trim() !== ''))
                 )
             ).sort();
 

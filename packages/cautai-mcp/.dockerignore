@@ -1,0 +1,69 @@
+# CAUTAI MCP HTTP Server Docker ignore
+# Optimizes build context by excluding unnecessary files
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+dist/
+build/
+coverage/
+
+# Development files
+.env
+.env.local
+.env.development
+.env.test
+*.log
+
+# Testing
+tests/
+test/
+__tests__/
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+coverage/
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Linting and formatting
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# TypeScript
+tsconfig.json
+tsconfig.*.json
+
+# Other config files
+docker-compose*.yml
+Dockerfile
+.dockerignore

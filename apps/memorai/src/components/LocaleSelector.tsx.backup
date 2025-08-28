@@ -1,0 +1,607 @@
+'use client';'use client';/**
+
+
+
+import React, { useState } from 'react'; * @fileoverview Locale Selector Component
+
+import { useTranslations } from 'next-intl';
+
+import { ChevronDown } from 'lucide-react';import React, { useState } from 'react'; * @description Language switching component
+
+import { useI18n } from './I18nProvider';
+
+import { useTranslations } from 'next-intl'; */
+
+interface LocaleSelectorProps {
+
+  className?: string;import { ChevronDown } from 'lucide-react';
+
+  variant?: 'dropdown' | 'inline' | 'compact' | 'toggle';
+
+  showFlag?: boolean;import { useI18n } from './I18nProvider';import React, { useState } from 'react';
+
+  showLabel?: boolean;
+
+  placement?: 'top' | 'bottom' | 'left' | 'right';import { useTranslation } from 'react-i18next';
+
+  disabled?: boolean;
+
+}interface LocaleSelectorProps {import { ChevronDownIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+
+
+
+const LocaleSelector: React.FC<LocaleSelectorProps> = ({  className?: string;import { SUPPORTED_LOCALES } from '../../../../i18n/shared-config';
+
+  className = '',
+
+  variant = 'dropdown',  variant?: 'dropdown' | 'inline' | 'compact' | 'toggle';import { useI18n } from './I18nProvider';
+
+  showFlag = true,
+
+  showLabel = true,  showFlag?: boolean;
+
+  placement = 'bottom',
+
+  disabled = false  showLabel?: boolean;interface LocaleSelectorProps {
+
+}) => {
+
+  const t = useTranslations('common');  placement?: 'top' | 'bottom' | 'left' | 'right';  className?: string;
+
+  const { currentLocale, localeConfig, changeLanguage, isLoading } = useI18n();
+
+  const [isOpen, setIsOpen] = useState(false);  disabled?: boolean;  showLabel?: boolean;
+
+
+
+  const handleLanguageChange = async (locale: string) => {}  showFlag?: boolean;
+
+    if (locale === 'en' || locale === 'ro') {
+
+      setIsOpen(false);  variant?: 'dropdown' | 'inline' | 'modal';
+
+      await changeLanguage(locale);
+
+    }/**  placement?: 'top' | 'bottom' | 'left' | 'right';
+
+  };
+
+ * LocaleSelector Component}
+
+  const supportedLocales = Object.entries(localeConfig);
+
+  const currentConfig = localeConfig[currentLocale]; * Provides a UI for switching between supported languages
+
+
+
+  const getFlag = (locale: string) => { * Updated for next-intl compatibilityexport const LocaleSelector: React.FC<LocaleSelectorProps> = ({
+
+    return locale === 'en' ? '🇺🇸' : '🇷🇴';
+
+  }; */  className = '',
+
+
+
+  const getPlacementClasses = () => {const LocaleSelector: React.FC<LocaleSelectorProps> = ({  showLabel = true,
+
+    switch (placement) {
+
+      case 'top': return 'bottom-full mb-2';  className = '',  showFlag = true,
+
+      case 'left': return 'right-full mr-2'; 
+
+      case 'right': return 'left-full ml-2';  variant = 'dropdown',  variant = 'dropdown',
+
+      default: return 'top-full mt-2';
+
+    }  showFlag = true,  placement = 'bottom'
+
+  };
+
+  showLabel = true,}) => {
+
+  if (variant === 'inline') {
+
+    return (  placement = 'bottom',  const { t } = useTranslation('common');
+
+      <div className={`flex flex-wrap gap-2 ${className}`}>
+
+        {supportedLocales.map(([code, locale]) => (  disabled = false  const { currentLocale, localeConfig, changeLanguage, isLoading } = useI18n();
+
+          <button
+
+            key={code}}) => {  const [isOpen, setIsOpen] = useState(false);
+
+            onClick={() => handleLanguageChange(code)}
+
+            disabled={isLoading || disabled}  const t = useTranslations('common');
+
+            className={`
+
+              flex items-center space-x-2 px-3 py-1 rounded-md text-sm  const { currentLocale, localeConfig, changeLanguage, isLoading } = useI18n();  const handleLanguageChange = async (locale: string) => {
+
+              transition-colors duration-200
+
+              ${currentLocale === code  const [isOpen, setIsOpen] = useState(false);    if (locale === 'en' || locale === 'ro') {
+
+                ? 'bg-blue-100 text-blue-800 border border-blue-300'
+
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'      setIsOpen(false);
+
+              }
+
+              ${disabled || isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-sm'}  const handleLanguageChange = async (locale: string) => {      await changeLanguage(locale);
+
+            `}
+
+          >    if (locale === 'en' || locale === 'ro') {    }
+
+            {showFlag && <span className="text-lg">{getFlag(code)}</span>}
+
+            {showLabel && <span>{locale.name}</span>}      setIsOpen(false);  };
+
+          </button>
+
+        ))}      await changeLanguage(locale);
+
+      </div>
+
+    );    }  const supportedLocales = Object.entries(localeConfig);
+
+  }
+
+  };
+
+  return (
+
+    <div className={`relative ${className}`}>  const getCurrentLocaleConfig = () => localeConfig[currentLocale];
+
+      <button
+
+        onClick={() => setIsOpen(!isOpen)}  const supportedLocales = Object.entries(localeConfig);
+
+        disabled={disabled || isLoading}
+
+        className="flex items-center justify-between space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 transition-colors duration-200 hover:bg-gray-50 hover:border-gray-400"  const currentConfig = localeConfig[currentLocale];  if (variant === 'inline') {
+
+      >
+
+        <div className="flex items-center space-x-2">    return (
+
+          {showFlag && <span className="text-lg">{getFlag(currentLocale)}</span>}
+
+          {showLabel && <span>{currentConfig.name}</span>}  const getFlag = (locale: string) => {      <div className={`flex flex-wrap gap-2 ${className}`}>
+
+        </div>
+
+        <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />    return locale === 'en' ? '🇺🇸' : '🇷🇴';        {supportedLocales.map(([code, locale]) => (
+
+      </button>
+
+  };          <button
+
+      {isOpen && (
+
+        <div className={`absolute ${getPlacementClasses()} left-0 z-20 bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-full`}>            key={code}
+
+          {supportedLocales.map(([code, locale]) => (
+
+            <button  const getPlacementClasses = () => {            onClick={() => handleLanguageChange(code)}
+
+              key={code}
+
+              onClick={() => handleLanguageChange(code)}    switch (placement) {            disabled={isLoading}
+
+              disabled={isLoading}
+
+              className={`w-full px-4 py-2 text-left text-sm transition-colors flex items-center justify-between ${currentLocale === code ? 'bg-blue-50 text-blue-700' : 'text-gray-700'} hover:bg-gray-50`}      case 'top': return 'bottom-full mb-2';            className={`
+
+            >
+
+              <div className="flex items-center space-x-2">      case 'left': return 'right-full mr-2';               flex items-center space-x-2 px-3 py-1 rounded-md text-sm
+
+                <span className="text-lg">{getFlag(code)}</span>
+
+                <span>{locale.name}</span>      case 'right': return 'left-full ml-2';              transition-colors duration-200
+
+              </div>
+
+              {currentLocale === code && (      default: return 'top-full mt-2';              ${currentLocale === code
+
+                <span className="text-blue-600">✓</span>
+
+              )}    }                ? 'bg-blue-100 text-blue-800 border border-blue-300'
+
+            </button>
+
+          ))}  };                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
+
+        </div>
+
+      )}              }
+
+    </div>
+
+  );  if (variant === 'inline') {              ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-sm'}
+
+};
+
+    return (            `}
+
+export default LocaleSelector;
+      <div className={`flex flex-wrap gap-2 ${className}`}>          >
+
+        {supportedLocales.map(([code, locale]) => (            {showFlag && <span className="text-lg">🌍</span>}
+
+          <button            {showLabel && <span>{locale.name}</span>}
+
+            key={code}          </button>
+
+            onClick={() => handleLanguageChange(code)}        ))}
+
+            disabled={isLoading || disabled}      </div>
+
+            className={`    );  if (variant === 'modal') {
+
+              flex items-center space-x-2 px-3 py-1 rounded-md text-sm    return (
+
+              transition-colors duration-200      <>
+
+              ${currentLocale === code        <button
+
+                ? 'bg-blue-100 text-blue-800 border border-blue-300'          onClick={() => setIsOpen(true)}
+
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'          disabled={isLoading}
+
+              }          className={`
+
+              ${disabled || isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-sm'}            flex items-center space-x-2 px-4 py-2 rounded-lg
+
+            `}            bg-white border border-gray-300 shadow-sm
+
+          >            hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500
+
+            {showFlag && <span className="text-lg">{getFlag(code)}</span>}            transition-colors duration-200
+
+            {showLabel && <span>{locale.name}</span>}            ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+
+          </button>            ${className}
+
+        ))}          `}
+
+      </div>        >
+
+    );          {showFlag && <span className="text-lg">{currentLocale.flag}</span>}
+
+  }          <GlobeAltIcon className="w-4 h-4" />
+
+          {showLabel && <span>{currentLocale.nativeName}</span>}
+
+  if (variant === 'compact') {          <ChevronDownIcon className="w-4 h-4" />
+
+    return (        </button>
+
+      <button
+
+        onClick={() => setIsOpen(!isOpen)}        {isOpen && (
+
+        disabled={disabled || isLoading}          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+        className={`            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-96 overflow-y-auto">
+
+          relative inline-flex items-center space-x-1 px-2 py-1 rounded-md              <div className="flex justify-between items-center mb-4">
+
+          text-sm font-medium transition-colors duration-200                <h3 className="text-lg font-semibold">{t('language')}</h3>
+
+          ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}                <button
+
+          ${className}                  onClick={() => setIsOpen(false)}
+
+        `}                  className="text-gray-500 hover:text-gray-700"
+
+      >                >
+
+        {showFlag && <span className="text-lg">{getFlag(currentLocale)}</span>}                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+        {showLabel && <span className="text-sm font-medium">{currentConfig.name}</span>}                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+
+        <ChevronDown size={14} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />                  </svg>
+
+                        </button>
+
+        {isOpen && (              </div>
+
+          <div              <div className="grid grid-cols-1 gap-2">
+
+            className={`                {Object.entries(supportedLocales).map(([code, locale]) => (
+
+              absolute ${getPlacementClasses()} left-0 z-20                  <button
+
+              bg-white border border-gray-200 rounded-lg shadow-lg                    key={code}
+
+              py-1 min-w-[120px]                    onClick={() => handleLanguageChange(code)}
+
+            `}                    className={`
+
+          >                      flex items-center space-x-3 px-4 py-3 rounded-lg
+
+            {supportedLocales.map(([code, locale]) => (                      text-left w-full transition-colors duration-200
+
+              <button                      ${currentLocale.code === code
+
+                key={code}                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+
+                onClick={() => handleLanguageChange(code)}                        : 'hover:bg-gray-50 border border-transparent'
+
+                disabled={isLoading}                      }
+
+                className={`                    `}
+
+                  w-full px-3 py-2 text-left text-sm transition-colors                  >
+
+                  flex items-center space-x-2                    <span className="text-2xl">{locale.flag}</span>
+
+                  ${currentLocale === code ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}                    <div>
+
+                  hover:bg-gray-50                      <div className="font-medium">{locale.nativeName}</div>
+
+                `}                      <div className="text-sm text-gray-500">{locale.name}</div>
+
+              >                    </div>
+
+                <span className="text-lg">{getFlag(code)}</span>                    {currentLocale.code === code && (
+
+                <div className="flex-1">                      <div className="ml-auto">
+
+                  <div className="font-medium text-sm">{locale.name}</div>                        <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+
+                </div>                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+
+                {currentLocale === code && (                        </svg>
+
+                  <span className="text-blue-600">✓</span>                      </div>
+
+                )}                    )}
+
+              </button>                  </button>
+
+            ))}                ))}
+
+          </div>              </div>
+
+        )}            </div>
+
+      </button>          </div>
+
+    );        )}
+
+  }      </>
+
+    );
+
+  if (variant === 'toggle') {  }
+
+    return (
+
+      <div className={`flex items-center space-x-2 ${className}`}>  // Default dropdown variant
+
+        {supportedLocales.map(([code, locale]) => (  return (
+
+          <label key={code} className="flex items-center space-x-1 cursor-pointer">    <div className={`relative ${className}`}>
+
+            <input      <button
+
+              type="radio"        onClick={() => setIsOpen(!isOpen)}
+
+              name="locale"        disabled={isLoading}
+
+              value={code}        className={`
+
+              checked={currentLocale === code}          flex items-center space-x-2 px-3 py-2 rounded-lg
+
+              onChange={() => handleLanguageChange(code)}          bg-white border border-gray-300 shadow-sm
+
+              disabled={disabled || isLoading}          hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500
+
+              className="sr-only"          transition-colors duration-200
+
+            />          ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+
+            <div        `}
+
+              className={`      >
+
+                flex items-center space-x-1 px-2 py-1 rounded-md text-sm        {showFlag && <span className="text-lg">{currentLocale.flag}</span>}
+
+                transition-colors duration-200        {showLabel && <span className="text-sm font-medium">{currentLocale.nativeName}</span>}
+
+                ${currentLocale === code        <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+
+                  ? 'bg-blue-600 text-white'      </button>
+
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+
+                }      {isOpen && (
+
+                ${disabled || isLoading ? 'opacity-50 cursor-not-allowed' : ''}        <>
+
+              `}          {/* Backdrop */}
+
+            >          <div
+
+              {showFlag && <span className="text-sm">{getFlag(code)}</span>}            className="fixed inset-0 z-10"
+
+              {showLabel && <span>{locale.name}</span>}            onClick={() => setIsOpen(false)}
+
+            </div>          />
+
+          </label>          
+
+        ))}          {/* Dropdown */}
+
+      </div>          <div className={`
+
+    );            absolute ${getPlacementClasses()} left-0 z-20
+
+  }            bg-white rounded-lg shadow-lg border border-gray-200
+
+            min-w-max max-h-64 overflow-y-auto
+
+  // Default dropdown variant          `}>
+
+  return (            {Object.entries(supportedLocales).map(([code, locale]) => (
+
+    <div className={`relative ${className}`}>              <button
+
+      <button                key={code}
+
+        onClick={() => setIsOpen(!isOpen)}                onClick={() => handleLanguageChange(code)}
+
+        disabled={disabled || isLoading}                className={`
+
+        className={`                  flex items-center space-x-3 px-4 py-2 text-left w-full
+
+          flex items-center justify-between space-x-2 px-4 py-2                  hover:bg-gray-50 transition-colors duration-200
+
+          bg-white border border-gray-300 rounded-lg                  first:rounded-t-lg last:rounded-b-lg
+
+          text-sm font-medium text-gray-700                  ${currentLocale.code === code ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}
+
+          transition-colors duration-200                `}
+
+          ${disabled || isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50 hover:border-gray-400'}              >
+
+        `}                <span className="text-lg">{locale.flag}</span>
+
+      >                <div className="flex-1">
+
+        <div className="flex items-center space-x-2">                  <div className="font-medium text-sm">{locale.nativeName}</div>
+
+          {showFlag && <span className="text-lg">{getFlag(currentLocale)}</span>}                  <div className="text-xs text-gray-500">{locale.name}</div>
+
+          {showLabel && <span>{currentConfig.name}</span>}                </div>
+
+        </div>                {currentLocale.code === code && (
+
+        <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />                  <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+
+      </button>                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+
+                  </svg>
+
+      {isOpen && (                )}
+
+        <div              </button>
+
+          className={`            ))}
+
+            absolute ${getPlacementClasses()} left-0 z-20          </div>
+
+            bg-white border border-gray-200 rounded-lg shadow-lg        </>
+
+            py-1 min-w-full      )}
+
+          `}    </div>
+
+        >  );
+
+          {supportedLocales.map(([code, locale]) => (};
+
+            <button
+
+              key={code}interface CompactLocaleSelectorProps {
+
+              onClick={() => handleLanguageChange(code)}  className?: string;
+
+              disabled={isLoading}}
+
+              className={`
+
+                w-full px-4 py-2 text-left text-sm transition-colorsexport const CompactLocaleSelector: React.FC<CompactLocaleSelectorProps> = ({
+
+                flex items-center justify-between  className = ''
+
+                ${currentLocale === code ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}}) => {
+
+                hover:bg-gray-50  return (
+
+              `}    <LocaleSelector
+
+            >      className={className}
+
+              <div className="flex items-center space-x-2">      showLabel={false}
+
+                <span className="text-lg">{getFlag(code)}</span>      showFlag={true}
+
+                <span>{locale.name}</span>      variant="dropdown"
+
+              </div>    />
+
+              {currentLocale === code && (  );
+
+                <span className="text-blue-600">✓</span>};
+
+              )}
+
+            </button>interface LocaleSelectorListProps {
+
+          ))}  className?: string;
+
+        </div>  onLanguageChange?: (locale: string) => void;
+
+      )}}
+
+    </div>
+
+  );export const LocaleSelectorList: React.FC<LocaleSelectorListProps> = ({
+
+};  className = '',
+
+  onLanguageChange
+
+export default LocaleSelector;}) => {
+  const { currentLocale, supportedLocales, changeLanguage } = useI18n();
+
+  const handleLanguageChange = async (locale: string) => {
+    await changeLanguage(locale);
+    onLanguageChange?.(locale);
+  };
+
+  return (
+    <div className={`space-y-2 ${className}`}>
+      {Object.entries(supportedLocales).map(([code, locale]) => (
+        <label
+          key={code}
+          className="flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded-lg"
+        >
+          <input
+            type="radio"
+            name="language"
+            value={code}
+            checked={currentLocale.code === code}
+            onChange={() => handleLanguageChange(code)}
+            className="sr-only"
+          />
+          <div className={`
+            w-4 h-4 rounded-full border-2 transition-colors duration-200
+            ${currentLocale.code === code
+              ? 'border-blue-600 bg-blue-600'
+              : 'border-gray-300'
+            }
+          `}>
+            {currentLocale.code === code && (
+              <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5" />
+            )}
+          </div>
+          <span className="text-2xl">{locale.flag}</span>
+          <div>
+            <div className="font-medium">{locale.nativeName}</div>
+            <div className="text-sm text-gray-500">{locale.name}</div>
+          </div>
+        </label>
+      ))}
+    </div>
+  );
+};
+
+export default LocaleSelector;

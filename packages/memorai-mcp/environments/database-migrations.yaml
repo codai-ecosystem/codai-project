@@ -1,0 +1,388 @@
+# Database Migration Strategy for MemorAI MCP Server v9.5.0
+# Environment-specific migration configurations
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: memorai-db-migration-development
+  namespace: memorai-development
+  labels:
+    app: memorai-mcp
+    component: database-migration
+    environment: development
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp
+        component: database-migration
+        environment: development
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: db-migration
+        image: memorai/db-migration:v9.5.0
+        env:
+        - name: ENVIRONMENT
+          value: "development"
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: memorai-env-config-development
+              key: CBD_BASE_URL
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: memorai-secrets-development
+              key: DB_PASSWORD
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "🗃️ Starting Database Migration - Development"
+          echo "Environment: development"
+          echo "Target: $DB_HOST"
+          
+          # Check database connectivity
+          npm run db:check || exit 1
+          
+          # Run migrations
+          npm run db:migrate:dev
+          
+          # Seed development data
+          npm run db:seed:dev
+          
+          echo "✅ Development database migration completed"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: memorai-db-migration-staging
+  namespace: memorai-staging
+  labels:
+    app: memorai-mcp
+    component: database-migration
+    environment: staging
+spec:
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp
+        component: database-migration
+        environment: staging
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: db-migration
+        image: memorai/db-migration:v9.5.0
+        env:
+        - name: ENVIRONMENT
+          value: "staging"
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: memorai-env-config-staging
+              key: CBD_BASE_URL
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: memorai-secrets-staging
+              key: DB_PASSWORD
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "🗃️ Starting Database Migration - Staging"
+          echo "Environment: staging"
+          echo "Target: $DB_HOST"
+          
+          # Backup before migration
+          npm run db:backup:staging
+          
+          # Check database connectivity
+          npm run db:check || exit 1
+          
+          # Run migrations with validation
+          npm run db:migrate:staging
+          
+          # Verify migration integrity
+          npm run db:verify:staging
+          
+          # Seed staging data
+          npm run db:seed:staging
+          
+          echo "✅ Staging database migration completed"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: memorai-db-migration-production
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: database-migration
+    environment: production
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp
+        component: database-migration
+        environment: production
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: db-migration
+        image: memorai/db-migration:v9.5.0
+        env:
+        - name: ENVIRONMENT
+          value: "production"
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: memorai-env-config-production
+              key: CBD_BASE_URL
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: memorai-secrets-production
+              key: DB_PASSWORD
+        - name: BACKUP_RETENTION_DAYS
+          value: "30"
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "🗃️ Starting Database Migration - PRODUCTION"
+          echo "Environment: production"
+          echo "Target: $DB_HOST"
+          echo "⚠️ Production migration requires manual approval"
+          
+          # Create comprehensive backup
+          echo "📦 Creating full database backup..."
+          npm run db:backup:production:full
+          
+          # Verify backup integrity
+          echo "🔍 Verifying backup integrity..."
+          npm run db:backup:verify
+          
+          # Check database connectivity and health
+          echo "🏥 Checking database health..."
+          npm run db:health:production || exit 1
+          
+          # Dry run migration
+          echo "🧪 Running migration dry run..."
+          npm run db:migrate:dry-run:production
+          
+          # Wait for manual approval (in production, this would be a manual gate)
+          echo "⏳ Production migration ready - execute with: npm run db:migrate:production"
+          
+          # Actual migration (commented for safety)
+          # npm run db:migrate:production
+          
+          # Post-migration verification
+          # npm run db:verify:production
+          
+          echo "✅ Production database migration preparation completed"
+          echo "🚨 Manual execution required for production deployment"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+
+---
+# Database Migration ConfigMap with Scripts
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-db-migration-scripts
+  namespace: memorai-development
+data:
+  migration-dev.sql: |
+    -- Development Migration Script
+    -- MemorAI MCP Server v9.5.0 Schema Updates
+    
+    BEGIN;
+    
+    -- Create memory_network_effects table
+    CREATE TABLE IF NOT EXISTS memory_network_effects (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      memory_id UUID NOT NULL,
+      effect_type VARCHAR(50) NOT NULL,
+      network_node VARCHAR(100) NOT NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      metadata JSONB DEFAULT '{}'::jsonb
+    );
+    
+    -- Create distributed_memory_sync table
+    CREATE TABLE IF NOT EXISTS distributed_memory_sync (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      source_node VARCHAR(100) NOT NULL,
+      target_node VARCHAR(100) NOT NULL,
+      sync_status VARCHAR(20) DEFAULT 'pending',
+      last_sync TIMESTAMP WITH TIME ZONE,
+      conflict_resolution JSONB DEFAULT '{}'::jsonb
+    );
+    
+    -- Add indexes for performance
+    CREATE INDEX IF NOT EXISTS idx_memory_network_effects_memory_id ON memory_network_effects(memory_id);
+    CREATE INDEX IF NOT EXISTS idx_memory_network_effects_type ON memory_network_effects(effect_type);
+    CREATE INDEX IF NOT EXISTS idx_distributed_sync_status ON distributed_memory_sync(sync_status);
+    
+    COMMIT;
+    
+  migration-staging.sql: |
+    -- Staging Migration Script
+    -- MemorAI MCP Server v9.5.0 Schema Updates with Enhanced Features
+    
+    BEGIN;
+    
+    -- Create enhanced tables with additional staging features
+    CREATE TABLE IF NOT EXISTS memory_network_effects (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      memory_id UUID NOT NULL,
+      effect_type VARCHAR(50) NOT NULL,
+      network_node VARCHAR(100) NOT NULL,
+      priority_level INTEGER DEFAULT 5,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      metadata JSONB DEFAULT '{}'::jsonb
+    );
+    
+    CREATE TABLE IF NOT EXISTS distributed_memory_sync (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      source_node VARCHAR(100) NOT NULL,
+      target_node VARCHAR(100) NOT NULL,
+      sync_status VARCHAR(20) DEFAULT 'pending',
+      retry_count INTEGER DEFAULT 0,
+      last_sync TIMESTAMP WITH TIME ZONE,
+      next_retry TIMESTAMP WITH TIME ZONE,
+      conflict_resolution JSONB DEFAULT '{}'::jsonb,
+      performance_metrics JSONB DEFAULT '{}'::jsonb
+    );
+    
+    -- Analytics table for staging environment
+    CREATE TABLE IF NOT EXISTS memory_analytics_staging (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      metric_name VARCHAR(100) NOT NULL,
+      metric_value DECIMAL(10,2),
+      timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      environment VARCHAR(20) DEFAULT 'staging',
+      tags JSONB DEFAULT '{}'::jsonb
+    );
+    
+    -- Enhanced indexes
+    CREATE INDEX IF NOT EXISTS idx_memory_network_effects_memory_id ON memory_network_effects(memory_id);
+    CREATE INDEX IF NOT EXISTS idx_memory_network_effects_type ON memory_network_effects(effect_type);
+    CREATE INDEX IF NOT EXISTS idx_memory_network_effects_priority ON memory_network_effects(priority_level);
+    CREATE INDEX IF NOT EXISTS idx_distributed_sync_status ON distributed_memory_sync(sync_status);
+    CREATE INDEX IF NOT EXISTS idx_analytics_timestamp ON memory_analytics_staging(timestamp);
+    
+    COMMIT;
+    
+  migration-production.sql: |
+    -- Production Migration Script
+    -- MemorAI MCP Server v9.5.0 Enterprise Schema
+    
+    BEGIN;
+    
+    -- Enterprise-grade tables with full feature set
+    CREATE TABLE IF NOT EXISTS memory_network_effects (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      memory_id UUID NOT NULL,
+      effect_type VARCHAR(50) NOT NULL,
+      network_node VARCHAR(100) NOT NULL,
+      priority_level INTEGER DEFAULT 5,
+      security_classification VARCHAR(20) DEFAULT 'internal',
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      created_by VARCHAR(100),
+      audit_trail JSONB DEFAULT '{}'::jsonb,
+      metadata JSONB DEFAULT '{}'::jsonb
+    );
+    
+    CREATE TABLE IF NOT EXISTS distributed_memory_sync (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      source_node VARCHAR(100) NOT NULL,
+      target_node VARCHAR(100) NOT NULL,
+      sync_status VARCHAR(20) DEFAULT 'pending',
+      retry_count INTEGER DEFAULT 0,
+      max_retries INTEGER DEFAULT 3,
+      last_sync TIMESTAMP WITH TIME ZONE,
+      next_retry TIMESTAMP WITH TIME ZONE,
+      sync_duration_ms INTEGER,
+      conflict_resolution JSONB DEFAULT '{}'::jsonb,
+      performance_metrics JSONB DEFAULT '{}'::jsonb,
+      security_context JSONB DEFAULT '{}'::jsonb
+    );
+    
+    -- Enterprise analytics and audit tables
+    CREATE TABLE IF NOT EXISTS memory_analytics_production (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      metric_name VARCHAR(100) NOT NULL,
+      metric_value DECIMAL(10,2),
+      timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      environment VARCHAR(20) DEFAULT 'production',
+      region VARCHAR(50),
+      tags JSONB DEFAULT '{}'::jsonb,
+      retention_policy VARCHAR(20) DEFAULT '1year'
+    );
+    
+    CREATE TABLE IF NOT EXISTS audit_log_production (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id VARCHAR(100),
+      action VARCHAR(100) NOT NULL,
+      resource_type VARCHAR(50),
+      resource_id VARCHAR(100),
+      timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      ip_address INET,
+      user_agent TEXT,
+      request_id UUID,
+      details JSONB DEFAULT '{}'::jsonb
+    );
+    
+    -- Production-grade indexes for optimal performance
+    CREATE INDEX IF NOT EXISTS idx_memory_network_effects_memory_id ON memory_network_effects(memory_id);
+    CREATE INDEX IF NOT EXISTS idx_memory_network_effects_type ON memory_network_effects(effect_type);
+    CREATE INDEX IF NOT EXISTS idx_memory_network_effects_priority ON memory_network_effects(priority_level);
+    CREATE INDEX IF NOT EXISTS idx_memory_network_effects_security ON memory_network_effects(security_classification);
+    CREATE INDEX IF NOT EXISTS idx_distributed_sync_status ON distributed_memory_sync(sync_status);
+    CREATE INDEX IF NOT EXISTS idx_distributed_sync_nodes ON distributed_memory_sync(source_node, target_node);
+    CREATE INDEX IF NOT EXISTS idx_analytics_timestamp ON memory_analytics_production(timestamp);
+    CREATE INDEX IF NOT EXISTS idx_analytics_metric ON memory_analytics_production(metric_name);
+    CREATE INDEX IF NOT EXISTS idx_audit_timestamp ON audit_log_production(timestamp);
+    CREATE INDEX IF NOT EXISTS idx_audit_user ON audit_log_production(user_id);
+    
+    -- Row Level Security for multi-tenancy
+    ALTER TABLE memory_network_effects ENABLE ROW LEVEL SECURITY;
+    ALTER TABLE distributed_memory_sync ENABLE ROW LEVEL SECURITY;
+    ALTER TABLE audit_log_production ENABLE ROW LEVEL SECURITY;
+    
+    COMMIT;

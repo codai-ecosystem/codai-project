@@ -115,5 +115,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start the Enhanced MemorAI MCP Server (same as VS Code task)
-CMD ["npx", "tsx", "src/mcp-server.ts"]
+# Start the MemorAI MCP Server with full AI integration
+CMD ["tsx", "src/server.ts"]

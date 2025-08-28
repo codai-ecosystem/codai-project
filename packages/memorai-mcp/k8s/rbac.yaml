@@ -1,0 +1,193 @@
+# MemorAI MCP Server - RBAC Configuration
+# Service accounts, roles, and bindings for security
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memorai-mcp-service-account
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: service-account
+    app.kubernetes.io/version: "9.5.0"
+  annotations:
+    description: "Service account for MemorAI MCP Server pods"
+automountServiceAccountToken: true
+
+---
+# Role for namespace-level permissions
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: memorai-mcp
+  name: memorai-mcp-role
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: role
+    app.kubernetes.io/version: "9.5.0"
+rules:
+# ConfigMaps and Secrets (read-only)
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list", "watch"]
+
+# Pods (read-only for self-discovery)
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+
+# Services (read-only)
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get", "list"]
+
+# Endpoints (read-only)
+- apiGroups: [""]
+  resources: ["endpoints"]
+  verbs: ["get", "list", "watch"]
+
+# Events (create for logging)
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create"]
+
+---
+# RoleBinding to associate the role with the service account
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: memorai-mcp-role-binding
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: role-binding
+    app.kubernetes.io/version: "9.5.0"
+subjects:
+- kind: ServiceAccount
+  name: memorai-mcp-service-account
+  namespace: memorai-mcp
+roleRef:
+  kind: Role
+  name: memorai-mcp-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# ClusterRole for cluster-wide monitoring (if needed)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: memorai-mcp-cluster-role
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: cluster-role
+    app.kubernetes.io/version: "9.5.0"
+rules:
+# Node metrics (read-only)
+- apiGroups: [""]
+  resources: ["nodes", "nodes/metrics"]
+  verbs: ["get", "list"]
+
+# Custom metrics (read-only)
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["*"]
+  verbs: ["get", "list"]
+
+---
+# ClusterRoleBinding (only if cluster-wide access is needed)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: memorai-mcp-cluster-role-binding
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: cluster-role-binding
+    app.kubernetes.io/version: "9.5.0"
+subjects:
+- kind: ServiceAccount
+  name: memorai-mcp-service-account
+  namespace: memorai-mcp
+roleRef:
+  kind: ClusterRole
+  name: memorai-mcp-cluster-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Pod Security Policy (if PSP is enabled)
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: memorai-mcp-psp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: pod-security-policy
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  allowedCapabilities:
+    - NET_BIND_SERVICE
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1001
+        max: 1001
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1001
+        max: 1001
+  seLinux:
+    rule: 'RunAsAny'
+  readOnlyRootFilesystem: false
+
+---
+# Role for PSP
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: memorai-mcp-psp-role
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: psp-role
+    app.kubernetes.io/version: "9.5.0"
+rules:
+- apiGroups: ['policy']
+  resources: ['podsecuritypolicies']
+  verbs: ['use']
+  resourceNames:
+  - memorai-mcp-psp
+
+---
+# RoleBinding for PSP
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: memorai-mcp-psp-role-binding
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: psp-role-binding
+    app.kubernetes.io/version: "9.5.0"
+roleRef:
+  kind: Role
+  name: memorai-mcp-psp-role
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: memorai-mcp-service-account
+  namespace: memorai-mcp

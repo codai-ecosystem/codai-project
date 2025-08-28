@@ -1,0 +1,848 @@
+# White-Label Theming System for Essential CodAI Services
+# Version: 1.0
+# Multi-Tenant Customization Platform
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: white-label-config
+  namespace: codai-production
+data:
+  theming-config.json: |
+    {
+      "themes": {
+        "default": {
+          "name": "CodAI Default",
+          "description": "Standard CodAI branding and styling",
+          "version": "1.0.0",
+          "colors": {
+            "primary": "#2563eb",
+            "secondary": "#7c3aed", 
+            "accent": "#059669",
+            "neutral": "#64748b",
+            "base": "#ffffff",
+            "info": "#0ea5e9",
+            "success": "#10b981",
+            "warning": "#f59e0b",
+            "error": "#ef4444"
+          },
+          "typography": {
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "headingFont": "Inter, system-ui, sans-serif",
+            "monoFont": "JetBrains Mono, Consolas, monospace",
+            "baseFontSize": "16px",
+            "scaleRatio": 1.25
+          },
+          "branding": {
+            "logo": "/assets/logos/codai-logo.svg",
+            "logoLight": "/assets/logos/codai-logo-light.svg",
+            "logoDark": "/assets/logos/codai-logo-dark.svg",
+            "favicon": "/assets/favicons/codai-favicon.ico",
+            "brandName": "CodAI",
+            "brandTagline": "AI-Powered Development Platform"
+          },
+          "layout": {
+            "sidebar": "expanded",
+            "headerHeight": "64px",
+            "sidebarWidth": "280px",
+            "containerMaxWidth": "1280px",
+            "borderRadius": "8px",
+            "spacing": "16px"
+          }
+        },
+        "enterprise": {
+          "name": "Enterprise Professional",
+          "description": "Professional enterprise styling",
+          "version": "1.0.0", 
+          "colors": {
+            "primary": "#1f2937",
+            "secondary": "#374151",
+            "accent": "#3b82f6",
+            "neutral": "#6b7280",
+            "base": "#f9fafb",
+            "info": "#3b82f6",
+            "success": "#059669",
+            "warning": "#d97706", 
+            "error": "#dc2626"
+          },
+          "typography": {
+            "fontFamily": "system-ui, -apple-system, sans-serif",
+            "headingFont": "system-ui, -apple-system, sans-serif",
+            "monoFont": "SF Mono, Monaco, Consolas, monospace",
+            "baseFontSize": "14px",
+            "scaleRatio": 1.2
+          },
+          "branding": {
+            "logo": "/assets/themes/enterprise/logo.svg",
+            "logoLight": "/assets/themes/enterprise/logo-light.svg", 
+            "logoDark": "/assets/themes/enterprise/logo-dark.svg",
+            "favicon": "/assets/themes/enterprise/favicon.ico",
+            "brandName": "Enterprise Platform",
+            "brandTagline": "Professional Development Suite"
+          },
+          "layout": {
+            "sidebar": "collapsed",
+            "headerHeight": "56px",
+            "sidebarWidth": "240px",
+            "containerMaxWidth": "1440px",
+            "borderRadius": "4px",
+            "spacing": "12px"
+          }
+        },
+        "startup": {
+          "name": "Startup Dynamic",
+          "description": "Modern startup-focused branding",
+          "version": "1.0.0",
+          "colors": {
+            "primary": "#7c3aed",
+            "secondary": "#a855f7",
+            "accent": "#06b6d4",
+            "neutral": "#71717a",
+            "base": "#fefefe",
+            "info": "#0ea5e9",
+            "success": "#22c55e",
+            "warning": "#eab308",
+            "error": "#f43f5e"
+          },
+          "typography": {
+            "fontFamily": "Poppins, system-ui, sans-serif",
+            "headingFont": "Poppins, system-ui, sans-serif", 
+            "monoFont": "Fira Code, Consolas, monospace",
+            "baseFontSize": "15px",
+            "scaleRatio": 1.3
+          },
+          "branding": {
+            "logo": "/assets/themes/startup/logo.svg",
+            "logoLight": "/assets/themes/startup/logo-light.svg",
+            "logoDark": "/assets/themes/startup/logo-dark.svg", 
+            "favicon": "/assets/themes/startup/favicon.ico",
+            "brandName": "Startup Hub",
+            "brandTagline": "Innovation Accelerated"
+          },
+          "layout": {
+            "sidebar": "overlay",
+            "headerHeight": "72px",
+            "sidebarWidth": "320px",
+            "containerMaxWidth": "1200px", 
+            "borderRadius": "12px",
+            "spacing": "20px"
+          }
+        }
+      },
+      "customization": {
+        "allowCustomColors": true,
+        "allowCustomFonts": true,
+        "allowCustomLogos": true,
+        "allowLayoutChanges": true,
+        "maxThemesPerTenant": 5,
+        "customCSSEnabled": true,
+        "customCSSMaxSize": "50KB"
+      },
+      "assetManagement": {
+        "maxLogoSize": "2MB",
+        "allowedLogoFormats": ["svg", "png", "jpg", "webp"],
+        "maxFaviconSize": "100KB",
+        "allowedFaviconFormats": ["ico", "png"],
+        "cdnEnabled": true,
+        "compressionEnabled": true,
+        "cacheMaxAge": 31536000
+      }
+    }
+
+  component-overrides.json: |
+    {
+      "components": {
+        "Button": {
+          "variants": ["default", "primary", "secondary", "outline", "ghost", "destructive"],
+          "sizes": ["sm", "md", "lg", "xl"],
+          "customizable": ["colors", "borders", "typography", "spacing", "shadows"]
+        },
+        "Input": {
+          "variants": ["default", "filled", "outlined", "underlined"],
+          "sizes": ["sm", "md", "lg"],
+          "customizable": ["colors", "borders", "typography", "spacing"]
+        },
+        "Card": {
+          "variants": ["default", "elevated", "outlined", "filled"],
+          "customizable": ["colors", "borders", "shadows", "spacing", "radius"]
+        },
+        "Navigation": {
+          "layouts": ["horizontal", "vertical", "sidebar", "drawer"],
+          "styles": ["pills", "underline", "background", "borders"],
+          "customizable": ["colors", "typography", "spacing", "active-states"]
+        },
+        "DataTable": {
+          "variants": ["default", "striped", "bordered", "hoverable"],
+          "densities": ["compact", "normal", "comfortable"],
+          "customizable": ["colors", "borders", "typography", "spacing"]
+        },
+        "Modal": {
+          "sizes": ["sm", "md", "lg", "xl", "full"],
+          "animations": ["fade", "slide", "scale", "none"],
+          "customizable": ["colors", "shadows", "borders", "backdrop"]
+        },
+        "Sidebar": {
+          "layouts": ["fixed", "overlay", "push", "reveal"],
+          "widths": ["narrow", "normal", "wide"],
+          "customizable": ["colors", "borders", "shadows", "backdrop"]
+        },
+        "Header": {
+          "layouts": ["fixed", "sticky", "static"],
+          "styles": ["transparent", "solid", "blur"],
+          "customizable": ["colors", "borders", "shadows", "height"]
+        }
+      },
+      "css_variables": {
+        "colors": {
+          "--color-primary": "theme.colors.primary",
+          "--color-secondary": "theme.colors.secondary",
+          "--color-accent": "theme.colors.accent",
+          "--color-neutral": "theme.colors.neutral", 
+          "--color-base": "theme.colors.base",
+          "--color-info": "theme.colors.info",
+          "--color-success": "theme.colors.success",
+          "--color-warning": "theme.colors.warning",
+          "--color-error": "theme.colors.error"
+        },
+        "typography": {
+          "--font-family": "theme.typography.fontFamily",
+          "--font-heading": "theme.typography.headingFont",
+          "--font-mono": "theme.typography.monoFont",
+          "--font-size-base": "theme.typography.baseFontSize"
+        },
+        "layout": {
+          "--header-height": "theme.layout.headerHeight",
+          "--sidebar-width": "theme.layout.sidebarWidth",
+          "--container-max-width": "theme.layout.containerMaxWidth",
+          "--border-radius": "theme.layout.borderRadius",
+          "--spacing-base": "theme.layout.spacing"
+        }
+      }
+    }
+
+---
+# White-Label Theming Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-white-label-service
+  namespace: codai-production
+  labels:
+    app: codai-white-label-service
+    component: enterprise-theming
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: codai-white-label-service
+  template:
+    metadata:
+      labels:
+        app: codai-white-label-service
+        component: enterprise-theming
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-white-label-service
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: white-label-service
+        image: codai/white-label-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3005
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3005"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: theming-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: S3_BUCKET
+          value: "codai-themes-assets"
+        - name: S3_REGION
+          value: "us-east-1"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-s3-secrets
+              key: access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-s3-secrets
+              key: secret-access-key
+        - name: CDN_BASE_URL
+          value: "https://cdn.codai.app"
+        - name: MAX_THEME_SIZE
+          value: "10MB"
+        - name: ENABLE_CUSTOM_CSS
+          value: "true"
+        - name: ENABLE_THEME_VALIDATION
+          value: "true"
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        - name: theme-cache
+          mountPath: /app/cache
+        - name: temp-uploads
+          mountPath: /app/temp
+        resources:
+          requests:
+            cpu: 300m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3005
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3005
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: white-label-config
+      - name: theme-cache
+        emptyDir:
+          sizeLimit: 2Gi
+      - name: temp-uploads
+        emptyDir:
+          sizeLimit: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-white-label-service
+  namespace: codai-production
+  labels:
+    app: codai-white-label-service
+    component: enterprise-theming
+spec:
+  ports:
+  - port: 3005
+    targetPort: 3005
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-white-label-service
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-white-label-service
+  namespace: codai-production
+  labels:
+    app: codai-white-label-service
+
+---
+# Asset Management Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-asset-manager
+  namespace: codai-production
+  labels:
+    app: codai-asset-manager
+    component: enterprise-theming
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-asset-manager
+  template:
+    metadata:
+      labels:
+        app: codai-asset-manager
+        component: enterprise-theming
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-asset-manager
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: asset-manager
+        image: codai/asset-manager:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3006
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3006"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: assets-url
+        - name: S3_BUCKET
+          value: "codai-themes-assets"
+        - name: S3_REGION
+          value: "us-east-1"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-s3-secrets
+              key: access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-s3-secrets
+              key: secret-access-key
+        - name: ENABLE_IMAGE_OPTIMIZATION
+          value: "true"
+        - name: ENABLE_ASSET_COMPRESSION
+          value: "true"
+        - name: MAX_UPLOAD_SIZE
+          value: "10MB"
+        - name: ALLOWED_MIME_TYPES
+          value: "image/svg+xml,image/png,image/jpeg,image/webp,image/x-icon"
+        volumeMounts:
+        - name: temp-storage
+          mountPath: /app/temp
+        - name: processed-assets
+          mountPath: /app/processed
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 800m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3006
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3006
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: temp-storage
+        emptyDir:
+          sizeLimit: 5Gi
+      - name: processed-assets
+        emptyDir:
+          sizeLimit: 10Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-asset-manager
+  namespace: codai-production
+  labels:
+    app: codai-asset-manager
+    component: enterprise-theming
+spec:
+  ports:
+  - port: 3006
+    targetPort: 3006
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-asset-manager
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-asset-manager
+  namespace: codai-production
+  labels:
+    app: codai-asset-manager
+
+---
+# Theme Compilation Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-theme-compiler
+  namespace: codai-production
+  labels:
+    app: codai-theme-compiler
+    component: enterprise-theming
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-theme-compiler
+  template:
+    metadata:
+      labels:
+        app: codai-theme-compiler
+        component: enterprise-theming
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-theme-compiler
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: theme-compiler
+        image: codai/theme-compiler:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3007
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3007"
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: S3_BUCKET
+          value: "codai-compiled-themes"
+        - name: S3_REGION
+          value: "us-east-1"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-s3-secrets
+              key: access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-s3-secrets
+              key: secret-access-key
+        - name: ENABLE_CSS_MINIFICATION
+          value: "true"
+        - name: ENABLE_CSS_AUTOPREFIXER
+          value: "true"
+        - name: COMPILE_TIMEOUT
+          value: "30000"
+        - name: MAX_COMPILATION_SIZE
+          value: "5MB"
+        volumeMounts:
+        - name: compilation-cache
+          mountPath: /app/cache
+        - name: temp-compile
+          mountPath: /app/temp
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3007
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3007
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: compilation-cache
+        emptyDir:
+          sizeLimit: 2Gi
+      - name: temp-compile
+        emptyDir:
+          sizeLimit: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-theme-compiler
+  namespace: codai-production
+  labels:
+    app: codai-theme-compiler
+    component: enterprise-theming
+spec:
+  ports:
+  - port: 3007
+    targetPort: 3007
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-theme-compiler
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-theme-compiler
+  namespace: codai-production
+  labels:
+    app: codai-theme-compiler
+
+---
+# AWS S3 Secrets for Asset Storage
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-s3-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  access-key-id: WU9VUl9BV1NfQUNDRVNTX0tFWV9JRA==  # YOUR_AWS_ACCESS_KEY_ID
+  secret-access-key: WU9VUl9BV1NfU0VDUkVUX0FDQ0VTU19LRVk=  # YOUR_AWS_SECRET_ACCESS_KEY
+
+---
+# Theme Cache Service (Redis)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-theme-cache
+  namespace: codai-production
+  labels:
+    app: codai-theme-cache
+    component: enterprise-theming
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-theme-cache
+  template:
+    metadata:
+      labels:
+        app: codai-theme-cache
+        component: enterprise-theming
+    spec:
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      containers:
+      - name: redis
+        image: redis:7.2-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6379
+          name: redis
+        command:
+        - redis-server
+        - /etc/redis/redis.conf
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: password
+        volumeMounts:
+        - name: config
+          mountPath: /etc/redis
+        - name: data
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - --no-auth-warning
+            - -a
+            - $(REDIS_PASSWORD)
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - --no-auth-warning
+            - -a
+            - $(REDIS_PASSWORD)
+            - ping
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: theme-cache-config
+      - name: data
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: theme-cache-config
+  namespace: codai-production
+data:
+  redis.conf: |
+    # Redis Theme Cache Configuration
+    maxmemory 256mb
+    maxmemory-policy allkeys-lru
+    
+    # Network configuration
+    bind 0.0.0.0
+    port 6379
+    timeout 300
+    tcp-keepalive 300
+    
+    # Security
+    requirepass codai-theme-cache-password
+    
+    # Logging
+    loglevel notice
+    
+    # Theme-specific settings
+    save 300 10
+    appendonly yes
+    appendfsync everysec
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-theme-cache
+  namespace: codai-production
+  labels:
+    app: codai-theme-cache
+    component: enterprise-theming
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: redis
+  selector:
+    app: codai-theme-cache
+
+---
+# Horizontal Pod Autoscaler for White-Label Services
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-white-label-service-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-white-label-service
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-asset-manager-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-asset-manager
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler  
+metadata:
+  name: codai-theme-compiler-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-theme-compiler
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 85

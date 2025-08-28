@@ -23,7 +23,7 @@ export const CulturalText: React.FC<CulturalTextProps> = ({
   style = {}
 }) => {
   const { currentLocale } = useI18n();
-  const preferences = getCulturalPreferences(currentLocale.code);
+  const preferences = getCulturalPreferences(currentLocale);
 
   const culturalStyle: React.CSSProperties = {
     fontFamily: preferences.typography.fontFamily,
@@ -58,7 +58,7 @@ export const CulturalNumber: React.FC<CulturalNumberProps> = ({
   useGrouping
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
 
   const formattedValue = formatter.formatNumber(value, {
     minimumFractionDigits,
@@ -92,7 +92,7 @@ export const CulturalCurrency: React.FC<CulturalCurrencyProps> = ({
   maximumFractionDigits
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
 
   const formattedValue = formatter.formatCurrency(amount, currency, {
     minimumFractionDigits,
@@ -125,7 +125,7 @@ export const CulturalDate: React.FC<CulturalDateProps> = ({
   includeTime
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
 
   const formattedValue = formatter.formatDate(date, {
     dateStyle,
@@ -157,7 +157,7 @@ export const CulturalTime: React.FC<CulturalTimeProps> = ({
   timeStyle
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
 
   const formattedValue = formatter.formatTime(time, {
     includeSeconds,
@@ -184,7 +184,7 @@ export const CulturalRelativeTime: React.FC<CulturalRelativeTimeProps> = ({
   className = ''
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
 
   const formattedValue = formatter.formatRelativeTime(date);
 
@@ -212,7 +212,7 @@ export const CulturalPercentage: React.FC<CulturalPercentageProps> = ({
   maximumFractionDigits
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
 
   const formattedValue = formatter.formatPercentage(value, {
     minimumFractionDigits,
@@ -239,7 +239,7 @@ export const CulturalPhone: React.FC<CulturalPhoneProps> = ({
   className = ''
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
 
   const formattedValue = formatter.formatPhoneNumber(phoneNumber);
 
@@ -267,7 +267,7 @@ export const CulturalName: React.FC<CulturalNameProps> = ({
   className = ''
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
 
   const formattedValue = formatter.formatName(firstName, lastName, honorific);
 
@@ -297,7 +297,7 @@ export const CulturalAddress: React.FC<CulturalAddressProps> = ({
   className = ''
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
 
   const formattedValue = formatter.formatAddress(address);
 
@@ -327,8 +327,8 @@ export const CulturalCalendar: React.FC<CulturalCalendarProps> = ({
   maxDate
 }) => {
   const { currentLocale } = useI18n();
-  const formatter = createCulturalFormatter(currentLocale.code);
-  const preferences = getCulturalPreferences(currentLocale.code);
+  const formatter = createCulturalFormatter(currentLocale);
+  const preferences = getCulturalPreferences(currentLocale);
 
   const [currentMonth, setCurrentMonth] = React.useState(new Date());
 
@@ -348,7 +348,7 @@ export const CulturalCalendar: React.FC<CulturalCalendarProps> = ({
     for (let i = 0; i < 7; i++) {
       const day = new Date(baseDate);
       day.setDate(baseDate.getDate() + i);
-      days.push(formatter.formatDate(day, { weekday: 'short' }));
+      days.push(formatter.formatDate(day, { dateStyle: 'short' }));
     }
     
     return days;
@@ -384,7 +384,7 @@ export const CulturalCalendar: React.FC<CulturalCalendarProps> = ({
           ‹
         </button>
         <h3 className="text-lg font-semibold">
-          {formatter.formatDate(currentMonth, { year: 'numeric', month: 'long' })}
+          {formatter.formatDate(currentMonth, { dateStyle: 'long' })}
         </h3>
         <button
           onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
@@ -448,7 +448,7 @@ export const CulturalContainer: React.FC<CulturalContainerProps> = ({
   className = ''
 }) => {
   const { currentLocale } = useI18n();
-  const preferences = getCulturalPreferences(currentLocale.code);
+  const preferences = getCulturalPreferences(currentLocale);
 
   const containerStyle: React.CSSProperties = {
     '--cultural-primary': preferences.colors.primary,

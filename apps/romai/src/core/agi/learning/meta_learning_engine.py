@@ -584,39 +584,42 @@ class AdaptationNetwork(nn.Module):
     def initialize_task_parameters(self, task: RomanianMetaTask) -> Dict[str, torch.Tensor]:
         """Initialize parameters for a specific task"""
         # RomAI General Expert - Authentic Neural Inference
-                try:
-                    # Route to appropriate expert based on input analysis
-                    expert_input = self._prepare_expert_input(input_data)
+        input_data = task.input_data  # Get input data from task
+        try:
+            # Route to appropriate expert based on input analysis
+            expert_input = self._prepare_expert_input(input_data)
 
-                    # Automatic expert selection
-                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+            # Automatic expert selection
+            selected_expert = self.model.router.select_optimal_expert(expert_input)
 
-                    # Process with selected expert
-                    with torch.no_grad():
-                        expert_outputs = self.model.route_to_expert(
-                            expert_input,
-                            expert_type=selected_expert,
-                            use_mla_attention=True
-                        )
+            # Process with selected expert
+            with torch.no_grad():
+                expert_outputs = self.model.route_to_expert(
+                    expert_input,
+                    expert_type=selected_expert,
+                    use_mla_attention=True
+                )
 
-                        # Generate response
-                        response = self.model.generate_response(expert_outputs)
+                # Generate response
+                response = self.model.generate_response(expert_outputs)
 
-                        return {
-                            "response": response["response"],
-                            "reasoning": response["reasoning"],
-                            "confidence": response["confidence"],
-                            "expert_used": selected_expert,
-                            "method": "neural_general_reasoning",
-                            "quality_score": response["quality_score"]
-                        }
+                return {
+                    "response": response["response"],
+                    "reasoning": response["reasoning"],
+                    "confidence": response["confidence"],
+                    "expert_used": selected_expert,
+                    "method": "neural_general_reasoning",
+                    "quality_score": response["quality_score"]
+                }
 
-                except Exception as e:
-                    logger.error(f"General expert error: {e}")
-                    # Ultimate fallback
-                    return {"error": f"Neural inference failed: {e}", "fallback": True}
-
-class MetaOptimizer:
+        except Exception as e:
+            logger.error(f"General expert error: {e}")
+            # Ultimate fallback
+            return {"error": f"Neural inference failed: {e}", "fallback": True}
+    
+    def _prepare_expert_input(self, input_data):
+        """Prepare input data for expert processing"""
+        return input_data  # Simple passthrough for nowclass MetaOptimizer:
     """Meta-learning optimizer"""
     def __init__(self, parameters):
         self.optimizer = optim.Adam(parameters)

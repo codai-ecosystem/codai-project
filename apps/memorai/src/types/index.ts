@@ -19,6 +19,18 @@ export interface TimestampedEntity extends BaseEntity {
 }
 
 // Memory-related types
+export interface Memory {
+  id: string;
+  content: string;
+  agentId?: string;
+  metadata?: MemoryMetadata;
+  tags?: string[];
+  priority?: string;
+  importance?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface MemoryItem extends BaseEntity {
   title: string;
   content: string;
@@ -27,6 +39,21 @@ export interface MemoryItem extends BaseEntity {
   isFavorite: boolean;
   importance?: number;
   metadata?: MemoryMetadata;
+}
+
+export interface MemoryMetadata {
+  readonly source?: string;
+  readonly category?: string;
+  readonly lastAccessed?: string;
+  readonly wordCount?: number;
+  readonly language?: string;
+  readonly project?: string;
+  readonly tags?: string[];
+  readonly priority?: string;
+  readonly importance?: number;
+  readonly entityType?: string;
+  readonly session?: string;
+  readonly [key: string]: unknown;
 }
 
 export interface MemoryMetadata {
@@ -161,6 +188,7 @@ export interface AnalyticsData {
   readonly memoryGrowth: readonly MemoryGrowthData[];
   readonly categoryDistribution: readonly CategoryDistribution[];
   readonly weeklyActivity: readonly WeeklyActivity[];
+  readonly topTags?: readonly { name: string; count: number }[];
 }
 
 // API Response types with generic constraints

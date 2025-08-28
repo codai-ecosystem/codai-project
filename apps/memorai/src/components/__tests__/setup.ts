@@ -91,7 +91,7 @@ beforeAll(() => {
   } as any
 
   // Mock requestAnimationFrame for animation testing
-  global.requestAnimationFrame = vi.fn(cb => setTimeout(cb, 16))
+  global.requestAnimationFrame = vi.fn((cb: any) => setTimeout(cb, 16)) as any
   global.cancelAnimationFrame = vi.fn()
 })
 

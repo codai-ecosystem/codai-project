@@ -341,11 +341,7 @@ async function generateCorrelationData(
     const categoryGroups = new Map<string, any[]>();
 
     for (const memory of memories) {
-        const analysis = await contentAnalyzer.analyzeText(memory.content, {
-            includeTopics: true,
-            includeTags: true,
-            includeComplexity: true
-        });
+        const analysis = await contentAnalyzer.analyzeContent(memory.content);
 
         const primaryCategory = analysis.topics[0]?.topic || 'general';
 

@@ -1,0 +1,307 @@
+# Comprehensive Audit Logging System
+# MemorAI MCP Server v9.5.0 - Phase 6 Task 11: Enterprise Integration
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-audit-config
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: audit
+    environment: production
+    version: v9.5.0
+data:
+  # Audit Logging Configuration
+  AUDIT_ENABLED: "true"
+  AUDIT_LEVEL: "INFO"
+  AUDIT_FORMAT: "json"
+  AUDIT_DESTINATION: "elasticsearch"
+  AUDIT_RETENTION_DAYS: "2555"  # 7 years for compliance
+  
+  # Event Categories
+  AUDIT_AUTHENTICATION: "true"
+  AUDIT_AUTHORIZATION: "true"
+  AUDIT_DATA_ACCESS: "true"
+  AUDIT_CONFIGURATION_CHANGES: "true"
+  AUDIT_ADMIN_ACTIONS: "true"
+  AUDIT_API_CALLS: "true"
+  AUDIT_MEMORY_OPERATIONS: "true"
+  AUDIT_USER_SESSIONS: "true"
+  
+  # Elasticsearch Configuration
+  ELASTICSEARCH_CLUSTER: "https://elasticsearch.memorai.com:9200"
+  ELASTICSEARCH_INDEX_PATTERN: "memorai-audit-%{+YYYY.MM.dd}"
+  ELASTICSEARCH_BULK_SIZE: "100"
+  ELASTICSEARCH_FLUSH_INTERVAL: "5s"
+  
+  # Compliance Standards
+  SOX_COMPLIANCE: "true"
+  GDPR_COMPLIANCE: "true"
+  HIPAA_COMPLIANCE: "true"
+  ISO27001_COMPLIANCE: "true"
+  
+  # Data Classification
+  CLASSIFY_SENSITIVE_DATA: "true"
+  PII_DETECTION: "true"
+  PHI_DETECTION: "true"
+  FINANCIAL_DATA_DETECTION: "true"
+  
+  # Real-time Alerting
+  REAL_TIME_ALERTS: "true"
+  ALERT_WEBHOOK: "https://alerts.memorai.com/webhook"
+  CRITICAL_ALERT_CHANNELS: "slack,email,sms"
+  
+  # Performance Settings
+  BUFFER_SIZE: "10000"
+  BATCH_SIZE: "500"
+  FLUSH_TIMEOUT: "30s"
+  MAX_RETRIES: "3"
+  RETRY_DELAY: "5s"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: memorai-audit-secrets
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: audit
+    environment: production
+    version: v9.5.0
+type: Opaque
+stringData:
+  # Elasticsearch Credentials
+  ELASTICSEARCH_USERNAME: "memorai-audit-user"
+  ELASTICSEARCH_PASSWORD: "secure-elasticsearch-password-2025"
+  ELASTICSEARCH_API_KEY: "memorai-elasticsearch-api-key"
+  
+  # Encryption Keys
+  AUDIT_ENCRYPTION_KEY: "audit-log-encryption-key-32-chars"
+  SIGNATURE_KEY: "audit-log-signature-verification-key"
+  
+  # Alert Webhook Secrets
+  ALERT_WEBHOOK_SECRET: "webhook-signature-secret-key"
+  SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/memorai/audit/alerts"
+  
+  # Third-party Integration
+  SPLUNK_TOKEN: "splunk-hec-token-for-memorai-audit"
+  DATADOG_API_KEY: "datadog-audit-logging-api-key"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai-audit-service
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: audit
+    environment: production
+    version: v9.5.0
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: memorai-mcp
+      component: audit
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp
+        component: audit
+        environment: production
+        version: v9.5.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+    spec:
+      serviceAccountName: memorai-audit-service-account
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 3001
+        fsGroup: 2001
+      containers:
+      - name: audit-service
+        image: memorai/audit-service:v9.5.0
+        ports:
+        - containerPort: 8090
+          name: http
+        - containerPort: 9090
+          name: metrics
+        envFrom:
+        - configMapRef:
+            name: memorai-audit-config
+        - secretRef:
+            name: memorai-audit-secrets
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8090
+          initialDelaySeconds: 45
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8090
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - name: audit-storage
+          mountPath: /var/log/audit
+        - name: temp-storage
+          mountPath: /tmp
+      volumes:
+      - name: audit-storage
+        persistentVolumeClaim:
+          claimName: memorai-audit-logs-production
+      - name: temp-storage
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memorai-audit-logs-production
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: audit
+    environment: production
+    version: v9.5.0
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+  storageClassName: ssd-retain
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-audit-service
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: audit
+    environment: production
+    version: v9.5.0
+spec:
+  selector:
+    app: memorai-mcp
+    component: audit
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8090
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memorai-audit-service-account
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: audit
+    environment: production
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memorai-audit-retention-cleanup
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: audit
+    environment: production
+    version: v9.5.0
+spec:
+  schedule: "0 2 * * 0"  # Weekly on Sunday at 2 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: memorai-audit-service-account
+          containers:
+          - name: audit-cleanup
+            image: memorai/audit-cleanup:v9.5.0
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "🧹 Starting audit log retention cleanup..."
+              
+              # Calculate retention cutoff date (7 years ago)
+              CUTOFF_DATE=$(date -d "7 years ago" +%Y-%m-%d)
+              echo "📅 Cleaning up audit logs older than: $CUTOFF_DATE"
+              
+              # Elasticsearch cleanup
+              curl -X DELETE "$ELASTICSEARCH_CLUSTER/memorai-audit-*" \
+                -H "Authorization: ApiKey $ELASTICSEARCH_API_KEY" \
+                -G -d "q=@timestamp:<$CUTOFF_DATE"
+              
+              # Local file cleanup
+              find /var/log/audit -name "*.log" -mtime +2555 -delete
+              
+              echo "✅ Audit log cleanup completed"
+            envFrom:
+            - configMapRef:
+                name: memorai-audit-config
+            - secretRef:
+                name: memorai-audit-secrets
+            volumeMounts:
+            - name: audit-storage
+              mountPath: /var/log/audit
+          volumes:
+          - name: audit-storage
+            persistentVolumeClaim:
+              claimName: memorai-audit-logs-production
+          restartPolicy: OnFailure
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: memorai-audit-metrics
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: audit
+    environment: production
+spec:
+  selector:
+    matchLabels:
+      app: memorai-mcp
+      component: audit
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics

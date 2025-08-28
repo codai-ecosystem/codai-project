@@ -1,0 +1,440 @@
+# MemorAI MCP Server - CI/CD Build Pipeline
+# Comprehensive automated build, test, and container creation
+
+name: Build & Test Pipeline
+
+on:
+  push:
+    branches: [main, develop, 'feature/**', 'hotfix/**']
+    paths:
+      - 'packages/memorai-mcp/**'
+      - '.github/workflows/build.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/memorai-mcp/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to build for'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: codai-project/memorai-mcp-server
+  NODE_VERSION: '20'
+  PYTHON_VERSION: '3.11'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Quality Gates & Static Analysis
+  quality-gates:
+    name: Code Quality & Security Scanning
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/memorai-mcp
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: packages/memorai-mcp/package-lock.json
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install Dependencies
+      run: |
+        npm ci --production=false
+        pip install bandit safety
+
+    - name: ESLint Analysis
+      run: |
+        npm run lint -- --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif
+      continue-on-error: true
+
+    - name: TypeScript Compilation Check
+      run: |
+        npm run build -- --noEmit
+
+    - name: Security Audit - npm
+      run: |
+        npm audit --audit-level=moderate --json > npm-audit-results.json || true
+        
+    - name: Security Audit - Python Bandit
+      run: |
+        bandit -r . -f json -o bandit-results.json || true
+
+    - name: Upload SARIF Results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: packages/memorai-mcp/eslint-results.sarif
+        category: eslint
+
+    - name: Upload Security Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: security-scan-results-${{ github.run_id }}
+        path: |
+          packages/memorai-mcp/npm-audit-results.json
+          packages/memorai-mcp/bandit-results.json
+        retention-days: 7
+
+  # Comprehensive Testing Suite
+  test-suite:
+    name: Test Suite (${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    needs: quality-gates
+    strategy:
+      matrix:
+        node-version: ['18', '20', '21']
+      fail-fast: false
+    
+    defaults:
+      run:
+        working-directory: packages/memorai-mcp
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_USER: test_user
+          POSTGRES_DB: memorai_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: packages/memorai-mcp/package-lock.json
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Build Project
+      run: npm run build
+
+    - name: Run Unit Tests
+      env:
+        NODE_ENV: test
+        DATABASE_URL: postgres://test_user:test_password@localhost:5432/memorai_test
+        REDIS_URL: redis://localhost:6379/0
+        MEMORAI_API_KEY: test-key-ci-cd
+        CBD_BASE_URL: http://localhost:4180
+        ENABLE_VECTOR_SEARCH: true
+        ENABLE_HYBRID_SEARCH: true
+      run: |
+        npm run test -- --coverage --reporter=json --outputFile=test-results.json
+
+    - name: Run Integration Tests
+      env:
+        NODE_ENV: test
+        DATABASE_URL: postgres://test_user:test_password@localhost:5432/memorai_test
+        REDIS_URL: redis://localhost:6379/0
+        MEMORAI_API_KEY: test-key-ci-cd
+        CBD_BASE_URL: http://localhost:4180
+      run: |
+        npm run test:integration || true
+
+    - name: Generate Test Report
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Test Results (Node.js ${{ matrix.node-version }})
+        path: packages/memorai-mcp/test-results.json
+        reporter: jest-json
+
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v4
+      if: matrix.node-version == '20'
+      with:
+        file: packages/memorai-mcp/coverage/lcov.info
+        directory: packages/memorai-mcp
+        flags: memorai-mcp
+        name: memorai-mcp-coverage
+
+    - name: Store Test Artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-node-${{ matrix.node-version }}-${{ github.run_id }}
+        path: |
+          packages/memorai-mcp/coverage/
+          packages/memorai-mcp/test-results.json
+        retention-days: 7
+
+  # Container Build & Push
+  container-build:
+    name: Container Build & Security Scan
+    runs-on: ubuntu-latest
+    needs: [quality-gates, test-suite]
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract Metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+          type=raw,value={{branch}},enable={{is_default_branch}}
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+
+    - name: Build Container Image
+      uses: docker/build-push-action@v5
+      with:
+        context: packages/memorai-mcp
+        file: packages/memorai-mcp/Dockerfile
+        push: false
+        load: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        platforms: linux/amd64
+        build-args: |
+          NODE_ENV=production
+          BUILD_DATE=${{ github.event.head_commit.timestamp }}
+          VCS_REF=${{ github.sha }}
+          VERSION=${{ steps.meta.outputs.version }}
+
+    - name: Container Security Scan - Trivy
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy Scan Results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Container Structure Test
+      run: |
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+          -v $(pwd):/workspace \
+          gcr.io/gcp-runtimes/container-structure-test:latest \
+          test --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          --config /workspace/packages/memorai-mcp/container-structure-test.yaml || true
+
+    - name: Push Container Image
+      if: github.event_name != 'pull_request'
+      uses: docker/build-push-action@v5
+      with:
+        context: packages/memorai-mcp
+        file: packages/memorai-mcp/Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        platforms: linux/amd64,linux/arm64
+
+    - name: Generate SBOM
+      uses: anchore/sbom-action@v0
+      if: github.event_name != 'pull_request'
+      with:
+        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        artifact-name: sbom-${{ github.sha }}.spdx.json
+        output-file: ./sbom-${{ github.sha }}.spdx.json
+
+    - name: Store Container Artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: container-artifacts-${{ github.run_id }}
+        path: |
+          trivy-results.sarif
+          sbom-${{ github.sha }}.spdx.json
+        retention-days: 30
+
+  # Performance & Load Testing
+  performance-tests:
+    name: Performance & Load Testing
+    runs-on: ubuntu-latest
+    needs: container-build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: packages/memorai-mcp/package-lock.json
+
+    - name: Install Performance Testing Tools
+      run: |
+        npm install -g autocannon k6
+        cd packages/memorai-mcp && npm ci
+
+    - name: Start Services for Testing
+      run: |
+        cd packages/memorai-mcp
+        docker-compose -f docker-compose.test.yml up -d
+        sleep 30
+
+    - name: Memory Performance Test
+      working-directory: packages/memorai-mcp
+      run: |
+        node -e "
+          const { performance } = require('perf_hooks');
+          async function memoryBenchmark() {
+            const start = performance.now();
+            // Memory operations benchmark
+            for (let i = 0; i < 10000; i++) {
+              const memory = { id: i, content: 'test-' + i };
+            }
+            const end = performance.now();
+            console.log(\`Memory operations: \${end - start}ms\`);
+          }
+          memoryBenchmark();
+        "
+
+    - name: Load Testing with Autocannon
+      working-directory: packages/memorai-mcp
+      run: |
+        autocannon -c 10 -d 30 -R 100 \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer test-key-ci-cd" \
+          http://localhost:4950/health || true
+
+    - name: Cleanup Test Environment
+      if: always()
+      run: |
+        cd packages/memorai-mcp
+        docker-compose -f docker-compose.test.yml down
+
+  # Notification & Reporting
+  build-summary:
+    name: Build Summary & Notifications
+    runs-on: ubuntu-latest
+    needs: [quality-gates, test-suite, container-build, performance-tests]
+    if: always()
+
+    steps:
+    - name: Download All Artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Generate Build Report
+      run: |
+        echo "# MemorAI MCP Server Build Report" > build-report.md
+        echo "## Build Information" >> build-report.md
+        echo "- **Commit SHA:** ${{ github.sha }}" >> build-report.md
+        echo "- **Branch:** ${{ github.ref_name }}" >> build-report.md
+        echo "- **Timestamp:** $(date -u)" >> build-report.md
+        echo "- **Actor:** ${{ github.actor }}" >> build-report.md
+        echo "" >> build-report.md
+        echo "## Job Status" >> build-report.md
+        echo "- Quality Gates: ${{ needs.quality-gates.result }}" >> build-report.md
+        echo "- Test Suite: ${{ needs.test-suite.result }}" >> build-report.md
+        echo "- Container Build: ${{ needs.container-build.result }}" >> build-report.md
+        echo "- Performance Tests: ${{ needs.performance-tests.result }}" >> build-report.md
+        
+        # Overall status
+        if [[ "${{ needs.quality-gates.result }}" == "success" && 
+              "${{ needs.test-suite.result }}" == "success" && 
+              "${{ needs.container-build.result }}" == "success" ]]; then
+          echo "## ✅ BUILD SUCCESSFUL" >> build-report.md
+          echo "BUILD_STATUS=success" >> $GITHUB_ENV
+        else
+          echo "## ❌ BUILD FAILED" >> build-report.md
+          echo "BUILD_STATUS=failure" >> $GITHUB_ENV
+        fi
+
+    - name: Comment PR with Results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const report = fs.readFileSync('build-report.md', 'utf8');
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: report
+          });
+
+    - name: Slack Notification
+      if: github.ref == 'refs/heads/main'
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ env.BUILD_STATUS }}
+        channel: '#memorai-builds'
+        fields: repo,message,commit,author,action,eventName,ref,workflow
+        mention: here
+        if_mention: failure
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

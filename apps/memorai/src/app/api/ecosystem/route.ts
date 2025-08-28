@@ -211,8 +211,8 @@ async function handleEcosystemStatus() {
         );
 
         const results = healthChecks.map((result, index) => ({
-            serviceId: services[index],
             ...(result.status === 'fulfilled' ? result.value : {
+                serviceId: services[index],
                 healthy: false,
                 error: result.reason?.message || 'Health check failed'
             })

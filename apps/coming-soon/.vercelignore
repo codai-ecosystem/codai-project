@@ -1,0 +1,52 @@
+# Cache directories
+.next/cache/
+node_modules/.cache/
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+tests/
+__tests__/
+*.test.js
+*.spec.js
+
+# Development files
+.env.local
+.env.development.local
+.env.test.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+.coverage/
+.lcov
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build artifacts that shouldn't be in production
+lighthouse-results.json
+build-stats.json
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/

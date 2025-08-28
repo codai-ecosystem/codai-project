@@ -1,0 +1,349 @@
+# MemorAI MCP Server - Alertmanager Configuration
+# Alert routing, grouping, and notification management
+
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'alerts@memorai-mcp.com'
+  smtp_auth_username: 'alerts@memorai-mcp.com'
+  smtp_auth_password: 'app-specific-password'
+  smtp_require_tls: true
+  
+  slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+  
+  pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
+  
+  resolve_timeout: 5m
+
+# Templates for alert notifications
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+# Route tree for organizing alerts
+route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  receiver: 'default'
+  
+  routes:
+    # Critical alerts - immediate paging
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 10s
+      repeat_interval: 1h
+      routes:
+        # Database down alerts
+        - match:
+            service: postgresql
+        - match:
+            service: redis
+          receiver: 'database-critical'
+        
+        # Application down alerts
+        - match:
+            service: memorai-mcp-server
+          receiver: 'application-critical'
+        
+        # Infrastructure alerts
+        - match:
+            component: infrastructure
+          receiver: 'infrastructure-critical'
+
+    # Warning alerts - team notification
+    - match:
+        severity: warning
+      receiver: 'warning-alerts'
+      group_wait: 2m
+      repeat_interval: 2h
+      routes:
+        # Performance warnings
+        - match:
+            component: http
+          receiver: 'performance-warnings'
+        
+        # Memory system warnings
+        - match:
+            component: memory
+          receiver: 'memory-warnings'
+        
+        # Resource warnings
+        - match:
+            component: resources
+          receiver: 'resource-warnings'
+
+    # Security alerts - immediate security team notification
+    - match:
+        component: security
+      receiver: 'security-alerts'
+      group_wait: 30s
+      repeat_interval: 30m
+
+    # Business logic alerts
+    - match:
+        component: business-logic
+      receiver: 'business-alerts'
+      group_wait: 5m
+      repeat_interval: 6h
+
+# Alert receivers and notification channels
+receivers:
+  # Default receiver for unmatched alerts
+  - name: 'default'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#memorai-alerts'
+        username: 'AlertManager'
+        icon_emoji: ':warning:'
+        title: 'MemorAI MCP Alert'
+        text: |
+          {{ range .Alerts }}
+          **Alert:** {{ .Annotations.summary }}
+          **Description:** {{ .Annotations.description }}
+          **Severity:** {{ .Labels.severity }}
+          **Service:** {{ .Labels.service }}
+          **Instance:** {{ .Labels.instance }}
+          **Time:** {{ .StartsAt.Format "2006-01-02 15:04:05 UTC" }}
+          {{ if .Annotations.runbook_url }}
+          **Runbook:** {{ .Annotations.runbook_url }}
+          {{ end }}
+          {{ end }}
+        send_resolved: true
+
+  # Critical alerts with multiple notification channels
+  - name: 'critical-alerts'
+    # PagerDuty for immediate paging
+    pagerduty_configs:
+      - routing_key: 'YOUR_PAGERDUTY_INTEGRATION_KEY'
+        description: 'MemorAI MCP Critical Alert: {{ .GroupLabels.alertname }}'
+        details:
+          summary: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+          source: 'MemorAI MCP Monitoring'
+          severity: 'critical'
+          component: '{{ .GroupLabels.service }}'
+          group: '{{ .GroupLabels.alertname }}'
+        client: 'AlertManager'
+        client_url: 'https://alertmanager.memorai-mcp.com'
+    
+    # Slack for team awareness
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#memorai-critical'
+        username: 'AlertManager-Critical'
+        icon_emoji: ':rotating_light:'
+        title: '🚨 CRITICAL ALERT - MemorAI MCP'
+        text: |
+          <!here> **CRITICAL ALERT TRIGGERED**
+          
+          {{ range .Alerts }}
+          **Alert:** {{ .Annotations.summary }}
+          **Description:** {{ .Annotations.description }}
+          **Service:** {{ .Labels.service }}
+          **Instance:** {{ .Labels.instance }}
+          **Started:** {{ .StartsAt.Format "2006-01-02 15:04:05 UTC" }}
+          {{ if .Annotations.runbook_url }}
+          **Runbook:** {{ .Annotations.runbook_url }}
+          {{ end }}
+          {{ if .Annotations.action_required }}
+          **Action Required:** {{ .Annotations.action_required }}
+          {{ end }}
+          {{ end }}
+        color: 'danger'
+        send_resolved: true
+    
+    # Email for backup notification
+    email_configs:
+      - to: 'oncall@memorai-mcp.com'
+        from: 'alerts@memorai-mcp.com'
+        subject: '[CRITICAL] MemorAI MCP Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          CRITICAL ALERT - Immediate attention required
+          
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Service: {{ .Labels.service }}
+          Instance: {{ .Labels.instance }}
+          Started: {{ .StartsAt.Format "2006-01-02 15:04:05 UTC" }}
+          
+          {{ if .Annotations.runbook_url }}
+          Runbook: {{ .Annotations.runbook_url }}
+          {{ end }}
+          
+          {{ if .Annotations.action_required }}
+          Action Required: {{ .Annotations.action_required }}
+          {{ end }}
+          {{ end }}
+
+  # Database critical alerts
+  - name: 'database-critical'
+    pagerduty_configs:
+      - routing_key: 'YOUR_DATABASE_PAGERDUTY_KEY'
+        description: 'MemorAI MCP Database Critical: {{ .GroupLabels.alertname }}'
+        details:
+          database_type: '{{ .GroupLabels.service }}'
+          impact: 'Database unavailability affects all MemorAI operations'
+    
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#memorai-database'
+        username: 'DB-AlertManager'
+        icon_emoji: ':database:'
+        title: '🗃️ DATABASE CRITICAL - {{ .GroupLabels.service }}'
+        text: |
+          <!channel> **DATABASE CRITICAL ALERT**
+          
+          {{ range .Alerts }}
+          **Database:** {{ .Labels.service }}
+          **Issue:** {{ .Annotations.summary }}
+          **Impact:** {{ .Annotations.description }}
+          **Instance:** {{ .Labels.instance }}
+          {{ end }}
+        color: 'danger'
+
+  # Application critical alerts
+  - name: 'application-critical'
+    pagerduty_configs:
+      - routing_key: 'YOUR_APP_PAGERDUTY_KEY'
+        description: 'MemorAI MCP Application Critical: {{ .GroupLabels.alertname }}'
+        details:
+          application: 'MemorAI MCP Server'
+          impact: 'Service unavailable to users'
+    
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#memorai-critical'
+        username: 'App-AlertManager'
+        icon_emoji: ':fire:'
+        title: '🔥 APPLICATION DOWN - MemorAI MCP Server'
+
+  # Warning level alerts
+  - name: 'warning-alerts'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#memorai-warnings'
+        username: 'AlertManager-Warning'
+        icon_emoji: ':warning:'
+        title: '⚠️ Warning - MemorAI MCP'
+        text: |
+          **Warning Alert Triggered**
+          
+          {{ range .Alerts }}
+          **Alert:** {{ .Annotations.summary }}
+          **Description:** {{ .Annotations.description }}
+          **Service:** {{ .Labels.service }}
+          **Severity:** {{ .Labels.severity }}
+          {{ end }}
+        color: 'warning'
+        send_resolved: true
+
+  # Performance warning alerts
+  - name: 'performance-warnings'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#memorai-performance'
+        username: 'Perf-AlertManager'
+        icon_emoji: ':chart_with_downwards_trend:'
+        title: '📊 Performance Warning - MemorAI MCP'
+
+  # Memory system warnings
+  - name: 'memory-warnings'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#memorai-memory'
+        username: 'Memory-AlertManager'
+        icon_emoji: ':brain:'
+        title: '🧠 Memory System Warning'
+
+  # Resource warnings
+  - name: 'resource-warnings'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#memorai-resources'
+        username: 'Resource-AlertManager'
+        icon_emoji: ':computer:'
+        title: '💻 Resource Warning'
+
+  # Security alerts
+  - name: 'security-alerts'
+    pagerduty_configs:
+      - routing_key: 'YOUR_SECURITY_PAGERDUTY_KEY'
+        description: 'MemorAI MCP Security Alert: {{ .GroupLabels.alertname }}'
+        details:
+          security_type: '{{ .GroupLabels.component }}'
+          impact: 'Potential security breach or unauthorized access'
+    
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SECURITY/WEBHOOK'
+        channel: '#memorai-security'
+        username: 'Security-AlertManager'
+        icon_emoji: ':shield:'
+        title: '🛡️ SECURITY ALERT - MemorAI MCP'
+        text: |
+          <!channel> **SECURITY ALERT DETECTED**
+          
+          {{ range .Alerts }}
+          **Security Issue:** {{ .Annotations.summary }}
+          **Details:** {{ .Annotations.description }}
+          **Component:** {{ .Labels.component }}
+          **Instance:** {{ .Labels.instance }}
+          **Time:** {{ .StartsAt.Format "2006-01-02 15:04:05 UTC" }}
+          {{ end }}
+          
+          **Immediate security review required**
+        color: 'danger'
+    
+    email_configs:
+      - to: 'security@memorai-mcp.com'
+        from: 'security-alerts@memorai-mcp.com'
+        subject: '[SECURITY] MemorAI MCP Security Alert'
+        body: |
+          SECURITY ALERT - MemorAI MCP Server
+          
+          {{ range .Alerts }}
+          Security Issue: {{ .Annotations.summary }}
+          Details: {{ .Annotations.description }}
+          Component: {{ .Labels.component }}
+          Instance: {{ .Labels.instance }}
+          Time: {{ .StartsAt.Format "2006-01-02 15:04:05 UTC" }}
+          {{ end }}
+
+  # Business alerts
+  - name: 'business-alerts'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#memorai-business'
+        username: 'Business-AlertManager'
+        icon_emoji: ':chart:'
+        title: '📈 Business Alert - MemorAI MCP'
+
+# Inhibition rules to reduce noise
+inhibit_rules:
+  # Inhibit warning alerts if critical alert is firing for the same service
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'service', 'instance']
+
+  # Inhibit memory operation warnings if the server is down
+  - source_match:
+      alertname: 'MemorAIMCPServerDown'
+    target_match:
+      component: 'memory'
+    equal: ['instance']
+
+  # Inhibit database connection warnings if database is down
+  - source_match:
+      alertname: 'PostgreSQLDown'
+    target_match:
+      alertname: 'PostgreSQLHighConnections'
+    equal: ['instance']
+
+  # Inhibit all warnings if infrastructure node is down
+  - source_match:
+      alertname: 'KubernetesNodeNotReady'
+    target_match:
+      severity: 'warning'
+    equal: ['node']

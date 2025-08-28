@@ -13,7 +13,7 @@ import {
     McpError,
     ReadResourceRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { createCBDClient, CBDClient, CBDConfig } from 'cbd-client';
+import { createCBDClient, CBDClient, CBDConfig } from '@codai/cbd-client';
 
 interface MCPServerConfig extends CBDConfig {
     name?: string;

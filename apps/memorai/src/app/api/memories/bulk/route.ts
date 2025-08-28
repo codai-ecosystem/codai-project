@@ -22,7 +22,7 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
 
         // For tests: delete from test database
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../../tests/utils/test-database')).testDb;
+            const { testDb } = await import('../../../../tests/utils/test-utils');
             const originalCount = testDb.data.memories.length;
             testDb.data.memories = testDb.data.memories.filter(m => 
                 !(ids.includes(m.id) && m.userId === userId)
@@ -73,7 +73,7 @@ export async function PUT(request: NextRequest): Promise<NextResponse> {
 
         // For tests: update in test database
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../../tests/utils/test-database')).testDb;
+            const { testDb } = await import('../../../../tests/utils/test-utils');
             testDb.data.memories = testDb.data.memories.map(m => {
                 if (ids.includes(m.id) && m.userId === userId) {
                     updated++;

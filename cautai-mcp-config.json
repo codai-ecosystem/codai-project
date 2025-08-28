@@ -1,0 +1,45 @@
+{
+  "name": "CAUTAI Search Engine",
+  "description": "AI-powered search engine with MCP integration for VS Code",
+  "version": "1.0.0",
+  "mcp": {
+    "server": {
+      "name": "cautai-mcp-server",
+      "command": "tsx",
+      "args": ["src/standalone-server.ts"],
+      "cwd": "./packages/cautai-mcp",
+      "env": {
+        "NODE_ENV": "development",
+        "LOG_LEVEL": "info",
+        "MCP_SERVER_NAME": "cautai-search",
+        "CAUTAI_SEARCH_ENABLED": "true",
+        "CAUTAI_MAX_RESULTS": "20",
+        "CAUTAI_DEFAULT_LANGUAGE": "en",
+        "CAUTAI_SUPPORTED_LANGUAGES": "en,ro"
+      }
+    },
+    "capabilities": {
+      "tools": [
+        {
+          "name": "search_web",
+          "description": "Search the web using CAUTAI AI search engine"
+        },
+        {
+          "name": "compose_answer",
+          "description": "Compose comprehensive answers based on search results"
+        }
+      ]
+    }
+  },
+  "vscode": {
+    "settings": {
+      "mcp.servers": {
+        "cautai-search": {
+          "command": "npm",
+          "args": ["run", "start:mcp"],
+          "cwd": "${workspaceFolder}/packages/cautai-mcp"
+        }
+      }
+    }
+  }
+}

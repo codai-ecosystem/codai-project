@@ -1,0 +1,470 @@
+openapi: 3.0.3
+info:
+  title: MemorAI MCP Service API
+  description: Memory Context Protocol server for AI memory operations and agent coordination
+  version: 1.0.0
+  contact:
+    name: CODAI Team
+    email: tech@codai.com
+
+servers:
+  - url: http://localhost:4950
+    description: Development server
+  - url: https://staging-mcp.codai.com
+    description: Staging server
+  - url: https://mcp.codai.com
+    description: Production server
+
+paths:
+  /health:
+    get:
+      summary: MCP service health check
+      description: Returns health status of the MemorAI MCP service and dependencies
+      operationId: getMCPHealth
+      tags: [System]
+      responses:
+        '200':
+          description: MCP service is healthy
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/HealthStatus'
+                  - type: object
+                    properties:
+                      memoryStats:
+                        $ref: '#/components/schemas/MemoryStats'
+                      dependencies:
+                        type: object
+                        properties:
+                          cbdDatabase:
+                            $ref: '#/components/schemas/DependencyHealth'
+                          azureOpenAI:
+                            $ref: '#/components/schemas/DependencyHealth'
+
+  /mcp:
+    post:
+      summary: MCP protocol endpoint
+      description: Handle MCP (Model Context Protocol) requests for AI memory operations
+      operationId: handleMCPRequest
+      tags: [MCP]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MCPRequest'
+      responses:
+        '200':
+          description: MCP request processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MCPResponse'
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-sent events for streaming responses
+        '400':
+          description: Invalid MCP request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MCPErrorResponse'
+        '500':
+          description: Internal MCP processing error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MCPErrorResponse'
+
+  /agents:
+    get:
+      summary: List active agents
+      description: Retrieve list of currently active AI agents
+      operationId: listActiveAgents
+      tags: [Agents]
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Active agents list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Agent'
+                  totalCount:
+                    type: number
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /agents/{agentId}/memories:
+    get:
+      summary: Get agent memories
+      description: Retrieve memories for a specific agent
+      operationId: getAgentMemories
+      tags: [Memory]
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Agent identifier
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Maximum number of memories to return
+        - name: query
+          in: query
+          schema:
+            type: string
+          description: Search query for memories
+        - name: minImportance
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+          description: Minimum importance score filter
+      responses:
+        '200':
+          description: Agent memories retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  memories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Memory'
+                  totalCount:
+                    type: number
+                  hasMore:
+                    type: boolean
+
+    post:
+      summary: Store agent memory
+      description: Store a new memory for an agent
+      operationId: storeAgentMemory
+      tags: [Memory]
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Agent identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreMemoryRequest'
+      responses:
+        '201':
+          description: Memory stored successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Memory'
+        '400':
+          description: Invalid memory data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status, service, version, timestamp]
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        service:
+          type: string
+          example: "MemorAI MCP Service"
+        version:
+          type: string
+          example: "1.0.0"
+        timestamp:
+          type: string
+          format: date-time
+        uptime:
+          type: number
+          description: Service uptime in seconds
+
+    MemoryStats:
+      type: object
+      properties:
+        totalMemories:
+          type: number
+          description: Total number of memories stored
+        activeAgents:
+          type: number
+          description: Number of active agents
+        memoryUsage:
+          type: object
+          properties:
+            used:
+              type: number
+              description: Used memory in bytes
+            total:
+              type: number
+              description: Total available memory in bytes
+            percentage:
+              type: number
+              description: Memory usage percentage
+        recentActivity:
+          type: object
+          properties:
+            memoriesStored24h:
+              type: number
+            memoriesRecalled24h:
+              type: number
+            uniqueAgents24h:
+              type: number
+
+    DependencyHealth:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [up, down, degraded]
+        responseTime:
+          type: number
+          description: Response time in milliseconds
+        lastChecked:
+          type: string
+          format: date-time
+        error:
+          type: string
+          description: Error message if unhealthy
+
+    MCPRequest:
+      type: object
+      required: [jsonrpc, method, id]
+      properties:
+        jsonrpc:
+          type: string
+          example: "2.0"
+          description: JSON-RPC version
+        method:
+          type: string
+          example: "tools/list"
+          description: MCP method name
+        params:
+          type: object
+          additionalProperties: true
+          description: Method parameters
+        id:
+          oneOf:
+            - type: string
+            - type: number
+          description: Request identifier
+
+    MCPResponse:
+      type: object
+      required: [jsonrpc, id]
+      properties:
+        jsonrpc:
+          type: string
+          example: "2.0"
+        result:
+          type: object
+          additionalProperties: true
+          description: Method result
+        id:
+          oneOf:
+            - type: string
+            - type: number
+
+    MCPErrorResponse:
+      type: object
+      required: [jsonrpc, error, id]
+      properties:
+        jsonrpc:
+          type: string
+          example: "2.0"
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: integer
+              example: -32600
+            message:
+              type: string
+              example: "Invalid Request"
+            data:
+              type: object
+              additionalProperties: true
+        id:
+          oneOf:
+            - type: string
+            - type: number
+            - type: "null"
+
+    Agent:
+      type: object
+      required: [id, name, status, createdAt]
+      properties:
+        id:
+          type: string
+          description: Unique agent identifier
+        name:
+          type: string
+          description: Agent name or type
+        status:
+          type: string
+          enum: [active, inactive, suspended]
+        memoryCount:
+          type: number
+          description: Number of memories stored
+        lastActivity:
+          type: string
+          format: date-time
+          description: Last activity timestamp
+        createdAt:
+          type: string
+          format: date-time
+        capabilities:
+          type: array
+          items:
+            type: string
+          description: Agent capabilities
+
+    Memory:
+      type: object
+      required: [id, agentId, content, importance, createdAt]
+      properties:
+        id:
+          type: string
+          description: Unique memory identifier
+        agentId:
+          type: string
+          description: Agent that owns this memory
+        content:
+          type: string
+          description: Memory content
+        importance:
+          type: integer
+          minimum: 1
+          maximum: 10
+          description: Memory importance score
+        tags:
+          type: array
+          items:
+            type: string
+          description: Memory tags
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Additional memory metadata
+        project:
+          type: string
+          description: Associated project
+        session:
+          type: string
+          description: Session identifier
+        createdAt:
+          type: string
+          format: date-time
+        lastAccessed:
+          type: string
+          format: date-time
+        accessCount:
+          type: number
+          description: Number of times accessed
+
+    StoreMemoryRequest:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+          minLength: 1
+          description: Memory content to store
+        importance:
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 5
+          description: Memory importance score
+        tags:
+          type: array
+          items:
+            type: string
+          description: Memory tags
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Additional metadata
+        project:
+          type: string
+          description: Associated project name
+        session:
+          type: string
+          description: Session identifier
+
+    ErrorResponse:
+      type: object
+      required: [error, requestId, timestamp]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              example: "MEMORY_STORAGE_ERROR"
+            message:
+              type: string
+              example: "Failed to store memory"
+            details:
+              type: object
+              additionalProperties: true
+        requestId:
+          type: string
+          format: uuid
+        timestamp:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for MCP service authentication
+
+security:
+  - ApiKeyAuth: []
+
+tags:
+  - name: System
+    description: System health and monitoring
+  - name: MCP
+    description: Memory Context Protocol operations
+  - name: Agents
+    description: AI agent management
+  - name: Memory
+    description: Memory storage and retrieval

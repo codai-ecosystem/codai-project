@@ -1,0 +1,283 @@
+/* ===== PERFORMANCE OPTIMIZATIONS FOR WORLD-CLASS ANIMATIONS ===== */
+
+/* GPU Acceleration & Performance Hints */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimized Particle System */
+.particle-optimized {
+  contain: layout style paint;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+/* Scroll Animation Performance */
+.scroll-optimized {
+  contain: layout;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* 3D Transform Optimization */
+.transform-3d-optimized {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Button Animation Performance */
+.button-performance {
+  contain: layout style;
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+}
+
+/* Card Animation Performance */
+.card-performance {
+  contain: layout style paint;
+  will-change: transform, opacity, box-shadow;
+  transform: translate3d(0, 0, 0);
+  isolation: isolate;
+}
+
+/* Footer Animation Performance */
+.footer-performance {
+  contain: layout style;
+  will-change: background-position, transform;
+  transform: translateZ(0);
+}
+
+/* Reduce Animation Complexity for Lower-End Devices */
+@media (prefers-reduced-motion: reduce) {
+
+  .particle-enhanced,
+  .social-icon-floating,
+  .footer-animated-background,
+  .scroll-animate-card-3d,
+  .button-morphing-primary {
+    animation: none !important;
+    transform: none !important;
+    transition: opacity 0.2s ease !important;
+  }
+}
+
+/* Performance-First Responsive Breakpoints */
+@media (max-width: 768px) {
+  .particle-enhanced {
+    display: none;
+    /* Hide particles on mobile for better performance */
+  }
+
+  .scroll-animate-card-3d {
+    transform: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .social-icon-floating {
+    animation: none;
+    transition: transform 0.2s ease;
+  }
+}
+
+/* Low-End Device Optimization */
+@media (max-resolution: 150dpi),
+(max-device-pixel-ratio: 1.5) {
+  .glass-morphism-card {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .particle-enhanced,
+  .tech-icon-background {
+    display: none;
+  }
+}
+
+/* High-Performance Mode for Modern Browsers */
+@supports (contain: paint) {
+  .performance-container {
+    contain: paint layout;
+  }
+}
+
+/* Memory-Efficient Animations */
+.memory-efficient {
+  animation-fill-mode: both;
+  animation-duration: inherit;
+  will-change: auto;
+  /* Reset after animation completes */
+}
+
+/* Critical Performance Classes */
+.critical-performance {
+  contain: strict;
+  content-visibility: auto;
+  contain-intrinsic-size: auto;
+}
+
+/* Intersection Observer Optimization */
+.intersection-optimized {
+  content-visibility: auto;
+  contain-intrinsic-size: 200px;
+}
+
+/* Animation Performance Monitoring */
+@keyframes performance-check {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(1px);
+  }
+}
+
+.performance-monitor {
+  animation: performance-check 0.1s linear infinite;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+/* Optimized Hover States */
+.hover-optimized {
+  transition-property: transform, opacity, box-shadow;
+  transition-duration: 0.2s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Layer Promotion for Complex Animations */
+.layer-promoted {
+  transform: translateZ(0);
+  will-change: transform;
+  position: relative;
+  z-index: 0;
+}
+
+/* Efficient Gradient Animations */
+.gradient-performance {
+  background-attachment: fixed;
+  will-change: background-position;
+  contain: paint;
+}
+
+/* Optimized Text Animations */
+.text-performance {
+  will-change: transform, opacity;
+  contain: layout style;
+  text-rendering: optimizeSpeed;
+}
+
+/* Icon Animation Performance */
+.icon-performance {
+  will-change: transform;
+  contain: layout style paint;
+  display: inline-block;
+}
+
+/* Form Animation Performance */
+.form-performance {
+  will-change: transform, box-shadow;
+  contain: layout style;
+  isolation: isolate;
+}
+
+/* Performance-Aware Animation Classes */
+.perf-fade {
+  opacity: 0;
+  transform: translateZ(0);
+  transition: opacity 0.3s ease;
+}
+
+.perf-fade.active {
+  opacity: 1;
+}
+
+.perf-slide {
+  transform: translate3d(0, 20px, 0);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+}
+
+.perf-slide.active {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.perf-scale {
+  transform: scale(0.95) translateZ(0);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.perf-scale.active {
+  transform: scale(1) translateZ(0);
+  opacity: 1;
+}
+
+/* Cleanup Animation States */
+.animation-cleanup {
+  will-change: auto !important;
+  contain: none !important;
+  transform: none !important;
+}
+
+/* Print Media Optimization */
+@media print {
+
+  .particle-enhanced,
+  .social-icon-floating,
+  .footer-animated-background,
+  .scroll-animate-card-3d,
+  .button-morphing-primary,
+  .brand-logo-3d {
+    animation: none !important;
+    transform: none !important;
+    background: transparent !important;
+  }
+}
+
+/* Accessibility Performance */
+@media (prefers-contrast: high) {
+  .glass-morphism-card {
+    backdrop-filter: none;
+    border: 2px solid currentColor;
+  }
+}
+
+/* Battery Optimization */
+@media (prefers-reduced-data: reduce) {
+
+  .particle-enhanced,
+  .tech-icon-background {
+    display: none;
+  }
+
+  .footer-animated-background {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    animation: none;
+  }
+}
+
+/* Modern Browser Performance Features */
+@supports (animation-timeline: scroll()) {
+  .scroll-timeline-optimized {
+    animation-timeline: scroll();
+    animation-range: 0% 100%;
+  }
+}
+
+@supports (contain-intrinsic-size: auto) {
+  .modern-containment {
+    contain: layout style paint;
+    contain-intrinsic-size: auto 200px;
+  }
+}

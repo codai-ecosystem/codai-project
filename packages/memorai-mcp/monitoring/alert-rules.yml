@@ -1,0 +1,302 @@
+# MemorAI MCP Server - Alert Rules
+# Comprehensive alerting configuration for production monitoring
+
+groups:
+  # Application Health Alerts
+  - name: memorai-mcp-health
+    rules:
+    - alert: MemorAIMCPServerDown
+      expr: up{job="memorai-mcp-server"} == 0
+      for: 1m
+      labels:
+        severity: critical
+        service: memorai-mcp-server
+        team: memorai
+      annotations:
+        summary: "MemorAI MCP Server is down"
+        description: "MemorAI MCP Server has been down for more than 1 minute on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/server-down"
+        action_required: "Immediate investigation required"
+
+    - alert: MemorAIMCPServerUnhealthy
+      expr: memorai_mcp_health_status != 1
+      for: 2m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+      annotations:
+        summary: "MemorAI MCP Server health check failing"
+        description: "MemorAI MCP Server health status is {{ $value }} on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/health-check-fail"
+
+    - alert: MemorAIMCPHighErrorRate
+      expr: rate(memorai_mcp_http_requests_total{status=~"5.."}[5m]) / rate(memorai_mcp_http_requests_total[5m]) > 0.05
+      for: 3m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+      annotations:
+        summary: "High error rate detected in MemorAI MCP Server"
+        description: "Error rate is {{ $value | humanizePercentage }} for instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/high-error-rate"
+
+  # Performance Alerts
+  - name: memorai-mcp-performance
+    rules:
+    - alert: MemorAIMCPHighLatency
+      expr: histogram_quantile(0.95, rate(memorai_mcp_http_request_duration_seconds_bucket[5m])) > 2
+      for: 5m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+      annotations:
+        summary: "High latency in MemorAI MCP Server"
+        description: "95th percentile latency is {{ $value }}s for instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/high-latency"
+
+    - alert: MemorAIMCPSlowMemoryOperations
+      expr: histogram_quantile(0.95, rate(memorai_mcp_memory_operation_duration_seconds_bucket[5m])) > 0.5
+      for: 3m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+      annotations:
+        summary: "Slow memory operations detected"
+        description: "95th percentile memory operation time is {{ $value }}s on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/slow-memory-ops"
+
+    - alert: MemorAIMCPHighCPUUsage
+      expr: rate(process_cpu_seconds_total{job="memorai-mcp-server"}[5m]) > 0.8
+      for: 10m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+      annotations:
+        summary: "High CPU usage in MemorAI MCP Server"
+        description: "CPU usage is {{ $value | humanizePercentage }} on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/high-cpu"
+
+    - alert: MemorAIMCPHighMemoryUsage
+      expr: process_resident_memory_bytes{job="memorai-mcp-server"} / 1024 / 1024 / 1024 > 2
+      for: 5m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+      annotations:
+        summary: "High memory usage in MemorAI MCP Server"
+        description: "Memory usage is {{ $value }}GB on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/high-memory"
+
+  # Database Alerts
+  - name: memorai-mcp-database
+    rules:
+    - alert: PostgreSQLDown
+      expr: up{job="postgresql"} == 0
+      for: 1m
+      labels:
+        severity: critical
+        service: postgresql
+        team: memorai
+      annotations:
+        summary: "PostgreSQL database is down"
+        description: "PostgreSQL database has been down for more than 1 minute on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/postgres-down"
+        action_required: "Immediate database restoration required"
+
+    - alert: PostgreSQLHighConnections
+      expr: pg_stat_activity_count / pg_settings_max_connections > 0.8
+      for: 5m
+      labels:
+        severity: warning
+        service: postgresql
+        team: memorai
+      annotations:
+        summary: "PostgreSQL connection usage is high"
+        description: "PostgreSQL is using {{ $value | humanizePercentage }} of max connections on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/postgres-connections"
+
+    - alert: PostgreSQLSlowQueries
+      expr: rate(pg_stat_activity_max_tx_duration[5m]) > 30
+      for: 3m
+      labels:
+        severity: warning
+        service: postgresql
+        team: memorai
+      annotations:
+        summary: "PostgreSQL has slow running queries"
+        description: "Maximum transaction duration is {{ $value }}s on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/postgres-slow-queries"
+
+    - alert: RedisDown
+      expr: up{job="redis"} == 0
+      for: 1m
+      labels:
+        severity: critical
+        service: redis
+        team: memorai
+      annotations:
+        summary: "Redis cache is down"
+        description: "Redis cache has been down for more than 1 minute on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/redis-down"
+
+    - alert: RedisHighMemoryUsage
+      expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.9
+      for: 5m
+      labels:
+        severity: warning
+        service: redis
+        team: memorai
+      annotations:
+        summary: "Redis memory usage is high"
+        description: "Redis memory usage is {{ $value | humanizePercentage }} on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/redis-memory"
+
+  # Memory System Alerts
+  - name: memorai-mcp-memory-system
+    rules:
+    - alert: MemoryNetworkPartition
+      expr: memorai_mcp_network_partition_detected == 1
+      for: 1m
+      labels:
+        severity: critical
+        service: memorai-mcp-server
+        team: memorai
+        component: memory-network
+      annotations:
+        summary: "Memory network partition detected"
+        description: "Network partition detected in memory distribution system on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/network-partition"
+        action_required: "Investigate network connectivity and initiate partition recovery"
+
+    - alert: MemoryReplicationLag
+      expr: memorai_mcp_memory_replication_lag_seconds > 10
+      for: 2m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+        component: memory-replication
+      annotations:
+        summary: "High memory replication lag"
+        description: "Memory replication lag is {{ $value }}s on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/replication-lag"
+
+    - alert: MemoryConflictResolutionFailures
+      expr: rate(memorai_mcp_memory_conflict_resolution_failures_total[5m]) > 0.1
+      for: 3m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+        component: memory-conflicts
+      annotations:
+        summary: "Memory conflict resolution failures detected"
+        description: "Conflict resolution failure rate is {{ $value }}/sec on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/conflict-resolution"
+
+  # Business Logic Alerts
+  - name: memorai-mcp-business
+    rules:
+    - alert: LowMemoryOperationThroughput
+      expr: rate(memorai_mcp_memory_operations_total[5m]) < 10
+      for: 10m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+        component: business-logic
+      annotations:
+        summary: "Low memory operation throughput"
+        description: "Memory operation rate is {{ $value }}/sec, below expected threshold on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/low-throughput"
+
+    - alert: HighMemoryStorageUsage
+      expr: memorai_mcp_memory_storage_used_bytes / memorai_mcp_memory_storage_total_bytes > 0.85
+      for: 5m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+        component: storage
+      annotations:
+        summary: "High memory storage usage"
+        description: "Memory storage usage is {{ $value | humanizePercentage }} on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/storage-usage"
+
+  # Kubernetes Infrastructure Alerts
+  - name: memorai-mcp-infrastructure
+    rules:
+    - alert: KubernetesPodCrashLooping
+      expr: rate(kube_pod_container_status_restarts_total{namespace="memorai-mcp"}[15m]) > 0
+      for: 5m
+      labels:
+        severity: warning
+        service: kubernetes
+        team: memorai
+        component: infrastructure
+      annotations:
+        summary: "Pod is crash looping"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is crash looping"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/pod-crash-loop"
+
+    - alert: KubernetesPodNotReady
+      expr: kube_pod_status_ready{condition="false", namespace="memorai-mcp"} == 1
+      for: 5m
+      labels:
+        severity: warning
+        service: kubernetes
+        team: memorai
+        component: infrastructure
+      annotations:
+        summary: "Pod is not ready"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has been not ready for more than 5 minutes"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/pod-not-ready"
+
+    - alert: KubernetesNodeNotReady
+      expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+      for: 5m
+      labels:
+        severity: critical
+        service: kubernetes
+        team: memorai
+        component: infrastructure
+      annotations:
+        summary: "Kubernetes node is not ready"
+        description: "Kubernetes node {{ $labels.node }} has been not ready for more than 5 minutes"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/node-not-ready"
+        action_required: "Immediate node investigation required"
+
+  # Security Alerts
+  - name: memorai-mcp-security
+    rules:
+    - alert: UnauthorizedAPIAccess
+      expr: rate(memorai_mcp_http_requests_total{status="401"}[5m]) > 0.5
+      for: 2m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+        component: security
+      annotations:
+        summary: "High rate of unauthorized API access attempts"
+        description: "Unauthorized access attempts rate is {{ $value }}/sec on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/unauthorized-access"
+
+    - alert: SuspiciousMemoryAccess
+      expr: rate(memorai_mcp_memory_access_denied_total[5m]) > 0.1
+      for: 3m
+      labels:
+        severity: warning
+        service: memorai-mcp-server
+        team: memorai
+        component: security
+      annotations:
+        summary: "Suspicious memory access patterns detected"
+        description: "Memory access denied rate is {{ $value }}/sec on instance {{ $labels.instance }}"
+        runbook_url: "https://docs.memorai-mcp.com/runbooks/suspicious-memory-access"

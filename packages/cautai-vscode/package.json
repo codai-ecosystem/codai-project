@@ -1,0 +1,181 @@
+{
+  "name": "@codai/cautai-vscode",
+  "version": "1.0.0",
+  "description": "Cautai VS Code Extension - AI search integration for developers",
+  "displayName": "Cautai Search",
+  "publisher": "codai-ecosystem",
+  "main": "./dist/extension.js",
+  "engines": {
+    "vscode": "^1.85.0",
+    "node": ">=18.0.0"
+  },
+  "categories": [
+    "Other",
+    "Machine Learning",
+    "Snippets"
+  ],
+  "keywords": [
+    "search",
+    "ai",
+    "mcp",
+    "cautai",
+    "research",
+    "citations"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "cautai.searchWeb",
+        "title": "Search Web",
+        "category": "Cautai",
+        "icon": "$(search)"
+      },
+      {
+        "command": "cautai.composeAnswer",
+        "title": "Compose Answer with Citations",
+        "category": "Cautai",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "cautai.insertSources",
+        "title": "Insert Sources",
+        "category": "Cautai",
+        "icon": "$(link)"
+      },
+      {
+        "command": "cautai.configureMcp",
+        "title": "Configure MCP Server",
+        "category": "Cautai",
+        "icon": "$(settings-gear)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "cautai.searchWeb",
+          "group": "cautai",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "cautai.composeAnswer",
+          "group": "cautai",
+          "when": "editorHasSelection"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "cautai.searchWeb"
+        },
+        {
+          "command": "cautai.composeAnswer"
+        },
+        {
+          "command": "cautai.insertSources"
+        },
+        {
+          "command": "cautai.configureMcp"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "cautai.searchWeb",
+        "key": "ctrl+shift+s",
+        "mac": "cmd+shift+s",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "cautai.composeAnswer",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a",
+        "when": "editorTextFocus"
+      }
+    ],
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "cautaiProvider",
+        "label": "Cautai Search MCP Provider"
+      }
+    ],
+    "configuration": {
+      "title": "Cautai",
+      "properties": {
+        "cautai.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Cautai API key for enhanced features",
+          "scope": "application"
+        },
+        "cautai.serverUrl": {
+          "type": "string",
+          "default": "https://api.cautai.ro",
+          "description": "Cautai server URL",
+          "scope": "application"
+        },
+        "cautai.defaultLanguage": {
+          "type": "string",
+          "default": "auto",
+          "enum": ["auto", "en", "ro"],
+          "description": "Default language for searches",
+          "scope": "application"
+        },
+        "cautai.autoInsertCitations": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically insert citation links",
+          "scope": "application"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "unbuild",
+    "build:watch": "unbuild --watch",
+    "package": "vsce package",
+    "publish": "vsce publish",
+    "test": "vitest",
+    "test:unit": "vitest run --reporter=verbose",
+    "test:e2e": "node ./test/runE2ETests.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "clean": "rimraf dist *.vsix"
+  },
+  "dependencies": {
+    "@codai/cautai-client": "workspace:*",
+    "@codai/cautai-mcp": "workspace:*",
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.10",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^2.22.0",
+    "typescript": "^5.9.2",
+    "unbuild": "^2.0.0",
+    "vitest": "^1.2.2",
+    "rimraf": "^5.0.5",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codai-ecosystem/codai-project.git",
+    "directory": "packages/cautai-vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/codai-ecosystem/codai-project/issues"
+  },
+  "homepage": "https://cautai.ro"
+}

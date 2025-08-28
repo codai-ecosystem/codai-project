@@ -13,7 +13,7 @@ import { headers } from 'next/headers';
 
 export async function GET(request: NextRequest) {
     try {
-        const requestHeaders = headers();
+        const requestHeaders = await headers();
 
         // Get security audit results
         const auditResults = SecurityAuditor.auditHeaders(requestHeaders);
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
                 break;
 
             case 'security_audit':
-                const requestHeaders = headers();
+                const requestHeaders = await headers();
                 const auditResults = SecurityAuditor.auditHeaders(requestHeaders);
 
                 result = {

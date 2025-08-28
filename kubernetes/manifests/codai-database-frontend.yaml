@@ -1,0 +1,208 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-cbd-database
+  namespace: codai-production
+  labels:
+    app: codai-cbd-database
+    component: database
+    tier: backend
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: codai-cbd-database
+  template:
+    metadata:
+      labels:
+        app: codai-cbd-database
+        component: database
+        tier: backend
+    spec:
+      containers:
+      - name: cbd-database
+        image: codai/cbd-database:latest
+        ports:
+        - containerPort: 8180
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "8180"
+        - name: CBD_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: password
+        - name: GRAPH_DB_AUTH
+          valueFrom:
+            secretKeyRef:
+              name: codai-neo4j-secrets
+              key: auth
+        - name: NEO4J_URI
+          valueFrom:
+            secretKeyRef:
+              name: codai-neo4j-secrets
+              key: uri
+        - name: ELASTICSEARCH_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-elasticsearch-secrets
+              key: url
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-cbd-database-service
+  namespace: codai-production
+  labels:
+    app: codai-cbd-database
+    component: database
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8180
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: codai-cbd-database
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-memorai-frontend
+  namespace: codai-production
+  labels:
+    app: codai-memorai-frontend
+    component: frontend
+    tier: frontend
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  selector:
+    matchLabels:
+      app: codai-memorai-frontend
+  template:
+    metadata:
+      labels:
+        app: codai-memorai-frontend
+        component: frontend
+        tier: frontend
+    spec:
+      containers:
+      - name: memorai-frontend
+        image: codai/memorai-frontend:latest
+        ports:
+        - containerPort: 8006
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "8006"
+        - name: API_BASE_URL
+          value: "http://codai-gateway-api-service:8010"
+        - name: WEBSOCKET_URL
+          value: "ws://codai-hub-api-service:8111"
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-memorai-frontend-service
+  namespace: codai-production
+  labels:
+    app: codai-memorai-frontend
+    component: frontend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8006
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: codai-memorai-frontend
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-memorai-frontend-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-memorai-frontend
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+    scaleUp:
+      stabilizationWindowSeconds: 60

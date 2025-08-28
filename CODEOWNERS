@@ -1,0 +1,152 @@
+# Code Ownership and Review Requirements
+
+# This file defines code ownership and review requirements for the CODAI project
+# GitHub will automatically request reviews from the defined owners when PRs are opened
+
+# Global Ownership (fallback for unspecified files)
+* @senior-engineers
+
+# Root Configuration Files
+/.env* @devops-team @security-team
+/docker-compose.yml @devops-team @platform-architects  
+/package.json @frontend-leads @platform-architects
+/tsconfig.json @frontend-leads
+/next.config.js @frontend-leads
+/.github/ @devops-team @platform-architects
+
+# Architecture and Documentation
+/docs/ @technical-writers @platform-architects
+/docs/architecture/ @platform-architects @security-team
+/README.md @technical-writers @product-owners
+
+# Security and Compliance
+/**/*security* @security-team
+/**/*auth* @security-team @backend-leads
+/**/*rbac* @security-team @backend-leads
+/**/middleware/auth.* @security-team @backend-leads
+
+# Infrastructure and DevOps
+/.github/workflows/ @devops-team @platform-architects
+/scripts/ @devops-team
+/Dockerfile* @devops-team
+/k8s/ @devops-team @platform-architects
+/terraform/ @devops-team @platform-architects
+/azure-pipelines.yml @devops-team
+
+# Database and Persistence
+/**/migrations/ @database-admins @backend-leads
+/**/models/ @database-admins @backend-leads
+/**/repositories/ @backend-leads
+/**/database/ @database-admins @backend-leads
+
+# API and Backend Services
+/apps/api/ @backend-leads @api-architects
+/apps/gateway/ @platform-architects @backend-leads
+/apps/identity/ @security-team @backend-leads
+/apps/hub/ @backend-leads
+/packages/api-utils/ @backend-leads @api-architects
+
+# Frontend Applications
+/apps/codai/ @frontend-leads @ux-designers
+/apps/memorai/ @frontend-leads @ai-engineers  
+/apps/bancai/ @frontend-leads @fintech-specialists
+/apps/romai/ @ai-engineers @ml-engineers
+/apps/admin/ @frontend-leads @security-team
+/apps/docs/ @technical-writers @frontend-leads
+
+# Shared UI Components
+/packages/shared-ui/ @frontend-leads @ux-designers @design-system-team
+
+# Machine Learning and AI
+/apps/romai/src/ml/ @ml-engineers @ai-researchers
+/apps/romai/src/quantum/ @quantum-specialists @ai-researchers
+/**/*model* @ml-engineers @ai-researchers
+/**/*ai* @ai-engineers @ml-engineers
+/**/*neural* @ml-engineers @ai-researchers
+
+# MCP Ecosystem
+/packages/memorai-mcp/ @mcp-specialists @ai-engineers
+/packages/glass-mcp/ @automation-engineers @mcp-specialists
+/packages/playwright-mcp/ @qa-engineers @automation-engineers
+
+# Testing Infrastructure  
+/**/tests/ @qa-engineers @respective-domain-leads
+/**/*.test.* @qa-engineers @respective-domain-leads
+/**/*.spec.* @qa-engineers @respective-domain-leads
+/playwright.config.* @qa-engineers @automation-engineers
+/jest.config.* @qa-engineers
+
+# Performance and Monitoring
+/**/performance/ @performance-engineers @devops-team
+/**/monitoring/ @sre-team @devops-team
+/**/metrics/ @sre-team @data-engineers
+
+# Financial and Compliance
+/apps/bancai/ @fintech-specialists @security-team @compliance-team
+/**/payment/ @fintech-specialists @security-team
+/**/billing/ @fintech-specialists @backend-leads
+/**/compliance/ @compliance-team @security-team
+
+# Romanian AI Specialization
+/apps/romai/ @romanian-ai-specialists @ai-engineers @cultural-experts
+
+# Data and Analytics
+/**/analytics/ @data-engineers @ai-engineers
+/**/data/ @data-engineers @ml-engineers
+/**/etl/ @data-engineers @backend-leads
+
+# Configuration Management
+/**/config/ @devops-team @platform-architects
+/**/.env* @devops-team @security-team
+/**/settings/ @platform-architects
+
+# Critical Security Files (Require Multiple Approvals)
+/**/*security* @security-team @platform-architects @cto
+/**/*auth* @security-team @platform-architects  
+/**/*encryption* @security-team @cryptography-experts
+/**/*keys* @security-team @devops-team
+
+# Release and Deployment (Require Multiple Approvals)
+/CHANGELOG.md @product-owners @platform-architects @technical-leads
+/VERSION @product-owners @platform-architects
+/**/release/ @product-owners @platform-architects @devops-team
+
+# Team Definitions (GitHub Teams)
+# These correspond to GitHub teams that must be configured in the organization
+
+# @senior-engineers - Senior developers across all domains
+# @platform-architects - System architects and technical leads  
+# @frontend-leads - Frontend team leads and senior frontend engineers
+# @backend-leads - Backend team leads and senior backend engineers
+# @devops-team - DevOps engineers and infrastructure specialists
+# @security-team - Security engineers and security architects
+# @qa-engineers - QA engineers and test automation specialists
+# @ml-engineers - Machine learning engineers and data scientists
+# @ai-engineers - AI specialists and prompt engineers
+# @ai-researchers - AI researchers and advanced ML specialists
+# @database-admins - Database administrators and data architects
+# @api-architects - API design specialists and integration experts
+# @ux-designers - UX/UI designers and design system specialists
+# @technical-writers - Documentation specialists and content creators
+# @product-owners - Product managers and business stakeholders
+# @sre-team - Site reliability engineers and monitoring specialists
+# @performance-engineers - Performance optimization specialists
+# @fintech-specialists - Financial technology domain experts
+# @compliance-team - Compliance and regulatory specialists
+# @romanian-ai-specialists - Romanian language and cultural AI experts
+# @data-engineers - Data engineers and ETL specialists
+# @automation-engineers - Test automation and workflow specialists
+# @mcp-specialists - Model Context Protocol specialists
+# @quantum-specialists - Quantum computing and advanced physics experts
+# @cryptography-experts - Cryptography and security protocol specialists
+# @design-system-team - Design system maintainers and component specialists
+# @cultural-experts - Cultural consultants and localization specialists
+# @cto - Chief Technology Officer and executive stakeholders
+# @technical-leads - Technical leads across all engineering domains
+
+# Review Requirements:
+# - Minimum 2 approvals required for all PRs
+# - Security-related changes require 3 approvals including security team
+# - Architecture changes require platform architect approval
+# - Breaking changes require technical lead approval
+# - Release-related changes require product owner approval

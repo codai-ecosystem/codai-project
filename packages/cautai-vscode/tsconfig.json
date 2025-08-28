@@ -1,0 +1,6 @@
+{
+  "extends": "../cautai-mcp/tsconfig.json",
+  "compilerOptions": {
+    "types": ["vscode", "node"]
+  }
+}

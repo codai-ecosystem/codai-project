@@ -1,0 +1,4 @@
+1. Analyze current capabilities
+2. Identify improvement opportunities
+3. Execute improvements
+4. Evaluate results

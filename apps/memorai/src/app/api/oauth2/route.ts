@@ -7,6 +7,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { authenticateAPI, addSecurityHeaders } from '../../../middleware/auth';
 import crypto from 'crypto';
 
+// OAuth2 User Info interface
+interface OAuth2UserInfo {
+    id: string;
+    email: string;
+    name: string;
+    // Optional properties from various providers
+    sub?: string;
+    login?: string;
+    avatar_url?: string;
+    picture?: string;
+    verified_email?: boolean;
+    email_verified?: boolean;
+}
+
 // Mock OAuth2 manager for now
 const oauth2Manager = {
     getEnabledProviders: () => [
@@ -22,8 +36,13 @@ const oauth2Manager = {
     exchangeCodeForToken: async (provider: string, code: string, redirectUri: string) => {
         return { accessToken: 'mock-token', refreshToken: 'mock-refresh', expiresIn: 3600 };
     },
-    getUserInfo: async (provider: string, accessToken: string) => {
-        return { id: 'mock-user', email: 'mock@example.com', name: 'Mock User' };
+    getUserInfo: async (provider: string, accessToken: string): Promise<OAuth2UserInfo> => {
+        return { 
+            id: 'mock-user', 
+            email: 'mock@example.com', 
+            name: 'Mock User',
+            verified_email: true 
+        };
     }
 };
 

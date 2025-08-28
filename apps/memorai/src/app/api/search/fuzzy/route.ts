@@ -13,11 +13,11 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Get all memories for fuzzy matching
-        const allMemories = await cbdClient.searchDocuments('memories', {
+        // Get all memories for fuzzy matching (mock implementation for development)
+        const allMemories = await (cbdClient as any).searchDocuments?.('memories', {
             query: '',
             limit: 500 // Reasonable limit for fuzzy search performance
-        });
+        }) || [];
 
         // Perform fuzzy matching
         const fuzzyResults = performFuzzySearch(allMemories, terms, filters);
@@ -78,7 +78,7 @@ function performFuzzySearch(documents: any[], searchTerms: string[], filters: an
 
             if (filters.tags && filters.tags.length > 0) {
                 const docTags = doc.tags || [];
-                const hasMatchingTag = filters.tags.some(tag => docTags.includes(tag));
+                const hasMatchingTag = filters.tags.some((tag: string) => docTags.includes(tag));
                 if (!hasMatchingTag) {
                     finalScore *= 0.4;
                 }

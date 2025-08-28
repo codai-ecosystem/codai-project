@@ -21,7 +21,7 @@ const memoraiMCPClient = {
 const MOCK_USER_ID = 'user-12345';
 
 // GET /api/memories/export - Export user memories (Admin only for security)
-export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse<any>>> {
+export async function GET(request: NextRequest): Promise<NextResponse<any>> {
     try {
         // 🔐 Authentication check
         const authResponse = authenticateAPI(request);

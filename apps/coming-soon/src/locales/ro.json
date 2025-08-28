@@ -1,0 +1,176 @@
+{
+  "navigation": {
+    "hero": "Acasă",
+    "ecosystem": "Ecosistem", 
+    "projects": "Proiecte",
+    "about": "Despre",
+    "contact": "Contact",
+    "menu": "Meniu",
+    "theme": "Temă",
+    "language": "Limbă",
+    "get_started": "Începe",
+    "open_menu": "Deschide meniul",
+    "skip_to_main": "Sari la conținutul principal",
+    "submenu": {
+      "ai": "AI și Învățare Automată",
+      "financial": "Servicii Financiare", 
+      "development": "Instrumente de Dezvoltare",
+      "infrastructure": "Infrastructură",
+      "admin": "Administrare"
+    }
+  },
+  "hero": {
+    "title": "Viitorul Dezvoltării AI",
+    "subtitle": "Ecosistemul CODAI",
+    "description": "Descoperă noua generație de instrumente și platforme de dezvoltare alimentate de AI, concepute pentru a transforma modul în care construim, implementăm și scalăm aplicații inteligente.",
+    "cta": {
+      "primary": "Explorează Ecosistemul",
+      "secondary": "Vezi Proiectele"
+    },
+    "stats": {
+      "projects": "Proiecte Active",
+      "services": "Microservicii",
+      "users": "Utilizatori",
+      "uptime": "Timp de Funcționare"
+    }
+  },
+  "ecosystem": {
+    "title": "Ecosistem AI Interconectat",
+    "subtitle": "Alimentând Următoarea Generație",
+    "description": "Ecosistemul nostru cuprinzător de servicii AI, instrumente și platforme lucrează împreună pentru a crea experiențe de dezvoltare perfecte.",
+    "categories": {
+      "ai": {
+        "title": "AI & ML",
+        "description": "Soluții avansate de inteligență artificială și învățare automată"
+      },
+      "blockchain": {
+        "title": "Blockchain",
+        "description": "Tehnologii blockchain securizate și transparente"
+      },
+      "security": {
+        "title": "Securitate",
+        "description": "Instrumente de securitate și conformitate de nivel enterprise"
+      },
+      "automation": {
+        "title": "Automatizare",
+        "description": "Automatizare inteligentă și orchestrare"
+      }
+    }
+  },
+  "projects": {
+    "title": "Proiectele Noastre",
+    "subtitle": "Construim Viitorul",
+    "description": "Explorează suita noastră cuprinzătoare de proiecte care acoperă tehnologiile AI, blockchain, securitate și automatizare.",
+    "categories": {
+      "ai_platform": {
+        "title": "Platformă AI",
+        "description": "Platformă și servicii de inteligență artificială de bază"
+      },
+      "development_tools": {
+        "title": "Instrumente de Dezvoltare",
+        "description": "Instrumente avansate de dezvoltare și implementare"
+      },
+      "enterprise_solutions": {
+        "title": "Soluții Enterprise",
+        "description": "Aplicații scalabile de nivel enterprise"
+      },
+      "specialized_apps": {
+        "title": "Aplicații Specializate",
+        "description": "Aplicații inteligente specifice domeniului"
+      }
+    },
+    "details": {
+      "techStack": "Stack Tehnologic",
+      "status": "Stare",
+      "learnMore": "Află Mai Mult",
+      "comingSoon": "În Curând",
+      "inDevelopment": "În Dezvoltare",
+      "beta": "Beta",
+      "production": "Producție"
+    }
+  },
+  "footer": {
+    "title": "Ecosistemul CODAI",
+    "description": "Construim viitorul dezvoltării alimentate de AI.",
+    "sections": {
+      "products": {
+        "title": "Produse",
+        "links": {
+          "platform": "Platformă AI",
+          "tools": "Instrumente de Dezvoltare",
+          "enterprise": "Soluții Enterprise"
+        }
+      },
+      "company": {
+        "title": "Companie",
+        "links": {
+          "about": "Despre Noi",
+          "careers": "Cariere",
+          "contact": "Contact"
+        }
+      },
+      "resources": {
+        "title": "Resurse",
+        "links": {
+          "documentation": "Documentație",
+          "support": "Suport",
+          "community": "Comunitate"
+        }
+      },
+      "legal": {
+        "title": "Legal",
+        "links": {
+          "privacy": "Politica de Confidențialitate",
+          "terms": "Termeni și Condiții",
+          "cookies": "Politica Cookie-uri"
+        }
+      }
+    },
+    "social": {
+      "github": "GitHub",
+      "twitter": "Twitter",
+      "linkedin": "LinkedIn"
+    },
+    "copyright": "© {{year}} CODAI. Toate drepturile rezervate.",
+    "madeWith": "Făcut cu ❤️ de echipa CODAI"
+  },
+  "theme": {
+    "toggle": "Schimbă tema",
+    "light": "Mod luminos",
+    "dark": "Mod întunecat",
+    "system": "Sistem"
+  },
+  "language": {
+    "toggle": "Schimbă limba",
+    "english": "English",
+    "romanian": "Română"
+  },
+  "accessibility": {
+    "skipToMain": "Salt la conținutul principal",
+    "menu": "Meniul principal",
+    "closeMenu": "Închide meniul",
+    "openMenu": "Deschide meniul"
+  },
+  "loading": {
+    "title": "Se încarcă...",
+    "ecosystem": "Se încarcă ecosistemul...",
+    "projects": "Se încarcă proiectele..."
+  },
+  "errors": {
+    "generic": "Ceva nu a mers bine. Vă rugăm să încercați din nou.",
+    "network": "Eroare de rețea. Vă rugăm să verificați conexiunea.",
+    "notFound": "Pagina nu a fost găsită."
+  },
+  "social": {
+    "followUs": "Urmărește CODAI",
+    "followDescription": "Rămâi la curent cu cele mai recente dezvoltări și inovații AI pe toate platformele",
+    "shareThis": "Distribuie această pagină",
+    "communitySupport": "Comunitate și creștere",
+    "github": "Proiecte open source",
+    "linkedin": "Rețea profesională",
+    "twitter": "Ultimele actualizări",
+    "youtube": "Conținut video",
+    "instagram": "Povești vizuale",
+    "facebook": "Discuții comunitare"
+  }
+}

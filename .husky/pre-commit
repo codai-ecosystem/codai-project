@@ -1,2 +1,18 @@
-# Lint-staged disabled due to Windows PATH issues
-# echo "Pre-commit hook: linting skipped"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🎣 Running pre-commit hooks..."
+
+# Run lint-staged
+npx lint-staged
+
+# Type checking
+echo "🔍 Type checking..."
+npx tsc --noEmit
+
+if [ $? -ne 0 ]; then
+  echo "❌ Type checking failed. Commit aborted."
+  exit 1
+fi
+
+echo "✅ All pre-commit checks passed!"

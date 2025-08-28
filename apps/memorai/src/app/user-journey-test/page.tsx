@@ -165,7 +165,7 @@ export default function UserJourneyTestPage() {
               throw new Error('Should have failed with invalid data');
             } catch (error) {
               // Expected to fail
-              if (error.message.includes('Should have failed')) {
+              if ((error as Error).message?.includes('Should have failed')) {
                 throw error;
               }
             }
@@ -180,7 +180,7 @@ export default function UserJourneyTestPage() {
               throw new Error('Should have failed with 404');
             } catch (error) {
               // Expected to fail
-              if (error.message.includes('Should have failed')) {
+              if ((error as Error).message?.includes('Should have failed')) {
                 throw error;
               }
             }

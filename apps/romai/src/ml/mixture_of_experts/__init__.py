@@ -6,35 +6,90 @@ Mixture of Experts architecture for efficient scaling to 671B parameters
 while maintaining 37B active parameters during inference.
 
 Components:
-- moe_architecture.py: Core MoE layer implementations
-- moe_integration.py: Integration with existing systems
+- tutel_optimized_moe.py: Core Tutel-optimized MoE implementations
 - moe_server_integration.py: Server-specific integration
 """
 
 __version__ = "1.0.0"
 __author__ = "RomAI Team"
 
-# Import core components
+import logging
+logger = logging.getLogger(__name__)
+
+# Import core components carefully to avoid circular imports
+_MOE_AVAILABLE = False
+_TUTEL_AVAILABLE = False
+_SERVER_AVAILABLE = False
+
 try:
-    from .moe_architecture import *
-    from .moe_integration import *
-    from .moe_server_integration import *
+    # First import core MoE classes
+    from .tutel_optimized_moe import (
+        RomAITutelMoESystem,
+        TutelMoEConfig, 
+        MoEMetrics,
+        ExpertInfo
+    )
     _MOE_AVAILABLE = True
+    _TUTEL_AVAILABLE = True
+    logger.info("✅ Tutel-optimized MoE system imported successfully")
+    
 except ImportError as e:
-    _MOE_AVAILABLE = False
-    import logging
-    logging.getLogger(__name__).warning(f"⚠️ MoE components unavailable: {e}")
+    logger.warning(f"⚠️ Core MoE system unavailable: {e}")
+    # Create placeholder classes
+    class RomAITutelMoESystem:
+        def __init__(self, *args, **kwargs):
+            raise NotImplementedError("MoE system not available")
+    class TutelMoEConfig:
+        pass
+    class MoEMetrics:
+        pass
+    class ExpertInfo:
+        pass
+
+try:
+    # Then import server integration (if available)
+    from .moe_server_integration import (
+        MoEServerEngine,
+        MoEEndpointManager,
+        MoEHealthChecker, 
+        MoEPerformanceMonitor
+    )
+    _SERVER_AVAILABLE = True
+    logger.info("✅ MoE server integration imported successfully")
+    
+except ImportError as e:
+    logger.warning(f"⚠️ MoE server integration unavailable: {e}")
+    # Create placeholder classes
+    class MoEServerEngine:
+        def __init__(self, *args, **kwargs):
+            raise NotImplementedError("MoE server integration not available")
+    class MoEEndpointManager:
+        pass
+    class MoEHealthChecker:
+        pass
+    class MoEPerformanceMonitor:
+        pass
 
 __all__ = [
-    'moe_architecture',
-    'moe_integration', 
-    'moe_server_integration'
+    # Core MoE Classes
+    'RomAITutelMoESystem',
+    'TutelMoEConfig',
+    'MoEMetrics', 
+    'ExpertInfo',
+    
+    # Server Integration Classes
+    'MoEServerEngine',
+    'MoEEndpointManager',
+    'MoEHealthChecker',
+    'MoEPerformanceMonitor',
 ]
 
 def get_moe_status():
     """Get MoE package availability status"""
     return {
         'available': _MOE_AVAILABLE,
+        'tutel_available': _TUTEL_AVAILABLE,
+        'server_available': _SERVER_AVAILABLE,
         'version': __version__,
-        'components_loaded': _MOE_AVAILABLE
+        'components_loaded': _MOE_AVAILABLE and _SERVER_AVAILABLE
     }

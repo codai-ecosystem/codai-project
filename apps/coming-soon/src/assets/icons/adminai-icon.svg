@@ -1,0 +1,54 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="adminai-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#84fab0" />
+      <stop offset="100%" style="stop-color:#8fd3f4" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Dashboard/Admin panel -->
+  <rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="url(#adminai-gradient)" stroke-width="2"/>
+  
+  <!-- Dashboard sections -->
+  <g stroke="url(#adminai-gradient)" stroke-width="1" opacity="0.6">
+    <line x1="2" y1="8" x2="22" y2="8"/>
+    <line x1="2" y1="12" x2="22" y2="12"/>
+    <line x1="2" y1="16" x2="22" y2="16"/>
+    <line x1="12" y1="8" x2="12" y2="20"/>
+  </g>
+  
+  <!-- Charts and data visualization -->
+  <g fill="url(#adminai-gradient)" opacity="0.8">
+    <!-- Bar chart -->
+    <rect x="4" y="14" width="1.5" height="4"/>
+    <rect x="6" y="13" width="1.5" height="5"/>
+    <rect x="8" y="15" width="1.5" height="3"/>
+    <rect x="10" y="12" width="1.5" height="6"/>
+    
+    <!-- Pie chart segments -->
+    <path d="M16 10 A2 2 0 0 1 18 12 L16 12 Z" />
+    <path d="M18 12 A2 2 0 0 1 16 14 L16 12 Z" opacity="0.7"/>
+    <path d="M16 14 A2 2 0 0 1 14 12 L16 12 Z" opacity="0.5"/>
+    <path d="M14 12 A2 2 0 0 1 16 10 L16 12 Z" opacity="0.3"/>
+  </g>
+  
+  <!-- Header icons -->
+  <g stroke="url(#adminai-gradient)" stroke-width="2" fill="none">
+    <circle cx="5" cy="6" r="1"/>
+    <circle cx="8" cy="6" r="1"/>
+    <circle cx="11" cy="6" r="1"/>
+  </g>
+  
+  <!-- AI automation indicators -->
+  <g stroke="url(#adminai-gradient)" stroke-width="1.5" fill="none" opacity="0.7">
+    <path d="M18 6 L20 4 L22 6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M20 4 L20 2" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Status indicators -->
+  <g fill="url(#adminai-gradient)">
+    <circle cx="19" cy="17" r="1" opacity="0.9"/>
+    <circle cx="19" cy="15" r="0.5" opacity="0.7"/>
+    <circle cx="19" cy="19" r="0.5" opacity="0.7"/>
+  </g>
+</svg>

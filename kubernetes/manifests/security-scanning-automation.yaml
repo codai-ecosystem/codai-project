@@ -1,0 +1,911 @@
+# Security Scanning Automation for Essential CodAI Services
+# Version: 1.0
+# Falco | Trivy | OWASP ZAP | Vulnerability Management | Compliance Monitoring
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security-scanning-config
+  namespace: codai-production
+data:
+  security-policy.json: |
+    {
+      "security_scanning": {
+        "architecture": {
+          "runtime_security": {
+            "engine": "falco",
+            "rule_engine": "custom",
+            "threat_detection": "behavioral_analysis",
+            "incident_response": "automated",
+            "compliance_frameworks": ["SOC2", "GDPR", "HIPAA", "PCI-DSS"]
+          },
+          "vulnerability_management": {
+            "scanner": "trivy",
+            "scan_frequency": {
+              "containers": "daily",
+              "images": "on_build",
+              "infrastructure": "weekly",
+              "dependencies": "daily"
+            },
+            "severity_thresholds": {
+              "critical": "block_deployment",
+              "high": "require_approval",
+              "medium": "warn",
+              "low": "track"
+            }
+          },
+          "web_application_security": {
+            "scanner": "owasp_zap",
+            "scan_types": ["active", "passive", "api"],
+            "scan_frequency": "on_deployment",
+            "owasp_top10_coverage": true
+          }
+        },
+        "automation": {
+          "continuous_monitoring": {
+            "enabled": true,
+            "real_time_alerts": true,
+            "threat_intelligence": true,
+            "behavioral_analytics": true
+          },
+          "remediation": {
+            "automatic_patching": {
+              "enabled": true,
+              "severity_threshold": "critical",
+              "approval_required": false
+            },
+            "quarantine": {
+              "enabled": true,
+              "suspicious_containers": true,
+              "malicious_processes": true
+            }
+          },
+          "reporting": {
+            "dashboards": true,
+            "compliance_reports": true,
+            "executive_summaries": true,
+            "detailed_findings": true
+          }
+        },
+        "compliance": {
+          "frameworks": {
+            "soc2_type2": {
+              "enabled": true,
+              "automated_controls": true,
+              "audit_logging": true,
+              "evidence_collection": true
+            },
+            "gdpr": {
+              "enabled": true,
+              "data_protection_monitoring": true,
+              "breach_detection": true,
+              "privacy_compliance": true
+            },
+            "hipaa": {
+              "enabled": true,
+              "healthcare_compliance": true,
+              "phi_protection": true,
+              "audit_trails": true
+            },
+            "pci_dss": {
+              "enabled": true,
+              "payment_security": true,
+              "cardholder_data_protection": true,
+              "network_security": true
+            }
+          },
+          "reporting": {
+            "automated_compliance_reports": true,
+            "real_time_compliance_monitoring": true,
+            "compliance_dashboard": true,
+            "audit_trail_management": true
+          }
+        }
+      },
+      "security_rules": {
+        "runtime_security": {
+          "process_monitoring": {
+            "unauthorized_processes": "block",
+            "privilege_escalation": "block",
+            "container_breakout": "block",
+            "suspicious_network_activity": "alert"
+          },
+          "file_system_monitoring": {
+            "unauthorized_file_access": "alert",
+            "configuration_changes": "alert",
+            "sensitive_data_access": "block",
+            "malware_detection": "block"
+          },
+          "network_monitoring": {
+            "unauthorized_connections": "block",
+            "data_exfiltration": "block",
+            "port_scanning": "alert",
+            "ddos_attacks": "block"
+          }
+        },
+        "vulnerability_management": {
+          "image_scanning": {
+            "base_image_vulnerabilities": "fail_build",
+            "dependency_vulnerabilities": "warn",
+            "configuration_issues": "warn",
+            "secrets_in_images": "fail_build"
+          },
+          "runtime_scanning": {
+            "active_vulnerabilities": "alert",
+            "exposed_services": "alert",
+            "misconfigurations": "warn",
+            "compliance_violations": "block"
+          }
+        }
+      }
+    }
+
+  falco-rules.yaml: |
+    # Falco Custom Rules for CodAI Production Environment
+    - rule: Unauthorized Process in Container
+      desc: Detect unauthorized processes running in containers
+      condition: >
+        spawned_process and container and
+        not proc.name in (node, nginx, postgres, redis, grafana, prometheus) and
+        not proc.args contains "npm start" and
+        not proc.args contains "node server.js"
+      output: >
+        Unauthorized process spawned in container
+        (user=%user.name container=%container.name process=%proc.cmdline)
+      priority: WARNING
+      tags: [container, process, security]
+
+    - rule: Container Privilege Escalation
+      desc: Detect privilege escalation attempts in containers
+      condition: >
+        spawned_process and container and
+        (proc.name=sudo or proc.name=su or
+         proc.args contains "chmod +s" or
+         proc.args contains "setuid")
+      output: >
+        Privilege escalation attempt detected
+        (user=%user.name container=%container.name process=%proc.cmdline)
+      priority: CRITICAL
+      tags: [container, privilege_escalation, security]
+
+    - rule: Sensitive File Access
+      desc: Monitor access to sensitive configuration files
+      condition: >
+        open_read and container and
+        (fd.name contains "/etc/passwd" or
+         fd.name contains "/etc/shadow" or
+         fd.name contains ".env" or
+         fd.name contains "credentials" or
+         fd.name contains "secrets")
+      output: >
+        Sensitive file access detected
+        (user=%user.name container=%container.name file=%fd.name)
+      priority: WARNING
+      tags: [file, sensitive, security]
+
+    - rule: Network Port Scanning
+      desc: Detect network port scanning activities
+      condition: >
+        outbound and
+        fd.type=socket and
+        (fd.sport_range in (1,100) or
+         fd.dport_range in (1,100)) and
+        not proc.name in (nmap, masscan, zmap)
+      output: >
+        Potential port scanning detected
+        (user=%user.name process=%proc.cmdline connection=%fd.name)
+      priority: WARNING
+      tags: [network, scanning, security]
+
+    - rule: Container Breakout Attempt
+      desc: Detect container escape attempts
+      condition: >
+        spawned_process and container and
+        (proc.args contains "nsenter" or
+         proc.args contains "docker" or
+         proc.args contains "crictl" or
+         proc.args contains "runc")
+      output: >
+        Container breakout attempt detected
+        (user=%user.name container=%container.name process=%proc.cmdline)
+      priority: CRITICAL
+      tags: [container, escape, security]
+
+---
+# Falco Runtime Security
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: falco
+  namespace: codai-production
+  labels:
+    app: falco
+    component: security
+spec:
+  selector:
+    matchLabels:
+      app: falco
+  template:
+    metadata:
+      labels:
+        app: falco
+        component: security
+    spec:
+      serviceAccount: falco
+      hostNetwork: true
+      hostPID: true
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+        operator: Exists
+      containers:
+      - name: falco
+        image: falcosecurity/falco:0.36.0
+        args:
+        - /usr/bin/falco
+        - --cri=/run/containerd/containerd.sock
+        - --k8s-api
+        - --k8s-api-cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        - --k8s-api-token=/var/run/secrets/kubernetes.io/serviceaccount/token
+        - --config=/etc/falco/falco.yaml
+        env:
+        - name: FALCO_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /host/var/run/docker.sock
+          name: docker-socket
+          readOnly: true
+        - mountPath: /host/run/containerd/containerd.sock
+          name: containerd-socket
+          readOnly: true
+        - mountPath: /host/dev
+          name: dev-fs
+          readOnly: true
+        - mountPath: /host/proc
+          name: proc-fs
+          readOnly: true
+        - mountPath: /host/boot
+          name: boot-fs
+          readOnly: true
+        - mountPath: /host/lib/modules
+          name: lib-modules
+          readOnly: true
+        - mountPath: /host/usr
+          name: usr-fs
+          readOnly: true
+        - mountPath: /host/etc
+          name: etc-fs
+          readOnly: true
+        - mountPath: /etc/falco
+          name: falco-config
+        - mountPath: /etc/falco/rules.d
+          name: falco-rules
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8765
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8765
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 15
+      volumes:
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+      - name: containerd-socket
+        hostPath:
+          path: /run/containerd/containerd.sock
+      - name: dev-fs
+        hostPath:
+          path: /dev
+      - name: proc-fs
+        hostPath:
+          path: /proc
+      - name: boot-fs
+        hostPath:
+          path: /boot
+      - name: lib-modules
+        hostPath:
+          path: /lib/modules
+      - name: usr-fs
+        hostPath:
+          path: /usr
+      - name: etc-fs
+        hostPath:
+          path: /etc
+      - name: falco-config
+        configMap:
+          name: falco-config
+      - name: falco-rules
+        configMap:
+          name: security-scanning-config
+          items:
+          - key: falco-rules.yaml
+            path: custom_rules.yaml
+
+---
+# Vulnerability Scanner - Trivy
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: trivy-vulnerability-scan
+  namespace: codai-production
+  labels:
+    app: trivy-scanner
+    component: security
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: trivy-scanner
+            image: aquasec/trivy:0.47.0
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              
+              echo "Starting vulnerability scan for CodAI services..."
+              
+              # Scan container images
+              IMAGES=(
+                "codai/auth-api:latest"
+                "codai/gateway-api:latest"
+                "codai/hub-memorai:latest"
+                "codai/database-frontend:latest"
+                "postgres:15-alpine"
+                "redis:7.2-alpine"
+                "nginx:1.25-alpine"
+                "grafana/grafana:10.0.0"
+                "prom/prometheus:v2.45.0"
+              )
+              
+              SCAN_DATE=$(date +%Y%m%d_%H%M%S)
+              REPORT_DIR="/reports/${SCAN_DATE}"
+              mkdir -p "$REPORT_DIR"
+              
+              for image in "${IMAGES[@]}"; do
+                echo "Scanning image: $image"
+                
+                # Vulnerability scan
+                trivy image --format json --output "${REPORT_DIR}/vuln_${image//\//_}_${SCAN_DATE}.json" "$image"
+                
+                # Configuration scan
+                trivy config --format json --output "${REPORT_DIR}/config_${image//\//_}_${SCAN_DATE}.json" "$image" || true
+                
+                # Secret scan
+                trivy fs --scanners secret --format json --output "${REPORT_DIR}/secrets_${image//\//_}_${SCAN_DATE}.json" "$image" || true
+                
+                echo "Completed scan for: $image"
+              done
+              
+              # Scan Kubernetes manifests
+              echo "Scanning Kubernetes manifests..."
+              trivy config --format json --output "${REPORT_DIR}/k8s_manifests_${SCAN_DATE}.json" /manifests/ || true
+              
+              # Generate summary report
+              echo "Generating summary report..."
+              python3 /scripts/generate_security_report.py "$REPORT_DIR"
+              
+              # Upload reports to storage
+              az storage blob upload-batch \
+                --destination codai-security-reports \
+                --source "$REPORT_DIR" \
+                --destination-path "vulnerability-scans/${SCAN_DATE}/" \
+                --account-name codaisecurityreports \
+                --account-key "$AZURE_STORAGE_ACCOUNT_ACCESS_KEY"
+              
+              echo "Vulnerability scan completed successfully"
+            env:
+            - name: AZURE_STORAGE_ACCOUNT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: security-credentials
+                  key: azure-storage-account-access-key
+            volumeMounts:
+            - name: reports-storage
+              mountPath: /reports
+            - name: manifests
+              mountPath: /manifests
+              readOnly: true
+            - name: scripts
+              mountPath: /scripts
+              readOnly: true
+            resources:
+              requests:
+                cpu: 1000m
+                memory: 2Gi
+              limits:
+                cpu: 4000m
+                memory: 8Gi
+          volumes:
+          - name: reports-storage
+            persistentVolumeClaim:
+              claimName: security-reports-pvc
+          - name: manifests
+            configMap:
+              name: k8s-manifests
+          - name: scripts
+            configMap:
+              name: security-scripts
+
+---
+# Web Application Security Testing - OWASP ZAP
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: owasp-zap-security-scan
+  namespace: codai-production
+  labels:
+    app: owasp-zap-scanner
+    component: security
+spec:
+  schedule: "0 4 * * 0"  # Weekly on Sunday at 4 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: zap-scanner
+            image: owasp/zap2docker-stable:2.14.0
+            command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+              
+              echo "Starting OWASP ZAP security scan..."
+              
+              SCAN_DATE=$(date +%Y%m%d_%H%M%S)
+              REPORT_DIR="/zap/reports/${SCAN_DATE}"
+              mkdir -p "$REPORT_DIR"
+              
+              # Define target applications
+              TARGETS=(
+                "https://api.codai.ro"
+                "https://app.codai.ro"
+                "https://memorai.codai.ro"
+                "https://bancai.codai.ro"
+                "https://romai.codai.ro"
+              )
+              
+              for target in "${TARGETS[@]}"; do
+                echo "Scanning target: $target"
+                
+                # Passive scan
+                zap-baseline.py \
+                  -t "$target" \
+                  -J "${REPORT_DIR}/passive_$(echo $target | sed 's/https:\/\///g' | sed 's/\./_/g')_${SCAN_DATE}.json" \
+                  -r "${REPORT_DIR}/passive_$(echo $target | sed 's/https:\/\///g' | sed 's/\./_/g')_${SCAN_DATE}.html" \
+                  -x "${REPORT_DIR}/passive_$(echo $target | sed 's/https:\/\///g' | sed 's/\./_/g')_${SCAN_DATE}.xml" \
+                  --hook=/zap/scripts/auth_hook.py || true
+                
+                # Active scan (more intensive)
+                zap-full-scan.py \
+                  -t "$target" \
+                  -J "${REPORT_DIR}/active_$(echo $target | sed 's/https:\/\///g' | sed 's/\./_/g')_${SCAN_DATE}.json" \
+                  -r "${REPORT_DIR}/active_$(echo $target | sed 's/https:\/\///g' | sed 's/\./_/g')_${SCAN_DATE}.html" \
+                  -x "${REPORT_DIR}/active_$(echo $target | sed 's/https:\/\///g' | sed 's/\./_/g')_${SCAN_DATE}.xml" \
+                  --hook=/zap/scripts/auth_hook.py || true
+                
+                # API scan
+                if [[ "$target" == *"api"* ]]; then
+                  zap-api-scan.py \
+                    -t "$target/openapi.json" \
+                    -J "${REPORT_DIR}/api_$(echo $target | sed 's/https:\/\///g' | sed 's/\./_/g')_${SCAN_DATE}.json" \
+                    -r "${REPORT_DIR}/api_$(echo $target | sed 's/https:\/\///g' | sed 's/\./_/g')_${SCAN_DATE}.html" \
+                    -x "${REPORT_DIR}/api_$(echo $target | sed 's/https:\/\///g' | sed 's/\./_/g')_${SCAN_DATE}.xml" || true
+                fi
+                
+                echo "Completed scan for: $target"
+              done
+              
+              # Generate consolidated report
+              python3 /zap/scripts/consolidate_reports.py "$REPORT_DIR"
+              
+              # Upload reports to storage
+              az storage blob upload-batch \
+                --destination codai-security-reports \
+                --source "$REPORT_DIR" \
+                --destination-path "web-app-scans/${SCAN_DATE}/" \
+                --account-name codaisecurityreports \
+                --account-key "$AZURE_STORAGE_ACCOUNT_ACCESS_KEY"
+              
+              echo "OWASP ZAP security scan completed successfully"
+            env:
+            - name: AZURE_STORAGE_ACCOUNT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: security-credentials
+                  key: azure-storage-account-access-key
+            volumeMounts:
+            - name: reports-storage
+              mountPath: /zap/reports
+            - name: zap-scripts
+              mountPath: /zap/scripts
+              readOnly: true
+            resources:
+              requests:
+                cpu: 2000m
+                memory: 4Gi
+              limits:
+                cpu: 8000m
+                memory: 16Gi
+          volumes:
+          - name: reports-storage
+            persistentVolumeClaim:
+              claimName: security-reports-pvc
+          - name: zap-scripts
+            configMap:
+              name: zap-scripts
+
+---
+# Security Dashboard & Reporting
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: security-dashboard
+  namespace: codai-production
+  labels:
+    app: security-dashboard
+    component: security
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: security-dashboard
+  template:
+    metadata:
+      labels:
+        app: security-dashboard
+        component: security
+    spec:
+      serviceAccountName: security-dashboard
+      containers:
+      - name: dashboard
+        image: codai/security-dashboard:v1.0.0
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: security-credentials
+              key: database-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: security-credentials
+              key: redis-url
+        - name: AZURE_STORAGE_ACCOUNT_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: security-credentials
+              key: azure-storage-account-access-key
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+        - name: reports-storage
+          mountPath: /app/reports
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: config
+        configMap:
+          name: security-scanning-config
+      - name: reports-storage
+        persistentVolumeClaim:
+          claimName: security-reports-pvc
+
+---
+# Compliance Monitoring
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: compliance-monitor
+  namespace: codai-production
+  labels:
+    app: compliance-monitor
+    component: security
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: compliance-monitor
+  template:
+    metadata:
+      labels:
+        app: compliance-monitor
+        component: security
+    spec:
+      serviceAccountName: compliance-monitor
+      containers:
+      - name: monitor
+        image: codai/compliance-monitor:v1.0.0
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: COMPLIANCE_FRAMEWORKS
+          value: "SOC2,GDPR,HIPAA,PCI-DSS"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: security-credentials
+              key: database-url
+        - name: AUDIT_LOG_RETENTION
+          value: "2555d"  # 7 years
+        command:
+        - /app/compliance-monitor
+        args:
+        - --config-file=/etc/config/security-policy.json
+        - --log-level=info
+        - --metrics-addr=0.0.0.0:8080
+        - --audit-enabled=true
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+        - name: audit-logs
+          mountPath: /var/log/audit
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: config
+        configMap:
+          name: security-scanning-config
+      - name: audit-logs
+        persistentVolumeClaim:
+          claimName: audit-logs-pvc
+
+---
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: security-dashboard
+  namespace: codai-production
+  labels:
+    app: security-dashboard
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+  selector:
+    app: security-dashboard
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: compliance-monitor
+  namespace: codai-production
+  labels:
+    app: compliance-monitor
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+  selector:
+    app: compliance-monitor
+
+---
+# Service Accounts
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: falco
+  namespace: codai-production
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: security-dashboard
+  namespace: codai-production
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: compliance-monitor
+  namespace: codai-production
+
+---
+# RBAC
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: falco
+rules:
+- apiGroups: ["extensions", ""]
+  resources: ["nodes", "namespaces", "pods", "replicationcontrollers", "replicasets", "services", "daemonsets", "deployments", "events", "configmaps"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["daemonsets", "deployments", "replicasets", "statefulsets"]
+  verbs: ["get", "list", "watch"]
+- nonResourceURLs: ["/healthz", "/healthz/*"]
+  verbs: ["get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: falco
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: falco
+subjects:
+- kind: ServiceAccount
+  name: falco
+  namespace: codai-production
+
+---
+# Security Credentials
+apiVersion: v1
+kind: Secret
+metadata:
+  name: security-credentials
+  namespace: codai-production
+type: Opaque
+data:
+  database-url: cG9zdGdyZXNxbDovL3NlY3VyaXR5OnNlY3VyaXR5LXBhc3N3b3JkQHBvc3RncmVzcWwtcHJpbWFyeTo1NDMyL3NlY3VyaXR5  # postgresql://security:security-password@postgresql-primary:5432/security
+  redis-url: cmVkaXM6Ly86c2VjdXJpdHktcGFzc3dvcmRAcmVkaXMtcHJpbWFyeTo2Mzc5LzE=  # redis://:security-password@redis-primary:6379/1
+  azure-storage-account-access-key: <base64-encoded-storage-key>
+
+---
+# Persistent Volume Claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: security-reports-pvc
+  namespace: codai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: audit-logs-pvc
+  namespace: codai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Gi
+  storageClassName: fast-ssd
+
+---
+# Falco Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falco-config
+  namespace: codai-production
+data:
+  falco.yaml: |
+    rules_file:
+      - /etc/falco/falco_rules.yaml
+      - /etc/falco/falco_rules.local.yaml
+      - /etc/falco/k8s_audit_rules.yaml
+      - /etc/falco/rules.d
+
+    time_format_iso_8601: false
+    json_output: true
+    json_include_output_property: true
+    json_include_tags_property: true
+
+    log_stderr: true
+    log_syslog: true
+    log_level: info
+
+    priority: debug
+    
+    buffered_outputs: false
+
+    syscall_event_drops:
+      actions:
+        - log
+        - alert
+      rate: 0.03333
+      max_burst: 1000
+
+    outputs:
+      rate: 1
+      max_burst: 1000
+
+    syslog_output:
+      enabled: true
+
+    program_output:
+      enabled: true
+      keep_alive: false
+      program: "curl -d @- -X POST http://falco-exporter:9376/webhook"
+
+    http_output:
+      enabled: true
+      url: "http://security-dashboard:8080/api/v1/alerts"
+      user_agent: "falcosecurity/falco"
+
+    grpc:
+      enabled: false
+      bind_address: "0.0.0.0:5060"
+      threadiness: 0
+
+    grpc_output:
+      enabled: false
+
+    webserver:
+      enabled: true
+      listen_port: 8765
+      k8s_healthz_endpoint: /healthz
+      ssl_enabled: false
+      ssl_certificate: /etc/falco/falco.pem

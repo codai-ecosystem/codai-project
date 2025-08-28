@@ -19,8 +19,7 @@ export async function POST(request: NextRequest) {
         }
 
         const clusters = await aiInsightsService.performMemoryClustering(
-            memories,
-            clusteringAlgorithm
+            memories
         );
 
         return NextResponse.json({

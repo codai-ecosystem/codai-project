@@ -186,10 +186,19 @@ export async function POST(request: NextRequest) {
         }
 
         const validatedShareData = ShareMemorySchema.parse(body);
+        
+        // Convert schema format to service format
+        const shareWithData = {
+            userIds: validatedShareData.userIds,
+            teamIds: validatedShareData.teamIds,
+            permissions: validatedShareData.permissions as any, // Type assertion due to schema/service mismatch
+            role: validatedShareData.role
+        };
+        
         const sharedMemory = await collaborativeService.shareMemory(
           memoryId,
           userId,
-          validatedShareData
+          shareWithData
         );
 
         return NextResponse.json({

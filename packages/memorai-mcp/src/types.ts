@@ -90,3 +90,21 @@ export interface IntelligenceContext {
     enhancementLevel?: string;
     [key: string]: any;
 }
+
+/**
+ * Memory interface for advanced search and processing
+ */
+export interface Memory {
+    id: string;
+    agentId: string;
+    content: string;
+    structuredKey: string;
+    timestamp: string;
+    importance: number;
+    entityType?: string;
+    project?: string;
+    session?: string;
+    tags?: string[];
+    embeddings?: number[];
+    metadata?: Record<string, any>;
+}

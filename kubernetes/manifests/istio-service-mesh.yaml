@@ -1,0 +1,519 @@
+# Istio Service Mesh Configuration for Essential CodAI Services
+# Version: 1.0
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: istio-system
+  labels:
+    istio-injection: disabled
+
+---
+# Istio Control Plane Installation Configuration
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: codai-control-plane
+  namespace: istio-system
+spec:
+  components:
+    pilot:
+      k8s:
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      k8s:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        service:
+          ports:
+          - port: 80
+            targetPort: 8080
+            name: http2
+          - port: 443
+            targetPort: 8443
+            name: https
+          - port: 4000
+            targetPort: 4000
+            name: codai-gateway
+          - port: 4100
+            targetPort: 4100
+            name: codai-auth
+          - port: 4110
+            targetPort: 4110
+            name: codai-hub
+          - port: 4950
+            targetPort: 4950
+            name: memorai-mcp
+          - port: 4180
+            targetPort: 4180
+            name: cbd-database
+          - port: 4006
+            targetPort: 4006
+            name: memorai-frontend
+  values:
+    global:
+      meshID: codai-mesh
+      network: codai-network
+      proxy:
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+      tracing:
+        zipkin:
+          address: jaeger-collector.istio-system.svc.cluster.local:14268
+        jaeger:
+          address: jaeger-collector.istio-system.svc.cluster.local:14268
+
+---
+# Enable automatic sidecar injection for production namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-production
+  labels:
+    istio-injection: enabled
+    name: codai-production
+
+---
+# Istio Gateway for External Traffic
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: codai-gateway
+  namespace: codai-production
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*.codai.local"
+    - "localhost"
+    tls:
+      httpsRedirect: true
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "*.codai.local"
+    - "localhost"
+    tls:
+      mode: SIMPLE
+      credentialName: codai-tls-secret
+
+---
+# Virtual Service for Traffic Routing
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: codai-routes
+  namespace: codai-production
+spec:
+  hosts:
+  - "gateway.codai.local"
+  - "auth.codai.local"
+  - "hub.codai.local"
+  - "memorai.codai.local"
+  - "database.codai.local"
+  - "frontend.codai.local"
+  gateways:
+  - codai-gateway
+  http:
+  # Gateway API routes
+  - match:
+    - uri:
+        prefix: "/api/gateway/"
+    - headers:
+        host:
+          exact: gateway.codai.local
+    route:
+    - destination:
+        host: codai-gateway-api.codai-production.svc.cluster.local
+        port:
+          number: 4010
+    fault:
+      delay:
+        percentage:
+          value: 0.1
+        fixedDelay: 5s
+    retries:
+      attempts: 3
+      perTryTimeout: 10s
+    timeout: 30s
+  
+  # Auth API routes
+  - match:
+    - uri:
+        prefix: "/api/auth/"
+    - headers:
+        host:
+          exact: auth.codai.local
+    route:
+    - destination:
+        host: codai-auth-api.codai-production.svc.cluster.local
+        port:
+          number: 4100
+    retries:
+      attempts: 3
+      perTryTimeout: 5s
+    timeout: 15s
+  
+  # Hub API routes
+  - match:
+    - uri:
+        prefix: "/api/hub/"
+    - headers:
+        host:
+          exact: hub.codai.local
+    route:
+    - destination:
+        host: codai-hub-api.codai-production.svc.cluster.local
+        port:
+          number: 4110
+    retries:
+      attempts: 2
+      perTryTimeout: 10s
+    timeout: 20s
+  
+  # MemorAI MCP routes
+  - match:
+    - uri:
+        prefix: "/mcp/"
+    - headers:
+        host:
+          exact: memorai.codai.local
+    route:
+    - destination:
+        host: codai-memorai-mcp.codai-production.svc.cluster.local
+        port:
+          number: 4950
+    retries:
+      attempts: 2
+      perTryTimeout: 15s
+    timeout: 30s
+  
+  # CBD Database routes
+  - match:
+    - uri:
+        prefix: "/db/"
+    - headers:
+        host:
+          exact: database.codai.local
+    route:
+    - destination:
+        host: codai-cbd-database.codai-production.svc.cluster.local
+        port:
+          number: 4180
+    retries:
+      attempts: 3
+      perTryTimeout: 5s
+    timeout: 10s
+  
+  # MemorAI Frontend routes
+  - match:
+    - uri:
+        prefix: "/"
+    - headers:
+        host:
+          exact: frontend.codai.local
+    route:
+    - destination:
+        host: codai-memorai-frontend.codai-production.svc.cluster.local
+        port:
+          number: 4006
+    retries:
+      attempts: 2
+      perTryTimeout: 10s
+    timeout: 20s
+
+---
+# Destination Rules for Load Balancing and Circuit Breaking
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: codai-gateway-destination
+  namespace: codai-production
+spec:
+  host: codai-gateway-api.codai-production.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: LEAST_CONN
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        http1MaxPendingRequests: 50
+        maxRequestsPerConnection: 2
+    circuitBreaker:
+      consecutiveErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+    outlierDetection:
+      consecutive5xxErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: codai-auth-destination
+  namespace: codai-production
+spec:
+  host: codai-auth-api.codai-production.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    connectionPool:
+      tcp:
+        maxConnections: 50
+      http:
+        http1MaxPendingRequests: 25
+        maxRequestsPerConnection: 2
+    circuitBreaker:
+      consecutiveErrors: 3
+      interval: 20s
+      baseEjectionTime: 20s
+      maxEjectionPercent: 30
+    outlierDetection:
+      consecutive5xxErrors: 3
+      interval: 20s
+      baseEjectionTime: 20s
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: codai-hub-destination
+  namespace: codai-production
+spec:
+  host: codai-hub-api.codai-production.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: LEAST_CONN
+    connectionPool:
+      tcp:
+        maxConnections: 75
+      http:
+        http1MaxPendingRequests: 40
+        maxRequestsPerConnection: 3
+    circuitBreaker:
+      consecutiveErrors: 4
+      interval: 25s
+      baseEjectionTime: 25s
+      maxEjectionPercent: 40
+    outlierDetection:
+      consecutive5xxErrors: 4
+      interval: 25s
+      baseEjectionTime: 25s
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: codai-memorai-mcp-destination
+  namespace: codai-production
+spec:
+  host: codai-memorai-mcp.codai-production.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    connectionPool:
+      tcp:
+        maxConnections: 60
+      http:
+        http1MaxPendingRequests: 30
+        maxRequestsPerConnection: 2
+    circuitBreaker:
+      consecutiveErrors: 4
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 40
+    outlierDetection:
+      consecutive5xxErrors: 4
+      interval: 30s
+      baseEjectionTime: 30s
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: codai-cbd-database-destination
+  namespace: codai-production
+spec:
+  host: codai-cbd-database.codai-production.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: LEAST_CONN
+    connectionPool:
+      tcp:
+        maxConnections: 40
+      http:
+        http1MaxPendingRequests: 20
+        maxRequestsPerConnection: 1
+    circuitBreaker:
+      consecutiveErrors: 3
+      interval: 15s
+      baseEjectionTime: 15s
+      maxEjectionPercent: 25
+    outlierDetection:
+      consecutive5xxErrors: 3
+      interval: 15s
+      baseEjectionTime: 15s
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: codai-memorai-frontend-destination
+  namespace: codai-production
+spec:
+  host: codai-memorai-frontend.codai-production.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    connectionPool:
+      tcp:
+        maxConnections: 80
+      http:
+        http1MaxPendingRequests: 40
+        maxRequestsPerConnection: 3
+    circuitBreaker:
+      consecutiveErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+    outlierDetection:
+      consecutive5xxErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+
+---
+# Security Policies - Peer Authentication
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: codai-mtls
+  namespace: codai-production
+spec:
+  mtls:
+    mode: STRICT
+
+---
+# Authorization Policies
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: codai-auth-policy
+  namespace: codai-production
+spec:
+  selector:
+    matchLabels:
+      app: codai-auth-api
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/codai-production/sa/codai-gateway-api"]
+  - to:
+    - operation:
+        methods: ["GET", "POST", "PUT", "DELETE"]
+        paths: ["/auth/*", "/health"]
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: codai-hub-policy
+  namespace: codai-production
+spec:
+  selector:
+    matchLabels:
+      app: codai-hub-api
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/codai-production/sa/codai-gateway-api"]
+  - to:
+    - operation:
+        methods: ["GET", "POST", "PUT", "DELETE"]
+        paths: ["/hub/*", "/api/*", "/health"]
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: codai-memorai-mcp-policy
+  namespace: codai-production
+spec:
+  selector:
+    matchLabels:
+      app: codai-memorai-mcp
+  rules:
+  - from:
+    - source:
+        principals: 
+        - "cluster.local/ns/codai-production/sa/codai-hub-api"
+        - "cluster.local/ns/codai-production/sa/codai-gateway-api"
+  - to:
+    - operation:
+        methods: ["GET", "POST"]
+        paths: ["/mcp/*", "/health"]
+
+---
+# Telemetry Configuration
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: codai-metrics
+  namespace: codai-production
+spec:
+  metrics:
+  - providers:
+    - name: prometheus
+  - overrides:
+    - match:
+        metric: ALL_METRICS
+      tagOverrides:
+        service_name:
+          value: "codai-%{source_app}"
+        service_version:
+          value: "v1.0"
+
+---
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: codai-tracing
+  namespace: codai-production
+spec:
+  tracing:
+  - providers:
+    - name: jaeger
+  - customTags:
+      codai_service:
+        literal:
+          value: "essential-services"
+      codai_version:
+        literal:
+          value: "1.0.0"

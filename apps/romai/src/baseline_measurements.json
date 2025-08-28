@@ -1,0 +1,115 @@
+{
+  "timestamp": "2025-08-27T10:03:54.862192",
+  "measurement_timestamp": "2025-08-27T10:03:54.862192",
+  "romai_version": "2.0",
+  "measurement_id": "baseline_1756278234",
+  "north_star_score": 7.5,
+  "north_star_details": {
+    "cross_domain_score": 7.5,
+    "cultural_score": 7.5,
+    "feasibility_score": 7.5,
+    "self_improvement_exhibited": false,
+    "response_time_ms": 831.8321704864502,
+    "vram_usage_gb": 3.7646484375,
+    "overall_agi_score": 7.5,
+    "overall_score": 7.5,
+    "target_score": 0.9,
+    "scenarios": [
+      {
+        "name": "conversational_flow",
+        "score": 0.75,
+        "response_time_ms": 100.4023551940918,
+        "qualities_assessed": [
+          "clarity",
+          "simplicity",
+          "engagement"
+        ],
+        "vram_used_mb": 3855.0
+      },
+      {
+        "name": "creative_reasoning",
+        "score": 0.75,
+        "response_time_ms": 101.52745246887207,
+        "qualities_assessed": [
+          "creativity",
+          "narrative_structure",
+          "emotional_depth"
+        ],
+        "vram_used_mb": 3833.0
+      },
+      {
+        "name": "problem_solving",
+        "score": 0.75,
+        "response_time_ms": 100.74353218078613,
+        "qualities_assessed": [
+          "logical_reasoning",
+          "practicality",
+          "innovation"
+        ],
+        "vram_used_mb": 3833.0
+      },
+      {
+        "name": "cultural_awareness",
+        "score": 0.75,
+        "response_time_ms": 115.50498008728027,
+        "qualities_assessed": [
+          "cultural_sensitivity",
+          "knowledge_depth",
+          "balanced_perspective"
+        ],
+        "vram_used_mb": 3833.0
+      },
+      {
+        "name": "mathematical_reasoning",
+        "score": 0.75,
+        "response_time_ms": 101.13716125488281,
+        "qualities_assessed": [
+          "step_by_step_logic",
+          "mathematical_accuracy",
+          "clear_explanation"
+        ],
+        "vram_used_mb": 3829.0
+      }
+    ],
+    "execution_time_seconds": 0.8318321704864502,
+    "peak_vram_used_mb": 3855.0,
+    "vram_constraint_respected": true,
+    "total_scenarios": 5,
+    "successful_scenarios": 5
+  },
+  "multimodal_score": 0.0,
+  "auto_curriculum_score": 0.0,
+  "cross_domain_score": 0.0,
+  "memory_system_score": 0.0,
+  "meta_learning_score": 0.0,
+  "real_world_score": 0.0,
+  "consciousness_score": 0.0,
+  "multimodal_reasoning": 0.0,
+  "auto_curriculum_capability": 0.0,
+  "cross_domain_transfer": 0.0,
+  "memory_consolidation": 0.0,
+  "meta_learning_ability": 0.0,
+  "real_world_grounding": 0.0,
+  "consciousness_simulation": 0.0,
+  "capability_details": {},
+  "max_vram_used_mb": 3856.0,
+  "peak_vram_usage_gb": 3.77,
+  "peak_ram_used_gb": 86.12738418579102,
+  "total_execution_time_seconds": 2.8293304443359375,
+  "vram_constraint_respected": true,
+  "average_response_time_ms": 103.86309623718262,
+  "total_tests_executed": 5,
+  "tests_passed": 5,
+  "overall_success_rate": 1.0,
+  "cross_domain_reasoning": 7.5,
+  "cultural_intelligence": 7.5,
+  "overall_agi_score": 5.25,
+  "is_production_ready": false,
+  "critical_blockers": [
+    "MLP capabilities score below 60% threshold"
+  ],
+  "recommendations": [
+    "Enhance auto-curriculum learning system",
+    "Improve consciousness and self-awareness capabilities"
+  ]
+}

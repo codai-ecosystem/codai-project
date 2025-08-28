@@ -90,7 +90,9 @@ const nextConfig = {
     },
     
     // Webpack configuration
-    webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    webpack: (config: any, { buildId, dev, isServer, defaultLoaders, webpack }: any) => {
+        const appName = 'memorai'; // Define appName for bundle analyzer
+        
         // Speed measurement (development only)
         if (enableSpeedMeasure && !isServer) {
             const smp = new SpeedMeasurePlugin();

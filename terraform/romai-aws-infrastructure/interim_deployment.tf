@@ -54,7 +54,7 @@ resource "aws_launch_template" "interim_preprocessing_template" {
   vpc_security_group_ids = [aws_security_group.gpu_cluster.id]
   
   iam_instance_profile {
-    name = aws_iam_instance_profile.gpu_cluster_profile.name
+    name = aws_iam_instance_profile.gpu_instance_profile.name
   }
   
   # Spot instance configuration for cost savings
@@ -66,13 +66,7 @@ resource "aws_launch_template" "interim_preprocessing_template" {
     }
   }
   
-  user_data = base64encode(templatefile("${path.module}/user_data_interim.sh", {
-    cluster_name   = "romai-interim-preprocessing"
-    instance_type  = var.interim_instance_type
-    total_nodes    = var.interim_cluster_size
-    fsx_dns_name   = aws_fsx_lustre_file_system.romai_storage.dns_name
-    fsx_mount_name = aws_fsx_lustre_file_system.romai_storage.mount_name
-  }))
+  user_data = base64encode(file("${path.module}/user_data_simple.sh"))
   
   tag_specifications {
     resource_type = "instance"
@@ -152,7 +146,7 @@ output "interim_cost_analysis" {
     daily_cost    = local.interim_selected.cost_per_hour * 24 * var.interim_cluster_size
     weekly_cost   = local.interim_selected.cost_per_hour * 24 * 7 * var.interim_cluster_size
     monthly_cost  = local.interim_monthly_cost
-    cost_vs_gpu   = "~${round((local.interim_monthly_cost / 134862) * 100, 1)}% of P3dn cluster cost"
+    cost_vs_gpu   = "~${floor((local.interim_monthly_cost / 134862) * 100 * 10) / 10}% of P3dn cluster cost"
   } : null
   description = "Interim cluster cost breakdown"
 }

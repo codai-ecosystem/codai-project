@@ -1,0 +1,745 @@
+# Backup & Disaster Recovery Automation for Essential CodAI Services
+# Version: 1.0
+# Velero | Cross-Region Backups | Automated Recovery | Database Backups
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backup-disaster-recovery-config
+  namespace: codai-production
+data:
+  backup-strategy.json: |
+    {
+      "backup_strategy": {
+        "architecture": {
+          "primary_region": "West Europe",
+          "backup_region": "North Europe",
+          "storage_type": "Azure Blob Storage",
+          "encryption": "AES-256",
+          "compression": "gzip",
+          "cross_region_replication": true
+        },
+        "backup_components": {
+          "kubernetes_resources": {
+            "enabled": true,
+            "namespace_scope": ["codai-production", "istio-system"],
+            "include_cluster_resources": true,
+            "backup_frequency": "6h",
+            "retention": {
+              "daily": "30d",
+              "weekly": "12w",
+              "monthly": "12m"
+            }
+          },
+          "persistent_volumes": {
+            "enabled": true,
+            "volume_snapshot_class": "csi-azuredisk-vsc",
+            "backup_frequency": "4h",
+            "retention": {
+              "hourly": "72h",
+              "daily": "30d",
+              "weekly": "12w"
+            }
+          },
+          "databases": {
+            "postgresql": {
+              "enabled": true,
+              "backup_type": "logical",
+              "backup_frequency": "2h",
+              "point_in_time_recovery": true,
+              "retention": {
+                "hourly": "48h",
+                "daily": "30d",
+                "weekly": "12w",
+                "monthly": "12m"
+              }
+            },
+            "redis": {
+              "enabled": true,
+              "backup_type": "rdb",
+              "backup_frequency": "6h",
+              "retention": {
+                "daily": "7d",
+                "weekly": "4w",
+                "monthly": "3m"
+              }
+            },
+            "neo4j": {
+              "enabled": true,
+              "backup_type": "full",
+              "backup_frequency": "12h",
+              "retention": {
+                "daily": "14d",
+                "weekly": "8w",
+                "monthly": "6m"
+              }
+            }
+          },
+          "application_data": {
+            "user_uploads": {
+              "enabled": true,
+              "backup_frequency": "24h",
+              "retention": "90d"
+            },
+            "configuration_data": {
+              "enabled": true,
+              "backup_frequency": "12h",
+              "retention": "30d"
+            },
+            "logs": {
+              "enabled": true,
+              "backup_frequency": "24h",
+              "retention": "90d"
+            }
+          }
+        },
+        "disaster_recovery": {
+          "rto_target": "4h",
+          "rpo_target": "1h",
+          "automated_failover": true,
+          "cross_region_replication": true,
+          "recovery_testing": {
+            "frequency": "monthly",
+            "automated_validation": true,
+            "success_criteria": {
+              "application_availability": "99%",
+              "data_integrity": "100%",
+              "performance_baseline": "95%"
+            }
+          }
+        }
+      },
+      "automation": {
+        "backup_monitoring": {
+          "success_rate_threshold": 95,
+          "failure_alert_channels": ["slack", "email", "pagerduty"],
+          "metrics_collection": true,
+          "dashboard_integration": true
+        },
+        "recovery_procedures": {
+          "automated_recovery": {
+            "partial_failure": true,
+            "data_corruption": true,
+            "region_failure": false
+          },
+          "manual_procedures": {
+            "region_failure": true,
+            "security_incident": true,
+            "major_data_loss": true
+          }
+        }
+      }
+    }
+
+---
+# Velero Backup System
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: velero
+
+---
+# Velero BackupStorageLocation
+apiVersion: velero.io/v1
+kind: BackupStorageLocation
+metadata:
+  name: azure-backup-storage
+  namespace: velero
+spec:
+  provider: azure
+  objectStorage:
+    bucket: codai-backups-primary
+    prefix: velero-backups
+  config:
+    resourceGroup: codai-production-rg
+    storageAccount: codaibackupsprimary
+    storageAccountKeyEnvVar: AZURE_STORAGE_ACCOUNT_ACCESS_KEY
+  validationFrequency: 24h
+
+---
+# Velero VolumeSnapshotLocation
+apiVersion: velero.io/v1
+kind: VolumeSnapshotLocation
+metadata:
+  name: azure-volume-snapshots
+  namespace: velero
+spec:
+  provider: azure
+  config:
+    resourceGroup: codai-production-rg
+    subscriptionId: "${AZURE_SUBSCRIPTION_ID}"
+
+---
+# Velero Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: velero
+  namespace: velero
+  labels:
+    app: velero
+    component: backup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: velero
+  template:
+    metadata:
+      labels:
+        app: velero
+        component: backup
+    spec:
+      serviceAccountName: velero
+      containers:
+      - name: velero
+        image: velero/velero:v1.12.0
+        ports:
+        - containerPort: 8085
+          name: metrics
+        command:
+        - /velero
+        args:
+        - server
+        - --default-volume-snapshot-locations=azure:azure-volume-snapshots
+        - --backup-sync-period=60m
+        - --fs-backup-timeout=240m
+        - --default-backup-storage-location=azure-backup-storage
+        - --default-backup-ttl=720h0m0s
+        - --restore-resource-priorities=customresourcedefinitions,namespaces,storageclasses,volumesnapshotclass.snapshot.storage.k8s.io,volumesnapshotcontents.snapshot.storage.k8s.io,volumesnapshots.snapshot.storage.k8s.io,persistentvolumes,persistentvolumeclaims,secrets,configmaps,limitranges,pods,replicasets.apps,clusteroles,clusterrolebindings,roles,rolebindings,jobs.batch,cronjobs.batch,daemonsets.apps,deployments.apps,replicationcontrollers,services,endpoints
+        env:
+        - name: AZURE_SUBSCRIPTION_ID
+          valueFrom:
+            secretKeyRef:
+              name: cloud-credentials
+              key: azure-subscription-id
+        - name: AZURE_TENANT_ID
+          valueFrom:
+            secretKeyRef:
+              name: cloud-credentials
+              key: azure-tenant-id
+        - name: AZURE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: cloud-credentials
+              key: azure-client-id
+        - name: AZURE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: cloud-credentials
+              key: azure-client-secret
+        - name: AZURE_RESOURCE_GROUP
+          value: "codai-production-rg"
+        - name: AZURE_STORAGE_ACCOUNT_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: cloud-credentials
+              key: azure-storage-account-access-key
+        volumeMounts:
+        - name: plugins
+          mountPath: /plugins
+        - name: scratch
+          mountPath: /scratch
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+      volumes:
+      - name: plugins
+        emptyDir: {}
+      - name: scratch
+        emptyDir: {}
+      initContainers:
+      - name: velero-plugin-for-microsoft-azure
+        image: velero/velero-plugin-for-microsoft-azure:v1.8.0
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /target
+          name: plugins
+
+---
+# Scheduled Backups
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: codai-daily-backup
+  namespace: velero
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  template:
+    metadata:
+      labels:
+        backup-type: scheduled
+        frequency: daily
+    includedNamespaces:
+    - codai-production
+    - istio-system
+    excludedResources:
+    - events
+    - events.events.k8s.io
+    - backups.velero.io
+    - restores.velero.io
+    - resticrepositories.velero.io
+    storageLocation: azure-backup-storage
+    volumeSnapshotLocations:
+    - azure-volume-snapshots
+    ttl: 720h0m0s  # 30 days
+    snapshotVolumes: true
+    includeClusterResources: true
+
+---
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: codai-weekly-backup
+  namespace: velero
+spec:
+  schedule: "0 1 * * 0"  # Weekly on Sunday at 1 AM
+  template:
+    metadata:
+      labels:
+        backup-type: scheduled
+        frequency: weekly
+    includedNamespaces:
+    - codai-production
+    - istio-system
+    - kube-system
+    excludedResources:
+    - events
+    - events.events.k8s.io
+    - backups.velero.io
+    - restores.velero.io
+    storageLocation: azure-backup-storage
+    volumeSnapshotLocations:
+    - azure-volume-snapshots
+    ttl: 2016h0m0s  # 12 weeks
+    snapshotVolumes: true
+    includeClusterResources: true
+
+---
+# Database Backup CronJob
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgresql-backup
+  namespace: codai-production
+  labels:
+    app: postgresql-backup
+    component: backup
+spec:
+  schedule: "0 */2 * * *"  # Every 2 hours
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: postgresql-backup
+            image: postgres:15-alpine
+            command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+              
+              # Database connection parameters
+              export PGHOST="postgresql-primary.codai-production.svc.cluster.local"
+              export PGPORT="5432"
+              export PGUSER="$POSTGRES_USER"
+              export PGPASSWORD="$POSTGRES_PASSWORD"
+              
+              # Backup metadata
+              BACKUP_DATE=$(date +%Y%m%d_%H%M%S)
+              BACKUP_PREFIX="codai-postgresql-backup"
+              
+              # Create backups for each database
+              DATABASES=("codai_auth" "codai_hub" "codai_memorai" "codai_bancai" "grafana")
+              
+              for db in "${DATABASES[@]}"; do
+                echo "Creating backup for database: $db"
+                
+                # Create logical backup
+                pg_dump --verbose --clean --no-owner --no-privileges \
+                  --format=custom \
+                  --dbname="$db" \
+                  --file="/backups/${BACKUP_PREFIX}_${db}_${BACKUP_DATE}.backup"
+                
+                # Compress backup
+                gzip "/backups/${BACKUP_PREFIX}_${db}_${BACKUP_DATE}.backup"
+                
+                echo "Backup completed for database: $db"
+              done
+              
+              # Upload to Azure Storage
+              az storage blob upload-batch \
+                --destination codai-database-backups \
+                --source /backups \
+                --destination-path "postgresql/${BACKUP_DATE}/" \
+                --account-name codaibackupsprimary \
+                --account-key "$AZURE_STORAGE_ACCOUNT_ACCESS_KEY"
+              
+              # Cleanup local backups older than 3 days
+              find /backups -name "*.backup.gz" -mtime +3 -delete
+              
+              echo "PostgreSQL backup and upload completed successfully"
+            env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-credentials
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-credentials
+                  key: password
+            - name: AZURE_STORAGE_ACCOUNT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-credentials
+                  key: azure-storage-account-access-key
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backups
+            resources:
+              requests:
+                cpu: 200m
+                memory: 512Mi
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+          volumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: database-backup-pvc
+
+---
+# Redis Backup CronJob
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: redis-backup
+  namespace: codai-production
+  labels:
+    app: redis-backup
+    component: backup
+spec:
+  schedule: "0 */6 * * *"  # Every 6 hours
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: redis-backup
+            image: redis:7.2-alpine
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              
+              # Backup metadata
+              BACKUP_DATE=$(date +%Y%m%d_%H%M%S)
+              BACKUP_PREFIX="codai-redis-backup"
+              
+              # Redis connection parameters
+              REDIS_HOST="redis-primary.codai-production.svc.cluster.local"
+              REDIS_PORT="6379"
+              
+              echo "Creating Redis backup..."
+              
+              # Create RDB snapshot
+              redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" -a "$REDIS_PASSWORD" \
+                BGSAVE
+              
+              # Wait for background save to complete
+              while [ $(redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" -a "$REDIS_PASSWORD" LASTSAVE) -eq $(redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" -a "$REDIS_PASSWORD" LASTSAVE) ]; do
+                sleep 5
+              done
+              
+              # Copy RDB file
+              redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" -a "$REDIS_PASSWORD" \
+                --rdb "/backups/${BACKUP_PREFIX}_${BACKUP_DATE}.rdb"
+              
+              # Compress backup
+              gzip "/backups/${BACKUP_PREFIX}_${BACKUP_DATE}.rdb"
+              
+              # Upload to Azure Storage
+              az storage blob upload \
+                --container-name codai-database-backups \
+                --file "/backups/${BACKUP_PREFIX}_${BACKUP_DATE}.rdb.gz" \
+                --name "redis/${BACKUP_DATE}/${BACKUP_PREFIX}_${BACKUP_DATE}.rdb.gz" \
+                --account-name codaibackupsprimary \
+                --account-key "$AZURE_STORAGE_ACCOUNT_ACCESS_KEY"
+              
+              # Cleanup local backups older than 7 days
+              find /backups -name "*.rdb.gz" -mtime +7 -delete
+              
+              echo "Redis backup and upload completed successfully"
+            env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-credentials
+                  key: password
+            - name: AZURE_STORAGE_ACCOUNT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-credentials
+                  key: azure-storage-account-access-key
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backups
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                cpu: 500m
+                memory: 1Gi
+          volumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: database-backup-pvc
+
+---
+# Disaster Recovery Automation
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: disaster-recovery-controller
+  namespace: codai-production
+  labels:
+    app: disaster-recovery-controller
+    component: backup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: disaster-recovery-controller
+  template:
+    metadata:
+      labels:
+        app: disaster-recovery-controller
+        component: backup
+    spec:
+      serviceAccountName: disaster-recovery-controller
+      containers:
+      - name: controller
+        image: codai/disaster-recovery-controller:v1.0.0
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: BACKUP_REGION
+          value: "North Europe"
+        - name: PRIMARY_REGION
+          value: "West Europe"
+        - name: AZURE_SUBSCRIPTION_ID
+          valueFrom:
+            secretKeyRef:
+              name: cloud-credentials
+              key: azure-subscription-id
+        - name: AZURE_TENANT_ID
+          valueFrom:
+            secretKeyRef:
+              name: cloud-credentials
+              key: azure-tenant-id
+        - name: AZURE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: cloud-credentials
+              key: azure-client-id
+        - name: AZURE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: cloud-credentials
+              key: azure-client-secret
+        command:
+        - /app/disaster-recovery-controller
+        args:
+        - --config-file=/etc/config/disaster-recovery-config.yaml
+        - --log-level=info
+        - --metrics-addr=0.0.0.0:8080
+        - --enable-leader-election
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      volumes:
+      - name: config
+        configMap:
+          name: backup-disaster-recovery-config
+
+---
+# Service Accounts and RBAC
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: velero
+  namespace: velero
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: disaster-recovery-controller
+  namespace: codai-production
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: velero
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: velero
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: velero
+subjects:
+- kind: ServiceAccount
+  name: velero
+  namespace: velero
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: disaster-recovery-controller
+rules:
+- apiGroups: [""]
+  resources: ["namespaces", "persistentvolumes", "persistentvolumeclaims"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "statefulsets", "replicasets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["velero.io"]
+  resources: ["backups", "restores", "schedules"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: disaster-recovery-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: disaster-recovery-controller
+subjects:
+- kind: ServiceAccount
+  name: disaster-recovery-controller
+  namespace: codai-production
+
+---
+# Cloud Credentials Secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloud-credentials
+  namespace: velero
+type: Opaque
+data:
+  azure-subscription-id: <base64-encoded-subscription-id>
+  azure-tenant-id: <base64-encoded-tenant-id>
+  azure-client-id: <base64-encoded-client-id>
+  azure-client-secret: <base64-encoded-client-secret>
+  azure-storage-account-access-key: <base64-encoded-storage-key>
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloud-credentials
+  namespace: codai-production
+type: Opaque
+data:
+  azure-subscription-id: <base64-encoded-subscription-id>
+  azure-tenant-id: <base64-encoded-tenant-id>
+  azure-client-id: <base64-encoded-client-id>
+  azure-client-secret: <base64-encoded-client-secret>
+  azure-storage-account-access-key: <base64-encoded-storage-key>
+
+---
+# Database Credentials
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql-credentials
+  namespace: codai-production
+type: Opaque
+data:
+  username: cG9zdGdyZXM=  # postgres
+  password: Y29kYWktcG9zdGdyZXMtMjAyNQ==  # codai-postgres-2025
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis-credentials
+  namespace: codai-production
+type: Opaque
+data:
+  password: Y29kYWktcmVkaXMtMjAyNQ==  # codai-redis-2025
+
+---
+# Persistent Volume Claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-backup-pvc
+  namespace: codai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+
+---
+# Backup Monitoring
+apiVersion: v1
+kind: Service
+metadata:
+  name: backup-monitoring
+  namespace: codai-production
+  labels:
+    app: backup-monitoring
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: metrics
+  selector:
+    app: disaster-recovery-controller

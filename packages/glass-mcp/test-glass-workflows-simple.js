@@ -12,7 +12,7 @@ class SimpleWorkflowTester {
 
     async testWorkflowToolSchema() {
         console.log('\n🧪 Testing glass_workflows tool schema...');
-        
+
         try {
             // Read and parse the compiled server
             const serverPath = './dist/mcp-server.js';
@@ -21,11 +21,11 @@ class SimpleWorkflowTester {
             }
 
             console.log('✅ Compiled server exists');
-            
+
             // Check for glass_workflows in the source
             const sourcePath = './src/mcp-server.ts';
             const sourceContent = fs.readFileSync(sourcePath, 'utf8');
-            
+
             if (sourceContent.includes('glass_workflows:')) {
                 console.log('✅ glass_workflows tool found in source');
             } else {
@@ -35,7 +35,7 @@ class SimpleWorkflowTester {
             // Check for required operations
             const requiredOperations = [
                 'create_workflow',
-                'start_recording', 
+                'start_recording',
                 'record_action',
                 'stop_recording',
                 'execute_workflow',
@@ -65,17 +65,17 @@ class SimpleWorkflowTester {
 
     async testWorkflowFunctions() {
         console.log('\n🧪 Testing workflow function definitions...');
-        
+
         try {
             const sourcePath = './src/mcp-server.ts';
             const sourceContent = fs.readFileSync(sourcePath, 'utf8');
-            
+
             // Check for workflow-related function definitions
             const requiredFunctions = [
                 'createWorkflow',
                 'startWorkflowRecording',
                 'recordAction',
-                'stopWorkflowRecording', 
+                'stopWorkflowRecording',
                 'executeWorkflow',
                 'executeWorkflowStep',
                 'listWorkflows',
@@ -97,7 +97,7 @@ class SimpleWorkflowTester {
                 console.log('✅ WorkflowStep interface found');
             }
             if (sourceContent.includes('interface Workflow')) {
-                console.log('✅ Workflow interface found');  
+                console.log('✅ Workflow interface found');
             }
             if (sourceContent.includes('interface WorkflowExecution')) {
                 console.log('✅ WorkflowExecution interface found');
@@ -116,15 +116,15 @@ class SimpleWorkflowTester {
 
     async testCompilation() {
         console.log('\n🧪 Testing TypeScript compilation...');
-        
+
         try {
             // Check if dist directory exists and has the compiled server
             const distPath = './dist/mcp-server.js';
-            
+
             if (fs.existsSync(distPath)) {
                 const stats = fs.statSync(distPath);
                 console.log(`✅ Compiled server exists (${Math.round(stats.size / 1024)} KB)`);
-                
+
                 // Check compilation timestamp
                 const sourceStats = fs.statSync('./src/mcp-server.ts');
                 if (stats.mtime >= sourceStats.mtime) {
@@ -132,7 +132,7 @@ class SimpleWorkflowTester {
                 } else {
                     console.log('⚠️  Compilation might be outdated');
                 }
-                
+
                 this.testResults.push({ test: 'compilation', passed: true });
                 return true;
             } else {
@@ -148,11 +148,11 @@ class SimpleWorkflowTester {
 
     async testToolIntegration() {
         console.log('\n🧪 Testing tool integration in consolidatedTools...');
-        
+
         try {
             const sourcePath = './src/mcp-server.ts';
             const sourceContent = fs.readFileSync(sourcePath, 'utf8');
-            
+
             // Find the consolidatedTools object assignment, not just the type definition
             const consolidatedToolsStartIndex = sourceContent.indexOf('const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {');
             if (consolidatedToolsStartIndex === -1) {
@@ -163,7 +163,7 @@ class SimpleWorkflowTester {
             let braceCount = 0;
             let startIndex = sourceContent.indexOf('= {', consolidatedToolsStartIndex) + 2; // Start after '= '
             let endIndex = startIndex;
-            
+
             for (let i = startIndex; i < sourceContent.length; i++) {
                 if (sourceContent[i] === '{') braceCount++;
                 if (sourceContent[i] === '}') braceCount--;
@@ -174,25 +174,25 @@ class SimpleWorkflowTester {
             }
 
             const consolidatedToolsContent = sourceContent.substring(startIndex, endIndex + 1);
-            
+
             // Debug: show first 200 characters and check for glass_workflows
             console.log(`   Debug: consolidatedTools content start: ${consolidatedToolsContent.substring(0, 200)}...`);
             console.log(`   Debug: contains glass_workflows: ${consolidatedToolsContent.includes('glass_workflows')}`);
-            
+
             // Check if glass_workflows is included
             if (consolidatedToolsContent.includes('glass_workflows:')) {
                 console.log('✅ glass_workflows integrated in consolidatedTools');
-                
+
                 // Count the number of tools
                 const toolCount = (consolidatedToolsContent.match(/:\s*{/g) || []).length - 1; // -1 for the main object
                 console.log(`✅ Total consolidated tools: ${toolCount}`);
-                
+
                 if (toolCount >= 4) {
                     console.log('✅ Expected number of tools present');
                 } else {
                     console.log(`⚠️  Expected at least 4 tools, found ${toolCount}`);
                 }
-                
+
                 this.testResults.push({ test: 'tool_integration', passed: true, details: { toolCount } });
                 return true;
             } else {

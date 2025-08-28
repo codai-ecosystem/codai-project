@@ -15,7 +15,7 @@ interface RouteParams {
 export async function GET(
     request: NextRequest,
     { params }: RouteParams
-): Promise<NextResponse> {
+): Promise<NextResponse<any>> {
     try {
         // 🔐 Authentication check
         const authResponse = authenticateAPI(request);
@@ -34,7 +34,7 @@ export async function GET(
 
         // For tests: get from test database
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../../tests/utils/test-database')).testDb;
+            const testDb = (await import('../../../../tests/utils/test-utils')).testDb;
             memory = testDb.getMemoryById(id);
         } else {
             // Get memory from CBD using findById (which checks in-memory store)
@@ -59,7 +59,7 @@ export async function GET(
         
         // For tests: update in test database
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../../tests/utils/test-database')).testDb;
+            const { testDb } = await import('../../../../tests/utils/test-utils');
             testDb.data.memories = testDb.data.memories.map(m => 
                 m.id === id ? updatedMemory : m
             );
@@ -79,7 +79,7 @@ export async function GET(
 export async function PUT(
     request: NextRequest,
     { params }: RouteParams
-): Promise<NextResponse<ApiResponse<Memory>>> {
+): Promise<NextResponse<any>> {
     try {
         // 🔐 Authentication check
         const authResponse = authenticateAPI(request);
@@ -116,7 +116,7 @@ export async function PUT(
 
         // For tests: get from test database
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../../tests/utils/test-database')).testDb;
+            const { testDb } = await import('../../../../tests/utils/test-utils');
             existingMemory = testDb.getMemoryById(id);
         } else {
             // Get existing memory using findById (which checks in-memory store)
@@ -196,7 +196,7 @@ export async function PUT(
 
         // For tests: update in test database
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../../tests/utils/test-database')).testDb;
+            const { testDb } = await import('../../../../tests/utils/test-utils');
             testDb.data.memories = testDb.data.memories.map(m => 
                 m.id === id ? updatedMemory : m
             );
@@ -226,7 +226,7 @@ export async function PUT(
 export async function DELETE(
     request: NextRequest,
     { params }: RouteParams
-): Promise<NextResponse<ApiResponse<{ deleted: boolean }>>> {
+): Promise<NextResponse<any>> {
     try {
         // 🔐 Authentication check
         const authResponse = authenticateAPI(request);
@@ -249,7 +249,7 @@ export async function DELETE(
 
         // For tests: get from test database
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../../tests/utils/test-database')).testDb;
+            const { testDb } = await import('../../../../tests/utils/test-utils');
             existingMemory = testDb.getMemoryById(id);
         } else {
             // Get existing memory to check ownership using findById
@@ -279,7 +279,7 @@ export async function DELETE(
 
         // For tests: delete from test database
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../../tests/utils/test-database')).testDb;
+            const { testDb } = await import('../../../../tests/utils/test-utils');
             testDb.data.memories = testDb.data.memories.filter(m => m.id !== id);
         } else {
             // Delete memory and its vector

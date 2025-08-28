@@ -1,0 +1,279 @@
+# Enterprise SSO Integration Configuration
+# MemorAI MCP Server v9.5.0 - Phase 6 Task 11: Enterprise Integration
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-sso-config
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: sso
+    environment: production
+    version: v9.5.0
+data:
+  # SAML Configuration
+  SAML_ENABLED: "true"
+  SAML_ISSUER: "https://sso.enterprise.com/saml/memorai"
+  SAML_CALLBACK_URL: "https://api.memorai.com/auth/saml/callback"
+  SAML_SIGN_REQUESTS: "true"
+  SAML_ENCRYPT_ASSERTIONS: "true"
+  SAML_SIGNATURE_ALGORITHM: "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"
+  
+  # OAuth2/OIDC Configuration
+  OAUTH2_ENABLED: "true"
+  OAUTH2_PROVIDER: "https://oauth.enterprise.com"
+  OAUTH2_CLIENT_ID: "memorai-enterprise-app"
+  OAUTH2_REDIRECT_URI: "https://api.memorai.com/auth/oauth2/callback"
+  OAUTH2_SCOPE: "openid profile email groups"
+  OAUTH2_RESPONSE_TYPE: "code"
+  OAUTH2_GRANT_TYPE: "authorization_code"
+  
+  # Azure AD Integration
+  AZURE_AD_ENABLED: "true"
+  AZURE_AD_TENANT_ID: "enterprise-tenant-id"
+  AZURE_AD_CLIENT_ID: "memorai-azure-app-id"
+  AZURE_AD_AUTHORITY: "https://login.microsoftonline.com/enterprise-tenant-id"
+  AZURE_AD_REDIRECT_URI: "https://api.memorai.com/auth/azure/callback"
+  
+  # LDAP Integration
+  LDAP_ENABLED: "true"
+  LDAP_URL: "ldaps://ldap.enterprise.com:636"
+  LDAP_BASE_DN: "dc=enterprise,dc=com"
+  LDAP_USER_DN: "ou=users,dc=enterprise,dc=com"
+  LDAP_GROUP_DN: "ou=groups,dc=enterprise,dc=com"
+  LDAP_USER_FILTER: "(uid={{username}})"
+  LDAP_GROUP_FILTER: "(member={{dn}})"
+  LDAP_BIND_DN: "cn=memorai-service,ou=services,dc=enterprise,dc=com"
+  
+  # Role Mapping Configuration
+  ROLE_MAPPING_ENABLED: "true"
+  ADMIN_GROUPS: "memorai-admins,enterprise-it-admins"
+  USER_GROUPS: "memorai-users,enterprise-employees"
+  READONLY_GROUPS: "memorai-viewers,enterprise-guests"
+  
+  # Session Management
+  SESSION_TIMEOUT: "28800"  # 8 hours
+  SESSION_RENEWAL_THRESHOLD: "1800"  # 30 minutes
+  MAX_CONCURRENT_SESSIONS: "5"
+  SESSION_STORAGE: "redis"
+  
+  # Security Settings
+  FORCE_MFA: "true"
+  MFA_PROVIDERS: "totp,sms,email"
+  PASSWORD_POLICY_ENABLED: "true"
+  MIN_PASSWORD_LENGTH: "12"
+  REQUIRE_PASSWORD_COMPLEXITY: "true"
+  ACCOUNT_LOCKOUT_THRESHOLD: "5"
+  ACCOUNT_LOCKOUT_DURATION: "900"  # 15 minutes
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: memorai-sso-secrets
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: sso
+    environment: production
+    version: v9.5.0
+type: Opaque
+stringData:
+  # SAML Certificates
+  SAML_CERTIFICATE: |
+    -----BEGIN CERTIFICATE-----
+    MIIDXzCCAkegAwIBAgIJAK3oGE1+oGGwMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV
+    BAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBX
+    aWRnaXRzIFB0eSBMdGQwHhcNMTcwODEzMDgwNzU1WhcNMjcwODExMDgwNzU1WjBF
+    MQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50
+    ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+    CgKCAQEAuE2Kz1QKZPjEgOJmCGGpjEgjhcvgWCl5qWWGGsrPjKGzM+Fhp/YIxhJz
+    Example-Certificate-Content-Here
+    -----END CERTIFICATE-----
+  SAML_PRIVATE_KEY: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC4TYrPVApk+MSA
+    4mYIYamMSCOFy+BYKXmpZYYays+MobMz4WGn9gjGEnM
+    Example-Private-Key-Content-Here
+    -----END PRIVATE KEY-----
+    
+  # OAuth2/OIDC Secrets
+  OAUTH2_CLIENT_SECRET: "super-secure-oauth2-client-secret-2025"
+  OAUTH2_JWT_SECRET: "enterprise-jwt-signing-secret-key-2025"
+  
+  # Azure AD Secrets
+  AZURE_AD_CLIENT_SECRET: "azure-ad-client-secret-for-memorai-enterprise"
+  
+  # LDAP Credentials
+  LDAP_BIND_PASSWORD: "secure-ldap-bind-password-2025"
+  
+  # Encryption Keys
+  SSO_ENCRYPTION_KEY: "enterprise-sso-encryption-key-32-chars"
+  SESSION_ENCRYPTION_KEY: "session-data-encryption-key-secure"
+  
+  # API Keys
+  SSO_API_KEY: "memorai-enterprise-sso-api-key-2025"
+  AUDIT_API_KEY: "enterprise-audit-logging-api-key"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai-sso-service
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: sso
+    environment: production
+    version: v9.5.0
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: memorai-mcp
+      component: sso
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp
+        component: sso
+        environment: production
+        version: v9.5.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: memorai-sso-service-account
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      containers:
+      - name: sso-service
+        image: memorai/sso-service:v9.5.0
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8081
+          name: metrics
+        envFrom:
+        - configMapRef:
+            name: memorai-sso-config
+        - secretRef:
+            name: memorai-sso-secrets
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - name: temp-storage
+          mountPath: /tmp
+        - name: certificates
+          mountPath: /etc/ssl/certs
+          readOnly: true
+      volumes:
+      - name: temp-storage
+        emptyDir: {}
+      - name: certificates
+        secret:
+          secretName: memorai-ssl-certificates
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-sso-service
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: sso
+    environment: production
+    version: v9.5.0
+spec:
+  selector:
+    app: memorai-mcp
+    component: sso
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  - name: metrics
+    port: 8081
+    targetPort: 8081
+    protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memorai-sso-service-account
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: sso
+    environment: production
+    version: v9.5.0
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: memorai-production
+  name: memorai-sso-role
+rules:
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: memorai-sso-rolebinding
+  namespace: memorai-production
+subjects:
+- kind: ServiceAccount
+  name: memorai-sso-service-account
+  namespace: memorai-production
+roleRef:
+  kind: Role
+  name: memorai-sso-role
+  apiGroup: rbac.authorization.k8s.io

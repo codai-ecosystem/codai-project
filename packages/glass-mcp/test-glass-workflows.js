@@ -15,7 +15,7 @@ class WorkflowTester {
 
     async startServer() {
         console.log('🚀 Starting Glass MCP Server...');
-        
+
         // Build first
         const buildProcess = spawn('npx', ['tsc'], {
             cwd: process.cwd(),
@@ -56,11 +56,11 @@ class WorkflowTester {
         };
 
         console.log(`📤 Sending request: ${method}`);
-        
+
         try {
             // Simulate MCP call through the server process
             this.serverProcess.stdin.write(JSON.stringify(request) + '\n');
-            
+
             return new Promise((resolve, reject) => {
                 const timeout = setTimeout(() => {
                     reject(new Error('Request timeout'));
@@ -86,7 +86,7 @@ class WorkflowTester {
 
     async testWorkflowCreation() {
         console.log('\n🧪 Testing workflow creation...');
-        
+
         try {
             const response = await this.sendMCPRequest('tools/call', {
                 name: 'glass_workflows',
@@ -136,7 +136,7 @@ class WorkflowTester {
 
     async testWorkflowRecording() {
         console.log('\n🧪 Testing workflow recording...');
-        
+
         try {
             // Start recording
             const startResponse = await this.sendMCPRequest('tools/call', {
@@ -205,7 +205,7 @@ class WorkflowTester {
 
     async testWorkflowListing() {
         console.log('\n🧪 Testing workflow listing...');
-        
+
         try {
             const response = await this.sendMCPRequest('tools/call', {
                 name: 'glass_workflows',
@@ -235,7 +235,7 @@ class WorkflowTester {
 
     async testWorkflowExecution() {
         console.log('\n🧪 Testing workflow execution...');
-        
+
         try {
             const response = await this.sendMCPRequest('tools/call', {
                 name: 'glass_workflows',
@@ -266,7 +266,7 @@ class WorkflowTester {
 
     async testWorkflowUpdate() {
         console.log('\n🧪 Testing workflow update...');
-        
+
         try {
             const response = await this.sendMCPRequest('tools/call', {
                 name: 'glass_workflows',
@@ -298,7 +298,7 @@ class WorkflowTester {
 
     async testWorkflowDeletion() {
         console.log('\n🧪 Testing workflow deletion...');
-        
+
         try {
             const response = await this.sendMCPRequest('tools/call', {
                 name: 'glass_workflows',

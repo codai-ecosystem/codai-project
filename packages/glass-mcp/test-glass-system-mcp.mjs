@@ -29,7 +29,7 @@ async function testGlassSystemMCP() {
         // Start the MCP server process
         console.log('🚀 Starting Glass MCP server...');
         const serverPath = join(__dirname, 'dist', 'mcp-server.js');
-        
+
         mcpProcess = spawn('node', [serverPath], {
             stdio: ['pipe', 'pipe', 'pipe'],
             cwd: __dirname
@@ -97,17 +97,17 @@ async function testGlassSystemMCP() {
                 };
 
                 const requestString = JSON.stringify(request) + '\n';
-                
+
                 // Set up response handler
                 const responseTimeout = setTimeout(() => {
                     reject(new Error('Request timeout'));
                 }, 15000); // 15 second timeout
 
                 let responseData = '';
-                
+
                 const onData = (data) => {
                     responseData += data.toString();
-                    
+
                     // Check if we have a complete JSON response
                     try {
                         const lines = responseData.split('\n');
@@ -117,7 +117,7 @@ async function testGlassSystemMCP() {
                                 if (response.id === request.id) {
                                     clearTimeout(responseTimeout);
                                     mcpProcess.stdout.off('data', onData);
-                                    
+
                                     if (response.error) {
                                         reject(new Error(response.error.message || 'MCP Error'));
                                     } else {
@@ -133,7 +133,7 @@ async function testGlassSystemMCP() {
                 };
 
                 mcpProcess.stdout.on('data', onData);
-                
+
                 // Send the request
                 mcpProcess.stdin.write(requestString);
             });
@@ -165,7 +165,7 @@ async function testGlassSystemMCP() {
         // Test 1: List Available Tools
         await runTest('List Available Tools', async () => {
             const result = await sendMCPRequest('tools/list');
-            
+
             if (!result || !result.tools || !Array.isArray(result.tools)) {
                 throw new Error('Invalid tools list response');
             }
@@ -178,7 +178,7 @@ async function testGlassSystemMCP() {
             console.log(`   🔧 Found ${result.tools.length} tools`);
             console.log(`   🧠 glass_system tool: ${systemTool.description.substring(0, 50)}...`);
 
-            return { 
+            return {
                 toolCount: result.tools.length,
                 hasSystemTool: !!systemTool
             };
@@ -198,7 +198,7 @@ async function testGlassSystemMCP() {
             }
 
             const healthData = JSON.parse(result.content[0].text);
-            
+
             if (!healthData.cpu || !healthData.memory || !healthData.disk) {
                 throw new Error('Missing required health data fields');
             }
@@ -207,7 +207,7 @@ async function testGlassSystemMCP() {
             console.log(`   💾 Memory Usage: ${healthData.memory.percentage}%`);
             console.log(`   💿 System Status: ${healthData.status}`);
 
-            return { 
+            return {
                 status: healthData.status,
                 cpuUsage: healthData.cpu.usage,
                 memoryUsage: healthData.memory.percentage
@@ -229,7 +229,7 @@ async function testGlassSystemMCP() {
             }
 
             const processData = JSON.parse(result.content[0].text);
-            
+
             if (!processData.success || !processData.processes || !Array.isArray(processData.processes)) {
                 throw new Error('Invalid process data format');
             }
@@ -237,7 +237,7 @@ async function testGlassSystemMCP() {
             console.log(`   🔍 Found ${processData.processes.length} processes`);
             console.log(`   📈 Sample processes: ${processData.processes.slice(0, 3).map(p => p.name).join(', ')}`);
 
-            return { 
+            return {
                 processCount: processData.processes.length,
                 sampleProcesses: processData.processes.slice(0, 3)
             };
@@ -258,7 +258,7 @@ async function testGlassSystemMCP() {
             }
 
             const serviceData = JSON.parse(result.content[0].text);
-            
+
             if (!serviceData.success || !serviceData.services || !Array.isArray(serviceData.services)) {
                 throw new Error('Invalid service data format');
             }
@@ -267,7 +267,7 @@ async function testGlassSystemMCP() {
             console.log(`   ⚙️ Total Services: ${serviceData.services.length}`);
             console.log(`   ✅ Running Services: ${runningServices}`);
 
-            return { 
+            return {
                 totalServices: serviceData.services.length,
                 runningServices: runningServices
             };
@@ -276,7 +276,7 @@ async function testGlassSystemMCP() {
         // Test 5: Performance Metrics (Short Duration)
         await runTest('Performance Metrics Collection', async () => {
             console.log(`   ⏱️ Collecting 2-second performance sample...`);
-            
+
             const result = await sendMCPRequest('tools/call', {
                 name: 'glass_system',
                 arguments: {
@@ -290,7 +290,7 @@ async function testGlassSystemMCP() {
             }
 
             const metricsData = JSON.parse(result.content[0].text);
-            
+
             if (!metricsData.cpu || !metricsData.memory || !metricsData.disk) {
                 throw new Error('Missing required metrics fields');
             }
@@ -299,7 +299,7 @@ async function testGlassSystemMCP() {
             console.log(`   📊 Memory Usage: ${metricsData.memory.usage}%`);
             console.log(`   💾 Disk Read Speed: ${metricsData.disk.readSpeed} MB/s`);
 
-            return { 
+            return {
                 cpuAverage: metricsData.cpu.average,
                 memoryUsage: metricsData.memory.usage,
                 diskReadSpeed: metricsData.disk.readSpeed
@@ -335,10 +335,10 @@ async function testGlassSystemMCP() {
         if (mcpProcess && !mcpProcess.killed) {
             console.log('\n🛑 Shutting down MCP server...');
             mcpProcess.kill('SIGTERM');
-            
+
             // Wait a bit for graceful shutdown
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             if (!mcpProcess.killed) {
                 mcpProcess.kill('SIGKILL');
             }

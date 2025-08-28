@@ -3,31 +3,44 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const cardVariants = cva(
-    "rounded-lg border bg-card text-card-foreground shadow-sm",
+    "rounded-lg border bg-card text-card-foreground transition-all duration-200",
     {
         variants: {
             variant: {
-                default: "border border-border",
-                elevated: "shadow-md",
-                outline: "border-2",
-                ghost: "border-transparent shadow-none",
+                default: "border-border shadow-sm hover:shadow-md",
+                elevated: "shadow-md hover:shadow-lg border-border",
+                outline: "border-2 border-border shadow-none hover:shadow-sm",
+                ghost: "border-transparent shadow-none hover:border-border hover:shadow-sm",
+                primary: "border-primary/20 bg-primary/5 shadow-sm hover:shadow-md",
+                success: "border-success/20 bg-success/5 shadow-sm hover:shadow-md", 
+                warning: "border-warning/20 bg-warning/5 shadow-sm hover:shadow-md",
+                danger: "border-danger/20 bg-danger/5 shadow-sm hover:shadow-md",
+                info: "border-info/20 bg-info/5 shadow-sm hover:shadow-md",
             },
+            interactive: {
+                true: "cursor-pointer hover:scale-[1.02] active:scale-[0.98]",
+                false: "",
+            }
         },
         defaultVariants: {
             variant: "default",
+            interactive: false,
         },
     }
 )
 
 export interface CardProps
     extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> { }
+    VariantProps<typeof cardVariants> {
+    /** Whether the card is interactive (clickable) */
+    interactive?: boolean
+}
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-    ({ className, variant, ...props }, ref) => (
+    ({ className, variant, interactive, ...props }, ref) => (
         <div
             ref={ref}
-            className={cn(cardVariants({ variant, className }))}
+            className={cn(cardVariants({ variant, interactive, className }))}
             {...props}
         />
     )

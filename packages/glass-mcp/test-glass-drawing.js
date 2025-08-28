@@ -43,8 +43,8 @@ const tests = [
             targetPoint: { x: 500, y: 300 },
             text: 'Test annotation with arrow',
             position: 'auto',
-            style: { 
-                color: '#000000', 
+            style: {
+                color: '#000000',
                 backgroundColor: '#FFFFE0',
                 borderColor: '#808080',
                 fontSize: 14
@@ -65,19 +65,19 @@ const tests = [
 async function testGlassDrawing() {
     console.log('🎨 Testing Glass MCP Drawing Tool');
     console.log('='.repeat(50));
-    
+
     for (const test of tests) {
         console.log(`\n📝 Running: ${test.name}`);
-        
+
         // Wait for delay if specified
         if (test.delay) {
             console.log(`⏳ Waiting ${test.delay}ms for visual confirmation...`);
             await new Promise(resolve => setTimeout(resolve, test.delay));
         }
-        
+
         try {
             const result = await runMCPCommand(test.tool, test.arguments);
-            
+
             if (result && result.success !== false) {
                 console.log(`✅ ${test.name}: SUCCESS`);
                 if (result.overlayId) console.log(`   Overlay ID: ${result.overlayId}`);
@@ -93,11 +93,11 @@ async function testGlassDrawing() {
             console.log(`❌ ${test.name}: ERROR`);
             console.log(`   Exception: ${error.message}`);
         }
-        
+
         // Brief pause between tests
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
-    
+
     console.log('\n🎯 Glass Drawing Tool Test Complete!');
     console.log('Watch your screen for visual overlays and annotations.');
 }
@@ -113,23 +113,23 @@ function runMCPCommand(tool, args) {
                 arguments: args
             }
         };
-        
+
         const mcp = spawn('node', ['dist/mcp-server.js'], {
             stdio: ['pipe', 'pipe', 'pipe'],
             cwd: __dirname
         });
-        
+
         let stdout = '';
         let stderr = '';
-        
+
         mcp.stdout.on('data', (data) => {
             stdout += data.toString();
         });
-        
+
         mcp.stderr.on('data', (data) => {
             stderr += data.toString();
         });
-        
+
         mcp.on('close', (code) => {
             try {
                 if (stdout.trim()) {
@@ -144,7 +144,7 @@ function runMCPCommand(tool, args) {
                         }
                     }
                 }
-                
+
                 if (stderr) {
                     reject(new Error(`MCP Error: ${stderr}`));
                 } else {
@@ -154,11 +154,11 @@ function runMCPCommand(tool, args) {
                 reject(error);
             }
         });
-        
+
         // Send request
         mcp.stdin.write(JSON.stringify(request) + '\n');
         mcp.stdin.end();
-        
+
         // Timeout after 30 seconds
         setTimeout(() => {
             mcp.kill();

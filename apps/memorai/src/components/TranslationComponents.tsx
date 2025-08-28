@@ -3,7 +3,7 @@
  * @description Reusable translation components
  */
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, ElementType } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { safeTranslate, translateHTML } from '../utils/translation-helpers';
 
@@ -13,7 +13,7 @@ interface TranslatedTextProps {
   fallback?: string;
   params?: Record<string, any>;
   className?: string;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: ElementType;
 }
 
 /**
@@ -30,7 +30,7 @@ export const TranslatedText: React.FC<TranslatedTextProps> = ({
   const { t } = useTranslation(namespace);
   const text = safeTranslate(t, i18nKey, fallback, params);
 
-  return <Tag className={className}>{text}</Tag>;
+  return <Tag className={className} {...({} as any)}>{text}</Tag>;
 };
 
 interface TranslatedHTMLProps {
@@ -38,7 +38,7 @@ interface TranslatedHTMLProps {
   namespace?: string;
   params?: Record<string, any>;
   className?: string;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: ElementType;
 }
 
 /**
@@ -58,6 +58,7 @@ export const TranslatedHTML: React.FC<TranslatedHTMLProps> = ({
     <Tag 
       className={className}
       dangerouslySetInnerHTML={{ __html: html }}
+      {...({} as any)}
     />
   );
 };
@@ -68,7 +69,7 @@ interface PluralTextProps {
   namespace?: string;
   params?: Record<string, any>;
   className?: string;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: ElementType;
 }
 
 /**
@@ -85,7 +86,7 @@ export const PluralText: React.FC<PluralTextProps> = ({
   const { t } = useTranslation(namespace);
   const text = t(i18nKey, { count, ...params });
 
-  return <Tag className={className}>{text}</Tag>;
+  return <Tag className={className} {...({} as any)}>{text}</Tag>;
 };
 
 interface TranslatedLinkProps {
@@ -189,7 +190,7 @@ export const FormattedMessage: React.FC<FormattedMessageProps> = ({
       i18nKey={i18nKey}
       ns={namespace}
       values={values}
-      components={components}
+      components={components as any}
       className={className}
     />
   );
@@ -202,7 +203,7 @@ interface ConditionalTranslationProps {
   namespace?: string;
   params?: Record<string, any>;
   className?: string;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: ElementType;
 }
 
 /**
@@ -221,7 +222,7 @@ export const ConditionalTranslation: React.FC<ConditionalTranslationProps> = ({
   const key = condition ? trueKey : falseKey;
   const text = safeTranslate(t, key, '', params);
 
-  return <Tag className={className}>{text}</Tag>;
+  return <Tag className={className} {...({} as any)}>{text}</Tag>;
 };
 
 interface TranslatedSelectProps {

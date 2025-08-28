@@ -84,7 +84,7 @@ const MemoryGrowthChart = React.memo<ChartProps>(({ data, height = 300 }) => (
     <div role="img" aria-label="Memory growth over time chart showing the increase in memories from January to August 2025">
         <ResponsiveContainer width="100%" height={height}>
             <AreaChart
-                data={data.memoryGrowth}
+                data={[...data.memoryGrowth]}
                 aria-label="Area chart displaying memory growth data"
             >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -124,11 +124,11 @@ const CategoryDistributionChart = React.memo<ChartProps>(({ data, height = 250 }
         <ResponsiveContainer width="100%" height={height}>
             <PieChart aria-label="Category distribution pie chart">
                 <Pie
-                    data={data.categoryDistribution}
+                    data={[...data.categoryDistribution]}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) => `${name} ${percent ? (percent * 100).toFixed(0) : '0'}%`}
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"
@@ -180,7 +180,7 @@ const WeeklyActivityChart = React.memo<ChartProps>(({ data, height = 250 }) => (
     >
         <ResponsiveContainer width="100%" height={height}>
             <BarChart
-                data={data.weeklyActivity}
+                data={[...data.weeklyActivity]}
                 aria-label="Weekly activity bar chart"
             >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -259,7 +259,7 @@ const AnalyticsLoadingSkeleton = React.memo(() => (
 ));
 AnalyticsLoadingSkeleton.displayName = 'AnalyticsLoadingSkeleton';
 
-export default function MemoryAnalytics(): JSX.Element {
+export default function MemoryAnalytics(): React.JSX.Element {
     const [state, setState] = useState<AnalyticsState>({
         data: null,
         isLoading: true,
@@ -335,7 +335,7 @@ export default function MemoryAnalytics(): JSX.Element {
 
                 // Validate analytics data
                 if (!validateAnalyticsData(mockData)) {
-                    throw new APIError('Invalid analytics data format');
+                    throw new APIError('Invalid analytics data format', 'ANALYTICS_INVALID');
                 }
 
                 setState({
@@ -347,7 +347,7 @@ export default function MemoryAnalytics(): JSX.Element {
             } catch (error) {
                 const apiError = error instanceof APIError
                     ? error
-                    : new APIError('Failed to load analytics data');
+                    : new APIError('Failed to load analytics data', 'ANALYTICS_LOAD_ERROR');
 
                 setState({
                     data: null,
@@ -363,7 +363,7 @@ export default function MemoryAnalytics(): JSX.Element {
 
     // Memoized tag elements
     const tagElements = useMemo(() => {
-        if (!state.data) return null;
+        if (!state.data || !state.data.topTags) return null;
 
         return state.data.topTags.map((tag, index) => (
             <Badge
@@ -528,7 +528,7 @@ export default function MemoryAnalytics(): JSX.Element {
                     <CardHeader>
                         <CardTitle className="flex items-center">
                             <Tag className="h-5 w-5 mr-2" aria-hidden="true" />
-                            Most Used Tags ({state.data.topTags.length})
+                            Most Used Tags ({state.data.topTags?.length || 0})
                         </CardTitle>
                         <CardDescription>
                             Your most frequently used tags for organizing memories

@@ -1,0 +1,131 @@
+# MemorAI MCP Server - Persistent Volume Claims
+# Storage resources for production deployment
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memorai-data-pvc
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: storage
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: fast-ssd  # Use appropriate storage class
+  
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memorai-logs-pvc
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: logging
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: standard
+  
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memorai-cache-pvc
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: cache
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+  storageClassName: fast-ssd
+  
+---
+# PostgreSQL PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-data-pvc
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: database
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+  
+---
+# Redis PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-data-pvc
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: cache-db
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+  
+---
+# Prometheus PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-data-pvc
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: monitoring
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: standard
+  
+---
+# Grafana PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-data-pvc
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: dashboard
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard

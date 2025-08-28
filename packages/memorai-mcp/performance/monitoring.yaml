@@ -1,0 +1,660 @@
+# =================================================================
+# MemorAI MCP Server - Performance Monitoring Dashboard
+# Version: 1.0.0
+# Purpose: Advanced monitoring and SLO/SLI tracking
+# =================================================================
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: performance-monitoring-config
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    config-type: monitoring
+data:
+  custom-metrics.yaml: |
+    # Custom Prometheus Metrics Configuration
+    custom_metrics:
+      memory_operations:
+        - name: memorai_memory_operations_total
+          type: counter
+          help: "Total number of memory operations"
+          labels: ["operation_type", "agent_id", "status"]
+          
+        - name: memorai_memory_operation_duration_seconds
+          type: histogram
+          help: "Duration of memory operations in seconds"
+          labels: ["operation_type"]
+          buckets: [0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0]
+          
+        - name: memorai_memory_storage_size_bytes
+          type: gauge
+          help: "Current memory storage size in bytes"
+          labels: ["agent_id", "storage_type"]
+          
+        - name: memorai_search_relevance_score
+          type: histogram
+          help: "Search relevance scores distribution"
+          labels: ["search_type"]
+          buckets: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+          
+      cache_performance:
+        - name: memorai_cache_hits_total
+          type: counter
+          help: "Total cache hits"
+          labels: ["cache_type", "cache_layer"]
+          
+        - name: memorai_cache_misses_total
+          type: counter
+          help: "Total cache misses"
+          labels: ["cache_type", "cache_layer"]
+          
+        - name: memorai_cache_evictions_total
+          type: counter
+          help: "Total cache evictions"
+          labels: ["cache_type", "eviction_reason"]
+          
+        - name: memorai_cache_memory_usage_bytes
+          type: gauge
+          help: "Current cache memory usage in bytes"
+          labels: ["cache_type"]
+          
+      network_effects:
+        - name: memorai_network_peers_connected
+          type: gauge
+          help: "Number of connected network peers"
+          labels: ["network_type"]
+          
+        - name: memorai_network_memory_sync_duration_seconds
+          type: histogram
+          help: "Duration of memory network synchronization"
+          labels: ["sync_type"]
+          buckets: [0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 30.0]
+          
+        - name: memorai_network_conflicts_total
+          type: counter
+          help: "Total number of network conflicts"
+          labels: ["conflict_type", "resolution_status"]
+          
+      system_performance:
+        - name: memorai_active_connections
+          type: gauge
+          help: "Number of active connections"
+          labels: ["connection_type"]
+          
+        - name: memorai_request_queue_size
+          type: gauge
+          help: "Current request queue size"
+          labels: ["queue_type"]
+          
+        - name: memorai_database_query_duration_seconds
+          type: histogram
+          help: "Database query execution time"
+          labels: ["query_type", "table"]
+          buckets: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0]
+
+  slo-sli-definitions.yaml: |
+    # Service Level Objectives and Indicators
+    service_level_objectives:
+      availability:
+        slo: 99.9  # 99.9% uptime
+        measurement_window: "30d"
+        error_budget: 0.1  # 0.1% error budget
+        sli_query: |
+          (
+            sum(rate(memorai_http_requests_total{status!~"5.."}[5m])) /
+            sum(rate(memorai_http_requests_total[5m]))
+          ) * 100
+        
+      latency:
+        slo: 95     # 95% of requests under 500ms
+        threshold: 0.5  # 500ms
+        measurement_window: "24h"
+        sli_query: |
+          histogram_quantile(0.95,
+            sum(rate(memorai_memory_operation_duration_seconds_bucket[5m])) by (le)
+          )
+          
+      error_rate:
+        slo: 99     # 99% success rate
+        measurement_window: "1h"
+        error_budget: 1  # 1% error budget
+        sli_query: |
+          (
+            sum(rate(memorai_memory_operations_total{status="success"}[5m])) /
+            sum(rate(memorai_memory_operations_total[5m]))
+          ) * 100
+          
+      throughput:
+        slo: 50     # Minimum 50 requests per second
+        measurement_window: "5m"
+        sli_query: |
+          sum(rate(memorai_memory_operations_total[5m]))
+          
+    service_level_indicators:
+      request_success_rate:
+        description: "Percentage of successful requests"
+        query: |
+          sum(rate(memorai_http_requests_total{status!~"5.."}[5m])) /
+          sum(rate(memorai_http_requests_total[5m])) * 100
+          
+      response_time_p95:
+        description: "95th percentile response time"
+        query: |
+          histogram_quantile(0.95,
+            sum(rate(memorai_memory_operation_duration_seconds_bucket[5m])) by (le)
+          )
+          
+      response_time_p99:
+        description: "99th percentile response time"
+        query: |
+          histogram_quantile(0.99,
+            sum(rate(memorai_memory_operation_duration_seconds_bucket[5m])) by (le)
+          )
+          
+      cache_hit_rate:
+        description: "Cache hit rate across all cache layers"
+        query: |
+          sum(rate(memorai_cache_hits_total[5m])) /
+          (sum(rate(memorai_cache_hits_total[5m])) + sum(rate(memorai_cache_misses_total[5m]))) * 100
+          
+      memory_utilization:
+        description: "Current memory utilization percentage"
+        query: |
+          (memorai_cache_memory_usage_bytes / (memorai_cache_memory_usage_bytes + memorai_available_memory_bytes)) * 100
+          
+      network_sync_performance:
+        description: "Average network synchronization duration"
+        query: |
+          rate(memorai_network_memory_sync_duration_seconds_sum[5m]) /
+          rate(memorai_network_memory_sync_duration_seconds_count[5m])
+
+  alerting-rules.yaml: |
+    groups:
+    - name: memorai_mcp_performance.rules
+      interval: 30s
+      rules:
+      
+      # SLO Violation Alerts
+      - alert: MemorAI_SLO_Availability_Violation
+        expr: |
+          (
+            sum(rate(memorai_http_requests_total{status!~"5.."}[5m])) /
+            sum(rate(memorai_http_requests_total[5m]))
+          ) * 100 < 99.9
+        for: 5m
+        labels:
+          severity: critical
+          slo: availability
+          team: platform
+        annotations:
+          summary: "MemorAI MCP Server availability SLO violation"
+          description: "Availability is {{ $value }}%, below 99.9% SLO target"
+          
+      - alert: MemorAI_SLO_Latency_Violation
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(memorai_memory_operation_duration_seconds_bucket[5m])) by (le)
+          ) > 0.5
+        for: 2m
+        labels:
+          severity: warning
+          slo: latency
+          team: platform
+        annotations:
+          summary: "MemorAI MCP Server latency SLO violation"
+          description: "P95 latency is {{ $value }}s, above 500ms SLO target"
+          
+      - alert: MemorAI_SLO_ErrorRate_Violation
+        expr: |
+          (
+            sum(rate(memorai_memory_operations_total{status="error"}[5m])) /
+            sum(rate(memorai_memory_operations_total[5m]))
+          ) * 100 > 1
+        for: 3m
+        labels:
+          severity: warning
+          slo: error_rate
+          team: platform
+        annotations:
+          summary: "MemorAI MCP Server error rate SLO violation"
+          description: "Error rate is {{ $value }}%, above 1% SLO target"
+          
+      # Performance Alerts
+      - alert: MemorAI_High_Memory_Usage
+        expr: memorai_cache_memory_usage_bytes > 0.9 * 1073741824  # 90% of 1GB
+        for: 5m
+        labels:
+          severity: warning
+          component: cache
+          team: platform
+        annotations:
+          summary: "High memory usage in MemorAI MCP Server"
+          description: "Memory usage is {{ $value | humanizeBytes }}, above 90% threshold"
+          
+      - alert: MemorAI_Low_Cache_Hit_Rate
+        expr: |
+          sum(rate(memorai_cache_hits_total[5m])) /
+          (sum(rate(memorai_cache_hits_total[5m])) + sum(rate(memorai_cache_misses_total[5m]))) * 100 < 80
+        for: 10m
+        labels:
+          severity: warning
+          component: cache
+          team: platform
+        annotations:
+          summary: "Low cache hit rate in MemorAI MCP Server"
+          description: "Cache hit rate is {{ $value }}%, below 80% threshold"
+          
+      - alert: MemorAI_High_Queue_Size
+        expr: memorai_request_queue_size > 100
+        for: 2m
+        labels:
+          severity: warning
+          component: queue
+          team: platform
+        annotations:
+          summary: "High request queue size in MemorAI MCP Server"
+          description: "Request queue size is {{ $value }}, above 100 threshold"
+          
+      - alert: MemorAI_Database_Query_Slow
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(memorai_database_query_duration_seconds_bucket[5m])) by (le)
+          ) > 1.0
+        for: 5m
+        labels:
+          severity: warning
+          component: database
+          team: platform
+        annotations:
+          summary: "Slow database queries in MemorAI MCP Server"
+          description: "P95 database query time is {{ $value }}s, above 1s threshold"
+          
+      # Network Performance Alerts
+      - alert: MemorAI_Network_Sync_Slow
+        expr: |
+          rate(memorai_network_memory_sync_duration_seconds_sum[5m]) /
+          rate(memorai_network_memory_sync_duration_seconds_count[5m]) > 10.0
+        for: 5m
+        labels:
+          severity: warning
+          component: network
+          team: platform
+        annotations:
+          summary: "Slow network synchronization in MemorAI MCP Server"
+          description: "Average sync duration is {{ $value }}s, above 10s threshold"
+          
+      - alert: MemorAI_Network_Conflicts_High
+        expr: rate(memorai_network_conflicts_total[5m]) > 0.1
+        for: 3m
+        labels:
+          severity: warning
+          component: network
+          team: platform
+        annotations:
+          summary: "High network conflicts in MemorAI MCP Server"
+          description: "Network conflicts rate is {{ $value }} per second"
+          
+      # Capacity Planning Alerts
+      - alert: MemorAI_Connection_Pool_Exhausted
+        expr: memorai_active_connections / memorai_max_connections > 0.9
+        for: 2m
+        labels:
+          severity: critical
+          component: connections
+          team: platform
+        annotations:
+          summary: "Connection pool near exhaustion"
+          description: "Using {{ $value | humanizePercentage }} of available connections"
+
+  performance-dashboard.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "MemorAI MCP Server - Performance Dashboard",
+        "tags": ["memorai", "mcp", "performance"],
+        "timezone": "browser",
+        "refresh": "30s",
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        },
+        "panels": [
+          {
+            "id": 1,
+            "title": "SLO Overview",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "(sum(rate(memorai_http_requests_total{status!~\"5..\"}[5m])) / sum(rate(memorai_http_requests_total[5m]))) * 100",
+                "legendFormat": "Availability %"
+              },
+              {
+                "expr": "histogram_quantile(0.95, sum(rate(memorai_memory_operation_duration_seconds_bucket[5m])) by (le)) * 1000",
+                "legendFormat": "P95 Latency (ms)"
+              },
+              {
+                "expr": "(sum(rate(memorai_memory_operations_total{status=\"error\"}[5m])) / sum(rate(memorai_memory_operations_total[5m]))) * 100",
+                "legendFormat": "Error Rate %"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "thresholds": {
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 95},
+                    {"color": "red", "value": 90}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Request Rate & Response Time",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "sum(rate(memorai_memory_operations_total[5m]))",
+                "legendFormat": "Request Rate (RPS)"
+              },
+              {
+                "expr": "histogram_quantile(0.95, sum(rate(memorai_memory_operation_duration_seconds_bucket[5m])) by (le)) * 1000",
+                "legendFormat": "P95 Response Time (ms)"
+              },
+              {
+                "expr": "histogram_quantile(0.99, sum(rate(memorai_memory_operation_duration_seconds_bucket[5m])) by (le)) * 1000",
+                "legendFormat": "P99 Response Time (ms)"
+              }
+            ],
+            "yAxes": [
+              {"label": "RPS", "min": 0},
+              {"label": "Milliseconds", "min": 0}
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Cache Performance",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "(sum(rate(memorai_cache_hits_total[5m])) / (sum(rate(memorai_cache_hits_total[5m])) + sum(rate(memorai_cache_misses_total[5m])))) * 100",
+                "legendFormat": "Cache Hit Rate %"
+              },
+              {
+                "expr": "memorai_cache_memory_usage_bytes / 1024 / 1024",
+                "legendFormat": "Cache Memory Usage (MB)"
+              }
+            ],
+            "yAxes": [
+              {"label": "Percentage", "min": 0, "max": 100},
+              {"label": "MB", "min": 0}
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "id": 4,
+            "title": "Network Performance",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "memorai_network_peers_connected",
+                "legendFormat": "Connected Peers"
+              },
+              {
+                "expr": "rate(memorai_network_memory_sync_duration_seconds_sum[5m]) / rate(memorai_network_memory_sync_duration_seconds_count[5m])",
+                "legendFormat": "Avg Sync Duration (s)"
+              },
+              {
+                "expr": "rate(memorai_network_conflicts_total[5m])",
+                "legendFormat": "Conflicts per second"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          },
+          {
+            "id": 5,
+            "title": "Resource Utilization",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "rate(container_cpu_usage_seconds_total{pod=~\"memorai-mcp-server.*\"}[5m]) * 100",
+                "legendFormat": "CPU Usage %"
+              },
+              {
+                "expr": "container_memory_working_set_bytes{pod=~\"memorai-mcp-server.*\"} / 1024 / 1024",
+                "legendFormat": "Memory Usage (MB)"
+              },
+              {
+                "expr": "memorai_active_connections",
+                "legendFormat": "Active Connections"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 24, "x": 0, "y": 16}
+          }
+        ]
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: performance-monitoring-exporter
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    service-type: metrics-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: performance-monitoring-exporter
+  template:
+    metadata:
+      labels:
+        app: performance-monitoring-exporter
+        component: performance
+    spec:
+      containers:
+      - name: metrics-exporter
+        image: python:3.11-slim
+        ports:
+        - containerPort: 8080
+          name: metrics
+        command:
+        - /bin/bash
+        - -c
+        - |
+          pip install prometheus-client requests asyncio aiohttp psutil
+          
+          cat > /app/performance_exporter.py << 'EOF'
+          import time
+          import asyncio
+          import psutil
+          import requests
+          from prometheus_client import start_http_server, Gauge, Counter, Histogram, REGISTRY
+          import json
+          import logging
+          
+          logging.basicConfig(level=logging.INFO)
+          logger = logging.getLogger(__name__)
+          
+          # Custom metrics
+          memory_operations_total = Counter('memorai_memory_operations_total', 'Total memory operations', ['operation_type', 'agent_id', 'status'])
+          memory_operation_duration = Histogram('memorai_memory_operation_duration_seconds', 'Memory operation duration', ['operation_type'])
+          cache_hits_total = Counter('memorai_cache_hits_total', 'Total cache hits', ['cache_type', 'cache_layer'])
+          cache_misses_total = Counter('memorai_cache_misses_total', 'Total cache misses', ['cache_type', 'cache_layer'])
+          cache_memory_usage = Gauge('memorai_cache_memory_usage_bytes', 'Cache memory usage', ['cache_type'])
+          active_connections = Gauge('memorai_active_connections', 'Active connections', ['connection_type'])
+          request_queue_size = Gauge('memorai_request_queue_size', 'Request queue size', ['queue_type'])
+          
+          class PerformanceExporter:
+              def __init__(self):
+                  self.memorai_server_url = "http://memorai-mcp-server.memorai-mcp.svc.cluster.local:4950"
+                  
+              async def collect_system_metrics(self):
+                  """Collect system-level performance metrics"""
+                  try:
+                      # CPU and memory metrics
+                      cpu_percent = psutil.cpu_percent(interval=1)
+                      memory = psutil.virtual_memory()
+                      
+                      # Network metrics
+                      network = psutil.net_io_counters()
+                      
+                      # Update Prometheus metrics
+                      cache_memory_usage.labels(cache_type='system').set(memory.used)
+                      
+                      logger.info(f"System metrics: CPU={cpu_percent}%, Memory={memory.percent}%")
+                      
+                  except Exception as e:
+                      logger.error(f"Error collecting system metrics: {e}")
+              
+              async def collect_application_metrics(self):
+                  """Collect application-specific metrics from MemorAI server"""
+                  try:
+                      # Health check
+                      health_response = requests.get(f"{self.memorai_server_url}/health", timeout=5)
+                      if health_response.status_code == 200:
+                          health_data = health_response.json()
+                          
+                          # Simulate metrics based on health data
+                          if health_data.get('status') == 'healthy':
+                              memory_operations_total.labels(operation_type='health_check', agent_id='system', status='success').inc()
+                          
+                      # Application stats
+                      try:
+                          stats_response = requests.get(f"{self.memorai_server_url}/api/stats", timeout=5)
+                          if stats_response.status_code == 200:
+                              stats_data = stats_response.json()
+                              
+                              # Update metrics based on stats
+                              active_connections.labels(connection_type='http').set(stats_data.get('active_connections', 0))
+                              request_queue_size.labels(queue_type='main').set(stats_data.get('queue_size', 0))
+                              
+                      except requests.RequestException:
+                          logger.warning("Could not fetch application stats")
+                      
+                      logger.info("Application metrics collected")
+                      
+                  except Exception as e:
+                      logger.error(f"Error collecting application metrics: {e}")
+              
+              async def simulate_performance_data(self):
+                  """Simulate performance data for demonstration"""
+                  try:
+                      import random
+                      
+                      # Simulate memory operations
+                      operation_types = ['create', 'recall', 'search', 'update', 'delete']
+                      for op_type in operation_types:
+                          # Simulate successful operations
+                          count = random.randint(10, 50)
+                          for _ in range(count):
+                              memory_operations_total.labels(
+                                  operation_type=op_type, 
+                                  agent_id=f'agent-{random.randint(1, 10)}', 
+                                  status='success'
+                              ).inc()
+                              
+                              # Simulate operation duration
+                              duration = random.uniform(0.01, 2.0)
+                              memory_operation_duration.labels(operation_type=op_type).observe(duration)
+                      
+                      # Simulate cache metrics
+                      cache_types = ['redis', 'memcached', 'application']
+                      for cache_type in cache_types:
+                          hits = random.randint(100, 1000)
+                          misses = random.randint(10, 100)
+                          
+                          cache_hits_total.labels(cache_type=cache_type, cache_layer='L1').inc(hits)
+                          cache_misses_total.labels(cache_type=cache_type, cache_layer='L1').inc(misses)
+                          
+                          memory_usage = random.randint(100_000_000, 500_000_000)  # 100-500MB
+                          cache_memory_usage.labels(cache_type=cache_type).set(memory_usage)
+                      
+                      logger.info("Performance data simulation completed")
+                      
+                  except Exception as e:
+                      logger.error(f"Error simulating performance data: {e}")
+              
+              async def run(self):
+                  """Main collection loop"""
+                  logger.info("Starting performance metrics exporter...")
+                  
+                  while True:
+                      try:
+                          await asyncio.gather(
+                              self.collect_system_metrics(),
+                              self.collect_application_metrics(),
+                              self.simulate_performance_data()
+                          )
+                          
+                          await asyncio.sleep(30)  # Collect every 30 seconds
+                          
+                      except Exception as e:
+                          logger.error(f"Error in main collection loop: {e}")
+                          await asyncio.sleep(60)  # Wait longer on error
+          
+          if __name__ == "__main__":
+              # Start Prometheus metrics server
+              start_http_server(8080)
+              logger.info("Prometheus metrics server started on port 8080")
+              
+              # Run metrics collector
+              exporter = PerformanceExporter()
+              asyncio.run(exporter.run())
+          EOF
+          
+          python /app/performance_exporter.py
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: performance-config
+          mountPath: /config
+      volumes:
+      - name: performance-config
+        configMap:
+          name: performance-monitoring-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: performance-monitoring-exporter
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: "/metrics"
+spec:
+  selector:
+    app: performance-monitoring-exporter
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: metrics
+  type: ClusterIP

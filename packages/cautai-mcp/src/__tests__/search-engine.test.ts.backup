@@ -1,0 +1,1067 @@
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
+// Mock external dependencies first
+vi.mock('node:https', () => ({
+  default: {
+    request: vi.fn(),
+  },
+}));
+
+vi.mock('../security/validation', () => ({
+  SecurityValidationSystem: vi.fn().mockImplementation(() => ({
+    validateSearchQuery: vi.fn().mockResolvedValue({
+      isValid: true,
+      sanitizedInput: 'test query',
+      violations: [],
+      riskScore: 0.1,
+      suggestions: [],
+    }),
+  })),
+}));
+
+vi.mock('../performance/monitor', () => ({
+  PerformanceMonitor: vi.fn().mockImplementation(() => ({
+    startOperation: vi.fn().mockReturnValue('op-123'),
+    endOperation: vi.fn().mockResolvedValue({
+      operationId: 'op-123',
+      duration: 100,
+      success: true,
+    }),
+    addMetrics: vi.fn(),
+    emit: vi.fn(),
+  })),
+}));
+
+vi.mock('../performance/cache-manager', () => ({
+  AdvancedCacheManager: vi.fn().mockImplementation(() => ({
+    getCachedResults: vi.fn().mockResolvedValue(null),
+    cacheResults: vi.fn().mockResolvedValue(true),
+    getStats: vi.fn().mockReturnValue({
+      hits: 0,
+      misses: 1,
+      hitRate: 0,
+    }),
+  })),
+}));
+
+import { CautaiSearchEngine } from '../search/engine';
+import { HybridRankingEngine } from '../search/ranking';
+import { ResultDeduplicator } from '../search/deduplication';
+
+describe('CautaiSearchEngine', () => {
+  let searchEngine: CautaiSearchEngine;
+
+  beforeEach(() => {
+    searchEngine = new CautaiSearchEngine({
+      adapters: {
+        duckduckgo: {
+          enabled: true,
+          priority: 2,
+          timeout: 10000,
+          maxResults: 10
+        }
+      },
+      ranking: {
+        algorithm: 'hybrid',
+        weights: {
+          relevance: 0.4,
+          quality: 0.3,
+          recency: 0.2,
+          authority: 0.1
+        }
+      },
+      caching: {
+        enabled: true,
+        ttl: 3600000,
+        maxSize: 1000,
+        strategy: 'lru'
+      },
+      deduplication: {
+        enabled: true,
+        similarity_threshold: 0.85,
+        fields: ['title', 'url', 'snippet']
+      }
+    });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('Search Execution', () => {
+    it('should execute basic search with default parameters', async () => {
+      const mockResults = [
+        {
+          title: 'Test Result 1',
+          url: 'https://example.com/1',
+          description: 'Test description 1',
+          relevanceScore: 0.95,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Test Result 2',
+          url: 'https://example.com/2',
+          description: 'Test description 2',
+          relevanceScore: 0.85,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      // Mock HTTP request
+      const mockRequest = vi.fn().mockImplementation((url, options, callback) => {
+        const mockResponse = {
+          statusCode: 200,
+          on: vi.fn((event, handler) => {
+            if (event === 'data') {
+              handler(JSON.stringify({ results: mockResults }));
+            } else if (event === 'end') {
+              handler();
+            }
+          }),
+        };
+        callback(mockResponse);
+        return { on: vi.fn(), end: vi.fn() };
+      });
+
+      vi.doMock('node:https', () => ({
+        default: { request: mockRequest },
+      }));
+
+      const results = await searchEngine.search('test query');
+
+      expect(results).toBeDefined();
+      expect(results.query).toBe('test query');
+      expect(results.results).toHaveLength(2);
+      expect(results.results[0]).toMatchObject({
+        title: 'Test Result 1',
+        url: 'https://example.com/1',
+        relevanceScore: expect.any(Number),
+      });
+    });
+
+    it('should handle search with custom parameters', async () => {
+      const results = await searchEngine.search('custom query', {
+        maxResults: 5,
+        language: 'ro',
+        includeImages: true,
+        includeNews: false,
+      });
+
+      expect(results).toBeDefined();
+      expect(results.query).toBe('custom query');
+      expect(results.metadata).toMatchObject({
+        maxResults: 5,
+        language: 'ro',
+        includeImages: true,
+        includeNews: false,
+      });
+    });
+
+    it('should handle empty search results', async () => {
+      const mockRequest = vi.fn().mockImplementation((url, options, callback) => {
+        const mockResponse = {
+          statusCode: 200,
+          on: vi.fn((event, handler) => {
+            if (event === 'data') {
+              handler(JSON.stringify({ results: [] }));
+            } else if (event === 'end') {
+              handler();
+            }
+          }),
+        };
+        callback(mockResponse);
+        return { on: vi.fn(), end: vi.fn() };
+      });
+
+      vi.doMock('node:https', () => ({
+        default: { request: mockRequest },
+      }));
+
+      const results = await searchEngine.search('empty query');
+
+      expect(results).toBeDefined();
+      expect(results.results).toHaveLength(0);
+      expect(results.metadata.totalResults).toBe(0);
+    });
+
+    it('should handle search API errors gracefully', async () => {
+      const mockRequest = vi.fn().mockImplementation((url, options, callback) => {
+        const mockResponse = {
+          statusCode: 500,
+          on: vi.fn(),
+        };
+        callback(mockResponse);
+        return { 
+          on: vi.fn((event, handler) => {
+            if (event === 'error') {
+              handler(new Error('API Error'));
+            }
+          }),
+          end: vi.fn() 
+        };
+      });
+
+      vi.doMock('node:https', () => ({
+        default: { request: mockRequest },
+      }));
+
+      await expect(searchEngine.search('error query')).rejects.toThrow();
+    });
+
+    it('should validate input before searching', async () => {
+      const mockValidation = vi.fn().mockResolvedValue({
+        isValid: false,
+        sanitizedInput: '',
+        violations: [{ type: 'sql_injection', severity: 'high' }],
+        riskScore: 0.9,
+        suggestions: ['Remove SQL injection patterns'],
+      });
+
+      // Mock security validation to reject input
+      searchEngine = new SearchEngine({
+        maxResults: 10,
+        defaultLanguage: 'en',
+        enableSecurityValidation: true,
+      });
+
+      // Replace the validation method
+      (searchEngine as any).securityValidator.validateSearchQuery = mockValidation;
+
+      await expect(searchEngine.search('SELECT * FROM users')).rejects.toThrow('Security validation failed');
+
+      expect(mockValidation).toHaveBeenCalledWith('SELECT * FROM users');
+    });
+
+    it('should respect maxResults configuration', async () => {
+      const mockResults = Array.from({ length: 20 }, (_, i) => ({
+        title: `Result ${i + 1}`,
+        url: `https://example.com/${i + 1}`,
+        description: `Description ${i + 1}`,
+        relevanceScore: 0.9 - i * 0.05,
+        source: 'web',
+        accessedAt: new Date().toISOString(),
+      }));
+
+      const mockRequest = vi.fn().mockImplementation((url, options, callback) => {
+        const mockResponse = {
+          statusCode: 200,
+          on: vi.fn((event, handler) => {
+            if (event === 'data') {
+              handler(JSON.stringify({ results: mockResults }));
+            } else if (event === 'end') {
+              handler();
+            }
+          }),
+        };
+        callback(mockResponse);
+        return { on: vi.fn(), end: vi.fn() };
+      });
+
+      vi.doMock('node:https', () => ({
+        default: { request: mockRequest },
+      }));
+
+      const results = await searchEngine.search('many results', { maxResults: 5 });
+
+      expect(results.results.length).toBeLessThanOrEqual(5);
+    });
+  });
+
+  describe('Performance Integration', () => {
+    it('should track search operations for performance monitoring', async () => {
+      const mockPerformanceMonitor = {
+        startOperation: vi.fn().mockReturnValue('search-op-123'),
+        endOperation: vi.fn().mockResolvedValue({
+          operationId: 'search-op-123',
+          duration: 150,
+          success: true,
+        }),
+        addMetrics: vi.fn(),
+      };
+
+      (searchEngine as any).performanceMonitor = mockPerformanceMonitor;
+
+      await searchEngine.search('performance test');
+
+      expect(mockPerformanceMonitor.startOperation).toHaveBeenCalledWith('search', 'performance test');
+      expect(mockPerformanceMonitor.endOperation).toHaveBeenCalledWith('search-op-123', true);
+    });
+
+    it('should use cache when available', async () => {
+      const cachedResults = {
+        query: 'cached query',
+        results: [
+          {
+            title: 'Cached Result',
+            url: 'https://cached.com',
+            description: 'From cache',
+            relevanceScore: 0.9,
+            source: 'cache',
+            accessedAt: new Date().toISOString(),
+          },
+        ],
+        metadata: {
+          totalResults: 1,
+          searchTime: 50,
+          source: 'cache',
+        },
+      };
+
+      const mockCache = {
+        getCachedResults: vi.fn().mockResolvedValue(cachedResults),
+        cacheResults: vi.fn(),
+        getStats: vi.fn().mockReturnValue({ hits: 1, misses: 0, hitRate: 1.0 }),
+      };
+
+      (searchEngine as any).cacheManager = mockCache;
+
+      const results = await searchEngine.search('cached query');
+
+      expect(mockCache.getCachedResults).toHaveBeenCalledWith('cached query', expect.any(Object));
+      expect(results.metadata.source).toBe('cache');
+      expect(results.results[0].title).toBe('Cached Result');
+    });
+  });
+
+  describe('Configuration Handling', () => {
+    it('should initialize with default configuration', () => {
+      const defaultEngine = new SearchEngine();
+
+      expect(defaultEngine).toBeDefined();
+    });
+
+    it('should use custom configuration when provided', () => {
+      const customConfig = {
+        maxResults: 25,
+        defaultLanguage: 'ro',
+        enableSecurityValidation: false,
+        enablePerformanceMonitoring: true,
+        enableCaching: false,
+      };
+
+      const customEngine = new SearchEngine(customConfig);
+
+      expect(customEngine).toBeDefined();
+      // Configuration is private, but we can test behavior
+    });
+
+    it('should handle invalid configuration gracefully', () => {
+      const invalidConfig = {
+        maxResults: -5, // Invalid value
+        defaultLanguage: 'invalid-lang',
+        enableSecurityValidation: 'maybe' as any, // Wrong type
+      };
+
+      expect(() => new SearchEngine(invalidConfig)).not.toThrow();
+    });
+  });
+
+  describe('Error Handling', () => {
+    it('should handle network timeouts', async () => {
+      const mockRequest = vi.fn().mockImplementation((url, options, callback) => {
+        return { 
+          on: vi.fn((event, handler) => {
+            if (event === 'timeout') {
+              handler();
+            }
+          }),
+          end: vi.fn(),
+          setTimeout: vi.fn(),
+        };
+      });
+
+      vi.doMock('node:https', () => ({
+        default: { request: mockRequest },
+      }));
+
+      await expect(searchEngine.search('timeout query')).rejects.toThrow();
+    });
+
+    it('should handle malformed API responses', async () => {
+      const mockRequest = vi.fn().mockImplementation((url, options, callback) => {
+        const mockResponse = {
+          statusCode: 200,
+          on: vi.fn((event, handler) => {
+            if (event === 'data') {
+              handler('invalid json response');
+            } else if (event === 'end') {
+              handler();
+            }
+          }),
+        };
+        callback(mockResponse);
+        return { on: vi.fn(), end: vi.fn() };
+      });
+
+      vi.doMock('node:https', () => ({
+        default: { request: mockRequest },
+      }));
+
+      await expect(searchEngine.search('malformed response')).rejects.toThrow();
+    });
+  });
+});
+
+describe('SearchRanker', () => {
+  let ranker: SearchRanker;
+
+  beforeEach(() => {
+    ranker = new SearchRanker({
+      titleWeight: 0.4,
+      descriptionWeight: 0.3,
+      urlWeight: 0.1,
+      freshnessWeight: 0.2,
+      enableMLRanking: false,
+    });
+  });
+
+  describe('Ranking Algorithm', () => {
+    it('should rank results based on relevance scores', () => {
+      const results = [
+        {
+          title: 'Less Relevant',
+          url: 'https://example.com/2',
+          description: 'Some description',
+          relevanceScore: 0.6,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Most Relevant',
+          url: 'https://example.com/1',
+          description: 'Perfect match description',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Moderate Relevance',
+          url: 'https://example.com/3',
+          description: 'Okay description',
+          relevanceScore: 0.75,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const rankedResults = ranker.rankResults(results, 'test query');
+
+      expect(rankedResults).toHaveLength(3);
+      expect(rankedResults[0].relevanceScore).toBeGreaterThanOrEqual(rankedResults[1].relevanceScore);
+      expect(rankedResults[1].relevanceScore).toBeGreaterThanOrEqual(rankedResults[2].relevanceScore);
+      expect(rankedResults[0].title).toBe('Most Relevant');
+    });
+
+    it('should calculate relevance scores based on query matching', () => {
+      const results = [
+        {
+          title: 'JavaScript Programming Guide',
+          url: 'https://example.com/js',
+          description: 'Complete guide to JavaScript programming and development',
+          relevanceScore: 0.5, // Will be recalculated
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Python Tutorial',
+          url: 'https://example.com/python',
+          description: 'Learn Python programming basics',
+          relevanceScore: 0.5,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const jsRanked = ranker.rankResults([...results], 'JavaScript programming');
+      const pythonRanked = ranker.rankResults([...results], 'Python tutorial');
+
+      expect(jsRanked[0].title).toBe('JavaScript Programming Guide');
+      expect(pythonRanked[0].title).toBe('Python Tutorial');
+    });
+
+    it('should consider freshness in ranking', () => {
+      const oldDate = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000); // 1 year ago
+      const newDate = new Date(); // Now
+
+      const results = [
+        {
+          title: 'Old Article',
+          url: 'https://example.com/old',
+          description: 'Old but relevant content',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: oldDate.toISOString(),
+        },
+        {
+          title: 'Fresh Article',
+          url: 'https://example.com/new',
+          description: 'Fresh and relevant content',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: newDate.toISOString(),
+        },
+      ];
+
+      const freshRanker = new SearchRanker({
+        titleWeight: 0.3,
+        descriptionWeight: 0.3,
+        urlWeight: 0.1,
+        freshnessWeight: 0.3, // High freshness weight
+      });
+
+      const rankedResults = freshRanker.rankResults(results, 'article');
+
+      expect(rankedResults[0].title).toBe('Fresh Article');
+    });
+
+    it('should handle empty results gracefully', () => {
+      const rankedResults = ranker.rankResults([], 'test query');
+
+      expect(rankedResults).toHaveLength(0);
+      expect(Array.isArray(rankedResults)).toBe(true);
+    });
+
+    it('should handle results with identical scores', () => {
+      const results = [
+        {
+          title: 'Article A',
+          url: 'https://example.com/a',
+          description: 'Description A',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Article B',
+          url: 'https://example.com/b',
+          description: 'Description B',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const rankedResults = ranker.rankResults(results, 'article');
+
+      expect(rankedResults).toHaveLength(2);
+      expect(rankedResults.every(r => typeof r.relevanceScore === 'number')).toBe(true);
+    });
+  });
+
+  describe('Weight Configuration', () => {
+    it('should apply different weights correctly', () => {
+      const titleHeavyRanker = new SearchRanker({
+        titleWeight: 0.8,
+        descriptionWeight: 0.1,
+        urlWeight: 0.05,
+        freshnessWeight: 0.05,
+      });
+
+      const descriptionHeavyRanker = new SearchRanker({
+        titleWeight: 0.1,
+        descriptionWeight: 0.8,
+        urlWeight: 0.05,
+        freshnessWeight: 0.05,
+      });
+
+      const results = [
+        {
+          title: 'Perfect Title Match',
+          url: 'https://example.com/1',
+          description: 'Unrelated content',
+          relevanceScore: 0.5,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Unrelated Title',
+          url: 'https://example.com/2',
+          description: 'Perfect description match for our query',
+          relevanceScore: 0.5,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const titleRanked = titleHeavyRanker.rankResults([...results], 'Perfect Title Match');
+      const descRanked = descriptionHeavyRanker.rankResults([...results], 'Perfect description match');
+
+      expect(titleRanked[0].title).toBe('Perfect Title Match');
+      expect(descRanked[0].description).toContain('Perfect description match');
+    });
+
+    it('should normalize weights if they don\'t sum to 1', () => {
+      const unnormalizedRanker = new SearchRanker({
+        titleWeight: 2,
+        descriptionWeight: 2,
+        urlWeight: 1,
+        freshnessWeight: 1,
+      });
+
+      const results = [
+        {
+          title: 'Test Result',
+          url: 'https://example.com/test',
+          description: 'Test description',
+          relevanceScore: 0.5,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const rankedResults = unnormalizedRanker.rankResults(results, 'test');
+
+      expect(rankedResults).toHaveLength(1);
+      expect(rankedResults[0].relevanceScore).toBeGreaterThan(0);
+      expect(rankedResults[0].relevanceScore).toBeLessThanOrEqual(1);
+    });
+  });
+
+  describe('ML-Enhanced Ranking', () => {
+    it('should handle ML ranking when enabled', () => {
+      const mlRanker = new SearchRanker({
+        titleWeight: 0.4,
+        descriptionWeight: 0.3,
+        urlWeight: 0.1,
+        freshnessWeight: 0.2,
+        enableMLRanking: true,
+      });
+
+      const results = [
+        {
+          title: 'ML Test',
+          url: 'https://example.com/ml',
+          description: 'Machine learning content',
+          relevanceScore: 0.7,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      // Should not throw error even with ML enabled (fallback to traditional ranking)
+      expect(() => mlRanker.rankResults(results, 'machine learning')).not.toThrow();
+    });
+  });
+});
+
+describe('ResultDeduplicator', () => {
+  let deduplicator: ResultDeduplicator;
+
+  beforeEach(() => {
+    deduplicator = new ResultDeduplicator({
+      enableURLDeduplication: true,
+      enableTitleDeduplication: true,
+      enableContentDeduplication: true,
+      similarityThreshold: 0.8,
+      preserveHighestRanked: true,
+    });
+  });
+
+  describe('URL Deduplication', () => {
+    it('should remove duplicate URLs', () => {
+      const results = [
+        {
+          title: 'First Result',
+          url: 'https://example.com/page',
+          description: 'First description',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Duplicate URL',
+          url: 'https://example.com/page',
+          description: 'Different description',
+          relevanceScore: 0.7,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Unique Result',
+          url: 'https://example.com/unique',
+          description: 'Unique content',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const deduplicated = deduplicator.deduplicateResults(results);
+
+      expect(deduplicated).toHaveLength(2);
+      expect(deduplicated.find(r => r.url === 'https://example.com/page')?.relevanceScore).toBe(0.9);
+      expect(deduplicated.find(r => r.url === 'https://example.com/unique')).toBeDefined();
+    });
+
+    it('should handle URL variations (with/without trailing slash)', () => {
+      const results = [
+        {
+          title: 'URL with slash',
+          url: 'https://example.com/page/',
+          description: 'Description 1',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'URL without slash',
+          url: 'https://example.com/page',
+          description: 'Description 2',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const deduplicated = deduplicator.deduplicateResults(results);
+
+      expect(deduplicated).toHaveLength(1);
+      expect(deduplicated[0].relevanceScore).toBe(0.9);
+    });
+
+    it('should handle query parameters in URLs', () => {
+      const results = [
+        {
+          title: 'URL with params',
+          url: 'https://example.com/page?utm_source=google&utm_medium=search',
+          description: 'Description 1',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Clean URL',
+          url: 'https://example.com/page',
+          description: 'Description 2',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const smartDeduplicator = new ResultDeduplicator({
+        enableURLDeduplication: true,
+        enableTitleDeduplication: true,
+        enableContentDeduplication: true,
+        similarityThreshold: 0.8,
+        preserveHighestRanked: true,
+        normalizeURLs: true, // Smart URL normalization
+      });
+
+      const deduplicated = smartDeduplicator.deduplicateResults(results);
+
+      expect(deduplicated).toHaveLength(1);
+      expect(deduplicated[0].relevanceScore).toBe(0.9);
+    });
+  });
+
+  describe('Title Deduplication', () => {
+    it('should remove results with identical titles', () => {
+      const results = [
+        {
+          title: 'Identical Title',
+          url: 'https://example.com/1',
+          description: 'Description 1',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Identical Title',
+          url: 'https://example.com/2',
+          description: 'Description 2',
+          relevanceScore: 0.7,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const deduplicated = deduplicator.deduplicateResults(results);
+
+      expect(deduplicated).toHaveLength(1);
+      expect(deduplicated[0].relevanceScore).toBe(0.9);
+    });
+
+    it('should handle similar but not identical titles', () => {
+      const results = [
+        {
+          title: 'JavaScript Tutorial - Complete Guide',
+          url: 'https://example.com/1',
+          description: 'Description 1',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'JavaScript Tutorial: Complete Guide',
+          url: 'https://example.com/2',
+          description: 'Description 2',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Python Tutorial - Complete Guide',
+          url: 'https://example.com/3',
+          description: 'Description 3',
+          relevanceScore: 0.85,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const strictDeduplicator = new ResultDeduplicator({
+        enableURLDeduplication: true,
+        enableTitleDeduplication: true,
+        enableContentDeduplication: true,
+        similarityThreshold: 0.9, // High similarity threshold
+        preserveHighestRanked: true,
+      });
+
+      const deduplicated = strictDeduplicator.deduplicateResults(results);
+
+      // Should remove the very similar JavaScript titles but keep Python
+      expect(deduplicated).toHaveLength(2);
+      expect(deduplicated.find(r => r.title.includes('Python'))).toBeDefined();
+    });
+  });
+
+  describe('Content Deduplication', () => {
+    it('should remove results with very similar descriptions', () => {
+      const results = [
+        {
+          title: 'Article 1',
+          url: 'https://example.com/1',
+          description: 'This is a comprehensive guide to learning JavaScript programming from basics to advanced concepts',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Article 2',
+          url: 'https://example.com/2',
+          description: 'This is a comprehensive guide to learning JavaScript programming from basic to advanced concepts',
+          relevanceScore: 0.85,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Article 3',
+          url: 'https://example.com/3',
+          description: 'Complete Python programming tutorial for beginners',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const contentDeduplicator = new ResultDeduplicator({
+        enableURLDeduplication: true,
+        enableTitleDeduplication: true,
+        enableContentDeduplication: true,
+        similarityThreshold: 0.85, // High content similarity threshold
+        preserveHighestRanked: true,
+      });
+
+      const deduplicated = contentDeduplicator.deduplicateResults(results);
+
+      expect(deduplicated).toHaveLength(2);
+      expect(deduplicated.find(r => r.description.includes('Python'))).toBeDefined();
+      expect(deduplicated[0].relevanceScore).toBe(0.9); // Highest ranked preserved
+    });
+
+    it('should handle empty or very short descriptions', () => {
+      const results = [
+        {
+          title: 'Article 1',
+          url: 'https://example.com/1',
+          description: '',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Article 2',
+          url: 'https://example.com/2',
+          description: '',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Article 3',
+          url: 'https://example.com/3',
+          description: 'Short',
+          relevanceScore: 0.7,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const deduplicated = deduplicator.deduplicateResults(results);
+
+      // Should handle empty descriptions without errors
+      expect(deduplicated.length).toBeGreaterThan(0);
+      expect(() => deduplicator.deduplicateResults(results)).not.toThrow();
+    });
+  });
+
+  describe('Configuration Options', () => {
+    it('should respect disable flags', () => {
+      const noDeduplicationConfig = new ResultDeduplicator({
+        enableURLDeduplication: false,
+        enableTitleDeduplication: false,
+        enableContentDeduplication: false,
+        similarityThreshold: 0.8,
+        preserveHighestRanked: true,
+      });
+
+      const results = [
+        {
+          title: 'Same Title',
+          url: 'https://example.com/same',
+          description: 'Same description',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Same Title',
+          url: 'https://example.com/same',
+          description: 'Same description',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const deduplicated = noDeduplicationConfig.deduplicateResults(results);
+
+      expect(deduplicated).toHaveLength(2); // No deduplication should occur
+    });
+
+    it('should preserve lowest ranked when configured', () => {
+      const lowestRankedDeduplicator = new ResultDeduplicator({
+        enableURLDeduplication: true,
+        enableTitleDeduplication: true,
+        enableContentDeduplication: true,
+        similarityThreshold: 0.8,
+        preserveHighestRanked: false, // Preserve lowest ranked instead
+      });
+
+      const results = [
+        {
+          title: 'Same Title',
+          url: 'https://example.com/1',
+          description: 'Description 1',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Same Title',
+          url: 'https://example.com/2',
+          description: 'Description 2',
+          relevanceScore: 0.7,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const deduplicated = lowestRankedDeduplicator.deduplicateResults(results);
+
+      expect(deduplicated).toHaveLength(1);
+      expect(deduplicated[0].relevanceScore).toBe(0.7);
+    });
+  });
+
+  describe('Edge Cases', () => {
+    it('should handle empty results array', () => {
+      const deduplicated = deduplicator.deduplicateResults([]);
+
+      expect(deduplicated).toHaveLength(0);
+      expect(Array.isArray(deduplicated)).toBe(true);
+    });
+
+    it('should handle single result', () => {
+      const results = [
+        {
+          title: 'Single Result',
+          url: 'https://example.com/single',
+          description: 'Only result',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const deduplicated = deduplicator.deduplicateResults(results);
+
+      expect(deduplicated).toHaveLength(1);
+      expect(deduplicated[0]).toEqual(results[0]);
+    });
+
+    it('should handle results with missing fields', () => {
+      const results = [
+        {
+          title: 'Complete Result',
+          url: 'https://example.com/complete',
+          description: 'Full description',
+          relevanceScore: 0.9,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: '', // Empty title
+          url: 'https://example.com/incomplete',
+          description: '', // Empty description
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ] as any;
+
+      expect(() => deduplicator.deduplicateResults(results)).not.toThrow();
+      const deduplicated = deduplicator.deduplicateResults(results);
+      expect(deduplicated.length).toBeGreaterThan(0);
+    });
+
+    it('should maintain result order when scores are equal', () => {
+      const results = [
+        {
+          title: 'First Result',
+          url: 'https://example.com/1',
+          description: 'Description 1',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Second Result',
+          url: 'https://example.com/2',
+          description: 'Description 2',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+        {
+          title: 'Third Result',
+          url: 'https://example.com/3',
+          description: 'Description 3',
+          relevanceScore: 0.8,
+          source: 'web',
+          accessedAt: new Date().toISOString(),
+        },
+      ];
+
+      const deduplicated = deduplicator.deduplicateResults(results);
+
+      expect(deduplicated).toHaveLength(3);
+      expect(deduplicated[0].title).toBe('First Result');
+      expect(deduplicated[1].title).toBe('Second Result');
+      expect(deduplicated[2].title).toBe('Third Result');
+    });
+  });
+});

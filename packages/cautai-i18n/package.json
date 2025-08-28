@@ -1,0 +1,71 @@
+{
+  "name": "@codai/cautai-i18n",
+  "version": "1.0.0",
+  "description": "Internationalization support for Cautai - English and Romanian localization",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./locales/*": "./locales/*"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "build:watch": "unbuild --watch",
+    "test": "vitest",
+    "test:unit": "vitest run --reporter=verbose",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.js",
+    "lint:fix": "eslint src --ext .ts,.js --fix",
+    "clean": "rimraf dist",
+    "extract-messages": "node scripts/extract-messages.js",
+    "validate-translations": "node scripts/validate-translations.js"
+  },
+  "dependencies": {
+    "i18next": "^23.7.16",
+    "react-i18next": "^14.0.0",
+    "i18next-browser-languagedetector": "^7.2.0",
+    "i18next-resources-to-backend": "^1.2.0",
+    "zod": "^3.22.4",
+    "date-fns": "^3.2.0"
+  },
+  "devDependencies": {
+    "@codai/cautai-config": "workspace:*",
+    "@types/node": "^20.11.10",
+    "@types/react": "^18.2.48",
+    "typescript": "^5.9.2",
+    "unbuild": "^2.0.0",
+    "vitest": "^1.2.2",
+    "rimraf": "^5.0.5",
+    "eslint": "^8.56.0"
+  },
+  "files": [
+    "dist",
+    "locales",
+    "README.md",
+    "CHANGELOG.md",
+    "package.json"
+  ],
+  "keywords": [
+    "i18n",
+    "internationalization",
+    "localization",
+    "translations",
+    "english",
+    "romanian",
+    "cautai"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codai-ecosystem/codai-project.git",
+    "directory": "packages/cautai-i18n"
+  },
+  "bugs": {
+    "url": "https://github.com/codai-ecosystem/codai-project/issues"
+  },
+  "homepage": "https://cautai.ro"
+}

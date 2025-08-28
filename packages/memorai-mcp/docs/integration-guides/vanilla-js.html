@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vanilla JavaScript Integration - MemorAI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #F7DF1E;
+      --secondary: #10B981;
+      --bg: #F9FAFB;
+      --text: #1F2937;
+      --border: #E5E7EB;
+      --code-bg: #1E293B;
+    }
+
+    body {
+      font-family: Inter, sans-serif;
+      background: var(--bg);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #323330, var(--secondary));
+      color: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .section {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      color: #E2E8F0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      font-family: monospace;
+    }
+
+    .nav {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .nav a {
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    h2 {
+      color: #323330;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      margin: 1rem 0 0.5rem;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+
+    .checkmark {
+      color: var(--secondary);
+    }
+
+    .warning {
+      background: #FEF3C7;
+      border: 1px solid #F59E0B;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📜 Vanilla JavaScript Integration</h1>
+      <p>Use MemorAI with pure JavaScript in any web application</p>
+    </div>
+
+    <div class="nav">
+      <a href="../developer-portal.html">← Portal</a>
+      <a href="index.html">Overview</a>
+      <a href="react.html">React</a>
+      <a href="vue.html">Vue</a>
+      <a href="angular.html">Angular</a>
+      <a href="#" style="background: #323330; color: white;">Vanilla JS</a>
+    </div>
+
+    <div class="section">
+      <h2>📦 Installation</h2>
+      <h3>Via NPM</h3>
+      <div class="code-block">
+        npm install @memorai/sdk
+        # Then import in your JS files
+        import { MemorAISDK } from '@memorai/sdk';</div>
+
+      <h3>Via CDN</h3>
+      <div class="code-block">
+        &lt;script src="https://unpkg.com/@memorai/sdk@latest/dist/memorai.min.js"&gt;&lt;/script&gt;
+        &lt;script&gt;
+        const { MemorAISDK } = window.MemorAI;
+        &lt;/script&gt;</div>
+    </div>
+
+    <div class="section">
+      <h2>⚡ Quick Start</h2>
+      <div class="code-block">
+        // Initialize MemorAI SDK
+        const memorai = new MemorAISDK({
+        baseURL: 'http://localhost:4950',
+        apiKey: 'your-api-key-here',
+        agentId: 'vanilla-js-app',
+        enableWebSocket: true
+        });
+
+        // Store a memory
+        async function storeMemory() {
+        try {
+        const memory = await memorai.remember({
+        content: 'User clicked the subscribe button',
+        agentId: 'vanilla-js-app',
+        metadata: {
+        importance: 6,
+        tags: ['user-action', 'conversion'],
+        timestamp: new Date().toISOString()
+        }
+        });
+
+        console.log('Memory stored:', memory);
+        } catch (error) {
+        console.error('Failed to store memory:', error);
+        }
+        }
+
+        // Search memories
+        async function searchMemories(query) {
+        try {
+        const results = await memorai.recall({
+        query: query,
+        agentId: 'vanilla-js-app',
+        limit: 10
+        });
+
+        console.log('Search results:', results);
+        return results;
+        } catch (error) {
+        console.error('Search failed:', error);
+        return [];
+        }
+        }</div>
+    </div>
+
+    <div class="section">
+      <h2>🎯 Complete Example</h2>
+      <div class="code-block">
+        &lt;!DOCTYPE html&gt;
+        &lt;html lang="en"&gt;
+        &lt;head&gt;
+        &lt;title&gt;MemorAI Vanilla JS Demo&lt;/title&gt;
+        &lt;style&gt;
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+        .memory-item { border: 1px solid #ddd; padding: 1rem; margin: 0.5rem 0; }
+        .status { padding: 0.5rem; border-radius: 0.5rem; margin-bottom: 1rem; }
+        .connected { background: #d1fae5; color: #065f46; }
+        .disconnected { background: #fee2e2; color: #991b1b; }
+        button { padding: 0.5rem 1rem; margin: 0.5rem; }
+        input, textarea { width: 100%; padding: 0.5rem; margin: 0.5rem 0; }
+        &lt;/style&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+        &lt;div class="container"&gt;
+        &lt;h1&gt;MemorAI Demo&lt;/h1&gt;
+
+        &lt;div id="status" class="status"&gt;Connecting...&lt;/div&gt;
+
+        &lt;div&gt;
+        &lt;h2&gt;Add Memory&lt;/h2&gt;
+        &lt;textarea id="memoryContent" placeholder="Enter memory content..."&gt;&lt;/textarea&gt;
+        &lt;input type="number" id="importance" placeholder="Importance (1-10)" min="1" max="10" value="5"&gt;
+        &lt;input type="text" id="tags" placeholder="Tags (comma-separated)"&gt;
+        &lt;button onclick="addMemory()"&gt;Add Memory&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+        &lt;h2&gt;Search Memories&lt;/h2&gt;
+        &lt;input type="text" id="searchQuery" placeholder="Search memories..."&gt;
+        &lt;button onclick="performSearch()"&gt;Search&lt;/button&gt;
+        &lt;button onclick="clearResults()"&gt;Clear&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div id="results"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;script src="https://unpkg.com/@memorai/sdk@latest/dist/memorai.min.js"&gt;&lt;/script&gt;
+        &lt;script&gt;
+        // Initialize MemorAI
+        const memorai = new window.MemorAI.MemorAISDK({
+        baseURL: 'http://localhost:4950',
+        apiKey: localStorage.getItem('memorai-api-key') || 'demo-key',
+        agentId: 'vanilla-demo',
+        enableWebSocket: true,
+        onError: (error) =&gt; {
+        console.error('MemorAI Error:', error);
+        updateStatus('Error: ' + error.message, false);
+        }
+        });
+
+        // UI Elements
+        const statusEl = document.getElementById('status');
+        const resultsEl = document.getElementById('results');
+        const memoryContentEl = document.getElementById('memoryContent');
+        const importanceEl = document.getElementById('importance');
+        const tagsEl = document.getElementById('tags');
+        const searchQueryEl = document.getElementById('searchQuery');
+
+        // Connection handling
+        memorai.on('connected', () =&gt; {
+        updateStatus('Connected to MemorAI', true);
+        });
+
+        memorai.on('disconnected', () =&gt; {
+        updateStatus('Disconnected from MemorAI', false);
+        });
+
+        memorai.on('memoryCreated', (memory) =&gt; {
+        console.log('New memory created:', memory);
+        });
+
+        // Connect on page load
+        window.addEventListener('load', () =&gt; {
+        memorai.connect().catch(error =&gt; {
+        console.error('Connection failed:', error);
+        updateStatus('Connection failed: ' + error.message, false);
+        });
+        });
+
+        // Update status display
+        function updateStatus(message, isConnected) {
+        statusEl.textContent = message;
+        statusEl.className = 'status ' + (isConnected ? 'connected' : 'disconnected');
+        }
+
+        // Add memory function
+        async function addMemory() {
+        const content = memoryContentEl.value.trim();
+        if (!content) {
+        alert('Please enter memory content');
+        return;
+        }
+
+        const importance = parseInt(importanceEl.value) || 5;
+        const tags = tagsEl.value.split(',')
+        .map(tag =&gt; tag.trim())
+        .filter(tag =&gt; tag.length &gt; 0);
+
+        try {
+        const memory = await memorai.remember({
+        content: content,
+        agentId: 'vanilla-demo',
+        metadata: {
+        importance: importance,
+        tags: tags.length &gt; 0 ? tags : undefined,
+        source: 'vanilla-js-demo',
+        timestamp: new Date().toISOString()
+        }
+        });
+
+        console.log('Memory added:', memory);
+
+        // Clear form
+        memoryContentEl.value = '';
+        importanceEl.value = '5';
+        tagsEl.value = '';
+
+        // Show success message
+        showMessage('Memory added successfully!', 'success');
+
+        } catch (error) {
+        console.error('Failed to add memory:', error);
+        showMessage('Failed to add memory: ' + error.message, 'error');
+        }
+        }
+
+        // Search memories function
+        async function performSearch() {
+        const query = searchQueryEl.value.trim();
+        if (!query) {
+        alert('Please enter a search query');
+        return;
+        }
+
+        try {
+        const results = await memorai.recall({
+        query: query,
+        agentId: 'vanilla-demo',
+        limit: 20,
+        includeOtherAgents: false
+        });
+
+        displayResults(results);
+
+        } catch (error) {
+        console.error('Search failed:', error);
+        showMessage('Search failed: ' + error.message, 'error');
+        }
+        }
+
+        // Display search results
+        function displayResults(memories) {
+        if (memories.length === 0) {
+        resultsEl.innerHTML = '&lt;p&gt;No memories found.&lt;/p&gt;';
+        return;
+        }
+
+        const html = memories.map(memory =&gt; `
+        &lt;div class="memory-item"&gt;
+        &lt;div&gt;&lt;strong&gt;Content:&lt;/strong&gt; ${escapeHtml(memory.content)}&lt;/div&gt;
+        &lt;div&gt;&lt;strong&gt;Importance:&lt;/strong&gt; ${memory.metadata?.importance || 'N/A'}&lt;/div&gt;
+        &lt;div&gt;&lt;strong&gt;Tags:&lt;/strong&gt; ${(memory.metadata?.tags || []).join(', ') || 'None'}&lt;/div&gt;
+        &lt;div&gt;&lt;strong&gt;Created:&lt;/strong&gt; ${new Date(memory.createdAt).toLocaleString()}&lt;/div&gt;
+        &lt;button onclick="deleteMemory('${memory.id}')" style="background: #ef4444; color:
+        white;"&gt;Delete&lt;/button&gt;
+        &lt;/div&gt;
+        `).join('');
+
+        resultsEl.innerHTML = `&lt;h3&gt;Results (${memories.length})&lt;/h3&gt;${html}`;
+        }
+
+        // Delete memory function
+        async function deleteMemory(memoryId) {
+        if (!confirm('Are you sure you want to delete this memory?')) return;
+
+        try {
+        await memorai.forget(memoryId);
+        showMessage('Memory deleted successfully!', 'success');
+
+        // Remove from display
+        const memoryElement = document.querySelector(`button[onclick="deleteMemory('${memoryId}')"]`).parentElement;
+        memoryElement.remove();
+
+        } catch (error) {
+        console.error('Failed to delete memory:', error);
+        showMessage('Failed to delete memory: ' + error.message, 'error');
+        }
+        }
+
+        // Clear results function
+        function clearResults() {
+        resultsEl.innerHTML = '';
+        searchQueryEl.value = '';
+        }
+
+        // Show message function
+        function showMessage(message, type) {
+        const messageEl = document.createElement('div');
+        messageEl.textContent = message;
+        messageEl.style.cssText = `
+        padding: 0.75rem 1rem;
+        margin: 0.5rem 0;
+        border-radius: 0.5rem;
+        background: ${type === 'success' ? '#d1fae5' : '#fee2e2'};
+        color: ${type === 'success' ? '#065f46' : '#991b1b'};
+        border: 1px solid ${type === 'success' ? '#a7f3d0' : '#fecaca'};
+        `;
+
+        document.querySelector('.container').insertBefore(messageEl, resultsEl);
+
+        // Remove after 3 seconds
+        setTimeout(() =&gt; messageEl.remove(), 3000);
+        }
+
+        // Escape HTML function
+        function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) =&gt; {
+        if (e.ctrlKey &amp;&amp; e.key === 'Enter') {
+        if (document.activeElement === memoryContentEl) {
+        addMemory();
+        } else if (document.activeElement === searchQueryEl) {
+        performSearch();
+        }
+        }
+        });
+        &lt;/script&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;</div>
+    </div>
+
+    <div class="section">
+      <h2>✨ Key Features</h2>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>Zero dependencies - works in any browser</span>
+      </div>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>CDN support for quick integration</span>
+      </div>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>Real-time WebSocket updates</span>
+      </div>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>Event-driven architecture</span>
+      </div>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>Promise-based async operations</span>
+      </div>
+    </div>
+
+    <div class="warning">
+      <h3>⚠️ Security Note</h3>
+      <p>Never expose API keys in client-side code in production. Use environment variables or secure token exchange for
+        production deployments.</p>
+    </div>
+
+    <div class="section">
+      <h2>🔧 Advanced Configuration</h2>
+      <div class="code-block">
+        // Advanced SDK configuration
+        const memorai = new MemorAISDK({
+        baseURL: 'http://localhost:4950',
+        apiKey: getSecureApiKey(), // Implement secure key retrieval
+        agentId: 'advanced-app',
+        enableWebSocket: true,
+
+        // Retry configuration
+        retryConfig: {
+        maxRetries: 3,
+        retryDelay: 1000,
+        backoffMultiplier: 2
+        },
+
+        // Event handlers
+        onConnect: () => console.log('Connected!'),
+        onDisconnect: () => console.log('Disconnected!'),
+        onError: (error) => console.error('SDK Error:', error),
+        onReconnect: () => console.log('Reconnected!'),
+
+        // Request interceptors
+        requestInterceptor: (config) => {
+        config.headers['X-App-Version'] = '1.0.0';
+        return config;
+        },
+
+        // Response interceptors
+        responseInterceptor: (response) => {
+        console.log('API Response:', response.status);
+        return response;
+        }
+        });
+
+        // Error handling best practices
+        async function robustMemoryOperation() {
+        try {
+        const result = await memorai.remember({
+        content: 'Important data',
+        agentId: 'secure-app'
+        });
+
+        return { success: true, data: result };
+        } catch (error) {
+        if (error.code === 'NETWORK_ERROR') {
+        // Handle network issues
+        console.warn('Network issue, queuing for retry...');
+        return { success: false, reason: 'network', retry: true };
+        } else if (error.code === 'AUTH_ERROR') {
+        // Handle authentication issues
+        console.error('Authentication failed, redirecting...');
+        redirectToLogin();
+        return { success: false, reason: 'auth', retry: false };
+        } else {
+        // Handle other errors
+        console.error('Unexpected error:', error);
+        return { success: false, reason: 'unknown', retry: false };
+        }
+        }
+        }</div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+{
+  "endpoints": [
+    {
+      "url": "http://localhost:6101/health",
+      "name": "RomAI Model Server",
+      "timeout": 5
+    },
+    {
+      "url": "http://localhost:6101/api/v1/moe/status",
+      "name": "MOE System",
+      "timeout": 5
+    },
+    {
+      "url": "http://localhost:8001/api/v1/health",
+      "name": "Enterprise API",
+      "timeout": 5
+    },
+    {
+      "url": "http://localhost:4950/health",
+      "name": "MemorAI MCP",
+      "timeout": 5
+    }
+  ],
+  "performance_endpoints": [
+    {
+      "url": "http://localhost:6101/api/v1/mathematical-reasoning/solve",
+      "name": "Math Reasoning"
+    },
+    {
+      "url": "http://localhost:6101/api/v1/logical-reasoning/analyze",
+      "name": "Logic Reasoning"
+    },
+    {
+      "url": "http://localhost:6101/api/v1/romanian-intelligence/chat",
+      "name": "Romanian Intelligence"
+    }
+  ],
+  "thresholds": {
+    "response_time_ms": 2000,
+    "cpu_percent": 80,
+    "memory_percent": 85,
+    "gpu_utilization": 90,
+    "error_rate": 5,
+    "success_rate": 95
+  },
+  "monitoring_interval": 30,
+  "alert_cooldown": 300
+}

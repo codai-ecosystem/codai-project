@@ -49,7 +49,7 @@ class TestRunner {
                 const message = data.toString();
                 if (message.includes('Enhanced GlassMCP Server started successfully')) {
                     serverReady = true;
-                    
+
                     // Send request
                     const request = JSON.stringify({
                         jsonrpc: '2.0',
@@ -57,7 +57,7 @@ class TestRunner {
                         id: Date.now(),
                         params
                     });
-                    
+
                     server.stdin.write(request + '\n');
                 }
             });
@@ -92,14 +92,14 @@ class TestRunner {
         console.log(`✅ Passed: ${this.passed}`);
         console.log(`❌ Failed: ${this.failed}`);
         console.log(`📈 Success Rate: ${((this.passed / (this.passed + this.failed)) * 100).toFixed(1)}%`);
-        
+
         if (this.failed > 0) {
             console.log('\n💥 Failed Tests:');
             this.results.filter(r => r.status === 'FAILED').forEach(result => {
                 console.log(`   - ${result.name}: ${result.error}`);
             });
         }
-        
+
         console.log('\n🎯 Test Results:', this.failed === 0 ? 'ALL TESTS PASSED!' : 'SOME TESTS FAILED');
         return this.failed === 0;
     }
@@ -114,7 +114,7 @@ async function runConsolidatedToolsTests() {
     // Test 1: Tool Discovery
     await runner.runTest('Tool Discovery', async () => {
         const response = await runner.sendMCPRequest('tools/list');
-        
+
         if (!response.result || !response.result.tools) {
             throw new Error('No tools found in response');
         }

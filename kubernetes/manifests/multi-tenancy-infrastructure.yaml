@@ -1,0 +1,760 @@
+# Multi-Tenancy Infrastructure for Essential CodAI Services
+# Version: 1.0
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: multi-tenant-config
+  namespace: codai-production
+data:
+  tenancy.json: |
+    {
+      "tenantIsolation": {
+        "strategy": "database-per-tenant",
+        "fallbackStrategy": "schema-per-tenant",
+        "enableRowLevelSecurity": true,
+        "tenantContextInjection": true
+      },
+      "resourceQuotas": {
+        "cpu": "2000m",
+        "memory": "4Gi",
+        "storage": "100Gi",
+        "maxConnections": 100,
+        "maxApiCalls": 10000
+      },
+      "tenantProvisioning": {
+        "autoProvision": true,
+        "provisioningTimeout": "300s",
+        "databaseTemplate": "tenant-db-template",
+        "schemaTemplate": "tenant-schema-template"
+      },
+      "tenantRouting": {
+        "routingStrategy": "subdomain",
+        "customDomainSupport": true,
+        "sslCertificateManagement": "automatic"
+      }
+    }
+
+  database.json: |
+    {
+      "masterDatabase": {
+        "host": "postgresql-master.codai-production.svc.cluster.local",
+        "port": 5432,
+        "database": "codai_master",
+        "maxConnections": 200
+      },
+      "tenantDatabases": {
+        "templateDatabase": "template_tenant_db",
+        "connectionPooling": {
+          "enabled": true,
+          "maxPoolSize": 10,
+          "minPoolSize": 2,
+          "idleTimeout": "300s"
+        },
+        "encryption": {
+          "enabled": true,
+          "keyRotation": "monthly",
+          "algorithm": "AES-256-GCM"
+        }
+      }
+    }
+
+---
+# Tenant Management Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-tenant-manager
+  namespace: codai-production
+  labels:
+    app: codai-tenant-manager
+    component: multi-tenancy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: codai-tenant-manager
+  template:
+    metadata:
+      labels:
+        app: codai-tenant-manager
+        component: multi-tenancy
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-tenant-manager
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: tenant-manager
+        image: codai/tenant-manager:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: master-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: TENANT_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tenant-secrets
+              key: encryption-key
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: tenant-secrets
+              key: jwt-secret
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        - name: tenant-templates
+          mountPath: /app/templates
+          readOnly: true
+        resources:
+          requests:
+            cpu: 300m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: multi-tenant-config
+      - name: tenant-templates
+        configMap:
+          name: tenant-templates
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-tenant-manager
+  namespace: codai-production
+  labels:
+    app: codai-tenant-manager
+    component: multi-tenancy
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-tenant-manager
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-tenant-manager
+  namespace: codai-production
+  labels:
+    app: codai-tenant-manager
+
+---
+# Tenant Templates ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tenant-templates
+  namespace: codai-production
+data:
+  tenant-db-schema.sql: |
+    -- Tenant Database Schema Template
+    CREATE SCHEMA IF NOT EXISTS tenant_data;
+    
+    -- Users table with tenant isolation
+    CREATE TABLE tenant_data.users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        first_name VARCHAR(100),
+        last_name VARCHAR(100),
+        role VARCHAR(50) DEFAULT 'user',
+        is_active BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        metadata JSONB DEFAULT '{}'
+    );
+    
+    -- Row Level Security
+    ALTER TABLE tenant_data.users ENABLE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_users_policy ON tenant_data.users
+        FOR ALL USING (tenant_id = current_setting('app.current_tenant')::uuid);
+    
+    -- Organizations table
+    CREATE TABLE tenant_data.organizations (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        settings JSONB DEFAULT '{}',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    
+    ALTER TABLE tenant_data.organizations ENABLE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_orgs_policy ON tenant_data.organizations
+        FOR ALL USING (tenant_id = current_setting('app.current_tenant')::uuid);
+    
+    -- Projects table
+    CREATE TABLE tenant_data.projects (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID NOT NULL,
+        organization_id UUID REFERENCES tenant_data.organizations(id),
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        status VARCHAR(50) DEFAULT 'active',
+        settings JSONB DEFAULT '{}',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    
+    ALTER TABLE tenant_data.projects ENABLE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_projects_policy ON tenant_data.projects
+        FOR ALL USING (tenant_id = current_setting('app.current_tenant')::uuid);
+    
+    -- Audit log table
+    CREATE TABLE tenant_data.audit_logs (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID NOT NULL,
+        user_id UUID,
+        event_type VARCHAR(100) NOT NULL,
+        event_category VARCHAR(50) NOT NULL,
+        resource_type VARCHAR(100),
+        resource_id UUID,
+        action VARCHAR(50) NOT NULL,
+        result VARCHAR(20) NOT NULL,
+        ip_address INET,
+        user_agent TEXT,
+        metadata JSONB DEFAULT '{}',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    
+    ALTER TABLE tenant_data.audit_logs ENABLE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_audit_policy ON tenant_data.audit_logs
+        FOR ALL USING (tenant_id = current_setting('app.current_tenant')::uuid);
+    
+    -- Indexes for performance
+    CREATE INDEX idx_users_tenant_id ON tenant_data.users(tenant_id);
+    CREATE INDEX idx_users_email ON tenant_data.users(email);
+    CREATE INDEX idx_organizations_tenant_id ON tenant_data.organizations(tenant_id);
+    CREATE INDEX idx_projects_tenant_id ON tenant_data.projects(tenant_id);
+    CREATE INDEX idx_projects_org_id ON tenant_data.projects(organization_id);
+    CREATE INDEX idx_audit_logs_tenant_id ON tenant_data.audit_logs(tenant_id);
+    CREATE INDEX idx_audit_logs_created_at ON tenant_data.audit_logs(created_at);
+
+  tenant-rbac-schema.sql: |
+    -- RBAC Schema for Tenant
+    CREATE SCHEMA IF NOT EXISTS tenant_rbac;
+    
+    -- Roles table
+    CREATE TABLE tenant_rbac.roles (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID NOT NULL,
+        name VARCHAR(100) NOT NULL,
+        description TEXT,
+        is_system BOOLEAN DEFAULT false,
+        permissions JSONB DEFAULT '[]',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(tenant_id, name)
+    );
+    
+    ALTER TABLE tenant_rbac.roles ENABLE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_roles_policy ON tenant_rbac.roles
+        FOR ALL USING (tenant_id = current_setting('app.current_tenant')::uuid);
+    
+    -- User roles assignment
+    CREATE TABLE tenant_rbac.user_roles (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID NOT NULL,
+        user_id UUID NOT NULL,
+        role_id UUID REFERENCES tenant_rbac.roles(id) ON DELETE CASCADE,
+        assigned_by UUID,
+        assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        expires_at TIMESTAMP,
+        is_active BOOLEAN DEFAULT true
+    );
+    
+    ALTER TABLE tenant_rbac.user_roles ENABLE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_user_roles_policy ON tenant_rbac.user_roles
+        FOR ALL USING (tenant_id = current_setting('app.current_tenant')::uuid);
+    
+    -- Permissions table
+    CREATE TABLE tenant_rbac.permissions (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID NOT NULL,
+        resource VARCHAR(100) NOT NULL,
+        action VARCHAR(50) NOT NULL,
+        conditions JSONB DEFAULT '{}',
+        effect VARCHAR(10) DEFAULT 'allow' CHECK (effect IN ('allow', 'deny')),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(tenant_id, resource, action)
+    );
+    
+    ALTER TABLE tenant_rbac.permissions ENABLE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_permissions_policy ON tenant_rbac.permissions
+        FOR ALL USING (tenant_id = current_setting('app.current_tenant')::uuid);
+    
+    -- Default system roles
+    INSERT INTO tenant_rbac.roles (tenant_id, name, description, is_system, permissions) VALUES
+    (current_setting('app.current_tenant')::uuid, 'admin', 'Tenant Administrator', true, 
+     '["*:*", "users:*", "roles:*", "projects:*", "organizations:*"]'),
+    (current_setting('app.current_tenant')::uuid, 'manager', 'Manager Role', true,
+     '["projects:read", "projects:write", "users:read", "organizations:read"]'),
+    (current_setting('app.current_tenant')::uuid, 'user', 'Standard User', true,
+     '["projects:read", "users:read"]'),
+    (current_setting('app.current_tenant')::uuid, 'readonly', 'Read Only User', true,
+     '["*:read"]');
+
+---
+# Tenant Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tenant-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  encryption-key: Y29kYWktdGVuYW50LWVuY3J5cHRpb24ta2V5LTIwMjU=  # codai-tenant-encryption-key-2025
+  jwt-secret: Y29kYWktdGVuYW50LWp3dC1zZWNyZXQtMjAyNQ==  # codai-tenant-jwt-secret-2025
+
+---
+# Tenant Context Middleware Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-tenant-middleware
+  namespace: codai-production
+  labels:
+    app: codai-tenant-middleware
+    component: multi-tenancy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-tenant-middleware
+  template:
+    metadata:
+      labels:
+        app: codai-tenant-middleware
+        component: multi-tenancy
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-tenant-middleware
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: tenant-middleware
+        image: codai/tenant-middleware:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "8080"
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: TENANT_CACHE_TTL
+          value: "300"
+        - name: TENANT_RESOLUTION_TIMEOUT
+          value: "5000"
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: multi-tenant-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-tenant-middleware
+  namespace: codai-production
+  labels:
+    app: codai-tenant-middleware
+    component: multi-tenancy
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-tenant-middleware
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-tenant-middleware
+  namespace: codai-production
+  labels:
+    app: codai-tenant-middleware
+
+---
+# PostgreSQL Master Database for Tenant Management
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql-master
+  namespace: codai-production
+  labels:
+    app: postgresql-master
+    component: database
+spec:
+  serviceName: postgresql-master-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql-master
+  template:
+    metadata:
+      labels:
+        app: postgresql-master
+        component: database
+    spec:
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      containers:
+      - name: postgresql
+        image: postgres:15.4-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "codai_master"
+        - name: POSTGRES_USER
+          value: "codai_admin"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: password
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        - name: postgres-config
+          mountPath: /etc/postgresql
+        - name: init-scripts
+          mountPath: /docker-entrypoint-initdb.d
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - codai_admin
+            - -d
+            - codai_master
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - codai_admin
+            - -d
+            - codai_master
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: postgres-config
+        configMap:
+          name: postgresql-config
+      - name: init-scripts
+        configMap:
+          name: postgresql-init-scripts
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 50Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-master-headless
+  namespace: codai-production
+  labels:
+    app: postgresql-master
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  clusterIP: None
+  selector:
+    app: postgresql-master
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-master
+  namespace: codai-production
+  labels:
+    app: postgresql-master
+    component: database
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  selector:
+    app: postgresql-master
+
+---
+# PostgreSQL Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-config
+  namespace: codai-production
+data:
+  postgresql.conf: |
+    # PostgreSQL Configuration for Multi-Tenant Setup
+    listen_addresses = '*'
+    port = 5432
+    max_connections = 200
+    shared_buffers = 1GB
+    effective_cache_size = 3GB
+    work_mem = 16MB
+    maintenance_work_mem = 256MB
+    
+    # Write Ahead Log
+    wal_level = replica
+    max_wal_size = 2GB
+    min_wal_size = 1GB
+    checkpoint_completion_target = 0.9
+    
+    # Row Level Security
+    row_security = on
+    
+    # Logging
+    log_destination = 'stderr'
+    logging_collector = on
+    log_directory = '/var/log/postgresql'
+    log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
+    log_statement = 'all'
+    log_min_duration_statement = 1000
+    
+    # Security
+    ssl = off
+    password_encryption = scram-sha-256
+
+  pg_hba.conf: |
+    # PostgreSQL Client Authentication Configuration
+    local   all             all                                     trust
+    host    all             all             127.0.0.1/32            scram-sha-256
+    host    all             all             ::1/128                 scram-sha-256
+    host    all             all             10.0.0.0/8              scram-sha-256
+    host    all             all             172.16.0.0/12           scram-sha-256
+    host    all             all             192.168.0.0/16          scram-sha-256
+
+---
+# PostgreSQL Initialization Scripts
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-init-scripts
+  namespace: codai-production
+data:
+  01-extensions.sql: |
+    -- Create required extensions
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+    CREATE EXTENSION IF NOT EXISTS "citext";
+    
+  02-master-schema.sql: |
+    -- Master tenant management schema
+    CREATE SCHEMA IF NOT EXISTS tenant_master;
+    
+    -- Tenants registry
+    CREATE TABLE tenant_master.tenants (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name VARCHAR(255) NOT NULL UNIQUE,
+        subdomain VARCHAR(100) NOT NULL UNIQUE,
+        custom_domain VARCHAR(255),
+        status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'suspended', 'deleted')),
+        database_name VARCHAR(100) NOT NULL,
+        database_host VARCHAR(255) NOT NULL DEFAULT 'postgresql-master.codai-production.svc.cluster.local',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        metadata JSONB DEFAULT '{}'
+    );
+    
+    -- Tenant configurations
+    CREATE TABLE tenant_master.tenant_configs (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID REFERENCES tenant_master.tenants(id) ON DELETE CASCADE,
+        config_key VARCHAR(100) NOT NULL,
+        config_value JSONB NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(tenant_id, config_key)
+    );
+    
+    -- Tenant resource usage tracking
+    CREATE TABLE tenant_master.tenant_usage (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID REFERENCES tenant_master.tenants(id) ON DELETE CASCADE,
+        metric_name VARCHAR(100) NOT NULL,
+        metric_value NUMERIC NOT NULL,
+        recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        metadata JSONB DEFAULT '{}'
+    );
+    
+    -- Indexes
+    CREATE INDEX idx_tenants_subdomain ON tenant_master.tenants(subdomain);
+    CREATE INDEX idx_tenants_custom_domain ON tenant_master.tenants(custom_domain);
+    CREATE INDEX idx_tenant_configs_tenant_id ON tenant_master.tenant_configs(tenant_id);
+    CREATE INDEX idx_tenant_usage_tenant_id ON tenant_master.tenant_usage(tenant_id);
+    CREATE INDEX idx_tenant_usage_recorded_at ON tenant_master.tenant_usage(recorded_at);
+
+---
+# Horizontal Pod Autoscaler for Tenant Services
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-tenant-manager-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-tenant-manager
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-tenant-middleware-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-tenant-middleware
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

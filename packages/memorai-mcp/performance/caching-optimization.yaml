@@ -1,0 +1,681 @@
+# =================================================================
+# MemorAI MCP Server - Caching and Connection Optimization
+# Version: 1.0.0
+# Purpose: Multi-layer caching with Redis and connection pooling
+# =================================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cluster
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    cache-type: redis-cluster
+spec:
+  replicas: 6  # 3 masters + 3 replicas
+  selector:
+    matchLabels:
+      app: redis-cluster
+  template:
+    metadata:
+      labels:
+        app: redis-cluster
+        component: performance
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+          name: redis
+        - containerPort: 16379
+          name: cluster
+        command:
+        - redis-server
+        - /redis-conf/redis.conf
+        - --cluster-enabled
+        - yes
+        - --cluster-config-file
+        - /redis-data/nodes.conf
+        - --cluster-node-timeout
+        - "5000"
+        - --appendonly
+        - yes
+        - --maxmemory
+        - 512mb
+        - --maxmemory-policy
+        - allkeys-lru
+        - --save
+        - ""
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: redis-conf
+          mountPath: /redis-conf
+        - name: redis-data
+          mountPath: /redis-data
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+          runAsGroup: 999
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: redis-conf
+        configMap:
+          name: redis-cluster-config
+          defaultMode: 0755
+      - name: redis-data
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-cluster-config
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+data:
+  redis.conf: |
+    # Redis Cluster Configuration for High Performance
+    port 6379
+    cluster-enabled yes
+    cluster-config-file nodes.conf
+    cluster-node-timeout 5000
+    appendonly yes
+    
+    # Performance optimizations
+    tcp-keepalive 300
+    timeout 0
+    tcp-backlog 511
+    
+    # Memory management
+    maxmemory 512mb
+    maxmemory-policy allkeys-lru
+    maxmemory-samples 5
+    
+    # Persistence (disabled for performance cache)
+    save ""
+    
+    # Networking optimizations
+    bind 0.0.0.0
+    protected-mode no
+    
+    # Client connections
+    maxclients 10000
+    
+    # Advanced configuration
+    hash-max-ziplist-entries 512
+    hash-max-ziplist-value 64
+    list-max-ziplist-size -2
+    list-compress-depth 0
+    set-max-intset-entries 512
+    zset-max-ziplist-entries 128
+    zset-max-ziplist-value 64
+    hll-sparse-max-bytes 3000
+    
+    # Latency monitoring
+    latency-monitor-threshold 100
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cluster
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: redis
+  - port: 16379
+    targetPort: 16379
+    name: cluster
+  selector:
+    app: redis-cluster
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memcached-cluster
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    cache-type: memcached
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: memcached
+  template:
+    metadata:
+      labels:
+        app: memcached
+        component: performance
+    spec:
+      containers:
+      - name: memcached
+        image: memcached:1.6-alpine
+        ports:
+        - containerPort: 11211
+          name: memcached
+        command:
+        - memcached
+        - -m
+        - "256"
+        - -c
+        - "1024"
+        - -t
+        - "4"
+        - -v
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 11211
+          runAsGroup: 11211
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memcached
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+spec:
+  selector:
+    app: memcached
+  ports:
+  - port: 11211
+    targetPort: 11211
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: connection-pool-config
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+data:
+  connection-pool.json: |
+    {
+      "database": {
+        "postgresql": {
+          "pool_size": 20,
+          "max_overflow": 30,
+          "pool_timeout": 30,
+          "pool_recycle": 3600,
+          "pool_pre_ping": true,
+          "echo": false,
+          "connect_args": {
+            "connect_timeout": 10,
+            "server_settings": {
+              "jit": "off",
+              "application_name": "memorai-mcp-server"
+            }
+          }
+        },
+        "connection_retry": {
+          "max_retries": 3,
+          "retry_delay": 1,
+          "exponential_backoff": true,
+          "max_delay": 30
+        }
+      },
+      "redis": {
+        "connection_pool": {
+          "max_connections": 50,
+          "retry_on_timeout": true,
+          "socket_timeout": 5,
+          "socket_connect_timeout": 5,
+          "socket_keepalive": true,
+          "socket_keepalive_options": {
+            "TCP_KEEPINTVL": 1,
+            "TCP_KEEPCNT": 3,
+            "TCP_KEEPIDLE": 1
+          }
+        },
+        "cluster": {
+          "startup_nodes": [
+            {"host": "redis-cluster", "port": 6379}
+          ],
+          "decode_responses": true,
+          "skip_full_coverage_check": true,
+          "max_connections_per_node": 10
+        }
+      },
+      "memcached": {
+        "servers": ["memcached:11211"],
+        "behaviors": {
+          "tcp_nodelay": true,
+          "ketama": true,
+          "remove_failed": 4,
+          "retry_timeout": 2,
+          "dead_timeout": 10,
+          "connect_timeout": 5000,
+          "send_timeout": 5000,
+          "receive_timeout": 5000,
+          "poll_timeout": 5000,
+          "cache_lookups": true
+        },
+        "binary_protocol": true,
+        "consistent_hashing": true
+      },
+      "http_client": {
+        "connection_pool": {
+          "pool_connections": 10,
+          "pool_maxsize": 20,
+          "max_retries": 3,
+          "pool_block": false
+        },
+        "timeout": {
+          "connect": 10,
+          "read": 30,
+          "total": 60
+        },
+        "keep_alive": true
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgbouncer
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    pool-type: database
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pgbouncer
+  template:
+    metadata:
+      labels:
+        app: pgbouncer
+        component: performance
+    spec:
+      containers:
+      - name: pgbouncer
+        image: pgbouncer/pgbouncer:1.21.0
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: DATABASES_HOST
+          value: "postgresql"
+        - name: DATABASES_PORT
+          value: "5432"
+        - name: DATABASES_USER
+          valueFrom:
+            secretKeyRef:
+              name: memorai-mcp-secrets
+              key: DATABASE_USER
+        - name: DATABASES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: memorai-mcp-secrets
+              key: DATABASE_PASSWORD
+        - name: DATABASES_DBNAME
+          value: "memorai_mcp"
+        - name: POOL_MODE
+          value: "transaction"
+        - name: MAX_CLIENT_CONN
+          value: "1000"
+        - name: DEFAULT_POOL_SIZE
+          value: "25"
+        - name: MIN_POOL_SIZE
+          value: "5"
+        - name: RESERVE_POOL_SIZE
+          value: "5"
+        - name: MAX_DB_CONNECTIONS
+          value: "50"
+        - name: MAX_USER_CONNECTIONS
+          value: "50"
+        - name: SERVER_RESET_QUERY
+          value: "DISCARD ALL"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+          runAsGroup: 999
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgbouncer
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+spec:
+  selector:
+    app: pgbouncer
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cache-warming
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    job-type: cache-warming
+spec:
+  schedule: "0 */4 * * *"  # Every 4 hours
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: memorai-mcp-server
+            component: performance
+            job-type: cache-warming
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: cache-warmer
+            image: python:3.11-slim
+            command:
+            - /bin/bash
+            - -c
+            - |
+              pip install redis pymemcache requests aioredis asyncio
+              
+              cat > /app/cache_warmer.py << 'EOF'
+              import asyncio
+              import json
+              import time
+              import logging
+              from redis.cluster import RedisCluster
+              from pymemcache.client.base import Client as MemcachedClient
+              import requests
+              
+              logging.basicConfig(level=logging.INFO)
+              logger = logging.getLogger(__name__)
+              
+              class CacheWarmer:
+                  def __init__(self):
+                      self.redis_cluster = RedisCluster(
+                          startup_nodes=[{"host": "redis-cluster", "port": 6379}],
+                          decode_responses=True,
+                          skip_full_coverage_check=True
+                      )
+                      self.memcached = MemcachedClient(('memcached', 11211))
+                      self.api_base_url = "http://memorai-mcp-server.memorai-mcp.svc.cluster.local:4950"
+                  
+                  async def warm_popular_memories(self):
+                      """Warm cache with popular memory queries"""
+                      logger.info("Warming popular memory queries...")
+                      
+                      popular_queries = [
+                          "machine learning",
+                          "artificial intelligence", 
+                          "data science",
+                          "python programming",
+                          "javascript development",
+                          "system architecture",
+                          "database design",
+                          "performance optimization",
+                          "security best practices",
+                          "cloud computing"
+                      ]
+                      
+                      for query in popular_queries:
+                          try:
+                              # Simulate memory search to populate cache
+                              response = requests.get(
+                                  f"{self.api_base_url}/api/memory/search",
+                                  params={"query": query, "limit": 10},
+                                  timeout=10
+                              )
+                              
+                              if response.status_code == 200:
+                                  results = response.json()
+                                  cache_key = f"search:{hash(query)}"
+                                  
+                                  # Cache in Redis
+                                  self.redis_cluster.setex(
+                                      cache_key, 
+                                      3600,  # 1 hour TTL
+                                      json.dumps(results)
+                                  )
+                                  
+                                  # Cache in Memcached
+                                  self.memcached.set(
+                                      cache_key.encode('utf-8'),
+                                      json.dumps(results).encode('utf-8'),
+                                      expire=3600
+                                  )
+                                  
+                                  logger.info(f"Cached results for query: {query}")
+                              
+                              await asyncio.sleep(0.1)  # Rate limiting
+                              
+                          except Exception as e:
+                              logger.error(f"Error warming cache for query '{query}': {str(e)}")
+                  
+                  async def warm_system_metrics(self):
+                      """Warm cache with system metrics"""
+                      logger.info("Warming system metrics...")
+                      
+                      try:
+                          # Health check data
+                          health_response = requests.get(
+                              f"{self.api_base_url}/health",
+                              timeout=5
+                          )
+                          
+                          if health_response.status_code == 200:
+                              health_data = health_response.json()
+                              self.redis_cluster.setex(
+                                  "system:health",
+                                  300,  # 5 minutes TTL
+                                  json.dumps(health_data)
+                              )
+                              
+                          # System statistics
+                          stats_response = requests.get(
+                              f"{self.api_base_url}/api/stats",
+                              timeout=5
+                          )
+                          
+                          if stats_response.status_code == 200:
+                              stats_data = stats_response.json()
+                              self.redis_cluster.setex(
+                                  "system:stats",
+                                  600,  # 10 minutes TTL
+                                  json.dumps(stats_data)
+                              )
+                              
+                          logger.info("System metrics cached successfully")
+                          
+                      except Exception as e:
+                          logger.error(f"Error warming system metrics: {str(e)}")
+                  
+                  async def warm_configuration_data(self):
+                      """Warm cache with configuration data"""
+                      logger.info("Warming configuration data...")
+                      
+                      config_keys = [
+                          "rate_limits",
+                          "feature_flags",
+                          "api_endpoints",
+                          "supported_formats",
+                          "performance_thresholds"
+                      ]
+                      
+                      for key in config_keys:
+                          try:
+                              # Simulate configuration fetch
+                              config_data = {
+                                  "key": key,
+                                  "value": f"config_value_for_{key}",
+                                  "timestamp": time.time(),
+                                  "cached": True
+                              }
+                              
+                              self.redis_cluster.setex(
+                                  f"config:{key}",
+                                  7200,  # 2 hours TTL
+                                  json.dumps(config_data)
+                              )
+                              
+                              logger.info(f"Cached configuration: {key}")
+                              
+                          except Exception as e:
+                              logger.error(f"Error caching config '{key}': {str(e)}")
+                  
+                  async def run(self):
+                      """Run cache warming process"""
+                      logger.info("Starting cache warming process...")
+                      
+                      start_time = time.time()
+                      
+                      tasks = [
+                          self.warm_popular_memories(),
+                          self.warm_system_metrics(),
+                          self.warm_configuration_data()
+                      ]
+                      
+                      await asyncio.gather(*tasks, return_exceptions=True)
+                      
+                      end_time = time.time()
+                      duration = end_time - start_time
+                      
+                      logger.info(f"Cache warming completed in {duration:.2f} seconds")
+              
+              if __name__ == "__main__":
+                  warmer = CacheWarmer()
+                  asyncio.run(warmer.run())
+              EOF
+              
+              python /app/cache_warmer.py
+            resources:
+              requests:
+                memory: "128Mi"
+                cpu: "100m"
+              limits:
+                memory: "256Mi"
+                cpu: "200m"
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cache-cleanup
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    job-type: cache-cleanup
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: memorai-mcp-server
+            component: performance
+            job-type: cache-cleanup
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: cache-cleaner
+            image: redis:7-alpine
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Starting cache cleanup process..."
+              
+              # Clean expired keys in Redis
+              redis-cli -h redis-cluster -p 6379 --scan --pattern "*" | xargs -I {} redis-cli -h redis-cluster -p 6379 TTL {}
+              
+              # Memory usage optimization
+              redis-cli -h redis-cluster -p 6379 MEMORY PURGE
+              
+              echo "Cache cleanup completed"
+            resources:
+              requests:
+                memory: "32Mi"
+                cpu: "50m"
+              limits:
+                memory: "64Mi"
+                cpu: "100m"
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 999
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL

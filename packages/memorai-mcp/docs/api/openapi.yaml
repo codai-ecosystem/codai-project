@@ -1,0 +1,1052 @@
+# =================================================================
+# MemorAI MCP Server - OpenAPI 3.0 Specification
+# Version: 9.5.0
+# Purpose: Comprehensive API documentation for MemorAI MCP Server
+# =================================================================
+
+openapi: 3.0.3
+info:
+  title: MemorAI MCP Server API
+  description: |
+    **MemorAI MCP Server** is an enterprise-grade intelligent memory management system that provides advanced memory storage, retrieval, analytics, and network synchronization capabilities. Built on the Model Context Protocol (MCP), it offers a comprehensive API for managing AI agent memories with advanced features including vector search, hybrid retrieval, RBAC, and distributed memory networking.
+    
+    ## Key Features
+    
+    - **Intelligent Memory Management**: Store, retrieve, and manage memories with semantic understanding
+    - **Advanced Search**: Hybrid search combining vector similarity and traditional text search
+    - **Analytics & Insights**: Comprehensive analytics with temporal patterns and clustering
+    - **Network Synchronization**: Distributed memory sharing across multiple agents and systems
+    - **Enterprise Security**: RBAC, audit logging, and compliance with SOC2/GDPR/ISO27001
+    - **Performance Optimization**: Multi-layer caching, connection pooling, and auto-scaling
+    - **Real-time Monitoring**: SLO/SLI tracking, performance metrics, and alerting
+    
+    ## Authentication
+    
+    All API endpoints require authentication using API keys. Include your API key in the `Authorization` header:
+    ```
+    Authorization: Bearer YOUR_API_KEY
+    ```
+    
+    ## Rate Limiting
+    
+    The API implements rate limiting based on your subscription tier:
+    - **Free Tier**: 100 requests/hour
+    - **Pro Tier**: 1,000 requests/hour  
+    - **Enterprise Tier**: 10,000 requests/hour
+    
+    Rate limit headers are included in all responses:
+    - `X-RateLimit-Limit`: Your rate limit
+    - `X-RateLimit-Remaining`: Remaining requests
+    - `X-RateLimit-Reset`: Time until rate limit resets
+    
+    ## Error Handling
+    
+    The API uses standard HTTP status codes and returns detailed error information in JSON format:
+    ```json
+    {
+      "error": {
+        "code": "VALIDATION_ERROR",
+        "message": "Invalid input parameters",
+        "details": {
+          "field": "agentId",
+          "issue": "Agent ID is required"
+        },
+        "timestamp": "2025-08-27T10:30:00Z",
+        "request_id": "req_12345"
+      }
+    }
+    ```
+  version: 9.5.0
+  contact:
+    name: MemorAI Support Team
+    email: support@memorai.com
+    url: https://docs.memorai.com
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://memorai.com/terms
+
+servers:
+  - url: https://api.memorai.com/v1
+    description: Production server
+  - url: https://api-staging.memorai.com/v1
+    description: Staging server
+  - url: http://localhost:4950
+    description: Local development server
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+paths:
+  /health:
+    get:
+      tags: [System]
+      summary: Health check
+      description: Check the health status of the MemorAI MCP Server
+      operationId: healthCheck
+      security: []
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              examples:
+                healthy:
+                  summary: Healthy service response
+                  value:
+                    status: healthy
+                    service: memorai-mcp-server
+                    version: 9.5.0
+                    uptime: 3600
+                    timestamp: "2025-08-27T10:30:00Z"
+                    dependencies:
+                      database: healthy
+                      redis: healthy
+                      vector_store: healthy
+
+  /api/memory/remember:
+    post:
+      tags: [Memory Management]
+      summary: Store a new memory
+      description: |
+        Store a new memory with content and metadata. The system will automatically:
+        - Generate embeddings for vector search
+        - Extract entities and relationships
+        - Calculate importance scores
+        - Index content for full-text search
+      operationId: rememberMemory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RememberRequest'
+            examples:
+              basic_memory:
+                summary: Basic memory storage
+                value:
+                  agentId: "agent-123"
+                  content: "Meeting with client about project requirements. They need a scalable solution for real-time data processing."
+                  metadata:
+                    importance: 8
+                    tags: ["meeting", "client", "requirements"]
+                    project: "data-platform"
+                    session: "meeting-2025-08-27"
+              technical_memory:
+                summary: Technical documentation
+                value:
+                  agentId: "dev-agent"
+                  content: "Implemented Redis clustering for improved performance. Configuration includes 3 master nodes and 3 replica nodes."
+                  metadata:
+                    importance: 7
+                    tags: ["redis", "clustering", "performance"]
+                    entityType: "technical_documentation"
+                    priority: "high"
+      responses:
+        '200':
+          description: Memory stored successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RememberResponse'
+              examples:
+                success:
+                  summary: Successful memory storage
+                  value:
+                    success: true
+                    memoryId: "mem_abc123def456"
+                    structuredKey: "agent-123:mem_abc123def456"
+                    importance: 8
+                    embeddings_generated: true
+                    entities_extracted: ["client", "project", "data processing"]
+                    timestamp: "2025-08-27T10:30:00Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+  /api/memory/recall:
+    get:
+      tags: [Memory Management]
+      summary: Recall memories
+      description: |
+        Search and retrieve memories using advanced hybrid search that combines:
+        - Vector similarity search for semantic matching
+        - Full-text search for exact keyword matching
+        - Metadata filtering for precise results
+        - Temporal and importance-based ranking
+      operationId: recallMemory
+      parameters:
+        - name: agentId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Agent identifier for memory isolation
+          example: "agent-123"
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query for semantic and keyword matching
+          example: "client meeting requirements"
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Maximum number of memories to return
+        - name: minImportance
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 0
+          description: Minimum importance score filter
+        - name: project
+          in: query
+          schema:
+            type: string
+          description: Filter by project name
+        - name: session
+          in: query
+          schema:
+            type: string
+          description: Filter by session identifier
+        - name: includeOtherAgents
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Include memories from other agents (with reduced relevance)
+      responses:
+        '200':
+          description: Memories retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecallResponse'
+              examples:
+                search_results:
+                  summary: Successful memory recall
+                  value:
+                    success: true
+                    memories:
+                      - memoryId: "mem_abc123def456"
+                        structuredKey: "agent-123:mem_abc123def456"
+                        content: "Meeting with client about project requirements. They need a scalable solution for real-time data processing."
+                        metadata:
+                          importance: 8
+                          tags: ["meeting", "client", "requirements"]
+                          project: "data-platform"
+                        relevanceScore: 0.92
+                        timestamp: "2025-08-27T10:30:00Z"
+                    totalResults: 1
+                    searchTime: 45
+                    query: "client meeting requirements"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/memory/forget:
+    delete:
+      tags: [Memory Management]
+      summary: Delete a memory
+      description: Permanently delete a memory by its structured key
+      operationId: forgetMemory
+      parameters:
+        - name: agentId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Agent identifier
+        - name: structuredKey
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Structured key of memory to delete
+          example: "agent-123:mem_abc123def456"
+      responses:
+        '200':
+          description: Memory deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  deletedKey:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/memory/context:
+    get:
+      tags: [Memory Management]
+      summary: Get recent context
+      description: Retrieve recent memory context for an agent with enhanced information
+      operationId: getContext
+      parameters:
+        - name: agentId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Agent identifier
+        - name: contextSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 5
+          description: Number of recent memories to retrieve
+      responses:
+        '200':
+          description: Context retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextResponse'
+
+  /api/analytics/dashboard:
+    get:
+      tags: [Analytics]
+      summary: Get analytics dashboard
+      description: |
+        Retrieve comprehensive analytics dashboard for an agent's memories including:
+        - Memory statistics and trends
+        - Usage patterns and insights
+        - Performance metrics
+        - Temporal analysis
+      operationId: getAnalyticsDashboard
+      parameters:
+        - name: agentId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Agent identifier
+      responses:
+        '200':
+          description: Analytics dashboard data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsDashboard'
+              examples:
+                dashboard_data:
+                  summary: Analytics dashboard response
+                  value:
+                    agentId: "agent-123"
+                    totalMemories: 1247
+                    memoryGrowthRate: 12.5
+                    averageImportance: 6.8
+                    topTags: ["meeting", "technical", "planning"]
+                    temporalPatterns:
+                      dailyActivity: [45, 52, 38, 67, 41, 29, 18]
+                      peakHours: [9, 14, 16]
+                    searchPatterns:
+                      mostSearchedTerms: ["client", "requirements", "architecture"]
+                      searchFrequency: 156
+                    performanceMetrics:
+                      avgSearchTime: 42
+                      cacheHitRate: 87.3
+                      successRate: 99.2
+
+  /api/analytics/insights:
+    get:
+      tags: [Analytics]
+      summary: Generate intelligent insights
+      description: Generate AI-powered insights about agent's memories and patterns
+      operationId: generateInsights
+      parameters:
+        - name: agentId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Agent identifier
+      responses:
+        '200':
+          description: Generated insights
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsResponse'
+
+  /api/analytics/temporal-patterns:
+    get:
+      tags: [Analytics]
+      summary: Analyze temporal patterns
+      description: Analyze temporal patterns in agent's memory usage and storage
+      operationId: analyzeTemporalPatterns
+      parameters:
+        - name: agentId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Agent identifier
+      responses:
+        '200':
+          description: Temporal pattern analysis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporalPatternsResponse'
+
+  /api/network/sync:
+    post:
+      tags: [Network Synchronization]
+      summary: Synchronize memories across network
+      description: |
+        Synchronize memories across the distributed network using advanced conflict resolution:
+        - Vector clock-based conflict detection
+        - DHT-based peer discovery
+        - WebRTC peer-to-peer communication
+        - Automatic conflict resolution
+      operationId: syncNetworkMemory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkSyncRequest'
+      responses:
+        '200':
+          description: Network synchronization completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkSyncResponse'
+
+  /api/network/peers:
+    get:
+      tags: [Network Synchronization]
+      summary: Get connected peers
+      description: Retrieve list of connected network peers and their status
+      operationId: getNetworkPeers
+      responses:
+        '200':
+          description: Connected peers information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkPeersResponse'
+
+  /api/admin/permissions:
+    get:
+      tags: [Administration]
+      summary: Get permission rules
+      description: Retrieve cross-agent permission rules (admin only)
+      operationId: getPermissionRules
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Permission rules retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionRulesResponse'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags: [Administration]
+      summary: Add permission rule
+      description: Add a new cross-agent permission rule (admin only)
+      operationId: addPermissionRule
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPermissionRuleRequest'
+      responses:
+        '201':
+          description: Permission rule added successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token for admin operations
+
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Overall service health status
+        service:
+          type: string
+          description: Service name
+        version:
+          type: string
+          description: Service version
+        uptime:
+          type: integer
+          description: Service uptime in seconds
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp
+        dependencies:
+          type: object
+          properties:
+            database:
+              type: string
+              enum: [healthy, unhealthy]
+            redis:
+              type: string
+              enum: [healthy, unhealthy]
+            vector_store:
+              type: string
+              enum: [healthy, unhealthy]
+          description: Status of service dependencies
+
+    RememberRequest:
+      type: object
+      required:
+        - agentId
+        - content
+      properties:
+        agentId:
+          type: string
+          description: Agent identifier for memory isolation
+          example: "agent-123"
+          maxLength: 255
+        content:
+          type: string
+          description: Memory content to store
+          example: "Meeting with client about project requirements"
+          maxLength: 10000
+        metadata:
+          type: object
+          properties:
+            importance:
+              type: integer
+              minimum: 1
+              maximum: 10
+              default: 5
+              description: Importance score (1-10)
+            tags:
+              type: array
+              items:
+                type: string
+              description: Tags for categorization
+              maxItems: 20
+            project:
+              type: string
+              description: Project name
+              maxLength: 255
+            session:
+              type: string
+              description: Session identifier
+              maxLength: 255
+            entityType:
+              type: string
+              description: Type of the entity
+              maxLength: 100
+            priority:
+              type: string
+              enum: [low, medium, high, critical]
+              description: Priority level
+
+    RememberResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Operation success status
+        memoryId:
+          type: string
+          description: Unique memory identifier
+        structuredKey:
+          type: string
+          description: Structured key for memory retrieval
+        importance:
+          type: integer
+          description: Calculated importance score
+        embeddings_generated:
+          type: boolean
+          description: Whether vector embeddings were generated
+        entities_extracted:
+          type: array
+          items:
+            type: string
+          description: Extracted entities from content
+        timestamp:
+          type: string
+          format: date-time
+          description: Memory creation timestamp
+
+    RecallResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Operation success status
+        memories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Memory'
+          description: Retrieved memories
+        totalResults:
+          type: integer
+          description: Total number of matching memories
+        searchTime:
+          type: integer
+          description: Search execution time in milliseconds
+        query:
+          type: string
+          description: Original search query
+
+    Memory:
+      type: object
+      properties:
+        memoryId:
+          type: string
+          description: Unique memory identifier
+        structuredKey:
+          type: string
+          description: Structured key
+        content:
+          type: string
+          description: Memory content
+        metadata:
+          type: object
+          description: Memory metadata
+        relevanceScore:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Relevance score for the search query
+        timestamp:
+          type: string
+          format: date-time
+          description: Memory creation timestamp
+
+    ContextResponse:
+      type: object
+      properties:
+        agentId:
+          type: string
+          description: Agent identifier
+        contextSize:
+          type: integer
+          description: Number of memories in context
+        memories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Memory'
+          description: Recent memories for context
+        summary:
+          type: string
+          description: AI-generated context summary
+        timestamp:
+          type: string
+          format: date-time
+
+    AnalyticsDashboard:
+      type: object
+      properties:
+        agentId:
+          type: string
+          description: Agent identifier
+        totalMemories:
+          type: integer
+          description: Total number of memories
+        memoryGrowthRate:
+          type: number
+          format: float
+          description: Memory growth rate percentage
+        averageImportance:
+          type: number
+          format: float
+          description: Average importance score
+        topTags:
+          type: array
+          items:
+            type: string
+          description: Most frequently used tags
+        temporalPatterns:
+          type: object
+          properties:
+            dailyActivity:
+              type: array
+              items:
+                type: integer
+              description: Daily memory activity (7 days)
+            peakHours:
+              type: array
+              items:
+                type: integer
+              description: Peak activity hours
+        searchPatterns:
+          type: object
+          properties:
+            mostSearchedTerms:
+              type: array
+              items:
+                type: string
+              description: Most searched terms
+            searchFrequency:
+              type: integer
+              description: Total search frequency
+        performanceMetrics:
+          type: object
+          properties:
+            avgSearchTime:
+              type: integer
+              description: Average search time in milliseconds
+            cacheHitRate:
+              type: number
+              format: float
+              description: Cache hit rate percentage
+            successRate:
+              type: number
+              format: float
+              description: Operation success rate percentage
+
+    InsightsResponse:
+      type: object
+      properties:
+        agentId:
+          type: string
+        insights:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [pattern, trend, anomaly, recommendation]
+              title:
+                type: string
+              description:
+                type: string
+              confidence:
+                type: number
+                format: float
+                minimum: 0
+                maximum: 1
+              timestamp:
+                type: string
+                format: date-time
+
+    TemporalPatternsResponse:
+      type: object
+      properties:
+        agentId:
+          type: string
+        patterns:
+          type: object
+          properties:
+            hourlyDistribution:
+              type: array
+              items:
+                type: integer
+            dailyTrends:
+              type: array
+              items:
+                type: number
+            weeklyPatterns:
+              type: array
+              items:
+                type: number
+            seasonalTrends:
+              type: object
+
+    NetworkSyncRequest:
+      type: object
+      required:
+        - agentId
+        - targetPeers
+      properties:
+        agentId:
+          type: string
+          description: Agent identifier
+        targetPeers:
+          type: array
+          items:
+            type: string
+          description: List of target peer IDs
+        syncMode:
+          type: string
+          enum: [incremental, full]
+          default: incremental
+          description: Synchronization mode
+        conflictResolution:
+          type: string
+          enum: [auto, manual]
+          default: auto
+          description: Conflict resolution strategy
+
+    NetworkSyncResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        syncedPeers:
+          type: array
+          items:
+            type: string
+        memoriesSynced:
+          type: integer
+        conflictsResolved:
+          type: integer
+        syncDuration:
+          type: integer
+          description: Sync duration in milliseconds
+        timestamp:
+          type: string
+          format: date-time
+
+    NetworkPeersResponse:
+      type: object
+      properties:
+        totalPeers:
+          type: integer
+        connectedPeers:
+          type: array
+          items:
+            type: object
+            properties:
+              peerId:
+                type: string
+              status:
+                type: string
+                enum: [connected, disconnected, syncing]
+              lastSeen:
+                type: string
+                format: date-time
+              memoriesShared:
+                type: integer
+
+    PermissionRulesResponse:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              sourceAgentPattern:
+                type: string
+              targetAgentPattern:
+                type: string
+              accessLevel:
+                type: string
+                enum: [none, read, read_write, full]
+              priority:
+                type: integer
+              createdAt:
+                type: string
+                format: date-time
+
+    AddPermissionRuleRequest:
+      type: object
+      required:
+        - name
+        - description
+        - sourceAgentPattern
+        - targetAgentPattern
+        - accessLevel
+        - priority
+      properties:
+        name:
+          type: string
+          description: Rule name
+          maxLength: 255
+        description:
+          type: string
+          description: Rule description
+          maxLength: 1000
+        sourceAgentPattern:
+          type: string
+          description: Source agent pattern (regex)
+          maxLength: 255
+        targetAgentPattern:
+          type: string
+          description: Target agent pattern (regex)
+          maxLength: 255
+        accessLevel:
+          type: string
+          enum: [none, read, read_write, full]
+          description: Access level
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Rule priority
+        contentPattern:
+          type: string
+          description: Content pattern (regex, optional)
+          maxLength: 255
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Error message
+            details:
+              type: object
+              description: Additional error details
+            timestamp:
+              type: string
+              format: date-time
+            request_id:
+              type: string
+              description: Unique request identifier
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            validation_error:
+              summary: Validation error
+              value:
+                error:
+                  code: "VALIDATION_ERROR"
+                  message: "Invalid input parameters"
+                  details:
+                    field: "agentId"
+                    issue: "Agent ID is required"
+                  timestamp: "2025-08-27T10:30:00Z"
+                  request_id: "req_12345"
+
+    Unauthorized:
+      description: Authentication required or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            missing_auth:
+              summary: Missing authentication
+              value:
+                error:
+                  code: "UNAUTHORIZED"
+                  message: "Authentication required"
+                  details:
+                    hint: "Include API key in Authorization header"
+                  timestamp: "2025-08-27T10:30:00Z"
+                  request_id: "req_12346"
+
+    Forbidden:
+      description: Access denied
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    RateLimitExceeded:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            rate_limit:
+              summary: Rate limit exceeded
+              value:
+                error:
+                  code: "RATE_LIMIT_EXCEEDED"
+                  message: "Rate limit exceeded"
+                  details:
+                    limit: 100
+                    remaining: 0
+                    reset_time: "2025-08-27T11:00:00Z"
+                  timestamp: "2025-08-27T10:30:00Z"
+                  request_id: "req_12347"
+      headers:
+        X-RateLimit-Limit:
+          description: Request limit per hour
+          schema:
+            type: integer
+        X-RateLimit-Remaining:
+          description: Remaining requests in current window
+          schema:
+            type: integer
+        X-RateLimit-Reset:
+          description: Time when rate limit resets
+          schema:
+            type: string
+            format: date-time
+
+tags:
+  - name: System
+    description: System health and status operations
+  - name: Memory Management
+    description: Core memory storage and retrieval operations
+  - name: Analytics
+    description: Memory analytics and insights
+  - name: Network Synchronization
+    description: Distributed memory network operations
+  - name: Administration
+    description: Administrative operations (admin access required)
+
+externalDocs:
+  description: MemorAI MCP Server Documentation
+  url: https://docs.memorai.com

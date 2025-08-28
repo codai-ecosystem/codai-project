@@ -1,0 +1,1052 @@
+# Infrastructure Monitoring & Observability Stack for Essential CodAI Services
+# Version: 1.0
+# Prometheus | Grafana | AlertManager | ELK Stack | Jaeger | Uptime Monitoring
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: monitoring-stack-config
+  namespace: codai-production
+data:
+  monitoring-config.json: |
+    {
+      "monitoring_architecture": {
+        "components": {
+          "prometheus": {
+            "enabled": true,
+            "retention": "30d",
+            "storage_size": "100Gi",
+            "scrape_interval": "30s",
+            "evaluation_interval": "30s",
+            "external_labels": {
+              "cluster": "codai-production",
+              "environment": "production"
+            }
+          },
+          "grafana": {
+            "enabled": true,
+            "admin_password": "${GRAFANA_ADMIN_PASSWORD}",
+            "plugins": [
+              "grafana-piechart-panel",
+              "grafana-worldmap-panel",
+              "grafana-kubernetes-app",
+              "grafana-synthetic-monitoring"
+            ],
+            "dashboards": {
+              "kubernetes": true,
+              "application": true,
+              "business": true,
+              "security": true
+            }
+          },
+          "alertmanager": {
+            "enabled": true,
+            "high_availability": true,
+            "retention": "120h",
+            "slack_webhook": "${SLACK_WEBHOOK_URL}",
+            "pagerduty_integration": "${PAGERDUTY_INTEGRATION_KEY}",
+            "email_smtp": {
+              "server": "${SMTP_SERVER}",
+              "port": 587,
+              "username": "${SMTP_USERNAME}",
+              "password": "${SMTP_PASSWORD}"
+            }
+          },
+          "jaeger": {
+            "enabled": true,
+            "sampling_rate": 0.1,
+            "storage": "elasticsearch",
+            "retention": "7d"
+          },
+          "elasticsearch": {
+            "enabled": true,
+            "cluster_size": 3,
+            "storage_size": "200Gi",
+            "index_lifecycle": {
+              "hot_phase": "2d",
+              "warm_phase": "7d",
+              "cold_phase": "30d",
+              "delete_phase": "90d"
+            }
+          },
+          "logstash": {
+            "enabled": true,
+            "replicas": 2,
+            "pipeline_workers": 4,
+            "pipeline_batch_size": 1000
+          },
+          "kibana": {
+            "enabled": true,
+            "encryption_key": "${KIBANA_ENCRYPTION_KEY}",
+            "security": {
+              "authentication": "basic",
+              "authorization": "rbac"
+            }
+          }
+        },
+        "data_retention": {
+          "metrics": "30d",
+          "logs": "90d",
+          "traces": "7d",
+          "alerts": "120h"
+        },
+        "high_availability": {
+          "prometheus": true,
+          "grafana": true,
+          "alertmanager": true,
+          "elasticsearch": true
+        }
+      },
+      "alerting_rules": {
+        "infrastructure": {
+          "high_cpu_usage": {
+            "threshold": 80,
+            "duration": "5m",
+            "severity": "warning"
+          },
+          "high_memory_usage": {
+            "threshold": 85,
+            "duration": "5m",
+            "severity": "warning"
+          },
+          "disk_space_low": {
+            "threshold": 90,
+            "duration": "2m",
+            "severity": "critical"
+          },
+          "pod_crash_looping": {
+            "threshold": 3,
+            "duration": "5m",
+            "severity": "critical"
+          }
+        },
+        "application": {
+          "high_error_rate": {
+            "threshold": 1,
+            "duration": "2m",
+            "severity": "critical"
+          },
+          "slow_response_time": {
+            "threshold": 500,
+            "duration": "5m",
+            "severity": "warning"
+          },
+          "database_connection_failures": {
+            "threshold": 5,
+            "duration": "1m",
+            "severity": "critical"
+          },
+          "service_down": {
+            "threshold": 0,
+            "duration": "1m",
+            "severity": "critical"
+          }
+        },
+        "business": {
+          "low_user_registration": {
+            "threshold": 10,
+            "duration": "1h",
+            "severity": "warning"
+          },
+          "payment_failures": {
+            "threshold": 2,
+            "duration": "5m",
+            "severity": "critical"
+          },
+          "api_quota_exceeded": {
+            "threshold": 95,
+            "duration": "5m",
+            "severity": "warning"
+          }
+        }
+      },
+      "dashboards": {
+        "executive": {
+          "panels": [
+            "Overall System Health",
+            "Business Metrics KPIs",
+            "Security Posture Summary",
+            "Cost Optimization Metrics",
+            "User Experience Metrics"
+          ],
+          "refresh_interval": "30s",
+          "time_range": "24h"
+        },
+        "operations": {
+          "panels": [
+            "Infrastructure Resource Utilization",
+            "Service Health & Performance",
+            "Alert Status & Incident Metrics",
+            "Deployment Pipeline Status",
+            "Database Performance"
+          ],
+          "refresh_interval": "10s",
+          "time_range": "6h"
+        },
+        "development": {
+          "panels": [
+            "Build & Deployment Success Rates",
+            "Code Quality Metrics",
+            "Test Coverage & Results",
+            "Feature Flag Status",
+            "API Usage & Performance"
+          ],
+          "refresh_interval": "1m",
+          "time_range": "7d"
+        },
+        "security": {
+          "panels": [
+            "Vulnerability Scan Results",
+            "Compliance Status",
+            "Security Incident Metrics",
+            "Threat Intelligence Feeds",
+            "Authentication & Authorization"
+          ],
+          "refresh_interval": "5m",
+          "time_range": "24h"
+        }
+      }
+    }
+
+  prometheus.yml: |
+    global:
+      scrape_interval: 30s
+      evaluation_interval: 30s
+      external_labels:
+        cluster: 'codai-production'
+        environment: 'production'
+
+    rule_files:
+      - "alert_rules.yml"
+      - "business_rules.yml"
+
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets:
+              - alertmanager:9093
+
+    scrape_configs:
+      # Kubernetes API Server
+      - job_name: 'kubernetes-apiservers'
+        kubernetes_sd_configs:
+        - role: endpoints
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+          action: keep
+          regex: default;kubernetes;https
+
+      # Kubernetes Nodes
+      - job_name: 'kubernetes-nodes'
+        kubernetes_sd_configs:
+        - role: node
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+        - action: labelmap
+          regex: __meta_kubernetes_node_label_(.+)
+
+      # Kubernetes Pods
+      - job_name: 'kubernetes-pods'
+        kubernetes_sd_configs:
+        - role: pod
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+          action: keep
+          regex: true
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+          action: replace
+          target_label: __metrics_path__
+          regex: (.+)
+        - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+          action: replace
+          regex: ([^:]+)(?::\d+)?;(\d+)
+          replacement: $1:$2
+          target_label: __address__
+        - action: labelmap
+          regex: __meta_kubernetes_pod_label_(.+)
+        - source_labels: [__meta_kubernetes_namespace]
+          action: replace
+          target_label: kubernetes_namespace
+        - source_labels: [__meta_kubernetes_pod_name]
+          action: replace
+          target_label: kubernetes_pod_name
+
+      # Essential CodAI Services
+      - job_name: 'codai-services'
+        static_configs:
+        - targets:
+          - 'codai-auth-api:8080'
+          - 'codai-gateway-api:8080'
+          - 'codai-hub-memorai:8080'
+          - 'codai-database-frontend:8080'
+        metrics_path: '/metrics'
+        scrape_interval: 15s
+
+      # Database Monitoring
+      - job_name: 'postgres-exporter'
+        static_configs:
+        - targets:
+          - 'postgres-exporter:9187'
+
+      - job_name: 'redis-exporter'
+        static_configs:
+        - targets:
+          - 'redis-exporter:9121'
+
+      # Infrastructure Monitoring
+      - job_name: 'node-exporter'
+        kubernetes_sd_configs:
+        - role: endpoints
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_endpoints_name]
+          regex: 'node-exporter'
+          action: keep
+
+      # Istio Service Mesh Monitoring
+      - job_name: 'istio-mesh'
+        kubernetes_sd_configs:
+        - role: endpoints
+          namespaces:
+            names:
+            - istio-system
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+          action: keep
+          regex: istio-telemetry;prometheus
+
+  alert_rules.yml: |
+    groups:
+    - name: infrastructure
+      rules:
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% for more than 5 minutes on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is above 85% for more than 5 minutes on {{ $labels.instance }}"
+
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100 < 10
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk space is low"
+          description: "Disk space is below 10% on {{ $labels.instance }}"
+
+      - alert: PodCrashLooping
+        expr: increase(kube_pod_container_status_restarts_total[15m]) > 3
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Pod is crash looping"
+          description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is restarting frequently"
+
+    - name: application
+      rules:
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.01
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is above 1% for {{ $labels.job }}"
+
+      - alert: SlowResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Slow response time detected"
+          description: "95th percentile response time is above 500ms for {{ $labels.job }}"
+
+      - alert: DatabaseConnectionFailures
+        expr: increase(database_connection_errors_total[5m]) > 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Database connection failures"
+          description: "Database connection failures detected for {{ $labels.service }}"
+
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service is down"
+          description: "{{ $labels.job }} service is down"
+
+  business_rules.yml: |
+    groups:
+    - name: business_metrics
+      rules:
+      - alert: LowUserRegistration
+        expr: increase(user_registrations_total[1h]) < 10
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low user registration rate"
+          description: "User registration is below normal levels"
+
+      - alert: PaymentFailures
+        expr: increase(payment_failures_total[5m]) > 2
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Payment failures detected"
+          description: "Multiple payment failures in the last 5 minutes"
+
+      - alert: APIQuotaExceeded
+        expr: (api_requests_total / api_quota_limit) * 100 > 95
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "API quota near limit"
+          description: "API usage is approaching quota limits"
+
+---
+# Prometheus Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: codai-production
+  labels:
+    app: prometheus
+    component: monitoring
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+        component: monitoring
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: prometheus
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.45.0
+        ports:
+        - containerPort: 9090
+          name: web
+        args:
+        - --config.file=/etc/prometheus/prometheus.yml
+        - --storage.tsdb.path=/prometheus/
+        - --storage.tsdb.retention.time=30d
+        - --storage.tsdb.retention.size=90GB
+        - --web.console.libraries=/etc/prometheus/console_libraries
+        - --web.console.templates=/etc/prometheus/consoles
+        - --web.enable-lifecycle
+        - --web.enable-admin-api
+        - --log.level=info
+        volumeMounts:
+        - name: prometheus-config
+          mountPath: /etc/prometheus
+        - name: prometheus-storage
+          mountPath: /prometheus
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 4Gi
+          limits:
+            cpu: 4000m
+            memory: 16Gi
+        livenessProbe:
+          httpGet:
+            path: /-/healthy
+            port: 9090
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /-/ready
+            port: 9090
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: prometheus-config
+        configMap:
+          name: monitoring-stack-config
+      - name: prometheus-storage
+        persistentVolumeClaim:
+          claimName: prometheus-storage-pvc
+
+---
+# Grafana Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: codai-production
+  labels:
+    app: grafana
+    component: monitoring
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+        component: monitoring
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: grafana
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 472
+        runAsGroup: 472
+        fsGroup: 472
+      containers:
+      - name: grafana
+        image: grafana/grafana:10.0.0
+        ports:
+        - containerPort: 3000
+          name: grafana
+        env:
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: grafana-admin-password
+        - name: GF_INSTALL_PLUGINS
+          value: "grafana-piechart-panel,grafana-worldmap-panel,grafana-kubernetes-app"
+        - name: GF_SERVER_DOMAIN
+          value: "grafana.codai.ro"
+        - name: GF_SERVER_ROOT_URL
+          value: "https://grafana.codai.ro"
+        - name: GF_DATABASE_TYPE
+          value: "postgres"
+        - name: GF_DATABASE_HOST
+          value: "postgresql-primary.codai-production.svc.cluster.local:5432"
+        - name: GF_DATABASE_NAME
+          value: "grafana"
+        - name: GF_DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: grafana-db-user
+        - name: GF_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: grafana-db-password
+        volumeMounts:
+        - name: grafana-storage
+          mountPath: /var/lib/grafana
+        - name: grafana-dashboards
+          mountPath: /var/lib/grafana/dashboards
+        - name: grafana-provisioning
+          mountPath: /etc/grafana/provisioning
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: grafana-storage
+        persistentVolumeClaim:
+          claimName: grafana-storage-pvc
+      - name: grafana-dashboards
+        configMap:
+          name: grafana-dashboards
+      - name: grafana-provisioning
+        configMap:
+          name: grafana-provisioning
+
+---
+# AlertManager Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+  namespace: codai-production
+  labels:
+    app: alertmanager
+    component: monitoring
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+        component: monitoring
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: alertmanager
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+      containers:
+      - name: alertmanager
+        image: prom/alertmanager:v0.25.0
+        ports:
+        - containerPort: 9093
+          name: web
+        - containerPort: 9094
+          name: cluster
+        args:
+        - --config.file=/etc/alertmanager/alertmanager.yml
+        - --storage.path=/alertmanager/
+        - --data.retention=120h
+        - --web.listen-address=0.0.0.0:9093
+        - --cluster.listen-address=0.0.0.0:9094
+        - --cluster.peer=alertmanager-0.alertmanager.codai-production.svc.cluster.local:9094
+        - --cluster.peer=alertmanager-1.alertmanager.codai-production.svc.cluster.local:9094
+        - --cluster.peer=alertmanager-2.alertmanager.codai-production.svc.cluster.local:9094
+        volumeMounts:
+        - name: alertmanager-config
+          mountPath: /etc/alertmanager
+        - name: alertmanager-storage
+          mountPath: /alertmanager
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /-/healthy
+            port: 9093
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /-/ready
+            port: 9093
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: alertmanager-config
+        configMap:
+          name: alertmanager-config
+      - name: alertmanager-storage
+        persistentVolumeClaim:
+          claimName: alertmanager-storage-pvc
+
+---
+# Elasticsearch Deployment
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: codai-production
+  labels:
+    app: elasticsearch
+    component: monitoring
+spec:
+  serviceName: elasticsearch
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+        component: monitoring
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: elasticsearch
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      initContainers:
+      - name: increase-vm-max-map
+        image: busybox:1.35
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+        ports:
+        - containerPort: 9200
+          name: rest
+        - containerPort: 9300
+          name: inter-node
+        env:
+        - name: cluster.name
+          value: "codai-elasticsearch"
+        - name: node.name
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: discovery.seed_hosts
+          value: "elasticsearch-0.elasticsearch,elasticsearch-1.elasticsearch,elasticsearch-2.elasticsearch"
+        - name: cluster.initial_master_nodes
+          value: "elasticsearch-0,elasticsearch-1,elasticsearch-2"
+        - name: ES_JAVA_OPTS
+          value: "-Xms2g -Xmx2g"
+        - name: xpack.security.enabled
+          value: "true"
+        - name: xpack.security.transport.ssl.enabled
+          value: "true"
+        - name: xpack.security.transport.ssl.verification_mode
+          value: "certificate"
+        - name: xpack.security.transport.ssl.keystore.path
+          value: "/usr/share/elasticsearch/config/certs/elastic-certificates.p12"
+        - name: xpack.security.transport.ssl.truststore.path
+          value: "/usr/share/elasticsearch/config/certs/elastic-certificates.p12"
+        - name: ELASTIC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: elasticsearch-password
+        volumeMounts:
+        - name: elasticsearch-data
+          mountPath: /usr/share/elasticsearch/data
+        - name: elasticsearch-certs
+          mountPath: /usr/share/elasticsearch/config/certs
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 4Gi
+          limits:
+            cpu: 2000m
+            memory: 8Gi
+        livenessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+            scheme: HTTPS
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+      volumes:
+      - name: elasticsearch-certs
+        secret:
+          secretName: elasticsearch-certs
+  volumeClaimTemplates:
+  - metadata:
+      name: elasticsearch-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "fast-ssd"
+      resources:
+        requests:
+          storage: 200Gi
+
+---
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: codai-production
+  labels:
+    app: prometheus
+spec:
+  ports:
+  - port: 9090
+    targetPort: 9090
+    name: web
+  selector:
+    app: prometheus
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: codai-production
+  labels:
+    app: grafana
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+    name: grafana
+  selector:
+    app: grafana
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager
+  namespace: codai-production
+  labels:
+    app: alertmanager
+spec:
+  ports:
+  - port: 9093
+    targetPort: 9093
+    name: web
+  - port: 9094
+    targetPort: 9094
+    name: cluster
+  selector:
+    app: alertmanager
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: codai-production
+  labels:
+    app: elasticsearch
+spec:
+  ports:
+  - port: 9200
+    targetPort: 9200
+    name: rest
+  - port: 9300
+    targetPort: 9300
+    name: inter-node
+  selector:
+    app: elasticsearch
+
+---
+# Service Accounts
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus
+  namespace: codai-production
+  labels:
+    app: prometheus
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grafana
+  namespace: codai-production
+  labels:
+    app: grafana
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: alertmanager
+  namespace: codai-production
+  labels:
+    app: alertmanager
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: elasticsearch
+  namespace: codai-production
+  labels:
+    app: elasticsearch
+
+---
+# Monitoring Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: monitoring-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  grafana-admin-password: Y29kYWktZ3JhZmFuYS1hZG1pbi0yMDI1  # codai-grafana-admin-2025
+  grafana-db-user: Z3JhZmFuYQ==  # grafana
+  grafana-db-password: Z3JhZmFuYS1kYi1wYXNzd29yZC0yMDI1  # grafana-db-password-2025
+  elasticsearch-password: Y29kYWktZWxhc3RpY3NlYXJjaC0yMDI1  # codai-elasticsearch-2025
+
+---
+# Persistent Volume Claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-storage-pvc
+  namespace: codai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-storage-pvc
+  namespace: codai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: alertmanager-storage-pvc
+  namespace: codai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+# AlertManager Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: codai-production
+data:
+  alertmanager.yml: |
+    global:
+      smtp_smarthost: 'localhost:587'
+      smtp_from: 'alerts@codai.ro'
+      resolve_timeout: 5m
+
+    templates:
+    - '/etc/alertmanager/templates/*.tmpl'
+
+    route:
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1h
+      receiver: 'default'
+      routes:
+      - match:
+          severity: critical
+        receiver: 'critical-alerts'
+        continue: true
+      - match:
+          severity: warning
+        receiver: 'warning-alerts'
+
+    receivers:
+    - name: 'default'
+      slack_configs:
+      - api_url: '${SLACK_WEBHOOK_URL}'
+        channel: '#alerts'
+        title: 'CodAI Alert'
+        text: 'Summary: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+
+    - name: 'critical-alerts'
+      pagerduty_configs:
+      - service_key: '${PAGERDUTY_SERVICE_KEY}'
+        description: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+      slack_configs:
+      - api_url: '${SLACK_WEBHOOK_URL}'
+        channel: '#critical-alerts'
+        title: '🚨 CRITICAL: CodAI Alert'
+        text: 'Summary: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+      email_configs:
+      - to: 'devops@codai.ro'
+        subject: '🚨 CRITICAL Alert: CodAI Production'
+        body: |
+          Alert Details:
+          {{ range .Alerts }}
+          - Summary: {{ .Annotations.summary }}
+          - Description: {{ .Annotations.description }}
+          - Severity: {{ .Labels.severity }}
+          - Instance: {{ .Labels.instance }}
+          {{ end }}
+
+    - name: 'warning-alerts'
+      slack_configs:
+      - api_url: '${SLACK_WEBHOOK_URL}'
+        channel: '#alerts'
+        title: '⚠️ WARNING: CodAI Alert'
+        text: 'Summary: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+
+    inhibit_rules:
+    - source_match:
+        severity: 'critical'
+      target_match:
+        severity: 'warning'
+      equal: ['alertname', 'cluster', 'service']

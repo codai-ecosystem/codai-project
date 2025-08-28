@@ -1,0 +1,771 @@
+# Enterprise Single Sign-On (SSO) Integration for Essential CodAI Services
+# Version: 1.0
+# Supports: SAML 2.0, OpenID Connect (OIDC), OAuth 2.0, LDAP/Active Directory
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: enterprise-sso-config
+  namespace: codai-production
+data:
+  sso-config.json: |
+    {
+      "providers": {
+        "azure_ad": {
+          "enabled": true,
+          "type": "oidc",
+          "display_name": "Microsoft Azure AD",
+          "client_id": "${AZURE_AD_CLIENT_ID}",
+          "client_secret": "${AZURE_AD_CLIENT_SECRET}",
+          "tenant_id": "${AZURE_AD_TENANT_ID}",
+          "discovery_url": "https://login.microsoftonline.com/{tenant_id}/v2.0/.well-known/openid_configuration",
+          "scopes": ["openid", "profile", "email", "User.Read"],
+          "claims_mapping": {
+            "user_id": "sub",
+            "email": "email",
+            "first_name": "given_name",
+            "last_name": "family_name",
+            "display_name": "name",
+            "groups": "groups"
+          },
+          "group_sync": {
+            "enabled": true,
+            "admin_groups": ["CodAI-Admins", "CodAI-TenantAdmins"],
+            "user_groups": ["CodAI-Users", "CodAI-EndUsers"]
+          }
+        },
+        "google_workspace": {
+          "enabled": true,
+          "type": "oidc",
+          "display_name": "Google Workspace",
+          "client_id": "${GOOGLE_CLIENT_ID}",
+          "client_secret": "${GOOGLE_CLIENT_SECRET}",
+          "discovery_url": "https://accounts.google.com/.well-known/openid_configuration",
+          "scopes": ["openid", "profile", "email"],
+          "domain_restriction": ["company.com", "organization.org"],
+          "claims_mapping": {
+            "user_id": "sub",
+            "email": "email",
+            "first_name": "given_name",
+            "last_name": "family_name",
+            "display_name": "name",
+            "picture": "picture"
+          }
+        },
+        "okta": {
+          "enabled": true,
+          "type": "saml2",
+          "display_name": "Okta SAML",
+          "entity_id": "${OKTA_ENTITY_ID}",
+          "sso_url": "${OKTA_SSO_URL}",
+          "certificate": "${OKTA_CERTIFICATE}",
+          "attribute_mapping": {
+            "user_id": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
+            "email": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+            "first_name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+            "last_name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+            "groups": "http://schemas.microsoft.com/ws/2008/06/identity/claims/groups"
+          }
+        },
+        "ldap": {
+          "enabled": true,
+          "type": "ldap",
+          "display_name": "Active Directory",
+          "server": "${LDAP_SERVER}",
+          "port": 636,
+          "use_ssl": true,
+          "bind_dn": "${LDAP_BIND_DN}",
+          "bind_password": "${LDAP_BIND_PASSWORD}",
+          "base_dn": "${LDAP_BASE_DN}",
+          "user_search": {
+            "base": "ou=Users,${LDAP_BASE_DN}",
+            "filter": "(&(objectClass=person)(sAMAccountName={username}))"
+          },
+          "group_search": {
+            "base": "ou=Groups,${LDAP_BASE_DN}",
+            "filter": "(&(objectClass=group)(member={dn}))"
+          },
+          "attribute_mapping": {
+            "user_id": "sAMAccountName",
+            "email": "mail",
+            "first_name": "givenName",
+            "last_name": "sn",
+            "display_name": "displayName",
+            "groups": "memberOf"
+          }
+        }
+      },
+      "session": {
+        "duration": 86400,
+        "refresh_threshold": 3600,
+        "idle_timeout": 7200,
+        "absolute_timeout": 28800,
+        "secure_cookies": true,
+        "same_site": "strict"
+      },
+      "jwt": {
+        "algorithm": "RS256",
+        "issuer": "codai-sso",
+        "audience": ["codai-api", "codai-frontend"],
+        "access_token_ttl": 3600,
+        "refresh_token_ttl": 86400,
+        "include_groups": true,
+        "include_permissions": true
+      },
+      "security": {
+        "enable_csrf_protection": true,
+        "require_https": true,
+        "trusted_proxies": ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"],
+        "rate_limiting": {
+          "login_attempts": 5,
+          "window_minutes": 15,
+          "lockout_duration": 30
+        },
+        "password_policy": {
+          "min_length": 12,
+          "require_uppercase": true,
+          "require_lowercase": true,
+          "require_numbers": true,
+          "require_special": true,
+          "max_age_days": 90
+        }
+      }
+    }
+
+  federation-config.json: |
+    {
+      "federation": {
+        "enabled": true,
+        "identity_providers": [
+          {
+            "name": "primary_azure",
+            "type": "oidc", 
+            "priority": 1,
+            "auto_provision": true,
+            "sync_frequency": "hourly"
+          },
+          {
+            "name": "secondary_okta",
+            "type": "saml2",
+            "priority": 2,
+            "auto_provision": true,
+            "sync_frequency": "daily"
+          }
+        ],
+        "user_matching": {
+          "primary_key": "email",
+          "fallback_keys": ["username", "employee_id"],
+          "conflict_resolution": "merge_accounts"
+        },
+        "account_linking": {
+          "enabled": true,
+          "require_verification": true,
+          "max_linked_accounts": 3
+        }
+      },
+      "provisioning": {
+        "auto_create_users": true,
+        "auto_create_tenants": false,
+        "default_role": "endUser",
+        "default_tenant": "default",
+        "group_role_mapping": {
+          "CodAI-Admins": "tenantAdmin",
+          "CodAI-Managers": "departmentManager", 
+          "CodAI-Leads": "teamLead",
+          "CodAI-Users": "endUser"
+        },
+        "attribute_sync": {
+          "enabled": true,
+          "sync_on_login": true,
+          "sync_frequency": "hourly",
+          "attributes": ["email", "first_name", "last_name", "display_name", "groups"]
+        }
+      }
+    }
+
+---
+# Enterprise SSO Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-enterprise-sso
+  namespace: codai-production
+  labels:
+    app: codai-enterprise-sso
+    component: enterprise-auth
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: codai-enterprise-sso
+  template:
+    metadata:
+      labels:
+        app: codai-enterprise-sso
+        component: enterprise-auth
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-enterprise-sso
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: enterprise-sso
+        image: codai/enterprise-sso:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        - containerPort: 8080
+          name: admin
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: HTTP_PORT
+          value: "3000"
+        - name: ADMIN_PORT
+          value: "8080"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: sso-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: JWT_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sso-secrets
+              key: jwt-private-key
+        - name: JWT_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sso-secrets
+              key: jwt-public-key
+        - name: ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sso-secrets
+              key: encryption-key
+        # Azure AD Configuration
+        - name: AZURE_AD_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: azure-ad-secrets
+              key: client-id
+        - name: AZURE_AD_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: azure-ad-secrets
+              key: client-secret
+        - name: AZURE_AD_TENANT_ID
+          valueFrom:
+            secretKeyRef:
+              name: azure-ad-secrets
+              key: tenant-id
+        # Google Workspace Configuration
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: google-workspace-secrets
+              key: client-id
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: google-workspace-secrets
+              key: client-secret
+        # Okta Configuration
+        - name: OKTA_ENTITY_ID
+          valueFrom:
+            secretKeyRef:
+              name: okta-secrets
+              key: entity-id
+        - name: OKTA_SSO_URL
+          valueFrom:
+            secretKeyRef:
+              name: okta-secrets
+              key: sso-url
+        - name: OKTA_CERTIFICATE
+          valueFrom:
+            secretKeyRef:
+              name: okta-secrets
+              key: certificate
+        # LDAP Configuration
+        - name: LDAP_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: ldap-secrets
+              key: server
+        - name: LDAP_BIND_DN
+          valueFrom:
+            secretKeyRef:
+              name: ldap-secrets
+              key: bind-dn
+        - name: LDAP_BIND_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ldap-secrets
+              key: bind-password
+        - name: LDAP_BASE_DN
+          valueFrom:
+            secretKeyRef:
+              name: ldap-secrets
+              key: base-dn
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        - name: certificates
+          mountPath: /app/certificates
+          readOnly: true
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        # Security context
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: config
+        configMap:
+          name: enterprise-sso-config
+      - name: certificates
+        secret:
+          secretName: sso-certificates
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-enterprise-sso
+  namespace: codai-production
+  labels:
+    app: codai-enterprise-sso
+    component: enterprise-auth
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+    name: http
+    protocol: TCP
+  - port: 8080
+    targetPort: 8080
+    name: admin
+    protocol: TCP
+  selector:
+    app: codai-enterprise-sso
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-enterprise-sso
+  namespace: codai-production
+  labels:
+    app: codai-enterprise-sso
+
+---
+# SSO Session Management Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-session-manager
+  namespace: codai-production
+  labels:
+    app: codai-session-manager
+    component: enterprise-auth
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-session-manager
+  template:
+    metadata:
+      labels:
+        app: codai-session-manager
+        component: enterprise-auth
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-session-manager
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: session-manager
+        image: codai/session-manager:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3003
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3003"
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: JWT_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sso-secrets
+              key: jwt-public-key
+        - name: SESSION_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: sso-secrets
+              key: session-secret
+        - name: ENABLE_SESSION_ANALYTICS
+          value: "true"
+        - name: SESSION_TIMEOUT_MINUTES
+          value: "480"  # 8 hours
+        - name: IDLE_TIMEOUT_MINUTES
+          value: "120"  # 2 hours
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3003
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3003
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-session-manager
+  namespace: codai-production
+  labels:
+    app: codai-session-manager
+    component: enterprise-auth
+spec:
+  ports:
+  - port: 3003
+    targetPort: 3003
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-session-manager
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-session-manager
+  namespace: codai-production
+  labels:
+    app: codai-session-manager
+
+---
+# Token Validation Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-token-validator
+  namespace: codai-production
+  labels:
+    app: codai-token-validator
+    component: enterprise-auth
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-token-validator
+  template:
+    metadata:
+      labels:
+        app: codai-token-validator
+        component: enterprise-auth
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-token-validator
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: token-validator
+        image: codai/token-validator:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3004
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3004"
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: redis-event-secrets
+              key: url
+        - name: JWT_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sso-secrets
+              key: jwt-public-key
+        - name: ENABLE_TOKEN_INTROSPECTION
+          value: "true"
+        - name: TOKEN_CACHE_TTL
+          value: "300"  # 5 minutes
+        - name: VALIDATE_TOKEN_SCOPE
+          value: "true"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3004
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3004
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-token-validator
+  namespace: codai-production
+  labels:
+    app: codai-token-validator
+    component: enterprise-auth
+spec:
+  ports:
+  - port: 3004
+    targetPort: 3004
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-token-validator
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-token-validator
+  namespace: codai-production
+  labels:
+    app: codai-token-validator
+
+---
+# SSO Secrets (Base64 encoded placeholder values)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sso-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  jwt-private-key: LS0tLS1CRUdJTi... # JWT RSA Private Key (base64 encoded)
+  jwt-public-key: LS0tLS1CRUdJTi...  # JWT RSA Public Key (base64 encoded)
+  encryption-key: Y29kYWktZW50ZXJwcmlzZS1zc28tc2VjcmV0LWtleS0yMDI1  # codai-enterprise-sso-secret-key-2025
+  session-secret: Y29kYWktc2Vzc2lvbi1zZWNyZXQta2V5LTIwMjU=  # codai-session-secret-key-2025
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: azure-ad-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  client-id: WU9VUl9BWlVSRV9BRF9DTElFTlRfSUQ=  # YOUR_AZURE_AD_CLIENT_ID
+  client-secret: WU9VUl9BWlVSRV9BRF9DTElFTlRfU0VDUkVU  # YOUR_AZURE_AD_CLIENT_SECRET
+  tenant-id: WU9VUl9BWlVSRV9BRF9URU5BTlRfSUQ=  # YOUR_AZURE_AD_TENANT_ID
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: google-workspace-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  client-id: WU9VUl9HT09HTEVfQ0xJRU5UX0lE  # YOUR_GOOGLE_CLIENT_ID
+  client-secret: WU9VUl9HT09HTEVfQ0xJRU5UX1NFQ1JFVA==  # YOUR_GOOGLE_CLIENT_SECRET
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: okta-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  entity-id: WU9VUl9PS1RBX0VOVElUWV9JRA==  # YOUR_OKTA_ENTITY_ID
+  sso-url: WU9VUl9PS1RBX1NTT19VUkw=  # YOUR_OKTA_SSO_URL
+  certificate: LS0tLS1CRUdJTi...  # OKTA SAML Certificate
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ldap-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  server: WU9VUl9MREFQX1NFUlZFUg==  # YOUR_LDAP_SERVER
+  bind-dn: WU9VUl9MREFQX0JJTkRfRE4=  # YOUR_LDAP_BIND_DN
+  bind-password: WU9VUl9MREFQX0JJTkRfUEFTU1dPUkQ=  # YOUR_LDAP_BIND_PASSWORD
+  base-dn: WU9VUl9MREFQX0JBU0VfRE4=  # YOUR_LDAP_BASE_DN
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sso-certificates
+  namespace: codai-production
+type: Opaque
+data:
+  tls.crt: LS0tLS1CRUdJTi...  # SSL/TLS Certificate
+  tls.key: LS0tLS1CRUdJTi...  # SSL/TLS Private Key
+  ca.crt: LS0tLS1CRUdJTi...   # Certificate Authority Certificate
+
+---
+# Horizontal Pod Autoscaler for SSO Services
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-enterprise-sso-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-enterprise-sso
+  minReplicas: 3
+  maxReplicas: 12
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-session-manager-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-session-manager
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-token-validator-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-token-validator
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 75

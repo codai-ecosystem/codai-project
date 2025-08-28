@@ -1,0 +1,739 @@
+openapi: 3.0.3
+info:
+  title: Cautai AI Search Engine API
+  description: |
+    Cautai is an AI-first search engine designed for both agents and humans. This API provides 
+    comprehensive search capabilities, content composition, and citation generation services.
+    
+    ## Features
+    - Advanced search with hybrid ranking (BM25 + semantic similarity)
+    - AI-powered content composition and summarization
+    - Academic citation generation in multiple formats
+    - Multi-language support (English, Romanian)
+    - Rate limiting and authentication
+    - Real-time search result processing
+    
+    ## Authentication
+    Most endpoints require Bearer token authentication. Obtain tokens through the authentication endpoints.
+    
+    ## Rate Limiting
+    - Search endpoints: 100 requests per minute per IP
+    - Composition endpoints: 20 requests per minute per authenticated user
+    - Citation endpoints: 50 requests per minute per authenticated user
+    
+  version: 1.0.0
+  contact:
+    name: Cautai Support
+    url: https://cautai.ro/support
+    email: support@cautai.ro
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.cautai.ro/v1
+    description: Production server
+  - url: https://staging-api.cautai.ro/v1
+    description: Staging server
+  - url: http://localhost:3000/api/v1
+    description: Development server
+
+paths:
+  /search:
+    post:
+      summary: Perform search query
+      description: |
+        Execute a search query against multiple sources with hybrid ranking and filtering options.
+        Results are ranked using a combination of BM25 and semantic similarity algorithms.
+      operationId: search
+      tags:
+        - Search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              basic_search:
+                summary: Basic search query
+                value:
+                  query: "machine learning algorithms"
+                  limit: 10
+                  language: "en"
+              advanced_search:
+                summary: Advanced search with filters
+                value:
+                  query: "quantum computing applications"
+                  limit: 20
+                  language: "en"
+                  contentType: "academic"
+                  dateRange: "year"
+                  safeSearch: true
+      responses:
+        '200':
+          description: Search completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Invalid search parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '408':
+          description: Search timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /search/{searchId}:
+    get:
+      summary: Get search result by ID
+      description: Retrieve a previously executed search result by its unique identifier
+      operationId: getSearchResult
+      tags:
+        - Search
+      parameters:
+        - name: searchId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Unique identifier of the search result
+      responses:
+        '200':
+          description: Search result retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '404':
+          description: Search result not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /compose:
+    post:
+      summary: Generate AI composition
+      description: |
+        Generate AI-powered content composition based on search results and user requirements.
+        Supports multiple styles and formats for different use cases.
+      operationId: compose
+      tags:
+        - Composition
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompositionRequest'
+            examples:
+              informative_composition:
+                summary: Informative article composition
+                value:
+                  query: "explain quantum computing"
+                  style: "informative"
+                  maxLength: 1000
+                  language: "en"
+              summary_composition:
+                summary: Brief summary composition
+                value:
+                  query: "latest AI trends 2025"
+                  style: "summary"
+                  maxLength: 300
+                  language: "en"
+      responses:
+        '200':
+          description: Composition generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompositionResponse'
+        '400':
+          description: Invalid composition parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /cite:
+    post:
+      summary: Generate citations
+      description: |
+        Generate properly formatted citations from source materials in various academic styles
+        including APA, MLA, Chicago, and IEEE formats.
+      operationId: generateCitations
+      tags:
+        - Citations
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CitationRequest'
+            examples:
+              apa_citations:
+                summary: APA style citations
+                value:
+                  sources:
+                    - title: "Artificial Intelligence: A Modern Approach"
+                      authors: ["Stuart Russell", "Peter Norvig"]
+                      url: "https://example.com/ai-book"
+                      publishDate: "2020-04-28"
+                      type: "book"
+                  style: "apa"
+      responses:
+        '200':
+          description: Citations generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CitationResponse'
+        '400':
+          description: Invalid citation parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/login:
+    post:
+      summary: User authentication
+      description: Authenticate user and receive access token
+      operationId: login
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /health:
+    get:
+      summary: Health check
+      description: Check the health status of the API and its dependencies
+      operationId: healthCheck
+      tags:
+        - System
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: System is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /ready:
+    get:
+      summary: Readiness check
+      description: Check if the API is ready to serve requests
+      operationId: readinessCheck
+      tags:
+        - System
+      responses:
+        '200':
+          description: System is ready
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadinessResponse'
+
+  /metrics:
+    get:
+      summary: Metrics endpoint
+      description: Retrieve system metrics and performance data
+      operationId: getMetrics
+      tags:
+        - System
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    SearchRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: Search query string
+          example: "machine learning algorithms"
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+          description: Maximum number of results to return
+        offset:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Number of results to skip (for pagination)
+        language:
+          type: string
+          enum: ["en", "ro"]
+          default: "en"
+          description: Language preference for results
+        contentType:
+          type: string
+          enum: ["web", "academic", "news", "blog"]
+          description: Filter by content type
+        dateRange:
+          type: string
+          enum: ["day", "week", "month", "year", "all"]
+          description: Time range for content filtering
+        safeSearch:
+          type: boolean
+          default: true
+          description: Enable safe search filtering
+        timeout:
+          type: integer
+          minimum: 1000
+          maximum: 30000
+          default: 10000
+          description: Search timeout in milliseconds
+
+    SearchResponse:
+      type: object
+      properties:
+        searchId:
+          type: string
+          format: uuid
+          description: Unique identifier for this search
+        query:
+          type: string
+          description: Original search query
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
+        total:
+          type: integer
+          description: Total number of results found
+        processingTime:
+          type: integer
+          description: Processing time in milliseconds
+        hasMore:
+          type: boolean
+          description: Whether more results are available
+        metadata:
+          type: object
+          properties:
+            filters:
+              type: object
+              description: Applied filters
+            sources:
+              type: array
+              items:
+                type: string
+              description: Search sources used
+            ranking:
+              type: object
+              description: Ranking algorithm information
+
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique result identifier
+        title:
+          type: string
+          description: Result title
+        url:
+          type: string
+          format: uri
+          description: Source URL
+        snippet:
+          type: string
+          description: Content excerpt
+        relevance:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Relevance score
+        source:
+          type: string
+          description: Source identifier
+        timestamp:
+          type: string
+          format: date-time
+          description: When the result was indexed
+        metadata:
+          type: object
+          description: Additional result metadata
+
+    CompositionRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: Topic or question for composition
+        style:
+          type: string
+          enum: ["informative", "summary", "detailed", "brief"]
+          default: "informative"
+          description: Writing style for composition
+        maxLength:
+          type: integer
+          minimum: 100
+          maximum: 5000
+          default: 1000
+          description: Maximum length in characters
+        language:
+          type: string
+          enum: ["en", "ro"]
+          default: "en"
+          description: Language for composition
+        sources:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Specific sources to use for composition
+
+    CompositionResponse:
+      type: object
+      properties:
+        compositionId:
+          type: string
+          format: uuid
+          description: Unique identifier for this composition
+        query:
+          type: string
+          description: Original composition query
+        composition:
+          type: string
+          description: Generated content
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompositionSource'
+        processingTime:
+          type: integer
+          description: Processing time in milliseconds
+        metadata:
+          type: object
+          properties:
+            style:
+              type: string
+            length:
+              type: integer
+            language:
+              type: string
+
+    CompositionSource:
+      type: object
+      properties:
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        relevance:
+          type: number
+          minimum: 0
+          maximum: 1
+        excerpt:
+          type: string
+
+    CitationRequest:
+      type: object
+      required:
+        - sources
+        - style
+      properties:
+        sources:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/CitationSource'
+        style:
+          type: string
+          enum: ["apa", "mla", "chicago", "ieee"]
+          description: Citation format style
+
+    CitationSource:
+      type: object
+      required:
+        - title
+        - url
+      properties:
+        title:
+          type: string
+          description: Source title
+        authors:
+          type: array
+          items:
+            type: string
+          description: Author names
+        url:
+          type: string
+          format: uri
+          description: Source URL
+        publishDate:
+          type: string
+          format: date
+          description: Publication date
+        type:
+          type: string
+          enum: ["article", "book", "website", "journal"]
+          description: Source type
+        publisher:
+          type: string
+          description: Publisher name
+        journal:
+          type: string
+          description: Journal name (for articles)
+        volume:
+          type: string
+          description: Volume number
+        issue:
+          type: string
+          description: Issue number
+        pages:
+          type: string
+          description: Page range
+
+    CitationResponse:
+      type: object
+      properties:
+        citationId:
+          type: string
+          format: uuid
+        style:
+          type: string
+        citations:
+          type: array
+          items:
+            type: string
+          description: Formatted citations
+        bibliography:
+          type: array
+          items:
+            $ref: '#/components/schemas/BibliographyEntry'
+
+    BibliographyEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        citation:
+          type: string
+        source:
+          $ref: '#/components/schemas/CitationSource'
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address
+        password:
+          type: string
+          format: password
+          description: User password
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT access token
+        refreshToken:
+          type: string
+          description: Refresh token
+        expiresIn:
+          type: integer
+          description: Token expiration time in seconds
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            name:
+              type: string
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ["healthy", "unhealthy"]
+        timestamp:
+          type: string
+          format: date-time
+        version:
+          type: string
+        services:
+          type: object
+          additionalProperties:
+            type: string
+            enum: ["healthy", "unhealthy"]
+        errors:
+          type: array
+          items:
+            type: string
+
+    ReadinessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ["ready", "not-ready"]
+        timestamp:
+          type: string
+          format: date-time
+
+    MetricsResponse:
+      type: object
+      properties:
+        requests:
+          type: object
+          properties:
+            total:
+              type: integer
+            rate:
+              type: number
+        responses:
+          type: object
+          properties:
+            total:
+              type: integer
+            averageTime:
+              type: number
+        errors:
+          type: object
+          properties:
+            total:
+              type: integer
+            rate:
+              type: number
+        system:
+          type: object
+          properties:
+            cpu:
+              type: number
+            memory:
+              type: number
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error type
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+          description: Detailed error information
+        timestamp:
+          type: string
+          format: date-time
+        requestId:
+          type: string
+          description: Unique request identifier for debugging
+
+tags:
+  - name: Search
+    description: Search operations and result management
+  - name: Composition
+    description: AI-powered content composition
+  - name: Citations
+    description: Academic citation generation
+  - name: Authentication
+    description: User authentication and authorization
+  - name: System
+    description: System health and monitoring

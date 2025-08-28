@@ -1,0 +1,962 @@
+# Security Validation & Penetration Testing
+# MemorAI MCP Server v9.5.0 - Phase 6 Task 11: Enterprise Integration
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-security-config
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: security
+    environment: production
+    version: v9.5.0
+data:
+  # Security Testing Configuration
+  SECURITY_TESTING_ENABLED: "true"
+  SECURITY_SCAN_SCHEDULE: "0 2 * * MON"  # Weekly on Monday at 2 AM
+  VULNERABILITY_SCAN_SCHEDULE: "0 3 * * *"  # Daily at 3 AM
+  PENETRATION_TEST_SCHEDULE: "0 1 1 * *"  # Monthly on 1st at 1 AM
+  
+  # Compliance Standards
+  COMPLIANCE_STANDARDS: "SOX,GDPR,HIPAA,PCI_DSS,ISO27001,NIST"
+  SECURITY_FRAMEWORK: "OWASP_TOP10,CIS_CONTROLS,NIST_CSF"
+  AUDIT_RETENTION_YEARS: "7"
+  
+  # Vulnerability Scanning
+  VULN_SCAN_ENABLED: "true"
+  VULN_SCAN_TYPES: "container,dependency,code,infrastructure"
+  VULN_SEVERITY_THRESHOLD: "MEDIUM"
+  VULN_AUTO_REMEDIATION: "false"
+  
+  # Container Security
+  CONTAINER_SCAN_ENABLED: "true"
+  BASE_IMAGE_SCAN: "true"
+  RUNTIME_SECURITY_MONITORING: "true"
+  CONTAINER_HARDENING: "true"
+  
+  # Network Security
+  NETWORK_SECURITY_SCAN: "true"
+  TLS_CERTIFICATE_VALIDATION: "true"
+  PORT_SCAN_DETECTION: "true"
+  FIREWALL_RULES_AUDIT: "true"
+  
+  # Application Security
+  API_SECURITY_TESTING: "true"
+  AUTHENTICATION_TESTING: "true"
+  AUTHORIZATION_TESTING: "true"
+  INPUT_VALIDATION_TESTING: "true"
+  XSS_PROTECTION_TESTING: "true"
+  SQL_INJECTION_TESTING: "true"
+  CSRF_PROTECTION_TESTING: "true"
+  
+  # Data Security
+  ENCRYPTION_VALIDATION: "true"
+  DATA_LEAK_PREVENTION: "true"
+  SENSITIVE_DATA_DETECTION: "true"
+  BACKUP_SECURITY_AUDIT: "true"
+  
+  # Identity & Access Management
+  IAM_SECURITY_AUDIT: "true"
+  RBAC_VALIDATION: "true"
+  PRIVILEGED_ACCESS_AUDIT: "true"
+  SERVICE_ACCOUNT_AUDIT: "true"
+  
+  # Monitoring & Alerting
+  SECURITY_MONITORING_ENABLED: "true"
+  REAL_TIME_THREAT_DETECTION: "true"
+  ANOMALY_DETECTION: "true"
+  INCIDENT_RESPONSE_AUTOMATION: "true"
+  
+  # Penetration Testing
+  PENTEST_ENABLED: "true"
+  PENTEST_SCOPE: "web_app,api,network,social_engineering"
+  PENTEST_METHODOLOGY: "OWASP_TESTING_GUIDE"
+  PENTEST_TOOLS: "nmap,burp_suite,sqlmap,nikto,zap"
+  
+  # Compliance Reporting
+  COMPLIANCE_REPORTING: "true"
+  SECURITY_SCORECARD: "true"
+  EXECUTIVE_DASHBOARD: "true"
+  AUTOMATED_COMPLIANCE_CHECK: "true"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: memorai-security-secrets
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: security
+    environment: production
+    version: v9.5.0
+type: Opaque
+stringData:
+  # Security Tool API Keys
+  SECURITY_SCANNER_API_KEY: "memorai-security-scanner-api-key-2025"
+  VULNERABILITY_DB_TOKEN: "vuln-database-access-token"
+  
+  # Third-Party Security Services
+  QUALYS_API_KEY: "qualys-security-scanning-api-key"
+  SNYK_TOKEN: "snyk-vulnerability-scanning-token"
+  SONARQUBE_TOKEN: "sonarqube-code-quality-security-token"
+  
+  # Penetration Testing Credentials
+  PENTEST_ADMIN_USER: "security_admin"
+  PENTEST_ADMIN_PASS: "secure-pentest-admin-password"
+  PENTEST_SERVICE_TOKEN: "penetration-testing-service-token"
+  
+  # Security Monitoring
+  SIEM_API_KEY: "siem-security-monitoring-api-key"
+  THREAT_INTEL_TOKEN: "threat-intelligence-feed-token"
+  
+  # Compliance Reporting
+  COMPLIANCE_PORTAL_TOKEN: "compliance-reporting-portal-token"
+  AUDIT_LOG_ENCRYPTION_KEY: "audit-log-encryption-key-32-chars"
+  
+  # Alert Webhooks
+  SECURITY_ALERT_WEBHOOK: "https://hooks.slack.com/services/security/alert/webhook"
+  INCIDENT_RESPONSE_WEBHOOK: "https://incident.response.system/webhook"
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memorai-vulnerability-scan
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: security
+    type: vulnerability-scan
+    environment: production
+    version: v9.5.0
+spec:
+  schedule: "0 3 * * *"  # Daily at 3 AM
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: memorai-security-service-account
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1004
+            runAsGroup: 3004
+            fsGroup: 2004
+          containers:
+          - name: vulnerability-scanner
+            image: memorai/security-scanner:v9.5.0
+            command:
+            - /bin/bash
+            - -c
+            - |
+              set -euo pipefail
+              
+              echo "🔍 Starting MemorAI Vulnerability Scan - $(date)"
+              echo "================================================"
+              
+              SCAN_DATE=$(date +%Y%m%d_%H%M%S)
+              SCAN_DIR="/security/scans/vulnerability/$SCAN_DATE"
+              mkdir -p "$SCAN_DIR"
+              
+              # Container Image Vulnerability Scan
+              if [[ "$CONTAINER_SCAN_ENABLED" == "true" ]]; then
+                echo "🐳 Scanning container images for vulnerabilities..."
+                
+                # Get all running containers in namespace
+                IMAGES=$(kubectl get pods -n memorai-production -o jsonpath='{.items[*].spec.containers[*].image}' | tr ' ' '\n' | sort -u)
+                
+                for image in $IMAGES; do
+                  echo "🔍 Scanning image: $image"
+                  
+                  # Trivy container scan
+                  trivy image \
+                    --format json \
+                    --severity HIGH,CRITICAL \
+                    --output "$SCAN_DIR/container_$(echo $image | tr '/:' '_').json" \
+                    "$image"
+                  
+                  # Snyk container scan
+                  if [[ -n "$SNYK_TOKEN" ]]; then
+                    snyk container test "$image" \
+                      --json \
+                      --severity-threshold=medium \
+                      > "$SCAN_DIR/snyk_$(echo $image | tr '/:' '_').json" || true
+                  fi
+                done
+              fi
+              
+              # Kubernetes Security Scan
+              echo "☸️ Running Kubernetes security scan..."
+              kube-bench run \
+                --targets master,node,etcd,policies \
+                --json \
+                --outputfile "$SCAN_DIR/kube_bench_results.json"
+              
+              # Network Security Scan
+              if [[ "$NETWORK_SECURITY_SCAN" == "true" ]]; then
+                echo "🌐 Running network security scan..."
+                
+                # Port scan of services
+                nmap -sS -O -A --script vuln \
+                  -oX "$SCAN_DIR/network_scan.xml" \
+                  memorai-mcp-service.memorai-production.svc.cluster.local
+                
+                # TLS/SSL certificate validation
+                if [[ "$TLS_CERTIFICATE_VALIDATION" == "true" ]]; then
+                  echo "🔒 Validating TLS certificates..."
+                  testssl.sh \
+                    --jsonfile-pretty "$SCAN_DIR/tls_validation.json" \
+                    https://memorai-mcp-service.memorai-production.svc.cluster.local:4950
+                fi
+              fi
+              
+              # Application Security Scan
+              if [[ "$API_SECURITY_TESTING" == "true" ]]; then
+                echo "🔐 Running API security tests..."
+                
+                # OWASP ZAP API scan
+                zap-baseline.py \
+                  -t http://memorai-mcp-service.memorai-production.svc.cluster.local:4950 \
+                  -J "$SCAN_DIR/zap_baseline.json" \
+                  -x "$SCAN_DIR/zap_baseline.xml"
+                
+                # Custom API security tests
+                python3 /scripts/api_security_tests.py \
+                  --base-url "http://memorai-mcp-service.memorai-production.svc.cluster.local:4950" \
+                  --api-key "$SECURITY_SCANNER_API_KEY" \
+                  --output "$SCAN_DIR/api_security_results.json"
+              fi
+              
+              # Dependency Vulnerability Scan
+              echo "📦 Scanning dependencies for vulnerabilities..."
+              
+              # NPM audit for Node.js dependencies
+              if [[ -f "/app/package.json" ]]; then
+                cd /app
+                npm audit --json > "$SCAN_DIR/npm_audit.json" || true
+              fi
+              
+              # Python security scan
+              if [[ -f "/app/requirements.txt" ]]; then
+                safety check \
+                  --json \
+                  --output "$SCAN_DIR/python_safety.json" \
+                  -r /app/requirements.txt || true
+              fi
+              
+              # Infrastructure as Code Security Scan
+              echo "🏗️ Scanning Infrastructure as Code..."
+              
+              # Checkov scan for Kubernetes manifests
+              checkov -f /manifests/ \
+                --framework kubernetes \
+                --output json \
+                --output-file "$SCAN_DIR/checkov_k8s.json"
+              
+              # Terrascan for infrastructure
+              terrascan scan -i k8s \
+                -d /manifests/ \
+                --output json \
+                > "$SCAN_DIR/terrascan_results.json"
+              
+              # Generate Vulnerability Report
+              echo "📋 Generating vulnerability report..."
+              python3 /scripts/vulnerability_report.py \
+                --scan-dir "$SCAN_DIR" \
+                --output "$SCAN_DIR/vulnerability_report.html" \
+                --json-output "$SCAN_DIR/vulnerability_summary.json"
+              
+              # Check for Critical Vulnerabilities
+              CRITICAL_COUNT=$(jq '[.vulnerabilities[] | select(.severity == "CRITICAL")] | length' "$SCAN_DIR/vulnerability_summary.json")
+              HIGH_COUNT=$(jq '[.vulnerabilities[] | select(.severity == "HIGH")] | length' "$SCAN_DIR/vulnerability_summary.json")
+              
+              echo "🔍 Vulnerability Summary:"
+              echo "  - Critical: $CRITICAL_COUNT"
+              echo "  - High: $HIGH_COUNT"
+              
+              # Upload results to secure storage
+              echo "☁️ Uploading scan results..."
+              aws s3 cp "$SCAN_DIR/" "s3://memorai-security-reports/vulnerability/$SCAN_DATE/" \
+                --recursive \
+                --server-side-encryption AES256
+              
+              # Send security alerts if critical vulnerabilities found
+              if [[ $CRITICAL_COUNT -gt 0 ]] || [[ $HIGH_COUNT -gt 10 ]]; then
+                echo "🚨 Critical security issues detected - sending alert..."
+                curl -X POST "$SECURITY_ALERT_WEBHOOK" \
+                  -H "Content-Type: application/json" \
+                  -d "{
+                    \"text\": \"🚨 Critical Security Alert: $CRITICAL_COUNT critical and $HIGH_COUNT high severity vulnerabilities detected in MemorAI MCP Server\",
+                    \"attachments\": [{
+                      \"color\": \"danger\",
+                      \"fields\": [
+                        {\"title\": \"Critical Vulnerabilities\", \"value\": \"$CRITICAL_COUNT\", \"short\": true},
+                        {\"title\": \"High Vulnerabilities\", \"value\": \"$HIGH_COUNT\", \"short\": true},
+                        {\"title\": \"Report\", \"value\": \"s3://memorai-security-reports/vulnerability/$SCAN_DATE/\", \"short\": false}
+                      ]
+                    }]
+                  }"
+              fi
+              
+              echo "✅ Vulnerability scan completed successfully!"
+            envFrom:
+            - configMapRef:
+                name: memorai-security-config
+            - secretRef:
+                name: memorai-security-secrets
+            resources:
+              requests:
+                memory: "2Gi"
+                cpu: "1000m"
+              limits:
+                memory: "4Gi"
+                cpu: "2000m"
+            volumeMounts:
+            - name: security-storage
+              mountPath: /security
+            - name: app-source
+              mountPath: /app
+              readOnly: true
+            - name: k8s-manifests
+              mountPath: /manifests
+              readOnly: true
+            - name: scripts-volume
+              mountPath: /scripts
+              readOnly: true
+          volumes:
+          - name: security-storage
+            persistentVolumeClaim:
+              claimName: memorai-security-storage
+          - name: app-source
+            configMap:
+              name: memorai-app-source
+          - name: k8s-manifests
+            configMap:
+              name: memorai-k8s-manifests
+          - name: scripts-volume
+            configMap:
+              name: memorai-security-scripts
+              defaultMode: 0755
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memorai-penetration-test
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: security
+    type: penetration-test
+    environment: production
+    version: v9.5.0
+spec:
+  schedule: "0 1 1 * *"  # Monthly on 1st at 1 AM
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: memorai-security-service-account
+          containers:
+          - name: penetration-tester
+            image: memorai/pentest-suite:v9.5.0
+            command:
+            - /bin/bash
+            - -c
+            - |
+              set -euo pipefail
+              
+              echo "🎯 Starting MemorAI Penetration Test - $(date)"
+              echo "============================================="
+              
+              PENTEST_DATE=$(date +%Y%m%d_%H%M%S)
+              PENTEST_DIR="/security/pentests/$PENTEST_DATE"
+              mkdir -p "$PENTEST_DIR"
+              
+              TARGET_URL="http://memorai-mcp-service.memorai-production.svc.cluster.local:4950"
+              
+              # Reconnaissance Phase
+              echo "🔍 Phase 1: Reconnaissance"
+              echo "=========================="
+              
+              # Network discovery
+              nmap -sn -PE -PP -PS80,443 -PA3389 \
+                --dns-servers 8.8.8.8 \
+                -oX "$PENTEST_DIR/network_discovery.xml" \
+                memorai-production.svc.cluster.local/24
+              
+              # Service enumeration
+              nmap -sS -sV -sC -A --script vuln \
+                -oX "$PENTEST_DIR/service_enumeration.xml" \
+                memorai-mcp-service.memorai-production.svc.cluster.local
+              
+              # Web application discovery
+              dirb "$TARGET_URL" \
+                /usr/share/dirb/wordlists/common.txt \
+                -o "$PENTEST_DIR/directory_bruteforce.txt"
+              
+              # Vulnerability Assessment Phase
+              echo "🔐 Phase 2: Vulnerability Assessment"
+              echo "==================================="
+              
+              # SQL Injection Testing
+              if [[ "$SQL_INJECTION_TESTING" == "true" ]]; then
+                echo "🗃️ Testing for SQL injection vulnerabilities..."
+                sqlmap -u "$TARGET_URL/mcp" \
+                  --data='{"jsonrpc":"2.0","method":"recall","params":{"agentId":"test","query":"*"},"id":1}' \
+                  --batch \
+                  --output-dir="$PENTEST_DIR/sqlmap"
+              fi
+              
+              # Cross-Site Scripting (XSS) Testing
+              if [[ "$XSS_PROTECTION_TESTING" == "true" ]]; then
+                echo "🕸️ Testing for XSS vulnerabilities..."
+                python3 /scripts/xss_scanner.py \
+                  --url "$TARGET_URL" \
+                  --output "$PENTEST_DIR/xss_results.json"
+              fi
+              
+              # Authentication & Authorization Testing
+              if [[ "$AUTHENTICATION_TESTING" == "true" ]]; then
+                echo "🔑 Testing authentication mechanisms..."
+                python3 /scripts/auth_pentest.py \
+                  --base-url "$TARGET_URL" \
+                  --output "$PENTEST_DIR/auth_test_results.json"
+              fi
+              
+              # API Security Testing
+              if [[ "$API_SECURITY_TESTING" == "true" ]]; then
+                echo "🔌 Testing API security..."
+                
+                # OWASP ZAP active scan
+                zap-full-scan.py \
+                  -t "$TARGET_URL" \
+                  -J "$PENTEST_DIR/zap_full_scan.json" \
+                  -x "$PENTEST_DIR/zap_full_scan.xml"
+                
+                # Custom API fuzzing
+                python3 /scripts/api_fuzzer.py \
+                  --base-url "$TARGET_URL" \
+                  --api-key "$PENTEST_SERVICE_TOKEN" \
+                  --output "$PENTEST_DIR/api_fuzzing_results.json"
+              fi
+              
+              # Business Logic Testing
+              echo "💼 Testing business logic vulnerabilities..."
+              python3 /scripts/business_logic_tests.py \
+                --base-url "$TARGET_URL" \
+                --api-key "$PENTEST_SERVICE_TOKEN" \
+                --output "$PENTEST_DIR/business_logic_results.json"
+              
+              # Exploitation Phase (Safe Testing Only)
+              echo "⚠️ Phase 3: Safe Exploitation Testing"
+              echo "====================================="
+              
+              # Test for privilege escalation
+              python3 /scripts/privilege_escalation_test.py \
+                --target "$TARGET_URL" \
+                --safe-mode true \
+                --output "$PENTEST_DIR/privilege_escalation.json"
+              
+              # Test for data exposure
+              python3 /scripts/data_exposure_test.py \
+                --target "$TARGET_URL" \
+                --api-key "$PENTEST_SERVICE_TOKEN" \
+                --output "$PENTEST_DIR/data_exposure.json"
+              
+              # Reporting Phase
+              echo "📋 Phase 4: Report Generation"
+              echo "============================="
+              
+              # Generate comprehensive penetration test report
+              python3 /scripts/pentest_report_generator.py \
+                --pentest-dir "$PENTEST_DIR" \
+                --target "$TARGET_URL" \
+                --methodology "$PENTEST_METHODOLOGY" \
+                --output "$PENTEST_DIR/penetration_test_report.html" \
+                --executive-summary "$PENTEST_DIR/executive_summary.pdf"
+              
+              # Calculate security score
+              TOTAL_VULNS=$(find "$PENTEST_DIR" -name "*.json" -exec jq '.vulnerabilities | length // 0' {} \; | paste -sd+ | bc)
+              CRITICAL_VULNS=$(find "$PENTEST_DIR" -name "*.json" -exec jq '[.vulnerabilities[]? | select(.severity == "CRITICAL")] | length' {} \; | paste -sd+ | bc)
+              HIGH_VULNS=$(find "$PENTEST_DIR" -name "*.json" -exec jq '[.vulnerabilities[]? | select(.severity == "HIGH")] | length' {} \; | paste -sd+ | bc)
+              
+              # Security scoring (100 - penalties)
+              SECURITY_SCORE=$(echo "100 - ($CRITICAL_VULNS * 20) - ($HIGH_VULNS * 5)" | bc)
+              SECURITY_SCORE=$(( SECURITY_SCORE > 0 ? SECURITY_SCORE : 0 ))
+              
+              echo "🎯 Penetration Test Summary:"
+              echo "  - Total Vulnerabilities: $TOTAL_VULNS"
+              echo "  - Critical: $CRITICAL_VULNS"
+              echo "  - High: $HIGH_VULNS"
+              echo "  - Security Score: $SECURITY_SCORE/100"
+              
+              # Upload results
+              echo "☁️ Uploading penetration test results..."
+              aws s3 cp "$PENTEST_DIR/" "s3://memorai-security-reports/pentest/$PENTEST_DATE/" \
+                --recursive \
+                --server-side-encryption AES256
+              
+              # Send executive summary to security team
+              if [[ $CRITICAL_VULNS -gt 0 ]] || [[ $SECURITY_SCORE -lt 70 ]]; then
+                echo "🚨 Critical security findings - escalating to incident response..."
+                curl -X POST "$INCIDENT_RESPONSE_WEBHOOK" \
+                  -H "Content-Type: application/json" \
+                  -d "{
+                    \"severity\": \"high\",
+                    \"title\": \"Critical Security Vulnerabilities Detected\",
+                    \"description\": \"Penetration testing revealed $CRITICAL_VULNS critical and $HIGH_VULNS high severity vulnerabilities. Security score: $SECURITY_SCORE/100\",
+                    \"report_url\": \"s3://memorai-security-reports/pentest/$PENTEST_DATE/penetration_test_report.html\"
+                  }"
+              fi
+              
+              echo "✅ Penetration test completed successfully!"
+            envFrom:
+            - configMapRef:
+                name: memorai-security-config
+            - secretRef:
+                name: memorai-security-secrets
+            resources:
+              requests:
+                memory: "4Gi"
+                cpu: "2000m"
+              limits:
+                memory: "8Gi"
+                cpu: "4000m"
+            volumeMounts:
+            - name: security-storage
+              mountPath: /security
+            - name: pentest-scripts
+              mountPath: /scripts
+              readOnly: true
+          volumes:
+          - name: security-storage
+            persistentVolumeClaim:
+              claimName: memorai-security-storage
+          - name: pentest-scripts
+            configMap:
+              name: memorai-pentest-scripts
+              defaultMode: 0755
+          restartPolicy: OnFailure
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-security-scripts
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: security
+    type: scripts
+    environment: production
+    version: v9.5.0
+data:
+  api_security_tests.py: |
+    #!/usr/bin/env python3
+    """
+    MemorAI API Security Testing Suite
+    Comprehensive security testing for MemorAI MCP Server API
+    """
+    import asyncio
+    import aiohttp
+    import json
+    import argparse
+    from typing import List, Dict, Any
+    import time
+    
+    class APISecurityTester:
+        def __init__(self, base_url: str, api_key: str):
+            self.base_url = base_url
+            self.api_key = api_key
+            self.session = None
+            self.results = {
+                'timestamp': time.time(),
+                'target': base_url,
+                'tests': {},
+                'vulnerabilities': [],
+                'summary': {}
+            }
+    
+        async def __aenter__(self):
+            connector = aiohttp.TCPConnector(limit=100)
+            self.session = aiohttp.ClientSession(
+                connector=connector,
+                headers={'Authorization': f'Bearer {self.api_key}'}
+            )
+            return self
+    
+        async def __aexit__(self, exc_type, exc_val, exc_tb):
+            if self.session:
+                await self.session.close()
+    
+        async def test_authentication_bypass(self):
+            """Test for authentication bypass vulnerabilities"""
+            print("🔐 Testing authentication bypass...")
+            
+            test_results = []
+            
+            # Test without API key
+            async with self.session.post(
+                f"{self.base_url}/mcp",
+                headers={'Authorization': ''},
+                json={
+                    "jsonrpc": "2.0",
+                    "method": "recall",
+                    "params": {"agentId": "test", "query": "sensitive"},
+                    "id": 1
+                }
+            ) as response:
+                if response.status == 200:
+                    self.add_vulnerability("HIGH", "Authentication bypass possible without API key")
+                test_results.append({
+                    'test': 'no_api_key',
+                    'status': response.status,
+                    'vulnerable': response.status == 200
+                })
+            
+            # Test with invalid API key
+            async with self.session.post(
+                f"{self.base_url}/mcp",
+                headers={'Authorization': 'Bearer invalid-key-12345'},
+                json={
+                    "jsonrpc": "2.0",
+                    "method": "recall",
+                    "params": {"agentId": "test", "query": "data"},
+                    "id": 1
+                }
+            ) as response:
+                if response.status == 200:
+                    self.add_vulnerability("HIGH", "Authentication bypass with invalid API key")
+                test_results.append({
+                    'test': 'invalid_api_key',
+                    'status': response.status,
+                    'vulnerable': response.status == 200
+                })
+            
+            # Test SQL injection in API key
+            async with self.session.post(
+                f"{self.base_url}/mcp",
+                headers={'Authorization': "Bearer test' OR '1'='1"},
+                json={
+                    "jsonrpc": "2.0",
+                    "method": "recall",
+                    "params": {"agentId": "test", "query": "data"},
+                    "id": 1
+                }
+            ) as response:
+                if response.status == 200:
+                    self.add_vulnerability("CRITICAL", "SQL injection in API key authentication")
+                test_results.append({
+                    'test': 'sql_injection_auth',
+                    'status': response.status,
+                    'vulnerable': response.status == 200
+                })
+            
+            self.results['tests']['authentication'] = test_results
+    
+        async def test_authorization_flaws(self):
+            """Test for authorization vulnerabilities"""
+            print("🔒 Testing authorization flaws...")
+            
+            test_results = []
+            
+            # Test cross-agent access
+            async with self.session.post(
+                f"{self.base_url}/mcp",
+                json={
+                    "jsonrpc": "2.0",
+                    "method": "recall",
+                    "params": {"agentId": "admin", "query": "*"},
+                    "id": 1
+                }
+            ) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    if 'result' in data and data['result'].get('memories'):
+                        self.add_vulnerability("HIGH", "Possible cross-agent data access")
+                test_results.append({
+                    'test': 'cross_agent_access',
+                    'status': response.status,
+                    'has_data': 'result' in (await response.json() if response.status == 200 else {})
+                })
+            
+            # Test privilege escalation
+            async with self.session.post(
+                f"{self.base_url}/mcp",
+                json={
+                    "jsonrpc": "2.0",
+                    "method": "remember",
+                    "params": {
+                        "agentId": "system",
+                        "content": "admin privileges test",
+                        "metadata": {"privilege": "admin"}
+                    },
+                    "id": 1
+                }
+            ) as response:
+                if response.status == 200:
+                    self.add_vulnerability("CRITICAL", "Possible privilege escalation to system agent")
+                test_results.append({
+                    'test': 'privilege_escalation',
+                    'status': response.status,
+                    'vulnerable': response.status == 200
+                })
+            
+            self.results['tests']['authorization'] = test_results
+    
+        async def test_injection_attacks(self):
+            """Test for injection attack vulnerabilities"""
+            print("💉 Testing injection attacks...")
+            
+            test_results = []
+            
+            # SQL Injection tests
+            sql_payloads = [
+                "'; DROP TABLE memories; --",
+                "' OR '1'='1' --",
+                "'; SELECT * FROM users; --",
+                "' UNION SELECT password FROM admin_users --"
+            ]
+            
+            for payload in sql_payloads:
+                async with self.session.post(
+                    f"{self.base_url}/mcp",
+                    json={
+                        "jsonrpc": "2.0",
+                        "method": "recall",
+                        "params": {"agentId": "test", "query": payload},
+                        "id": 1
+                    }
+                ) as response:
+                    response_text = await response.text()
+                    if any(error in response_text.lower() for error in ['sql', 'database', 'syntax error', 'mysql', 'postgres']):
+                        self.add_vulnerability("CRITICAL", f"SQL injection vulnerability detected with payload: {payload}")
+                    test_results.append({
+                        'test': 'sql_injection',
+                        'payload': payload,
+                        'status': response.status,
+                        'vulnerable': 'sql' in response_text.lower()
+                    })
+            
+            # NoSQL Injection tests
+            nosql_payloads = [
+                {"$ne": ""},
+                {"$gt": ""},
+                {"$regex": ".*"},
+                {"$where": "function() { return true; }"}
+            ]
+            
+            for payload in nosql_payloads:
+                async with self.session.post(
+                    f"{self.base_url}/mcp",
+                    json={
+                        "jsonrpc": "2.0",
+                        "method": "recall",
+                        "params": {"agentId": "test", "query": payload},
+                        "id": 1
+                    }
+                ) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        if 'result' in data and len(data.get('result', {}).get('memories', [])) > 100:
+                            self.add_vulnerability("HIGH", f"NoSQL injection possible with payload: {payload}")
+                    test_results.append({
+                        'test': 'nosql_injection',
+                        'payload': str(payload),
+                        'status': response.status,
+                        'excessive_results': 'result' in (await response.json() if response.status == 200 else {})
+                    })
+            
+            self.results['tests']['injection'] = test_results
+    
+        async def test_data_exposure(self):
+            """Test for sensitive data exposure"""
+            print("📊 Testing data exposure...")
+            
+            test_results = []
+            
+            # Test for debug information exposure
+            async with self.session.get(f"{self.base_url}/debug") as response:
+                if response.status == 200:
+                    self.add_vulnerability("MEDIUM", "Debug endpoint accessible in production")
+                test_results.append({
+                    'test': 'debug_endpoint',
+                    'status': response.status,
+                    'vulnerable': response.status == 200
+                })
+            
+            # Test for configuration exposure
+            async with self.session.get(f"{self.base_url}/.env") as response:
+                if response.status == 200:
+                    self.add_vulnerability("CRITICAL", "Environment configuration file exposed")
+                test_results.append({
+                    'test': 'env_file_exposure',
+                    'status': response.status,
+                    'vulnerable': response.status == 200
+                })
+            
+            # Test for backup file exposure
+            backup_files = ['.backup', '.bak', '.old', '.tmp', 'backup.sql', 'dump.sql']
+            for backup_file in backup_files:
+                async with self.session.get(f"{self.base_url}/{backup_file}") as response:
+                    if response.status == 200:
+                        self.add_vulnerability("HIGH", f"Backup file exposed: {backup_file}")
+                    test_results.append({
+                        'test': 'backup_file_exposure',
+                        'file': backup_file,
+                        'status': response.status,
+                        'vulnerable': response.status == 200
+                    })
+            
+            self.results['tests']['data_exposure'] = test_results
+    
+        def add_vulnerability(self, severity: str, description: str):
+            """Add a vulnerability to the results"""
+            self.results['vulnerabilities'].append({
+                'severity': severity,
+                'description': description,
+                'timestamp': time.time()
+            })
+    
+        async def run_all_tests(self):
+            """Run all security tests"""
+            print("🚀 Starting comprehensive API security testing...")
+            
+            await self.test_authentication_bypass()
+            await self.test_authorization_flaws()
+            await self.test_injection_attacks()
+            await self.test_data_exposure()
+            
+            # Generate summary
+            total_tests = sum(len(tests) for tests in self.results['tests'].values())
+            vulnerability_counts = {}
+            for vuln in self.results['vulnerabilities']:
+                severity = vuln['severity']
+                vulnerability_counts[severity] = vulnerability_counts.get(severity, 0) + 1
+            
+            self.results['summary'] = {
+                'total_tests': total_tests,
+                'total_vulnerabilities': len(self.results['vulnerabilities']),
+                'vulnerability_counts': vulnerability_counts,
+                'test_completion_time': time.time()
+            }
+    
+        def save_results(self, output_file: str):
+            """Save test results to file"""
+            with open(output_file, 'w') as f:
+                json.dump(self.results, f, indent=2)
+            
+            print(f"💾 Security test results saved to: {output_file}")
+            print(f"📊 Summary: {len(self.results['vulnerabilities'])} vulnerabilities found")
+    
+    async def main():
+        parser = argparse.ArgumentParser(description='MemorAI API Security Testing')
+        parser.add_argument('--base-url', required=True, help='Base URL of MemorAI API')
+        parser.add_argument('--api-key', required=True, help='API key for authentication')
+        parser.add_argument('--output', required=True, help='Output file path')
+        
+        args = parser.parse_args()
+        
+        async with APISecurityTester(args.base_url, args.api_key) as tester:
+            await tester.run_all_tests()
+            tester.save_results(args.output)
+    
+    if __name__ == "__main__":
+        asyncio.run(main())
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memorai-security-storage
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: security
+    environment: production
+    version: v9.5.0
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+  storageClassName: ssd-retain
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memorai-security-service-account
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: security
+    environment: production
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: memorai-security-cluster-role
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps", "extensions"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["batch"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["policy"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: memorai-security-cluster-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: memorai-security-service-account
+  namespace: memorai-production
+roleRef:
+  kind: ClusterRole
+  name: memorai-security-cluster-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: memorai-security-monitor
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: security
+    environment: production
+    version: v9.5.0
+spec:
+  selector:
+    matchLabels:
+      app: memorai-mcp
+      component: security
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /security/metrics
+  - port: health
+    interval: 60s
+    path: /security/health

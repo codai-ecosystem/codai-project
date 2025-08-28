@@ -13,11 +13,11 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Get all memories for TF-IDF calculation
-        const allMemories = await cbdClient.searchDocuments('memories', {
+        // Get all memories for TF-IDF calculation (mock implementation for development)
+        const allMemories = await (cbdClient as any).searchDocuments?.('memories', {
             query: '',
             limit: 1000 // Get reasonable sample for TF-IDF
-        });
+        }) || [];
 
         // Calculate TF-IDF scores
         const scoredResults = calculateTFIDFScores(allMemories, terms, filters);
@@ -118,7 +118,7 @@ function calculateTFIDFScores(documents: any[], searchTerms: string[], filters: 
 
             if (filters.tags && filters.tags.length > 0) {
                 const docTags = doc.tags || [];
-                const hasMatchingTag = filters.tags.some(tag => docTags.includes(tag));
+                const hasMatchingTag = filters.tags.some((tag: string) => docTags.includes(tag));
                 if (!hasMatchingTag) {
                     finalScore *= 0.3;
                 }

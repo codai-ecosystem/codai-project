@@ -77,16 +77,16 @@ const testCases = [
 async function testGlassNetwork() {
     let passedTests = 0;
     let totalTests = testCases.length;
-    
+
     console.log(`\n🧪 Running ${totalTests} network automation tests...\n`);
-    
+
     for (const [index, testCase] of testCases.entries()) {
         console.log(`Test ${index + 1}/4: ${testCase.name}`);
         console.log('─'.repeat(50));
-        
+
         try {
             const result = await runMCPTest(testCase.request);
-            
+
             if (result && result.result && result.result.success) {
                 console.log(`✅ ${testCase.name}: PASSED`);
                 console.log(`📊 Result: ${result.result.message || 'Network operation completed'}`);
@@ -107,20 +107,20 @@ async function testGlassNetwork() {
             console.log(`❌ ${testCase.name}: FAILED`);
             console.log(`🚨 Error: ${error.message}`);
         }
-        
+
         console.log('');
-        
+
         // Small delay between tests
         await new Promise(resolve => setTimeout(resolve, 500));
     }
-    
+
     // Final Results
     console.log('🎯 GLASS NETWORK TEST RESULTS');
     console.log('============================');
     console.log(`✅ Passed: ${passedTests}/${totalTests}`);
     console.log(`❌ Failed: ${totalTests - passedTests}/${totalTests}`);
-    console.log(`📊 Success Rate: ${Math.round((passedTests/totalTests) * 100)}%`);
-    
+    console.log(`📊 Success Rate: ${Math.round((passedTests / totalTests) * 100)}%`);
+
     if (passedTests === totalTests) {
         console.log('\n🎉 ALL NETWORK TESTS PASSED - GLASS NETWORK TOOL READY!');
         console.log('🚀 Phase 3B: Network Automation Engine - COMPLETE!');
@@ -132,7 +132,7 @@ async function testGlassNetwork() {
         console.log('\n🚨 CRITICAL ISSUES - NETWORK TOOL NEEDS ATTENTION');
         console.log('🛠️ Network automation functions require debugging');
     }
-    
+
     return passedTests === totalTests;
 }
 
@@ -169,7 +169,7 @@ function runMCPTest(request) {
                         // Skip non-JSON lines
                     }
                 }
-                
+
                 // If no matching response found, return success indicator
                 resolve({ result: { success: true, message: 'Network test completed' } });
             } catch (e) {

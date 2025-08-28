@@ -1,87 +1,174 @@
-/**
- * 🧠 Core Intelligence Types for Glass MCP Vision
- * Foundational interfaces and types for intelligent action system
- * Shared across context analysis, decision making, error recovery, and learning
- * 
- * Features:
- * - Comprehensive type definitions for all intelligence components
- * - Shared enums and constants for system-wide consistency
- * - Interface definitions for component communication
- * - Configuration types for system customization
- * 
- * @version 9.0.0
- * @author Glass MCP Vision Team
- */
+// ============================================================================
+// Complete Intelligence Types for Glass MCP Visual Automation
+// ============================================================================
 
-// Core context analysis interfaces
-export interface ContextSnapshot {
+// ============================================================================
+// ENUMS AND BASIC TYPES
+// ============================================================================
+
+export enum DecisionType {
+  AUTOMATION = 'automation',
+  UI_INTERACTION = 'ui_interaction',
+  ERROR_RECOVERY = 'error_recovery',
+  LEARNING = 'learning',
+  OPTIMIZATION = 'optimization'
+}
+
+export enum DecisionPriority {
+  LOW = 'low',
+  NORMAL = 'normal',
+  HIGH = 'high',
+  CRITICAL = 'critical'
+}
+
+export enum ConstraintType {
+  RESOURCE = 'resource',
+  TIME = 'time',
+  PERMISSION = 'permission',
+  SAFETY = 'safety',
+  PERFORMANCE = 'performance'
+}
+
+export enum ErrorSeverity {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+  CRITICAL = 'critical'
+}
+
+export enum RecoveryType {
+  RETRY = 'retry',
+  ROLLBACK = 'rollback',
+  ALTERNATIVE = 'alternative',
+  ESCALATION = 'escalation',
+  ABORT = 'abort'
+}
+
+export enum LearningType {
+  SUCCESS_PATTERN = 'success_pattern',
+  FAILURE_PATTERN = 'failure_pattern',
+  OPTIMIZATION = 'optimization',
+  ADAPTATION = 'adaptation'
+}
+
+export enum ConfidenceLevel {
+  VERY_LOW = 'very_low',
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+  VERY_HIGH = 'very_high'
+}
+
+// ============================================================================
+// BASIC SUPPORTING INTERFACES
+// ============================================================================
+
+export interface Cost {
+  timeMs: number;
+  cpuUsage: number;
+  memoryMB: number;
+  riskScore: number;
+}
+
+export interface ExpectedOutcome {
+  description: string;
+  probability: number;
+  confidence: ConfidenceLevel;
+  expectedValue: number;
+}
+
+export interface Prerequisite {
   id: string;
-  timestamp: number;
-  systemContext: SystemContext;
-  applicationContext: ApplicationContext;
-  userContext: UserContext;
-  environmentContext: EnvironmentContext;
-  confidence: number;
-  metadata: ContextMetadata;
+  description: string;
+  required: boolean;
+  validated: boolean;
 }
 
-export interface SystemContext {
-  processLoad: number;
-  memoryUsage: number;
-  diskSpace: number;
-  networkConnectivity: NetworkStatus;
-  activeWindows: WindowInfo[];
-  systemTime: number;
-  timeZone: string;
-  systemResources: ResourceMetrics;
+export interface ReversibilityInfo {
+  isReversible: boolean;
+  reversalSteps: string[];
+  reversalCost: Cost;
+  dataLoss: boolean;
 }
 
-export interface ApplicationContext {
-  activeApplication: ApplicationInfo;
-  applicationHistory: ApplicationInfo[];
-  applicationCapabilities: string[];
-  applicationState: ApplicationState;
-  openDocuments: DocumentInfo[];
-  recentActions: ActionHistory[];
-}
-
-export interface UserContext {
-  interactionPatterns: InteractionPattern[];
-  preferences: UserPreferences;
-  currentTask: TaskContext;
-  behaviorProfile: BehaviorProfile;
-  workingSession: SessionInfo;
-  expertise: ExpertiseLevel;
-}
-
-export interface EnvironmentContext {
-  workingDirectory: string;
-  environmentVariables: Map<string, string>;
-  installedSoftware: SoftwareInfo[];
-  hardwareCapabilities: HardwareInfo;
-  securityConstraints: SecurityConstraint[];
-  organizationalPolicies: PolicyInfo[];
-}
-
-export interface ContextMetadata {
-  analysisVersion: string;
-  analysisTime: number;
-  dataQuality: DataQuality;
-  uncertaintyFactors: UncertaintyFactor[];
-  validityPeriod: number;
-  confidenceBreakdown: ConfidenceBreakdown;
-}
-
-// Decision making interfaces
-export interface DecisionRequest {
+export interface AlternativeOption {
   id: string;
-  type: DecisionType;
-  context: ContextSnapshot;
-  options: DecisionOption[];
-  constraints: DecisionConstraint[];
-  criteria: DecisionCriterion[];
+  description: string;
+  feasibility: number;
+  cost: Cost;
+  expectedOutcome: ExpectedOutcome;
+}
+
+export interface RiskFactor {
+  id: string;
+  description: string;
+  impact: number;
+  probability: number;
+  category: string;
+}
+
+export interface RiskMitigation {
+  riskId: string;
+  strategy: string;
+  effectiveness: number;
+  cost: Cost;
+}
+
+export interface RiskAssessment {
+  overallRisk: number;
+  riskFactors: RiskFactor[];
+  mitigation: RiskMitigation[];
+  acceptableThreshold: number;
+}
+
+export interface ValidationRule {
+  id: string;
+  condition: string;
+  expectedValue: any;
+  operator: 'equals' | 'contains' | 'greater' | 'less' | 'exists';
+}
+
+export interface ValidationCriteria {
+  rules: ValidationRule[];
   timeout: number;
-  priority: DecisionPriority;
+  retryCount: number;
+}
+
+export interface ExecutionStep {
+  id: string;
+  description: string;
+  order: number;
+  duration: number;
+  dependencies: string[];
+  validation: ValidationCriteria;
+}
+
+export interface Checkpoint {
+  stepId: string;
+  validationRules: ValidationRule[];
+  rollbackTrigger: boolean;
+}
+
+export interface RollbackStep {
+  id: string;
+  triggerStepId: string;
+  actions: string[];
+  validation: ValidationCriteria;
+}
+
+export interface ExecutionPlan {
+  steps: ExecutionStep[];
+  totalDuration: number;
+  checkpoints: Checkpoint[];
+  rollbackPlan: RollbackStep[];
+}
+
+export interface DecisionMetadata {
+  createdAt: Date;
+  createdBy: string;
+  version: string;
+  tags: string[];
+  relatedDecisions: string[];
 }
 
 export interface DecisionConstraint {
@@ -93,35 +180,319 @@ export interface DecisionConstraint {
   weight: number;
 }
 
-export interface DecisionResponse {
-  requestId: string;
-  selectedOption: DecisionOption;
-  confidence: number;
-  reasoning: DecisionReasoning;
+// ============================================================================
+// REASONING AND ANALYSIS TYPES
+// ============================================================================
+
+export interface Evidence {
+  source: string;
+  data: any;
+  reliability: number;
+  timestamp: Date;
+}
+
+export interface ReasoningFactor {
+  id: string;
+  description: string;
+  weight: number;
+  evidence: Evidence[];
+  confidence: ConfidenceLevel;
+}
+
+export interface Tradeoff {
+  factor1: string;
+  factor2: string;
+  relationship: 'competing' | 'complementary' | 'neutral';
+  impact: number;
+}
+
+export interface Assumption {
+  id: string;
+  description: string;
+  confidence: ConfidenceLevel;
+  validationMethod: string;
+  criticalness: number;
+}
+
+export interface Uncertainty {
+  factor: string;
+  range: [number, number];
+  distribution: 'uniform' | 'normal' | 'exponential';
+  impact: number;
+}
+
+export interface LearningOpportunity {
+  scenario: string;
+  dataPoints: string[];
+  expectedInsight: string;
+  priority: number;
+}
+
+// ============================================================================
+// CONTEXT AND ENVIRONMENT TYPES
+// ============================================================================
+
+export interface Rectangle {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface CursorInfo {
+  position: [number, number];
+  visible: boolean;
+  shape: string;
+}
+
+export interface UIElement {
+  id: string;
+  type: string;
+  bounds: Rectangle;
+  properties: Record<string, any>;
+  interactable: boolean;
+}
+
+export interface WindowInfo {
+  handle: number;
+  title: string;
+  processId: number;
+  bounds: Rectangle;
+  isActive: boolean;
+  zOrder: number;
+}
+
+export interface ScreenState {
+  resolution: [number, number];
+  activeWindows: WindowInfo[];
+  cursor: CursorInfo;
+  visibleElements: UIElement[];
+  screenshot: string; // base64
+}
+
+export interface ProcessInfo {
+  pid: number;
+  name: string;
+  cpuUsage: number;
+  memoryMB: number;
+}
+
+export interface ApplicationState {
+  activeApplication: string;
+  runningProcesses: ProcessInfo[];
+  systemLoad: number;
+  memoryUsage: number;
+}
+
+export interface UserIntent {
+  primaryGoal: string;
+  subGoals: string[];
+  context: string;
+  constraints: string[];
+  preferences: Record<string, any>;
+}
+
+export interface SystemMetrics {
+  cpuUsage: number;
+  memoryUsage: number;
+  diskUsage: number;
+  networkActivity: number;
+  timestamp: Date;
+}
+
+export interface ActionHistory {
+  timestamp: Date;
+  action: string;
+  target: string;
+  outcome: 'success' | 'failure' | 'partial';
+  duration: number;
+}
+
+export interface PatternInfo {
+  pattern: string;
+  frequency: number;
+  successRate: number;
+  lastSeen: Date;
+}
+
+export interface HistoricalContext {
+  recentActions: ActionHistory[];
+  successPatterns: PatternInfo[];
+  failurePatterns: PatternInfo[];
+  learningInsights: string[];
+}
+
+export interface ContextSnapshot {
+  timestamp: Date;
+  screenState: ScreenState;
+  applicationState: ApplicationState;
+  userIntent: UserIntent;
+  systemMetrics: SystemMetrics;
+  historicalContext: HistoricalContext;
+}
+
+// ============================================================================
+// ERROR AND RECOVERY TYPES
+// ============================================================================
+
+export interface EnvironmentInfo {
+  windowTitle: string;
+  processName: string;
+  screenResolution: [number, number];
+  activeElements: string[];
+}
+
+export interface ActionContext {
+  targetElement: string;
+  actionType: string;
+  parameters: Record<string, any>;
+  environment: EnvironmentInfo;
+}
+
+export interface RecoverabilityAssessment {
+  canRecover: boolean;
+  recoveryStrategies: RecoveryStrategy[];
+  estimatedRecoveryTime: number;
+  dataLossRisk: number;
+}
+
+export interface ErrorDetails {
+  message: string;
+  code: string;
+  stack?: string;
+  userFriendlyMessage: string;
+  category: string;
+}
+
+export interface SideEffect {
+  description: string;
+  probability: number;
+  severity: ErrorSeverity;
+  mitigation: string;
+}
+
+export interface RecoveryPrerequisite {
+  id: string;
+  description: string;
+  validationMethod: string;
+  required: boolean;
+}
+
+export interface RecoveryParameters {
+  maxRetries: number;
+  timeout: number;
+  rollbackOnFailure: boolean;
+  notifyOnRecovery: boolean;
+}
+
+export interface RecoveryMetrics {
+  timeToRecovery: number;
+  resourcesUsed: Cost;
+  dataRecovered: number;
+  confidenceScore: number;
+}
+
+export interface RecoveryOutcome {
+  success: boolean;
+  description: string;
+  metrics: RecoveryMetrics;
+  lessonsLearned: string[];
+}
+
+// Forward declare RecoveryStep to avoid circular dependency
+export interface RecoveryStep {
+  id: string;
+  description: string;
+  order: number;
+  parameters: RecoveryParameters;
+  expectedOutcome: RecoveryOutcome;
+  validation: ValidationCriteria;
+}
+
+export interface RecoveryStrategy {
+  id: string;
+  type: RecoveryType;
+  description: string;
+  applicability: number;
+  successRate: number;
+  sideEffects: SideEffect[];
+  prerequisites: RecoveryPrerequisite[];
+  steps: RecoveryStep[];
+}
+
+export interface ErrorContext {
+  errorId: string;
+  timestamp: Date;
+  severity: ErrorSeverity;
+  actionContext: ActionContext;
+  errorDetails: ErrorDetails;
+  recoverability: RecoverabilityAssessment;
+}
+
+// ============================================================================
+// LEARNING SYSTEM TYPES
+// ============================================================================
+
+export interface LearningFactor {
+  name: string;
+  value: any;
+  impact: number;
+  category: string;
+}
+
+export interface LearningContext {
+  scenario: string;
+  outcome: 'success' | 'failure' | 'partial';
+  factors: LearningFactor[];
+  insights: string[];
+  applicability: string[];
+}
+
+export interface LearningPattern {
+  id: string;
+  type: LearningType;
+  pattern: string;
+  confidence: ConfidenceLevel;
+  applicability: string[];
+  evidence: Evidence[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// ============================================================================
+// DECISION SYSTEM INTERFACES
+// ============================================================================
+
+export interface DecisionOption {
+  id: string;
+  description: string;
+  feasibility: number;
   alternativeOptions: AlternativeOption[];
   riskAssessment: RiskAssessment;
   executionPlan: ExecutionPlan;
   metadata: DecisionMetadata;
 }
 
-export interface DecisionOption {
+export interface DecisionCriterion {
   id: string;
   name: string;
-  description: string;
+  weight: number;
   expectedOutcome: ExpectedOutcome;
   estimatedCost: Cost;
-  riskLevel: RiskLevel;
+  successProbability: number;
   prerequisites: Prerequisite[];
   reversibility: ReversibilityInfo;
 }
 
-export interface DecisionCriterion {
-  name: string;
-  weight: number; // 0-1
-  type: CriterionType;
-  measurable: boolean;
-  threshold?: number;
-  evaluationMethod: EvaluationMethod;
+export interface DecisionRequest {
+  id: string;
+  type: DecisionType;
+  context: ContextSnapshot;
+  options: DecisionOption[];
+  constraints: DecisionConstraint[];
+  criteria: DecisionCriterion[];
+  timeout: number;
+  priority: DecisionPriority;
 }
 
 export interface DecisionReasoning {
@@ -133,855 +504,165 @@ export interface DecisionReasoning {
   learningOpportunities: LearningOpportunity[];
 }
 
-// Error recovery interfaces
-export interface ErrorContext {
-  id: string;
-  timestamp: number;
-  errorType: ErrorType;
-  errorMessage: string;
-  stackTrace?: string;
-  systemState: SystemContext;
-  actionContext: ActionContext;
-  severity: ErrorSeverity;
-  recoverability: RecoverabilityAssessment;
-}
-
-export interface RecoveryStrategy {
-  id: string;
-  name: string;
-  description: string;
-  applicableErrors: ErrorType[];
-  recoverySteps: RecoveryStep[];
-  successProbability: number;
-  estimatedTime: number;
-  sideEffects: SideEffect[];
-  prerequisites: RecoveryPrerequisite[];
-}
-
-export interface RecoveryStep {
-  id: string;
-  sequence: number;
-  action: RecoveryAction;
-  parameters: RecoveryParameters;
-  expectedOutcome: RecoveryOutcome;
-  rollbackPlan?: RollbackPlan;
-  validation: ValidationStep;
-  timeout: number;
-}
-
-export interface RecoveryResult {
-  strategyId: string;
-  success: boolean;
-  executionTime: number;
-  stepsCompleted: number;
-  finalState: RecoveryState;
-  lessonsLearned: LessonLearned[];
-  recommendations: Recommendation[];
-  metadata: RecoveryMetadata;
-}
-
-// Learning system interfaces
-export interface LearningPattern {
-  id: string;
-  type: PatternType;
-  description: string;
-  confidence: number;
-  supportingEvidence: Evidence[];
-  applicableContexts: ContextPattern[];
-  learnedAt: number;
-  lastReinforced: number;
-  usageCount: number;
-  successRate: number;
-}
-
-export interface PerformanceMetrics {
-  actionSuccessRate: number;
-  averageExecutionTime: number;
-  errorRate: number;
-  userSatisfactionScore: number;
-  systemEfficiency: number;
-  learningEffectiveness: number;
-  adaptabilityScore: number;
-  timestamp: number;
-}
-
-export interface LearningObjective {
-  id: string;
-  name: string;
-  description: string;
-  targetMetric: string;
-  currentValue: number;
-  targetValue: number;
-  deadline?: number;
-  priority: ObjectivePriority;
-  strategies: LearningStrategy[];
-}
-
-export interface KnowledgeBase {
-  patterns: Map<string, LearningPattern>;
-  rules: Map<string, InferenceRule>;
-  facts: Map<string, Fact>;
-  relationships: Map<string, Relationship>;
-  metadata: KnowledgeMetadata;
-  version: string;
-  lastUpdated: number;
-}
-
-// Shared enums and types
-export enum DecisionType {
-  ACTION_SELECTION = 'action_selection',
-  STRATEGY_CHOICE = 'strategy_choice',
-  RESOURCE_ALLOCATION = 'resource_allocation',
-  PRIORITY_ASSIGNMENT = 'priority_assignment',
-  ESCALATION_DECISION = 'escalation_decision',
-  OPTIMIZATION_CHOICE = 'optimization_choice',
-  RISK_MITIGATION = 'risk_mitigation'
-}
-
-export enum DecisionPriority {
-  CRITICAL = 'critical',
-  HIGH = 'high',
-  MEDIUM = 'medium',
-  LOW = 'low'
-}
-
-export enum CriterionType {
-  PERFORMANCE = 'performance',
-  RELIABILITY = 'reliability',
-  EFFICIENCY = 'efficiency',
-  SAFETY = 'safety',
-  COST = 'cost',
-  USER_SATISFACTION = 'user_satisfaction',
-  MAINTAINABILITY = 'maintainability'
-}
-
-export enum EvaluationMethod {
-  QUANTITATIVE = 'quantitative',
-  QUALITATIVE = 'qualitative',
-  COMPARATIVE = 'comparative',
-  THRESHOLD = 'threshold',
-  WEIGHTED_SCORE = 'weighted_score'
-}
-
-export enum ErrorType {
-  SYSTEM_ERROR = 'system_error',
-  APPLICATION_ERROR = 'application_error',
-  USER_ERROR = 'user_error',
-  NETWORK_ERROR = 'network_error',
-  TIMEOUT_ERROR = 'timeout_error',
-  PERMISSION_ERROR = 'permission_error',
-  RESOURCE_ERROR = 'resource_error',
-  CONFIGURATION_ERROR = 'configuration_error'
-}
-
-export enum ErrorSeverity {
-  CRITICAL = 'critical',
-  HIGH = 'high',
-  MEDIUM = 'medium',
-  LOW = 'low',
-  INFORMATIONAL = 'informational'
-}
-
-export enum RecoveryAction {
-  RETRY = 'retry',
-  FALLBACK = 'fallback',
-  RESTART = 'restart',
-  ROLLBACK = 'rollback',
-  ESCALATE = 'escalate',
-  IGNORE = 'ignore',
-  NOTIFY = 'notify',
-  LOG = 'log'
-}
-
-export enum PatternType {
-  BEHAVIOR = 'behavior',
-  PERFORMANCE = 'performance',
-  ERROR = 'error',
-  SUCCESS = 'success',
-  CONTEXT = 'context',
-  DECISION = 'decision',
-  OPTIMIZATION = 'optimization'
-}
-
-export enum RiskLevel {
-  MINIMAL = 'minimal',
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical'
-}
-
-export enum ExpertiseLevel {
-  NOVICE = 'novice',
-  BEGINNER = 'beginner',
-  INTERMEDIATE = 'intermediate',
-  ADVANCED = 'advanced',
-  EXPERT = 'expert'
-}
-
-export enum NetworkStatus {
-  CONNECTED = 'connected',
-  DISCONNECTED = 'disconnected',
-  LIMITED = 'limited',
-  METERED = 'metered',
-  UNKNOWN = 'unknown'
-}
-
-export enum ObjectivePriority {
-  CRITICAL = 'critical',
-  HIGH = 'high',
-  MEDIUM = 'medium',
-  LOW = 'low'
-}
-
-// Supporting interfaces
-export interface WindowInfo {
-  handle: number;
-  title: string;
-  processName: string;
-  isVisible: boolean;
-  bounds: Rectangle;
-  zIndex: number;
-}
-
-export interface Rectangle {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-export interface ApplicationInfo {
-  name: string;
-  version: string;
-  processId: number;
-  windowHandle: number;
-  startTime: number;
-  memoryUsage: number;
-  cpuUsage: number;
-}
-
-export interface ApplicationState {
-  isResponding: boolean;
-  currentView: string;
-  loadedModules: string[];
-  openDialogs: string[];
-  lastActivity: number;
-  resources: ResourceUsage;
-}
-
-export interface ResourceMetrics {
-  cpu: CPUMetrics;
-  memory: MemoryMetrics;
-  disk: DiskMetrics;
-  network: NetworkMetrics;
-}
-
-export interface CPUMetrics {
-  usage: number;
-  cores: number;
-  frequency: number;
-  temperature?: number;
-}
-
-export interface MemoryMetrics {
-  total: number;
-  used: number;
-  available: number;
-  committed: number;
-}
-
-export interface DiskMetrics {
-  total: number;
-  used: number;
-  free: number;
-  readSpeed: number;
-  writeSpeed: number;
-}
-
-export interface NetworkMetrics {
-  bandwidth: number;
-  latency: number;
-  packetLoss: number;
-  connectionCount: number;
-}
-
-export interface DocumentInfo {
-  path: string;
-  name: string;
-  type: string;
-  lastModified: number;
-  size: number;
-  isModified: boolean;
-}
-
-export interface ActionHistory {
-  timestamp: number;
-  action: string;
-  target: string;
-  result: ActionResult;
-  duration: number;
-  context: string;
-}
-
-export interface ActionResult {
-  success: boolean;
-  errorMessage?: string;
-  returnValue?: any;
-  sideEffects?: string[];
-}
-
-export interface InteractionPattern {
-  type: string;
-  frequency: number;
-  lastOccurrence: number;
-  context: string[];
-  successRate: number;
-  averageDuration: number;
-}
-
-export interface UserPreferences {
-  automationLevel: AutomationLevel;
-  confirmationRequirements: ConfirmationSettings;
-  timeoutSettings: TimeoutPreferences;
-  qualitySettings: QualityPreferences;
-  accessibilitySettings: AccessibilitySettings;
-}
-
-export enum AutomationLevel {
-  MINIMAL = 'minimal',
-  MODERATE = 'moderate',
-  HIGH = 'high',
-  MAXIMUM = 'maximum'
-}
-
-export interface ConfirmationSettings {
-  highRiskActions: boolean;
-  dataModification: boolean;
-  systemChanges: boolean;
-  fileOperations: boolean;
-  networkOperations: boolean;
-}
-
-export interface TimeoutPreferences {
-  defaultTimeout: number;
-  networkTimeout: number;
-  userInteractionTimeout: number;
-  systemOperationTimeout: number;
-}
-
-export interface QualityPreferences {
-  accuracyThreshold: number;
-  speedPriority: number; // 0-1, 0=accuracy first, 1=speed first
-  reliabilityRequirement: number;
-  errorTolerance: number;
-}
-
-export interface AccessibilitySettings {
-  screenReaderSupport: boolean;
-  highContrast: boolean;
-  largeText: boolean;
-  reducedMotion: boolean;
-  keyboardNavigation: boolean;
-}
-
-export interface TaskContext {
-  id: string;
-  name: string;
-  description: string;
-  startTime: number;
-  estimatedDuration: number;
-  progress: number;
-  subTasks: TaskInfo[];
-  dependencies: string[];
-}
-
-export interface TaskInfo {
-  id: string;
-  name: string;
-  status: TaskStatus;
-  progress: number;
-  startTime?: number;
-  endTime?: number;
-}
-
-export enum TaskStatus {
-  PENDING = 'pending',
-  IN_PROGRESS = 'in_progress',
-  COMPLETED = 'completed',
-  FAILED = 'failed',
-  CANCELLED = 'cancelled'
-}
-
-export interface BehaviorProfile {
-  workingHours: TimeRange[];
-  commonApplications: string[];
-  productivityPatterns: ProductivityPattern[];
-  errorPatterns: ErrorPattern[];
-  learningPreferences: LearningPreference[];
-}
-
-export interface TimeRange {
-  start: string; // HH:MM format
-  end: string; // HH:MM format
-  daysOfWeek: number[]; // 0=Sunday, 1=Monday, etc.
-}
-
-export interface ProductivityPattern {
-  timeOfDay: string;
-  productivityScore: number;
-  commonTasks: string[];
-  averageTaskDuration: number;
-}
-
-export interface ErrorPattern {
-  errorType: string;
-  frequency: number;
-  commonCauses: string[];
-  recoverabilityScore: number;
-  userFrustrationLevel: number;
-}
-
-export interface LearningPreference {
-  style: LearningStyle;
-  feedback: FeedbackPreference;
-  adaptationSpeed: AdaptationSpeed;
-  explainabilityRequirement: ExplainabilityLevel;
-}
-
-export enum LearningStyle {
-  OBSERVATIONAL = 'observational',
-  INTERACTIVE = 'interactive',
-  GUIDED = 'guided',
-  AUTONOMOUS = 'autonomous'
-}
-
-export enum FeedbackPreference {
-  IMMEDIATE = 'immediate',
-  PERIODIC = 'periodic',
-  ON_DEMAND = 'on_demand',
-  MINIMAL = 'minimal'
-}
-
-export enum AdaptationSpeed {
-  SLOW = 'slow',
-  MODERATE = 'moderate',
-  FAST = 'fast',
-  IMMEDIATE = 'immediate'
-}
-
-export enum ExplainabilityLevel {
-  NONE = 'none',
-  BASIC = 'basic',
-  DETAILED = 'detailed',
-  COMPREHENSIVE = 'comprehensive'
-}
-
-export interface SessionInfo {
-  id: string;
-  startTime: number;
-  expectedDuration: number;
-  sessionType: SessionType;
-  objectives: string[];
-  constraints: SessionConstraint[];
-  quality: SessionQuality;
-}
-
-export enum SessionType {
-  WORK = 'work',
-  LEARNING = 'learning',
-  MAINTENANCE = 'maintenance',
-  EXPLORATION = 'exploration',
-  TESTING = 'testing'
-}
-
-export interface SessionConstraint {
-  type: ConstraintType;
-  value: any;
-  flexible: boolean;
-  priority: number;
-}
-
-export enum ConstraintType {
-  TIME = 'time',
-  RESOURCE = 'resource',
-  QUALITY = 'quality',
-  RISK = 'risk',
-  SCOPE = 'scope'
-}
-
-export interface SessionQuality {
-  targetAccuracy: number;
-  targetSpeed: number;
-  targetReliability: number;
-  targetUserSatisfaction: number;
-}
-
-export interface SoftwareInfo {
-  name: string;
-  version: string;
-  vendor: string;
-  installPath: string;
-  capabilities: string[];
-  limitations: string[];
-}
-
-export interface HardwareInfo {
-  cpu: string;
-  memory: number;
-  storage: StorageInfo[];
-  display: DisplayInfo[];
-  inputDevices: InputDevice[];
-  networkAdapters: NetworkAdapter[];
-}
-
-export interface StorageInfo {
-  type: StorageType;
-  capacity: number;
-  available: number;
-  speed: number;
-}
-
-export enum StorageType {
-  HDD = 'hdd',
-  SSD = 'ssd',
-  NVME = 'nvme',
-  NETWORK = 'network'
-}
-
-export interface DisplayInfo {
-  resolution: Resolution;
-  dpi: number;
-  colorDepth: number;
-  refreshRate: number;
-  isPrimary: boolean;
-}
-
-export interface Resolution {
-  width: number;
-  height: number;
-}
-
-export interface InputDevice {
-  type: InputDeviceType;
-  name: string;
-  capabilities: string[];
-  isConnected: boolean;
-}
-
-export enum InputDeviceType {
-  KEYBOARD = 'keyboard',
-  MOUSE = 'mouse',
-  TOUCHPAD = 'touchpad',
-  TOUCHSCREEN = 'touchscreen',
-  STYLUS = 'stylus',
-  VOICE = 'voice'
-}
-
-export interface NetworkAdapter {
-  name: string;
-  type: NetworkType;
-  speed: number;
-  isConnected: boolean;
-  ipAddress?: string;
-}
-
-export enum NetworkType {
-  ETHERNET = 'ethernet',
-  WIFI = 'wifi',
-  CELLULAR = 'cellular',
-  BLUETOOTH = 'bluetooth'
-}
-
-export interface SecurityConstraint {
-  type: SecurityConstraintType;
-  level: SecurityLevel;
-  description: string;
-  enforcement: EnforcementLevel;
-  exceptions: SecurityException[];
-}
-
-export enum SecurityConstraintType {
-  ACCESS_CONTROL = 'access_control',
-  DATA_PROTECTION = 'data_protection',
-  NETWORK_SECURITY = 'network_security',
-  AUDIT_LOGGING = 'audit_logging',
-  ENCRYPTION = 'encryption'
-}
-
-export enum SecurityLevel {
-  PUBLIC = 'public',
-  INTERNAL = 'internal',
-  CONFIDENTIAL = 'confidential',
-  RESTRICTED = 'restricted',
-  TOP_SECRET = 'top_secret'
-}
-
-export enum EnforcementLevel {
-  ADVISORY = 'advisory',
-  WARNING = 'warning',
-  BLOCKING = 'blocking',
-  CRITICAL = 'critical'
-}
-
-export interface SecurityException {
-  condition: string;
-  justification: string;
-  approver: string;
-  expirationDate?: number;
-}
-
-export interface PolicyInfo {
-  id: string;
-  name: string;
-  type: PolicyType;
-  rules: PolicyRule[];
-  enforcement: EnforcementLevel;
-  scope: PolicyScope;
-}
-
-export enum PolicyType {
-  SECURITY = 'security',
-  PRIVACY = 'privacy',
-  COMPLIANCE = 'compliance',
-  OPERATIONAL = 'operational',
-  QUALITY = 'quality'
-}
-
-export interface PolicyRule {
-  condition: string;
-  action: PolicyAction;
-  parameters: Map<string, any>;
-  exceptions: PolicyException[];
-}
-
-export enum PolicyAction {
-  ALLOW = 'allow',
-  DENY = 'deny',
-  REQUIRE_APPROVAL = 'require_approval',
-  LOG_ONLY = 'log_only',
-  WARN = 'warn'
-}
-
-export interface PolicyException {
-  condition: string;
-  action: PolicyAction;
-  justification: string;
-}
-
-export interface PolicyScope {
-  users: string[];
-  applications: string[];
-  resources: string[];
-  timeFrames: TimeRange[];
-}
-
-// Additional utility interfaces
-export interface DataQuality {
-  completeness: number; // 0-1
-  accuracy: number; // 0-1
-  consistency: number; // 0-1
-  timeliness: number; // 0-1
-  reliability: number; // 0-1
-}
-
-export interface UncertaintyFactor {
-  source: string;
-  type: UncertaintyType;
-  magnitude: number; // 0-1
-  impact: ImpactLevel;
-}
-
-export enum UncertaintyType {
-  DATA_MISSING = 'data_missing',
-  DATA_OUTDATED = 'data_outdated',
-  DATA_CONFLICTING = 'data_conflicting',
-  MODEL_LIMITATION = 'model_limitation',
-  EXTERNAL_DEPENDENCY = 'external_dependency'
-}
-
-export enum ImpactLevel {
-  NEGLIGIBLE = 'negligible',
-  MINOR = 'minor',
-  MODERATE = 'moderate',
-  MAJOR = 'major',
-  CRITICAL = 'critical'
-}
-
-export interface ConfidenceBreakdown {
-  overall: number;
-  components: Map<string, number>;
-  factors: ConfidenceFactor[];
-  methodology: string;
-}
-
-export interface ConfidenceFactor {
-  name: string;
-  contribution: number; // -1 to 1
-  weight: number; // 0-1
-  description: string;
-}
-
-export interface ResourceUsage {
-  cpu: number;
-  memory: number;
-  disk: number;
-  network: number;
-  handles: number;
-  threads: number;
-}
-
-// Export utility functions for type checking and validation
-export class IntelligenceTypeUtils {
-  /**
-   * Validate a context snapshot for completeness and consistency
-   */
-  public static validateContextSnapshot(context: ContextSnapshot): ValidationResult {
-    const result: ValidationResult = {
-      isValid: true,
-      errors: [],
-      warnings: []
-    };
-
-    // Check required fields
-    if (!context.id || context.id.trim().length === 0) {
-      result.errors.push('Context snapshot ID is required');
-      result.isValid = false;
-    }
-
-    if (context.timestamp <= 0) {
-      result.errors.push('Context snapshot timestamp must be positive');
-      result.isValid = false;
-    }
-
-    if (context.confidence < 0 || context.confidence > 1) {
-      result.errors.push('Context confidence must be between 0 and 1');
-      result.isValid = false;
-    }
-
-    // Check system context
-    if (context.systemContext) {
-      if (context.systemContext.processLoad < 0 || context.systemContext.processLoad > 1) {
-        result.warnings.push('System process load should be between 0 and 1');
-      }
-      
-      if (context.systemContext.memoryUsage < 0 || context.systemContext.memoryUsage > 1) {
-        result.warnings.push('Memory usage should be between 0 and 1');
-      }
-    } else {
-      result.errors.push('System context is required');
-      result.isValid = false;
-    }
-
-    return result;
-  }
-
-  /**
-   * Calculate confidence score based on multiple factors
-   */
-  public static calculateConfidence(factors: ConfidenceFactor[]): number {
-    if (factors.length === 0) return 0;
-
-    const weightedSum = factors.reduce((sum, factor) => {
-      return sum + (factor.contribution * factor.weight);
-    }, 0);
-
-    const totalWeight = factors.reduce((sum, factor) => sum + factor.weight, 0);
-    
-    if (totalWeight === 0) return 0;
-
-    const confidence = weightedSum / totalWeight;
-    return Math.max(0, Math.min(1, confidence)); // Clamp to [0, 1]
-  }
-
-  /**
-   * Merge multiple context snapshots with weighted averaging
-   */
-  public static mergeContextSnapshots(
-    snapshots: ContextSnapshot[], 
-    weights?: number[]
-  ): ContextSnapshot | null {
-    if (snapshots.length === 0) return null;
-    if (snapshots.length === 1) return snapshots[0];
-
-    // Use equal weights if not provided
-    const actualWeights = weights || snapshots.map(() => 1 / snapshots.length);
-    
-    if (actualWeights.length !== snapshots.length) {
-      throw new Error('Weights array length must match snapshots array length');
-    }
-
-    // Normalize weights
-    const totalWeight = actualWeights.reduce((sum, w) => sum + w, 0);
-    const normalizedWeights = actualWeights.map(w => w / totalWeight);
-
-    // Create merged snapshot
-    const mergedSnapshot: ContextSnapshot = {
-      id: `merged_${Date.now()}`,
-      timestamp: Date.now(),
-      systemContext: this.mergeSystemContexts(snapshots.map(s => s.systemContext), normalizedWeights),
-      applicationContext: snapshots[0].applicationContext, // Use first snapshot's app context
-      userContext: snapshots[0].userContext, // Use first snapshot's user context
-      environmentContext: snapshots[0].environmentContext, // Use first snapshot's env context
-      confidence: this.calculateWeightedAverage(
-        snapshots.map(s => s.confidence), 
-        normalizedWeights
-      ),
-      metadata: {
-        analysisVersion: '1.0.0',
-        analysisTime: Date.now(),
-        dataQuality: {
-          completeness: 0.8,
-          accuracy: 0.8,
-          consistency: 0.8,
-          timeliness: 0.9,
-          reliability: 0.8
-        },
-        uncertaintyFactors: [],
-        validityPeriod: 300000, // 5 minutes
-        confidenceBreakdown: {
-          overall: 0.8,
-          components: new Map(),
-          factors: [],
-          methodology: 'weighted_merge'
-        }
-      }
-    };
-
-    return mergedSnapshot;
-  }
-
-  private static mergeSystemContexts(contexts: SystemContext[], weights: number[]): SystemContext {
-    return {
-      processLoad: this.calculateWeightedAverage(contexts.map(c => c.processLoad), weights),
-      memoryUsage: this.calculateWeightedAverage(contexts.map(c => c.memoryUsage), weights),
-      diskSpace: this.calculateWeightedAverage(contexts.map(c => c.diskSpace), weights),
-      networkConnectivity: contexts[0].networkConnectivity, // Use first context
-      activeWindows: contexts[0].activeWindows, // Use first context
-      systemTime: Date.now(),
-      timeZone: contexts[0].timeZone,
-      systemResources: contexts[0].systemResources // Use first context
-    };
-  }
-
-  private static calculateWeightedAverage(values: number[], weights: number[]): number {
-    if (values.length !== weights.length) {
-      throw new Error('Values and weights arrays must have same length');
-    }
-
-    const weightedSum = values.reduce((sum, value, index) => sum + value * weights[index], 0);
-    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-    
-    return totalWeight > 0 ? weightedSum / totalWeight : 0;
-  }
-}
-
-export interface ValidationResult {
-  isValid: boolean;
-  errors: string[];
+export interface OptionRanking {
+  optionId: string;
+  score: number;
+  rank: number;
+  reasoning: string;
+}
+
+export interface DecisionResponse {
+  requestId: string;
+  selectedOptionId: string;
+  confidence: ConfidenceLevel;
+  reasoning: DecisionReasoning;
+  alternativeRanking: OptionRanking[];
   warnings: string[];
+  recommendations: string[];
 }
 
-// Export default utility instance
-export const intelligenceTypeUtils = new IntelligenceTypeUtils();
-export default IntelligenceTypeUtils;
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+export class IntelligenceUtils {
+  static calculateConfidence(factors: ReasoningFactor[]): ConfidenceLevel {
+    if (!factors.length) return ConfidenceLevel.MEDIUM;
+
+    const avgConfidence = factors.reduce((sum, f) => {
+      const confValue = this.confidenceToNumber(f.confidence);
+      return sum + (confValue * f.weight);
+    }, 0) / factors.reduce((sum, f) => sum + f.weight, 0);
+
+    return this.numberToConfidence(avgConfidence);
+  }
+
+  static confidenceToNumber(confidence: ConfidenceLevel): number {
+    switch (confidence) {
+      case ConfidenceLevel.VERY_LOW: return 0.1;
+      case ConfidenceLevel.LOW: return 0.3;
+      case ConfidenceLevel.MEDIUM: return 0.5;
+      case ConfidenceLevel.HIGH: return 0.7;
+      case ConfidenceLevel.VERY_HIGH: return 0.9;
+      default: return 0.5;
+    }
+  }
+
+  static numberToConfidence(value: number): ConfidenceLevel {
+    if (value <= 0.2) return ConfidenceLevel.VERY_LOW;
+    if (value <= 0.4) return ConfidenceLevel.LOW;
+    if (value <= 0.6) return ConfidenceLevel.MEDIUM;
+    if (value <= 0.8) return ConfidenceLevel.HIGH;
+    return ConfidenceLevel.VERY_HIGH;
+  }
+
+  static calculateRiskScore(factors: RiskFactor[]): number {
+    if (!factors.length) return 0;
+    return factors.reduce((total, factor) => 
+      total + (factor.impact * factor.probability), 0
+    ) / factors.length;
+  }
+
+  static validateDecisionRequest(request: DecisionRequest): string[] {
+    const errors: string[] = [];
+    
+    if (!request.id) errors.push('Decision ID is required');
+    if (!request.options.length) errors.push('At least one option is required');
+    if (request.timeout <= 0) errors.push('Timeout must be positive');
+    
+    return errors;
+  }
+
+  static prioritizeOptions(options: DecisionOption[]): OptionRanking[] {
+    return options
+      .map((option, index) => ({
+        optionId: option.id,
+        score: this.calculateOptionScore(option),
+        rank: index + 1,
+        reasoning: `Feasibility: ${option.feasibility}, Risk: ${option.riskAssessment.overallRisk}`
+      }))
+      .sort((a, b) => b.score - a.score)
+      .map((option, index) => ({ ...option, rank: index + 1 }));
+  }
+
+  private static calculateOptionScore(option: DecisionOption): number {
+    const riskPenalty = option.riskAssessment.overallRisk * 0.3;
+    const feasibilityBonus = option.feasibility * 0.7;
+    return feasibilityBonus - riskPenalty;
+  }
+
+  static createContextSnapshot(
+    screenState: ScreenState,
+    applicationState: ApplicationState,
+    userIntent: UserIntent,
+    systemMetrics: SystemMetrics,
+    historicalContext: HistoricalContext
+  ): ContextSnapshot {
+    return {
+      timestamp: new Date(),
+      screenState,
+      applicationState,
+      userIntent,
+      systemMetrics,
+      historicalContext
+    };
+  }
+
+  static assessRecoverability(
+    error: ErrorDetails,
+    context: ActionContext,
+    severity: ErrorSeverity
+  ): RecoverabilityAssessment {
+    // Basic recoverability assessment logic
+    const canRecover = severity !== ErrorSeverity.CRITICAL;
+    const recoveryStrategies: RecoveryStrategy[] = [];
+    
+    if (canRecover) {
+      recoveryStrategies.push({
+        id: 'retry-strategy',
+        type: RecoveryType.RETRY,
+        description: 'Retry the failed action',
+        applicability: 0.8,
+        successRate: 0.6,
+        sideEffects: [],
+        prerequisites: [],
+        steps: []
+      });
+    }
+
+    return {
+      canRecover,
+      recoveryStrategies,
+      estimatedRecoveryTime: canRecover ? 1000 : 0,
+      dataLossRisk: severity === ErrorSeverity.CRITICAL ? 0.8 : 0.1
+    };
+  }
+}
+
+// ============================================================================
+// TYPE GUARDS AND VALIDATION
+// ============================================================================
+
+export const TypeGuards = {
+  isDecisionRequest: (obj: any): obj is DecisionRequest => {
+    return obj && 
+           typeof obj.id === 'string' &&
+           typeof obj.type === 'string' &&
+           Array.isArray(obj.options) &&
+           Array.isArray(obj.constraints);
+  },
+
+  isErrorContext: (obj: any): obj is ErrorContext => {
+    return obj &&
+           typeof obj.errorId === 'string' &&
+           obj.timestamp instanceof Date &&
+           typeof obj.severity === 'string';
+  },
+
+  isLearningPattern: (obj: any): obj is LearningPattern => {
+    return obj &&
+           typeof obj.id === 'string' &&
+           typeof obj.type === 'string' &&
+           typeof obj.pattern === 'string';
+  }
+};

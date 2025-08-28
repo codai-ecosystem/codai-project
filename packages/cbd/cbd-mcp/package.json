@@ -1,5 +1,5 @@
 {
-    "name": "cbd-mcp",
+    "name": "@codai/cbd-mcp",
     "version": "1.0.0",
     "description": "CBD Enterprise MCP Server - Model Context Protocol compatibility layer",
     "type": "module",
@@ -35,7 +35,7 @@
     "license": "MIT",
     "dependencies": {
         "@modelcontextprotocol/sdk": "^0.4.0",
-        "cbd-client": "workspace:*"
+        "@codai/cbd-client": "workspace:*"
     },
     "devDependencies": {
         "@types/jest": "^29.5.0",

@@ -1,0 +1,136 @@
+{
+  "test_summary": {
+    "total_tests": 10,
+    "successful_tests": 7,
+    "success_rate": 0.7,
+    "overall_success": false
+  },
+  "memory_metrics": {
+    "average_memory_efficiency": 0.6499979529589979,
+    "maximum_memory_used_gb": 4.2,
+    "vram_target_gb": 6.0,
+    "vram_compliant": true
+  },
+  "performance_metrics": {
+    "average_performance_score": 0.6618250000000001,
+    "performance_acceptable": "False"
+  },
+  "detailed_results": [
+    {
+      "test_name": "memory_config_creation",
+      "success": true,
+      "memory_used_gb": 0.0,
+      "memory_efficiency": 1.0,
+      "performance_score": 1.0,
+      "details": {
+        "configs_tested": 4
+      }
+    },
+    {
+      "test_name": "test_model_loading_optimization",
+      "success": false,
+      "memory_used_gb": 0.0,
+      "memory_efficiency": 0.0,
+      "performance_score": 0.0,
+      "details": {
+        "error": "Model loading failed"
+      }
+    },
+    {
+      "test_name": "test_lora_quantization_effectiveness",
+      "success": false,
+      "memory_used_gb": 0.0,
+      "memory_efficiency": 0.0,
+      "performance_score": 0.0,
+      "details": {
+        "error": "Memory efficiency too low: 0.40%"
+      }
+    },
+    {
+      "test_name": "vram_constraint_compliance",
+      "success": true,
+      "memory_used_gb": 0.0037255287170410156,
+      "memory_efficiency": 1.0,
+      "performance_score": 1.0,
+      "details": {
+        "max_vram_observed": 0.0037255287170410156,
+        "target_vram": 6.0,
+        "constraint_met": true
+      }
+    },
+    {
+      "test_name": "memory_cleanup_effectiveness",
+      "success": true,
+      "memory_used_gb": 0.682342529296875,
+      "memory_efficiency": 0.9999795295899777,
+      "performance_score": 0.95,
+      "details": {
+        "memory_freed": 0.745391845703125,
+        "cleanup_effectiveness": 0.9999795295899777
+      }
+    },
+    {
+      "test_name": "test_gradient_checkpointing",
+      "success": false,
+      "memory_used_gb": 0.0,
+      "memory_efficiency": 0.0,
+      "performance_score": 0.0,
+      "details": {
+        "error": "Expected 'gradient_checkpointing_enable' to have been called once. Called 0 times."
+      }
+    },
+    {
+      "test_name": "performance_impact",
+      "success": true,
+      "memory_used_gb": 3.5,
+      "memory_efficiency": 0.85,
+      "performance_score": 0.8882500000000001,
+      "details": {
+        "baseline_time": 1.0,
+        "optimized_time": 0.8882500000000001,
+        "performance_impact": 0.1117499999999999,
+        "acceptable": true
+      }
+    },
+    {
+      "test_name": "agi_integration",
+      "success": true,
+      "memory_used_gb": 4.2,
+      "memory_efficiency": 0.75,
+      "performance_score": 0.88,
+      "details": {
+        "agi_compatible": true,
+        "optimization_level": "balanced"
+      }
+    },
+    {
+      "test_name": "memory_monitoring",
+      "success": true,
+      "memory_used_gb": 0.0,
+      "memory_efficiency": 0.9,
+      "performance_score": 1.0,
+      "details": {
+        "monitoring_active": true,
+        "metrics_collected": true
+      }
+    },
+    {
+      "test_name": "emergency_cleanup",
+      "success": true,
+      "memory_used_gb": 0.0,
+      "memory_efficiency": 1.0,
+      "performance_score": 0.9,
+      "details": {
+        "cleanup_procedures_tested": true,
+        "emergency_response": "functional"
+      }
+    }
+  ],
+  "recommendations": [
+    "\ud83d\udd27 Review failed test cases and implement fixes",
+    "\ud83d\udcda Consider adjusting memory optimization parameters",
+    "\u26a1 Balance memory savings vs performance trade-offs",
+    "\ud83d\udd04 Consider reducing gradient accumulation steps",
+    "\ud83e\udde0 Evaluate if some optimizations can be relaxed"
+  ]
+}

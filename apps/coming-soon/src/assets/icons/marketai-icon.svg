@@ -1,0 +1,41 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="marketai-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb" />
+      <stop offset="100%" style="stop-color:#f5576c" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Target/Bullseye for targeted marketing -->
+  <circle cx="12" cy="12" r="9" fill="none" stroke="url(#marketai-gradient)" stroke-width="2"/>
+  <circle cx="12" cy="12" r="6" fill="none" stroke="url(#marketai-gradient)" stroke-width="2" opacity="0.7"/>
+  <circle cx="12" cy="12" r="3" fill="none" stroke="url(#marketai-gradient)" stroke-width="2" opacity="0.5"/>
+  <circle cx="12" cy="12" r="1.5" fill="url(#marketai-gradient)"/>
+  
+  <!-- Marketing channels/arrows pointing inward -->
+  <g stroke="url(#marketai-gradient)" stroke-width="2" fill="url(#marketai-gradient)">
+    <!-- Top arrow -->
+    <path d="M12 2 L12 6 M10 4 L12 2 L14 4" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Top-right arrow -->
+    <path d="M19 5 L15.5 8.5 M17.5 4 L19 5 L18 7" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Right arrow -->
+    <path d="M22 12 L18 12 M20 10 L22 12 L20 14" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Bottom-right arrow -->
+    <path d="M19 19 L15.5 15.5 M18 17 L19 19 L17.5 20" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Bottom arrow -->
+    <path d="M12 22 L12 18 M14 20 L12 22 L10 20" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Bottom-left arrow -->
+    <path d="M5 19 L8.5 15.5 M7 17.5 L5 19 L6 17" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Left arrow -->
+    <path d="M2 12 L6 12 M4 14 L2 12 L4 10" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Top-left arrow -->
+    <path d="M5 5 L8.5 8.5 M6 7 L5 5 L7 4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

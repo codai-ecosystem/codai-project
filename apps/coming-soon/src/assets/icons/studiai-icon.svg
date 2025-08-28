@@ -1,0 +1,59 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="studiai-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffecd2" />
+      <stop offset="100%" style="stop-color:#fcb69f" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Book base -->
+  <path d="M4 3 L4 19 L6 19 L6 21 L20 21 L20 5 L18 5 L18 3 Z" 
+        fill="none" 
+        stroke="url(#studiai-gradient)" 
+        stroke-width="2" 
+        stroke-linejoin="round"/>
+  
+  <!-- Book spine -->
+  <line x1="6" y1="3" x2="6" y2="19" stroke="url(#studiai-gradient)" stroke-width="2"/>
+  
+  <!-- AI-enhanced content pages -->
+  <g stroke="url(#studiai-gradient)" stroke-width="1" opacity="0.7">
+    <line x1="8" y1="7" x2="16" y2="7"/>
+    <line x1="8" y1="9" x2="18" y2="9"/>
+    <line x1="8" y1="11" x2="15" y2="11"/>
+    <line x1="8" y1="13" x2="17" y2="13"/>
+    <line x1="8" y1="15" x2="14" y2="15"/>
+  </g>
+  
+  <!-- AI brain overlay -->
+  <g stroke="url(#studiai-gradient)" stroke-width="1.5" fill="none" opacity="0.8">
+    <circle cx="13" cy="10" r="3" stroke-dasharray="3,1"/>
+    
+    <!-- Neural connections -->
+    <path d="M10 8 L11 9" stroke-linecap="round"/>
+    <path d="M16 8 L15 9" stroke-linecap="round"/>
+    <path d="M10 12 L11 11" stroke-linecap="round"/>
+    <path d="M16 12 L15 11" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Knowledge indicators -->
+  <g fill="url(#studiai-gradient)" opacity="0.9">
+    <circle cx="10" cy="8" r="0.5"/>
+    <circle cx="16" cy="8" r="0.5"/>
+    <circle cx="10" cy="12" r="0.5"/>
+    <circle cx="16" cy="12" r="0.5"/>
+  </g>
+  
+  <!-- Learning progress indicator -->
+  <path d="M8 17 L12 16 L16 17 L18 16" 
+        stroke="url(#studiai-gradient)" 
+        stroke-width="2" 
+        fill="none" 
+        stroke-linecap="round" 
+        opacity="0.8"/>
+  
+  <!-- Bookmark with AI indicator -->
+  <rect x="17" y="2" width="3" height="6" fill="url(#studiai-gradient)" opacity="0.7"/>
+  <path d="M17 8 L18.5 7 L20 8" fill="url(#studiai-gradient)" opacity="0.7"/>
+  <circle cx="18.5" cy="4" r="0.5" fill="white"/>
+</svg>

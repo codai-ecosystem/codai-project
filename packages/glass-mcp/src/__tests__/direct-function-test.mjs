@@ -13,7 +13,7 @@ const execAsync = promisify(exec);
 // Test Windows listing using PowerShell directly (to validate our approach)
 async function testWindowListingDirect() {
     console.log('🪟 Testing direct window listing...');
-    
+
     const script = `
     Add-Type @"
     using System;
@@ -58,7 +58,7 @@ async function testWindowListingDirect() {
     
     $windows | ConvertTo-Json -Compress
     `;
-    
+
     try {
         const result = await execAsync(`powershell -NoProfile -ExecutionPolicy Bypass -Command "${script.replace(/"/g, '`"')}"`);
         const windows = JSON.parse(result.stdout);
@@ -74,12 +74,12 @@ async function testWindowListingDirect() {
 // Test clipboard access
 async function testClipboardDirect() {
     console.log('📋 Testing direct clipboard access...');
-    
+
     const script = `
     Add-Type -AssemblyName System.Windows.Forms
     [System.Windows.Forms.Clipboard]::GetText()
     `;
-    
+
     try {
         const result = await execAsync(`powershell -NoProfile -ExecutionPolicy Bypass -Command "${script}"`);
         const clipboardText = result.stdout.trim();
@@ -94,7 +94,7 @@ async function testClipboardDirect() {
 // Test system info
 async function testSystemInfoDirect() {
     console.log('💻 Testing direct system info...');
-    
+
     const script = `
     $computer = Get-ComputerInfo
     @{
@@ -104,7 +104,7 @@ async function testSystemInfoDirect() {
         architecture = $computer.OSArchitecture
     } | ConvertTo-Json -Compress
     `;
-    
+
     try {
         const result = await execAsync(`powershell -NoProfile -ExecutionPolicy Bypass -Command "${script}"`);
         const systemInfo = JSON.parse(result.stdout);
@@ -120,16 +120,16 @@ async function testSystemInfoDirect() {
 async function runDirectTests() {
     console.log('🧪 Direct Function Tests for Glass MCP');
     console.log('=====================================');
-    
+
     const tests = [
         ['Window Listing', testWindowListingDirect],
         ['Clipboard Access', testClipboardDirect],
         ['System Information', testSystemInfoDirect]
     ];
-    
+
     let passed = 0;
     let failed = 0;
-    
+
     for (const [name, testFn] of tests) {
         const success = await testFn();
         if (success) {
@@ -139,20 +139,20 @@ async function runDirectTests() {
         }
         console.log(''); // Add spacing
     }
-    
+
     console.log('📊 Direct Test Results:');
     console.log(`   ✅ Passed: ${passed}`);
     console.log(`   ❌ Failed: ${failed}`);
     console.log(`   📈 Success Rate: ${((passed / (passed + failed)) * 100).toFixed(1)}%`);
-    
+
     if (failed === 0) {
         console.log('\n🎉 All core functions working! Glass MCP backend is solid.');
-        
+
         // If direct tests pass, the issue is likely MCP protocol communication
         console.log('\n📝 DIAGNOSIS: MCP protocol communication needs debugging');
         console.log('   Core Windows automation functions are working');
         console.log('   Issue is likely in MCP server stdio communication');
-        
+
         return true;
     } else {
         console.log('\n❌ Some core functions failing - need to fix backend first');

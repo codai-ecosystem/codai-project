@@ -1,0 +1,732 @@
+# Advanced Multi-Layer Caching Infrastructure for Essential CodAI Services
+# Version: 1.0
+# Redis Cluster + CDN + Application Caching + Database Query Caching
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: caching-config
+  namespace: codai-production
+data:
+  caching-strategy.json: |
+    {
+      "layers": {
+        "cdn": {
+          "provider": "cloudflare",
+          "enabled": true,
+          "ttl": {
+            "static_assets": 31536000,
+            "api_responses": 300,
+            "images": 604800,
+            "documents": 3600
+          },
+          "compression": {
+            "gzip": true,
+            "brotli": true,
+            "min_size": 1024
+          },
+          "cache_rules": [
+            {
+              "pattern": "/api/v1/static/*",
+              "ttl": 86400,
+              "vary": ["Accept-Encoding"]
+            },
+            {
+              "pattern": "/api/v1/public/*", 
+              "ttl": 3600,
+              "vary": ["Accept", "Authorization"]
+            },
+            {
+              "pattern": "/api/v1/user/*",
+              "ttl": 300,
+              "vary": ["Authorization", "Accept"]
+            }
+          ]
+        },
+        "redis_cluster": {
+          "enabled": true,
+          "cluster_size": 6,
+          "replication_factor": 2,
+          "persistence": {
+            "enabled": true,
+            "snapshot_frequency": "15m",
+            "append_only": true
+          },
+          "memory_policy": "allkeys-lru",
+          "max_memory": "2gb",
+          "ttl_defaults": {
+            "session_data": 3600,
+            "user_preferences": 86400,
+            "api_responses": 300,
+            "database_queries": 600,
+            "computed_results": 1800
+          },
+          "key_patterns": {
+            "session:*": {"ttl": 3600, "compression": true},
+            "user:*": {"ttl": 86400, "compression": true},
+            "api:*": {"ttl": 300, "compression": false},
+            "query:*": {"ttl": 600, "compression": true},
+            "result:*": {"ttl": 1800, "compression": true}
+          }
+        },
+        "application_cache": {
+          "enabled": true,
+          "type": "node_cache",
+          "max_size": "512mb",
+          "algorithms": ["lru", "lfu"],
+          "cache_categories": {
+            "configuration": {"ttl": 3600, "max_size": "50mb"},
+            "templates": {"ttl": 1800, "max_size": "100mb"},
+            "computed_data": {"ttl": 600, "max_size": "200mb"},
+            "metadata": {"ttl": 300, "max_size": "100mb"},
+            "user_sessions": {"ttl": 900, "max_size": "62mb"}
+          }
+        },
+        "database_cache": {
+          "enabled": true,
+          "query_cache": {
+            "enabled": true,
+            "max_size": "1gb",
+            "ttl": 600,
+            "invalidation_strategy": "tag_based"
+          },
+          "result_cache": {
+            "enabled": true,
+            "max_size": "2gb", 
+            "ttl": 300,
+            "compression": true
+          },
+          "connection_pooling": {
+            "enabled": true,
+            "max_connections": 100,
+            "idle_timeout": 300,
+            "connection_lifetime": 3600
+          }
+        }
+      },
+      "cache_warming": {
+        "enabled": true,
+        "strategies": [
+          {
+            "name": "user_preferences_warmup",
+            "schedule": "0 */6 * * *",
+            "target": "redis_cluster",
+            "query": "SELECT user_id, preferences FROM users WHERE active = true"
+          },
+          {
+            "name": "popular_content_warmup", 
+            "schedule": "0 */4 * * *",
+            "target": "cdn",
+            "endpoints": ["/api/v1/popular", "/api/v1/trending", "/api/v1/featured"]
+          },
+          {
+            "name": "configuration_warmup",
+            "schedule": "0 */2 * * *",
+            "target": "application_cache",
+            "keys": ["app_config", "feature_flags", "rate_limits"]
+          }
+        ]
+      },
+      "invalidation": {
+        "strategies": ["time_based", "event_based", "manual"],
+        "event_patterns": {
+          "user_update": ["user:${user_id}:*", "session:${user_id}:*"],
+          "content_change": ["api:content:*", "query:content:*"],
+          "config_change": ["app_config:*", "feature_flags:*"]
+        },
+        "batch_invalidation": {
+          "enabled": true,
+          "batch_size": 1000,
+          "batch_timeout": 5000
+        }
+      },
+      "monitoring": {
+        "metrics": {
+          "hit_rate": {"target": 85, "alert_threshold": 70},
+          "response_time": {"target": 50, "alert_threshold": 100},
+          "memory_usage": {"target": 80, "alert_threshold": 90},
+          "eviction_rate": {"target": 5, "alert_threshold": 15}
+        },
+        "alerts": {
+          "enabled": true,
+          "channels": ["slack", "pagerduty"],
+          "conditions": [
+            "cache_hit_rate < 70%",
+            "cache_response_time > 100ms",
+            "cache_memory_usage > 90%",
+            "cache_errors > 10/min"
+          ]
+        }
+      }
+    }
+
+  redis-cluster-config.conf: |
+    # Redis Cluster Configuration for Essential CodAI Services
+    cluster-enabled yes
+    cluster-config-file nodes.conf
+    cluster-node-timeout 15000
+    cluster-announce-ip ${POD_IP}
+    cluster-announce-port 6379
+    cluster-announce-bus-port 16379
+    
+    # Memory Management
+    maxmemory 2gb
+    maxmemory-policy allkeys-lru
+    
+    # Persistence
+    save 900 1
+    save 300 10
+    save 60 10000
+    appendonly yes
+    appendfsync everysec
+    
+    # Network
+    bind 0.0.0.0
+    port 6379
+    tcp-keepalive 300
+    timeout 300
+    
+    # Security
+    requirepass ${REDIS_PASSWORD}
+    
+    # Performance
+    tcp-backlog 511
+    databases 16
+    
+    # Logging
+    loglevel notice
+    logfile /var/log/redis/redis.log
+
+---
+# Redis Cluster Deployment
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-cluster
+  namespace: codai-production
+  labels:
+    app: redis-cluster
+    component: performance-cache
+spec:
+  serviceName: redis-cluster-headless
+  replicas: 6
+  selector:
+    matchLabels:
+      app: redis-cluster
+  template:
+    metadata:
+      labels:
+        app: redis-cluster
+        component: performance-cache
+    spec:
+      securityContext:
+        fsGroup: 999
+        runAsUser: 999
+        runAsGroup: 999
+      initContainers:
+      - name: init-redis
+        image: redis:7.2-alpine
+        command:
+        - /bin/sh
+        - -c
+        - |
+          mkdir -p /data/redis
+          chown -R 999:999 /data/redis
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      containers:
+      - name: redis
+        image: redis:7.2-alpine
+        ports:
+        - containerPort: 6379
+          name: redis
+        - containerPort: 16379
+          name: cluster-bus
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-cluster-secrets
+              key: password
+        command:
+        - redis-server
+        - /etc/redis/redis.conf
+        volumeMounts:
+        - name: config
+          mountPath: /etc/redis
+        - name: data
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - --no-auth-warning
+            - -a
+            - $(REDIS_PASSWORD)
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - --no-auth-warning
+            - -a
+            - $(REDIS_PASSWORD)
+            - ping
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: redis-cluster-config
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 50Gi
+      storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-cluster-config
+  namespace: codai-production
+data:
+  redis.conf: |
+    cluster-enabled yes
+    cluster-config-file nodes.conf
+    cluster-node-timeout 15000
+    cluster-announce-ip ${POD_IP}
+    cluster-announce-port 6379
+    cluster-announce-bus-port 16379
+    
+    maxmemory 2gb
+    maxmemory-policy allkeys-lru
+    
+    save 900 1
+    save 300 10
+    save 60 10000
+    appendonly yes
+    appendfsync everysec
+    
+    bind 0.0.0.0
+    port 6379
+    tcp-keepalive 300
+    timeout 300
+    
+    requirepass ${REDIS_PASSWORD}
+    
+    tcp-backlog 511
+    databases 16
+    
+    loglevel notice
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cluster-headless
+  namespace: codai-production
+  labels:
+    app: redis-cluster
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: redis
+  - port: 16379
+    targetPort: 16379
+    name: cluster-bus
+  selector:
+    app: redis-cluster
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cluster
+  namespace: codai-production
+  labels:
+    app: redis-cluster
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9121"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: redis
+  selector:
+    app: redis-cluster
+
+---
+# Cache Warming Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-cache-warmer
+  namespace: codai-production
+  labels:
+    app: codai-cache-warmer
+    component: performance-optimization
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-cache-warmer
+  template:
+    metadata:
+      labels:
+        app: codai-cache-warmer
+        component: performance-optimization
+    spec:
+      serviceAccountName: codai-cache-warmer
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: cache-warmer
+        image: codai/cache-warmer:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3020
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3020"
+        - name: REDIS_CLUSTER_ENDPOINTS
+          value: "redis-cluster.codai-production.svc.cluster.local:6379"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: cache-url
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-cluster-secrets
+              key: password
+        - name: WARMING_SCHEDULE_ENABLED
+          value: "true"
+        - name: WARMING_BATCH_SIZE
+          value: "1000"
+        - name: WARMING_INTERVAL
+          value: "300"  # 5 minutes
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3020
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3020
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: caching-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-cache-warmer
+  namespace: codai-production
+  labels:
+    app: codai-cache-warmer
+spec:
+  ports:
+  - port: 3020
+    targetPort: 3020
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-cache-warmer
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-cache-warmer
+  namespace: codai-production
+  labels:
+    app: codai-cache-warmer
+
+---
+# Cache Invalidation Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-cache-invalidator
+  namespace: codai-production
+  labels:
+    app: codai-cache-invalidator
+    component: performance-optimization
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-cache-invalidator
+  template:
+    metadata:
+      labels:
+        app: codai-cache-invalidator
+        component: performance-optimization
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-cache-invalidator
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: cache-invalidator
+        image: codai/cache-invalidator:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3021
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3021"
+        - name: REDIS_CLUSTER_ENDPOINTS
+          value: "redis-cluster.codai-production.svc.cluster.local:6379"
+        - name: KAFKA_BROKERS
+          value: "kafka.codai-production.svc.cluster.local:9092"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-cluster-secrets
+              key: password
+        - name: ENABLE_EVENT_BASED_INVALIDATION
+          value: "true"
+        - name: BATCH_INVALIDATION_SIZE
+          value: "1000"
+        - name: INVALIDATION_DELAY
+          value: "1000"  # 1 second delay
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3021
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3021
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-cache-invalidator
+  namespace: codai-production
+  labels:
+    app: codai-cache-invalidator
+spec:
+  ports:
+  - port: 3021
+    targetPort: 3021
+    name: http
+    protocol: TCP
+  selector:
+    app: codai-cache-invalidator
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-cache-invalidator
+  namespace: codai-production
+  labels:
+    app: codai-cache-invalidator
+
+---
+# Redis Cluster Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis-cluster-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  password: Y29kYWktcmVkaXMtY2x1c3Rlci1wYXNzd29yZC0yMDI1  # codai-redis-cluster-password-2025
+
+---
+# Cache Performance Monitoring
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-exporter
+  namespace: codai-production
+  labels:
+    app: redis-exporter
+    component: performance-monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-exporter
+  template:
+    metadata:
+      labels:
+        app: redis-exporter
+        component: performance-monitoring
+    spec:
+      containers:
+      - name: redis-exporter
+        image: oliver006/redis_exporter:latest
+        ports:
+        - containerPort: 9121
+          name: metrics
+        env:
+        - name: REDIS_ADDR
+          value: "redis://redis-cluster.codai-production.svc.cluster.local:6379"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-cluster-secrets
+              key: password
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-exporter
+  namespace: codai-production
+  labels:
+    app: redis-exporter
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9121"
+spec:
+  ports:
+  - port: 9121
+    targetPort: 9121
+    name: metrics
+  selector:
+    app: redis-exporter
+
+---
+# Horizontal Pod Autoscaler for Cache Services
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-cache-warmer-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-cache-warmer
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-cache-invalidator-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-cache-invalidator
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

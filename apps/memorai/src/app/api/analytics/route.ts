@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
     // Map the analytics data to match GraphQL schema expectations
     const mappedAnalytics = {
       ...analytics,
-      categories: analytics.categoriesDistribution || [],
+      categories: analytics.categoryDistribution || [],
       tags: analytics.tagsDistribution || []
     };
 

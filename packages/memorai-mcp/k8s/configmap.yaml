@@ -1,0 +1,83 @@
+# MemorAI MCP Server - ConfigMap
+# Application configuration for production deployment
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-mcp-config
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: config
+    app.kubernetes.io/version: "9.5.0"
+data:
+  # Application configuration
+  NODE_ENV: "production"
+  MEMORAI_LOG_LEVEL: "info"
+  MEMORAI_DEBUG: "false"
+  PORT: "4950"
+  MEMORAI_MCP_PORT: "4950"
+  
+  # Performance settings
+  NODE_OPTIONS: "--max-old-space-size=3584 --enable-source-maps"
+  MEMORY_LIMIT_MB: "3584"
+  HEALTH_CHECK_TIMEOUT: "15000"
+  GRACEFUL_SHUTDOWN_TIMEOUT: "20000"
+  
+  # Database configuration
+  CBD_BASE_URL: "http://cbd-database-service:4180"
+  REDIS_URL: "redis://redis-service:6379"
+  
+  # AI Integration
+  AZURE_OPENAI_DEPLOYMENT_NAME: "text-embedding-3-large"
+  AZURE_OPENAI_API_VERSION: "2024-02-01"
+  
+  # Monitoring configuration
+  ENABLE_METRICS: "true"
+  PROMETHEUS_PORT: "9090"
+  JAEGER_ENDPOINT: "http://jaeger-service:14268/api/traces"
+  
+  # Python ML environment
+  PYTHONDONTWRITEBYTECODE: "1"
+  PYTHONUNBUFFERED: "1"
+  PYTORCH_CUDA_ALLOC_CONF: "max_split_size_mb:1024"
+  
+  # Cache paths
+  TRANSFORMERS_CACHE: "/app/.cache/transformers"
+  HF_HOME: "/app/.cache/huggingface"
+  MODEL_CACHE_DIR: "/app/.cache/models"
+  
+  # Application paths
+  MEMORAI_CBD_PATH: "/app/data/cbd"
+  ROMAI_PATH: "/app/data/romai"
+  PYTHONPATH: "/app/data/romai"
+
+---
+# MemorAI MCP Server - Secret
+# Sensitive configuration data
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: memorai-mcp-secrets
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: secret
+    app.kubernetes.io/version: "9.5.0"
+type: Opaque
+stringData:
+  # Database secrets
+  POSTGRES_PASSWORD: "your-secure-postgres-password"
+  POSTGRES_URL: "postgresql://memorai:your-secure-postgres-password@postgresql-service:5432/memorai_production"
+  
+  # AI API keys (replace with actual values)
+  AZURE_OPENAI_ENDPOINT: "https://your-openai-endpoint.com/"
+  AZURE_OPENAI_API_KEY: "your-azure-openai-api-key"
+  
+  # Application secrets
+  ENCRYPTION_KEY: "your-base64-encoded-encryption-key"
+  JWT_SECRET: "your-base64-encoded-jwt-secret"
+  
+  # Monitoring secrets
+  GRAFANA_ADMIN_PASSWORD: "your-grafana-admin-password"

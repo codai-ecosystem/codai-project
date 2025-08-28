@@ -1,0 +1,27 @@
+{
+  "navigation": {
+    "dashboard": "Tablou de Bord",
+    "self_learning": "Învățare Autonomă",
+    "training": "Centrul de Antrenament",
+    "analytics": "Analize",
+    "romanian_intelligence": "Inteligența Românească",
+    "conversation": "Conversație",
+    "research": "Laboratorul de Cercetare",
+    "monitor": "Monitorizare Sistem",
+    "settings": "Configurări",
+    "profile": "Profil"
+  },
+  "menu": {
+    "home": "Acasă",
+    "about": "Despre",
+    "features": "Funcționalități",
+    "contact": "Contact",
+    "help": "Ajutor",
+    "documentation": "Documentație"
+  },
+  "breadcrumbs": {
+    "home": "Acasă",
+    "dashboard": "Tablou de Bord",
+    "back": "Înapoi"
+  }
+}

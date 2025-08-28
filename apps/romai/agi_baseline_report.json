@@ -1,0 +1,100 @@
+{
+  "timestamp": "2025-08-27T08:31:30.752174",
+  "overall_agi_score": 0.558,
+  "agi_readiness_percentage": 55.800000000000004,
+  "capability_scores": [
+    {
+      "name": "multimodal_reasoning",
+      "current_score": 0.7799999999999999,
+      "agi_threshold": 0.85,
+      "gap_to_agi": 0.07000000000000006,
+      "test_count": 10,
+      "confidence": 0.85,
+      "hardware_usage_gb": 0.0
+    },
+    {
+      "name": "cross_domain_transfer",
+      "current_score": 0.65,
+      "agi_threshold": 0.8,
+      "gap_to_agi": 0.15000000000000002,
+      "test_count": 10,
+      "confidence": 0.85,
+      "hardware_usage_gb": 0.0
+    },
+    {
+      "name": "self_improvement",
+      "current_score": 0.23,
+      "agi_threshold": 0.7,
+      "gap_to_agi": 0.47,
+      "test_count": 10,
+      "confidence": 0.85,
+      "hardware_usage_gb": 0.0
+    },
+    {
+      "name": "memory_consolidation",
+      "current_score": 0.82,
+      "agi_threshold": 0.85,
+      "gap_to_agi": 0.030000000000000027,
+      "test_count": 10,
+      "confidence": 0.85,
+      "hardware_usage_gb": 0.0
+    },
+    {
+      "name": "meta_learning",
+      "current_score": 0.23,
+      "agi_threshold": 0.75,
+      "gap_to_agi": 0.52,
+      "test_count": 10,
+      "confidence": 0.85,
+      "hardware_usage_gb": 0.0
+    },
+    {
+      "name": "real_world_grounding",
+      "current_score": 0.75,
+      "agi_threshold": 0.8,
+      "gap_to_agi": 0.050000000000000044,
+      "test_count": 10,
+      "confidence": 0.85,
+      "hardware_usage_gb": 0.0
+    },
+    {
+      "name": "consciousness_simulation",
+      "current_score": 0.65,
+      "agi_threshold": 0.7,
+      "gap_to_agi": 0.04999999999999993,
+      "test_count": 10,
+      "confidence": 0.85,
+      "hardware_usage_gb": 0.0
+    }
+  ],
+  "top_3_gaps": [
+    "meta_learning",
+    "self_improvement",
+    "cross_domain_transfer"
+  ],
+  "improvement_potential": 0.028714285714285716,
+  "hardware_profile": {
+    "cpu_usage_percent": 11.7,
+    "memory_usage_gb": 77.83079936,
+    "memory_available_gb": 128.14985216,
+    "memory_total_gb": 205.980393472,
+    "gpu_available": true,
+    "gpu_memory_used_gb": 0.0,
+    "within_8gb_vram_limit": true,
+    "optimization_needed": false
+  },
+  "benchmark_results": {
+    "multimodal_reasoning": 0.7799999999999999,
+    "cross_domain_transfer": 0.65,
+    "self_improvement": 0.23,
+    "memory_consolidation": 0.82,
+    "meta_learning": 0.23,
+    "real_world_grounding": 0.75,
+    "consciousness_simulation": 0.65
+  },
+  "next_milestones": [
+    "Improve multimodal_reasoning by 7% to reach AGI threshold",
+    "Improve cross_domain_transfer by 15% to reach AGI threshold",
+    "Improve self_improvement by 47% to reach AGI threshold"
+  ]
+}

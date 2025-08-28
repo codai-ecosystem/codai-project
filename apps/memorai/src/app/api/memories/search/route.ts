@@ -23,9 +23,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         // For tests: search in test database
         if (process.env.NODE_ENV === 'test') {
-            const testDb = (await import('../../../../tests/utils/test-database')).testDb;
+            const { testDb } = await import('../../../../tests/utils/test-utils');
             let allMemories = testDb.data.memories.filter(m => 
-                m.userId === userId || m.user_id === userId
+                m.userId === userId
             );
 
             const searchLower = query.toLowerCase();
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
             if (tags && Array.isArray(tags)) {
                 memories = memories.filter(m => 
-                    tags.some(tag => m.tags?.some(memTag => memTag.toLowerCase().includes(tag.toLowerCase())))
+                    tags.some((tag: string) => m.tags?.some((memTag: string) => memTag.toLowerCase().includes(tag.toLowerCase())))
                 );
             }
 
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     });
                 }
                 
-                searchTerms.forEach(term => {
+                searchTerms.forEach((term: string) => {
                     if (contentLower.includes(term.toLowerCase())) {
                         foundTerms.push(term);
                     }

@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="React Integration Guide for MemorAI - Complete setup, hooks usage, and best practices">
+  <title>React Integration Guide - MemorAI Documentation</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #4F46E5;
+      --react-color: #61DAFB;
+      --text-primary: #1F2937;
+      --text-secondary: #6B7280;
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F9FAFB;
+      --border-color: #E5E7EB;
+      --success-color: #059669;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --code-bg: #1E293B;
+      --code-text: #E2E8F0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background-color: var(--bg-secondary);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--react-color) 0%, var(--primary-color) 100%);
+      color: white;
+      padding: 2rem 0;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .nav {
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+      background: var(--bg-secondary);
+      color: var(--primary-color);
+    }
+
+    .main {
+      padding: 3rem 0;
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .section-description {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 1.125rem;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      position: relative;
+      border: 1px solid #374151;
+    }
+
+    .code-block::before {
+      content: attr(data-lang);
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      background: var(--react-color);
+      color: #282C34;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .feature-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--react-color);
+    }
+
+    .feature-description {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .warning {
+      background: #FFFBEB;
+      border: 1px solid #F59E0B;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    .warning-title {
+      font-weight: 600;
+      color: #D97706;
+      margin-bottom: 0.5rem;
+    }
+
+    .info {
+      background: #EFF6FF;
+      border: 1px solid var(--primary-color);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    .info-title {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .toc {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .toc-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    .toc-list a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .toc-list a:hover {
+      color: var(--primary-color);
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <h1>
+        <i class="fab fa-react"></i>
+        React Integration Guide
+      </h1>
+      <p>Complete guide to integrating MemorAI with React applications</p>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <div class="container">
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">← Back to Guides</a></li>
+        <li><a href="#installation" class="nav-link">Installation</a></li>
+        <li><a href="#hooks" class="nav-link">React Hooks</a></li>
+        <li><a href="#examples" class="nav-link">Examples</a></li>
+        <li><a href="#best-practices" class="nav-link">Best Practices</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="container">
+      <!-- Table of Contents -->
+      <div class="toc">
+        <h3 class="toc-title">Table of Contents</h3>
+        <ul class="toc-list">
+          <li><a href="#installation">Installation & Setup</a></li>
+          <li><a href="#hooks">React Hooks Overview</a></li>
+          <li><a href="#use-memorai">useMemorAI Hook</a></li>
+          <li><a href="#use-memory-subscription">useMemorySubscription Hook</a></li>
+          <li><a href="#use-memory-analytics">useMemoryAnalytics Hook</a></li>
+          <li><a href="#examples">Complete Examples</a></li>
+          <li><a href="#typescript">TypeScript Integration</a></li>
+          <li><a href="#error-handling">Error Handling</a></li>
+          <li><a href="#best-practices">Best Practices</a></li>
+        </ul>
+      </div>
+
+      <!-- Installation -->
+      <section id="installation" class="section">
+        <h2 class="section-title">Installation & Setup</h2>
+        <p class="section-description">
+          Get started with MemorAI in your React application with these simple steps.
+        </p>
+
+        <div class="code-block" data-lang="bash">
+          # Install the core SDK and React integration
+          npm install @memorai/sdk @memorai/react
+
+          # Or with yarn
+          yarn add @memorai/sdk @memorai/react
+
+          # Or with pnpm
+          pnpm add @memorai/sdk @memorai/react</div>
+
+        <div class="info">
+          <div class="info-title">Prerequisites</div>
+          <p>This guide assumes you have a React application (v16.8+ with hooks support) and a running MemorAI MCP
+            server.</p>
+        </div>
+
+        <h3>Environment Configuration</h3>
+        <p>Create a <code>.env</code> file in your project root:</p>
+
+        <div class="code-block" data-lang="env">
+          # .env
+          REACT_APP_MEMORAI_BASE_URL=http://localhost:4950
+          REACT_APP_MEMORAI_API_KEY=your-api-key-here
+          REACT_APP_MEMORAI_AGENT_ID=your-agent-id</div>
+
+        <div class="warning">
+          <div class="warning-title">Security Note</div>
+          <p>Never expose sensitive API keys in client-side code. Use environment variables with the REACT_APP_ prefix
+            for public configuration only.</p>
+        </div>
+      </section>
+
+      <!-- Hooks Overview -->
+      <section id="hooks" class="section">
+        <h2 class="section-title">React Hooks Overview</h2>
+        <p class="section-description">
+          MemorAI provides three main React hooks for different use cases.
+        </p>
+
+        <div class="feature-card">
+          <div class="feature-title">useMemorAI</div>
+          <div class="feature-description">
+            Primary hook for SDK management, memory operations, and connection state.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">useMemorySubscription</div>
+          <div class="feature-description">
+            Real-time memory updates via WebSocket connections with automatic reconnection.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">useMemoryAnalytics</div>
+          <div class="feature-description">
+            Analytics dashboard data with caching and automatic refresh intervals.
+          </div>
+        </div>
+      </section>
+
+      <!-- useMemorAI Hook -->
+      <section id="use-memorai" class="section">
+        <h2 class="section-title">useMemorAI Hook</h2>
+        <p class="section-description">
+          The main hook for MemorAI integration with complete SDK lifecycle management.
+        </p>
+
+        <h3>Basic Usage</h3>
+        <div class="code-block" data-lang="tsx">
+          import React from 'react';
+          import { useMemorAI } from '@memorai/react';
+
+          function MemoryComponent() {
+          const {
+          sdk,
+          isConnected,
+          isLoading,
+          error,
+          remember,
+          recall,
+          updateMemory,
+          forget
+          } = useMemorAI({
+          baseURL: process.env.REACT_APP_MEMORAI_BASE_URL,
+          apiKey: process.env.REACT_APP_MEMORAI_API_KEY
+          });
+
+          const handleRemember = async () => {
+          try {
+          const memory = await remember({
+          content: 'User clicked remember button',
+          agentId: 'user-001',
+          metadata: { importance: 5 }
+          });
+          console.log('Memory stored:', memory);
+          } catch (err) {
+          console.error('Failed to store memory:', err);
+          }
+          };
+
+          if (isLoading) return <div>Connecting to MemorAI...</div>;
+          if (error) return <div>Error: {error.message}</div>;
+
+          return (
+          <div>
+            <div>Status: {isConnected ? 'Connected' : 'Disconnected'}</div>
+            <button onClick={handleRemember}>Remember This Action</button>
+          </div>
+          );
+          }
+        </div>
+
+        <h3>Hook Options</h3>
+        <div class="code-block" data-lang="typescript">
+          interface UseMemorAIOptions {
+          baseURL: string;
+          apiKey?: string;
+          agentId?: string;
+          enableWebSocket?: boolean;
+          reconnectAttempts?: number;
+          reconnectDelay?: number;
+          onConnect?: () => void;
+          onDisconnect?: () => void;
+          onError?: (error: Error) => void;
+          }</div>
+
+        <h3>Return Values</h3>
+        <div class="code-block" data-lang="typescript">
+          interface UseMemorAIReturn {
+          // SDK instance
+          sdk: MemorAISDK | null;
+
+          // Connection state
+          isConnected: boolean;
+          isLoading: boolean;
+          error: Error | null;
+
+          // Memory operations
+          remember: (params: RememberParams) => Promise<Memory>;
+            recall: (params: RecallParams) => Promise<Memory[]>;
+              updateMemory: (id: string, updates: Partial<Memory>) => Promise<Memory>;
+                  forget: (id: string) => Promise<void>;
+
+                    // Advanced operations
+                    clusterMemories: (params: ClusterParams) => Promise<ClusterResult>;
+                      getAnalytics: (params: AnalyticsParams) => Promise<Analytics>;
+                        summarizeMemories: (params: SummarizeParams) => Promise<Summary>;
+
+                          // Utility functions
+                          reconnect: () => Promise<void>;
+                            disconnect: () => void;
+                            }</div>
+      </section>
+
+      <!-- useMemorySubscription Hook -->
+      <section id="use-memory-subscription" class="section">
+        <h2 class="section-title">useMemorySubscription Hook</h2>
+        <p class="section-description">
+          Subscribe to real-time memory updates with WebSocket connections.
+        </p>
+
+        <h3>Basic Usage</h3>
+        <div class="code-block" data-lang="tsx">
+          import React from 'react';
+          import { useMemorySubscription } from '@memorai/react';
+
+          function RealtimeMemories() {
+          const {
+          memories,
+          isSubscribed,
+          subscribe,
+          unsubscribe,
+          error
+          } = useMemorySubscription({
+          baseURL: process.env.REACT_APP_MEMORAI_BASE_URL,
+          agentId: 'user-001'
+          });
+
+          React.useEffect(() => {
+          // Subscribe to memory updates
+          subscribe({
+          filters: {
+          importance: { min: 5 },
+          tags: ['important', 'user-action']
+          }
+          });
+
+          return () => unsubscribe();
+          }, [subscribe, unsubscribe]);
+
+          return (
+          <div>
+            <div>Subscription: {isSubscribed ? 'Active' : 'Inactive'}</div>
+            {error && <div>Error: {error.message}</div>}
+
+            <h3>Live Memories ({memories.length})</h3>
+            {memories.map(memory => (
+            <div key={memory.id} style={{ padding: '1rem' , border: '1px solid #ccc' , margin: '0.5rem 0' }}>
+              <div><strong>{memory.content}</strong></div>
+              <div>Importance: {memory.metadata.importance}</div>
+              <div>Updated: {new Date(memory.updatedAt).toLocaleString()}</div>
+            </div>
+            ))}
+          </div>
+          );
+          }
+        </div>
+
+        <h3>Subscription Filters</h3>
+        <div class="code-block" data-lang="typescript">
+          interface SubscriptionFilters {
+          importance?: {
+          min?: number;
+          max?: number;
+          };
+          tags?: string[];
+          agentId?: string;
+          project?: string;
+          session?: string;
+          dateRange?: {
+          start: Date;
+          end: Date;
+          };
+          }</div>
+      </section>
+
+      <!-- useMemoryAnalytics Hook -->
+      <section id="use-memory-analytics" class="section">
+        <h2 class="section-title">useMemoryAnalytics Hook</h2>
+        <p class="section-description">
+          Access analytics dashboard data with intelligent caching and refresh management.
+        </p>
+
+        <div class="code-block" data-lang="tsx">
+          import React from 'react';
+          import { useMemoryAnalytics } from '@memorai/react';
+
+          function AnalyticsDashboard() {
+          const {
+          analytics,
+          isLoading,
+          error,
+          refresh,
+          lastUpdated
+          } = useMemoryAnalytics({
+          baseURL: process.env.REACT_APP_MEMORAI_BASE_URL,
+          agentId: 'analytics-agent',
+          refreshInterval: 30000, // Refresh every 30 seconds
+          timeRange: 'last_7_days'
+          });
+
+          if (isLoading) return <div>Loading analytics...</div>;
+          if (error) return <div>Error: {error.message}</div>;
+          if (!analytics) return <div>No analytics data available</div>;
+
+          return (
+          <div>
+            <div style={{ display: 'flex' , justifyContent: 'space-between' , alignItems: 'center' }}>
+              <h2>Memory Analytics</h2>
+              <div>
+                <span>Last updated: {lastUpdated?.toLocaleString()}</span>
+                <button onClick={refresh} style={{ marginLeft: '1rem' }}>
+                  Refresh
+                </button>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid' , gridTemplateColumns: '1fr 1fr' , gap: '1rem' }}>
+              <div style={{ padding: '1rem' , border: '1px solid #ccc' }}>
+                <h3>Usage Patterns</h3>
+                <p>Total Memories: {analytics.usagePatterns.totalMemories}</p>
+                <p>Active Agents: {analytics.usagePatterns.activeAgents}</p>
+                <p>Avg Importance: {analytics.usagePatterns.averageImportance}</p>
+              </div>
+
+              <div style={{ padding: '1rem' , border: '1px solid #ccc' }}>
+                <h3>Performance Metrics</h3>
+                <p>Response Time: {analytics.performanceMetrics.averageResponseTime}ms</p>
+                <p>Success Rate: {analytics.performanceMetrics.successRate}%</p>
+                <p>Cache Hit Rate: {analytics.performanceMetrics.cacheHitRate}%</p>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '1rem' , padding: '1rem' , border: '1px solid #ccc' }}>
+              <h3>Memory Clusters</h3>
+              {analytics.clusters.map((cluster, index) => (
+              <div key={index} style={{ marginBottom: '0.5rem' }}>
+                <strong>Cluster {index + 1}:</strong> {cluster.memories.length} memories
+                <div style={{ fontSize: '0.875rem' , color: '#666' }}>
+                  Keywords: {cluster.keywords.join(', ')}
+                </div>
+              </div>
+              ))}
+            </div>
+          </div>
+          );
+          }
+        </div>
+      </section>
+
+      <!-- Complete Examples -->
+      <section id="examples" class="section">
+        <h2 class="section-title">Complete Examples</h2>
+
+        <h3>Memory Management Component</h3>
+        <div class="code-block" data-lang="tsx">
+          import React, { useState } from 'react';
+          import { useMemorAI, useMemorySubscription } from '@memorai/react';
+
+          function MemoryManager() {
+          const [searchQuery, setSearchQuery] = useState('');
+          const [memories, setMemories] = useState([]);
+
+          const {
+          remember,
+          recall,
+          forget,
+          isConnected,
+          error
+          } = useMemorAI({
+          baseURL: process.env.REACT_APP_MEMORAI_BASE_URL,
+          agentId: 'memory-manager'
+          });
+
+          const { memories: liveMemories } = useMemorySubscription({
+          baseURL: process.env.REACT_APP_MEMORAI_BASE_URL,
+          agentId: 'memory-manager'
+          });
+
+          const handleSearch = async () => {
+          if (!searchQuery.trim()) return;
+
+          try {
+          const results = await recall({
+          query: searchQuery,
+          limit: 20
+          });
+          setMemories(results);
+          } catch (err) {
+          console.error('Search failed:', err);
+          }
+          };
+
+          const handleRemember = async (content) => {
+          try {
+          await remember({
+          content,
+          agentId: 'memory-manager',
+          metadata: {
+          importance: 5,
+          tags: ['user-input']
+          }
+          });
+          } catch (err) {
+          console.error('Remember failed:', err);
+          }
+          };
+
+          const handleForget = async (memoryId) => {
+          try {
+          await forget(memoryId);
+          setMemories(prev => prev.filter(m => m.id !== memoryId));
+          } catch (err) {
+          console.error('Forget failed:', err);
+          }
+          };
+
+          if (!isConnected) {
+          return <div>Connecting to MemorAI...</div>;
+          }
+
+          if (error) {
+          return <div>Error: {error.message}</div>;
+          }
+
+          return (
+          <div style={{ padding: '1rem' }}>
+            <h1>Memory Manager</h1>
+
+            {/* Search */}
+            <div style={{ marginBottom: '1rem' }}>
+              <input type="text" value={searchQuery} onChange={(e)=> setSearchQuery(e.target.value)}
+              placeholder="Search memories..."
+              style={{ padding: '0.5rem', width: '300px' }}
+              />
+              <button onClick={handleSearch} style={{ marginLeft: '0.5rem' , padding: '0.5rem 1rem' }}>
+                Search
+              </button>
+            </div>
+
+            {/* Add Memory */}
+            <div style={{ marginBottom: '1rem' }}>
+              <MemoryInput onSubmit={handleRemember} />
+            </div>
+
+            {/* Live Memories */}
+            <div style={{ marginBottom: '2rem' }}>
+              <h2>Live Updates ({liveMemories.length})</h2>
+              <div style={{ maxHeight: '200px' , overflowY: 'auto' , border: '1px solid #ccc' , padding: '0.5rem' }}>
+                {liveMemories.map(memory => (
+                <MemoryItem key={memory.id} memory={memory} onDelete={handleForget} />
+                ))}
+              </div>
+            </div>
+
+            {/* Search Results */}
+            <div>
+              <h2>Search Results ({memories.length})</h2>
+              <div>
+                {memories.map(memory => (
+                <MemoryItem key={memory.id} memory={memory} onDelete={handleForget} />
+                ))}
+              </div>
+            </div>
+          </div>
+          );
+          }
+
+          function MemoryInput({ onSubmit }) {
+          const [content, setContent] = useState('');
+
+          const handleSubmit = (e) => {
+          e.preventDefault();
+          if (content.trim()) {
+          onSubmit(content);
+          setContent('');
+          }
+          };
+
+          return (
+          <form onSubmit={handleSubmit}>
+            <input type="text" value={content} onChange={(e)=> setContent(e.target.value)}
+            placeholder="Enter memory content..."
+            style={{ padding: '0.5rem', width: '300px' }}
+            />
+            <button type="submit" style={{ marginLeft: '0.5rem' , padding: '0.5rem 1rem' }}>
+              Remember
+            </button>
+          </form>
+          );
+          }
+
+          function MemoryItem({ memory, onDelete }) {
+          return (
+          <div style={{ padding: '1rem' , border: '1px solid #ddd' , marginBottom: '0.5rem' , borderRadius: '4px' }}>
+            <div style={{ fontWeight: 'bold' }}>{memory.content}</div>
+            <div style={{ fontSize: '0.875rem' , color: '#666' , margin: '0.5rem 0' }}>
+              Importance: {memory.metadata?.importance || 'N/A'} |
+              Updated: {new Date(memory.updatedAt).toLocaleString()}
+            </div>
+            {memory.metadata?.tags && (
+            <div style={{ fontSize: '0.75rem' , color: '#888' }}>
+              Tags: {memory.metadata.tags.join(', ')}
+            </div>
+            )}
+            <button onClick={()=> onDelete(memory.id)}
+              style={{
+              marginTop: '0.5rem',
+              padding: '0.25rem 0.5rem',
+              fontSize: '0.75rem',
+              background: '#ef4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '3px'
+              }}
+              >
+              Delete
+            </button>
+          </div>
+          );
+          }
+
+          export default MemoryManager;
+        </div>
+      </section>
+
+      <!-- TypeScript Integration -->
+      <section id="typescript" class="section">
+        <h2 class="section-title">TypeScript Integration</h2>
+        <p class="section-description">
+          MemorAI provides comprehensive TypeScript support with detailed type definitions.
+        </p>
+
+        <div class="code-block" data-lang="typescript">
+          import React from 'react';
+          import { useMemorAI, Memory, MemoryMetadata } from '@memorai/react';
+
+          interface CustomMemoryMetadata extends MemoryMetadata {
+          category: 'user' | 'system' | 'analytics';
+          priority: 'low' | 'medium' | 'high' | 'critical';
+          source: string;
+          }
+
+          interface CustomMemory extends Omit<Memory, 'metadata'> {
+            metadata: CustomMemoryMetadata;
+            }
+
+            function TypedMemoryComponent() {
+            const {
+            remember,
+            recall,
+            isConnected,
+            error
+            } = useMemorAI({
+            baseURL: process.env.REACT_APP_MEMORAI_BASE_URL!,
+            agentId: 'typed-agent'
+            });
+
+            const handleTypedRemember = async () => {
+            try {
+            const memory = await remember({
+            content: 'User performed important action',
+            agentId: 'typed-agent',
+            metadata: {
+            category: 'user',
+            priority: 'high',
+            importance: 8,
+            tags: ['action', 'important'],
+            source: 'user-interface'
+            } as CustomMemoryMetadata
+            });
+
+            console.log('Stored memory:', memory);
+            } catch (err) {
+            console.error('Failed to store:', err);
+            }
+            };
+
+            const handleTypedRecall = async (): Promise<CustomMemory[]> => {
+              try {
+              const memories = await recall({
+              query: 'important actions',
+              limit: 10
+              });
+
+              // Type assertion for custom metadata
+              return memories as CustomMemory[];
+              } catch (err) {
+              console.error('Failed to recall:', err);
+              return [];
+              }
+              };
+
+              // Component implementation...
+              return <div>TypeScript integration example</div>;
+              }</div>
+
+        <h3>Custom Hook Types</h3>
+        <div class="code-block" data-lang="typescript">
+          // Create custom typed hooks for your specific use case
+          import { useMemorAI as useBaseMemorAI } from '@memorai/react';
+
+          export function useTypedMemorAI(agentId: string) {
+          return useBaseMemorAI({
+          baseURL: process.env.REACT_APP_MEMORAI_BASE_URL!,
+          agentId,
+          enableWebSocket: true
+          });
+          }
+
+          // Usage
+          function MyComponent() {
+          const { remember, recall } = useTypedMemorAI('my-agent');
+          // ... rest of component
+          }</div>
+      </section>
+
+      <!-- Error Handling -->
+      <section id="error-handling" class="section">
+        <h2 class="section-title">Error Handling</h2>
+        <p class="section-description">
+          Implement robust error handling for a better user experience.
+        </p>
+
+        <div class="code-block" data-lang="tsx">
+          import React from 'react';
+          import { useMemorAI } from '@memorai/react';
+
+          function ErrorHandlingExample() {
+          const [lastError, setLastError] = React.useState(null);
+
+          const {
+          remember,
+          recall,
+          isConnected,
+          error,
+          reconnect
+          } = useMemorAI({
+          baseURL: process.env.REACT_APP_MEMORAI_BASE_URL,
+          agentId: 'error-handling-demo',
+          onError: (err) => {
+          console.error('MemorAI Error:', err);
+          setLastError(err.message);
+
+          // Auto-clear error after 5 seconds
+          setTimeout(() => setLastError(null), 5000);
+          },
+          onDisconnect: () => {
+          console.log('Disconnected from MemorAI');
+          }
+          });
+
+          const handleMemoryOperation = async (operation) => {
+          try {
+          setLastError(null);
+
+          if (operation === 'remember') {
+          await remember({
+          content: 'Test memory content',
+          agentId: 'error-handling-demo',
+          metadata: { importance: 5 }
+          });
+          } else if (operation === 'recall') {
+          const results = await recall({
+          query: 'test',
+          limit: 5
+          });
+          console.log('Recall results:', results);
+          }
+          } catch (err) {
+          setLastError(err.message);
+
+          // Different handling based on error type
+          if (err.code === 'NETWORK_ERROR') {
+          console.log('Network issue, attempting reconnect...');
+          setTimeout(() => reconnect(), 2000);
+          } else if (err.code === 'VALIDATION_ERROR') {
+          console.log('Validation failed:', err.details);
+          } else if (err.code === 'RATE_LIMIT') {
+          console.log('Rate limited, will retry in 30 seconds');
+          setTimeout(() => handleMemoryOperation(operation), 30000);
+          }
+          }
+          };
+
+          return (
+          <div>
+            {/* Connection Status */}
+            <div style={{ padding: '0.5rem' , background: isConnected ? '#dcfce7' : '#fee2e2' , color: isConnected
+              ? '#166534' : '#991b1b' , borderRadius: '4px' , marginBottom: '1rem' }}>
+              Status: {isConnected ? 'Connected' : 'Disconnected'}
+              {!isConnected && (
+              <button onClick={reconnect} style={{ marginLeft: '1rem' , padding: '0.25rem 0.5rem' }}>
+                Reconnect
+              </button>
+              )}
+            </div>
+
+            {/* Error Display */}
+            {(error || lastError) && (
+            <div style={{ padding: '1rem' , background: '#fee2e2' , color: '#991b1b' , borderRadius: '4px' ,
+              marginBottom: '1rem' }}>
+              <strong>Error:</strong> {error?.message || lastError}
+            </div>
+            )}
+
+            {/* Test Buttons */}
+            <div>
+              <button onClick={()=> handleMemoryOperation('remember')}
+                disabled={!isConnected}
+                style={{ marginRight: '0.5rem', padding: '0.5rem 1rem' }}
+                >
+                Test Remember
+              </button>
+
+              <button onClick={()=> handleMemoryOperation('recall')}
+                disabled={!isConnected}
+                style={{ padding: '0.5rem 1rem' }}
+                >
+                Test Recall
+              </button>
+            </div>
+          </div>
+          );
+          }
+        </div>
+      </section>
+
+      <!-- Best Practices -->
+      <section id="best-practices" class="section">
+        <h2 class="section-title">Best Practices</h2>
+        <p class="section-description">
+          Follow these guidelines for optimal performance and maintainability.
+        </p>
+
+        <div class="feature-card">
+          <div class="feature-title">1. Connection Management</div>
+          <div class="feature-description">
+            Always handle connection states gracefully and implement reconnection logic.
+          </div>
+          <div class="code-block" data-lang="tsx">
+            const { isConnected, error, reconnect } = useMemorAI({
+            // ... config
+            reconnectAttempts: 5,
+            reconnectDelay: 2000,
+            onDisconnect: () => {
+            // Show user notification
+            toast.warn('Connection lost. Attempting to reconnect...');
+            }
+            });</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">2. Performance Optimization</div>
+          <div class="feature-description">
+            Use proper dependency arrays and memoization to prevent unnecessary re-renders.
+          </div>
+          <div class="code-block" data-lang="tsx">
+            const handleSearch = useCallback(async (query) => {
+            if (!query.trim()) return;
+
+            const results = await recall({
+            query,
+            limit: 20
+            });
+            setMemories(results);
+            }, [recall]);
+
+            // Debounce search input
+            const debouncedSearch = useMemo(
+            () => debounce(handleSearch, 300),
+            [handleSearch]
+            );</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">3. Error Boundaries</div>
+          <div class="feature-description">
+            Wrap memory components in error boundaries for better error handling.
+          </div>
+          <div class="code-block" data-lang="tsx">
+            class MemoryErrorBoundary extends React.Component {
+            constructor(props) {
+            super(props);
+            this.state = { hasError: false, error: null };
+            }
+
+            static getDerivedStateFromError(error) {
+            return { hasError: true, error };
+            }
+
+            componentDidCatch(error, errorInfo) {
+            console.error('Memory component error:', error, errorInfo);
+            }
+
+            render() {
+            if (this.state.hasError) {
+            return (
+            <div>
+              <h3>Something went wrong with memory operations</h3>
+              <button onClick={()=> this.setState({ hasError: false, error: null })}>
+                Try Again
+              </button>
+            </div>
+            );
+            }
+
+            return this.props.children;
+            }
+            }
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">4. Memory Cleanup</div>
+          <div class="feature-description">
+            Clean up subscriptions and connections when components unmount.
+          </div>
+          <div class="code-block" data-lang="tsx">
+            React.useEffect(() => {
+            const { unsubscribe } = subscribe({
+            filters: { importance: { min: 5 } }
+            });
+
+            // Cleanup subscription
+            return () => {
+            unsubscribe();
+            };
+            }, [subscribe]);</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">5. Loading States</div>
+          <div class="feature-description">
+            Provide clear feedback during memory operations.
+          </div>
+          <div class="code-block" data-lang="tsx">
+            function MemoryButton() {
+            const [isRemembering, setIsRemembering] = useState(false);
+            const { remember } = useMemorAI(/* config */);
+
+            const handleClick = async () => {
+            setIsRemembering(true);
+            try {
+            await remember({
+            content: 'Button clicked',
+            agentId: 'user-001',
+            metadata: { importance: 3 }
+            });
+            } finally {
+            setIsRemembering(false);
+            }
+            };
+
+            return (
+            <button onClick={handleClick} disabled={isRemembering}>
+              {isRemembering ? 'Remembering...' : 'Remember This'}
+            </button>
+            );
+            }
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Copy code functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      const codeBlocks = document.querySelectorAll('.code-block');
+
+      codeBlocks.forEach(block => {
+        block.style.cursor = 'pointer';
+        block.title = 'Click to copy';
+
+        block.addEventListener('click', async function () {
+          try {
+            await navigator.clipboard.writeText(this.textContent);
+
+            // Visual feedback
+            const original = this.style.background;
+            this.style.background = 'var(--success-color)';
+
+            setTimeout(() => {
+              this.style.background = original;
+            }, 200);
+          } catch (err) {
+            console.error('Failed to copy text:', err);
+          }
+        });
+      });
+
+      // Smooth scroll for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(targetId);
+
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

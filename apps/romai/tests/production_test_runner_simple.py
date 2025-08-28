@@ -149,7 +149,7 @@ class SimpleProductionTestRunner:
     def test_performance_metrics(self):
         """Test performance metrics endpoint"""
         try:
-            response = requests.get(f"{self.base_url}/api/v1/enhanced-capabilities/performance-metrics", timeout=10)
+            response = requests.get(f"{self.base_url}/api/v1/phase32/performance-metrics", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()

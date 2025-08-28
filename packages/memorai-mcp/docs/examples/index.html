@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="MemorAI Code Examples - Ready-to-use examples for common use cases and integration patterns">
+  <title>Code Examples - MemorAI Developer Documentation</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #4F46E5;
+      --secondary-color: #10B981;
+      --accent-color: #F59E0B;
+      --text-primary: #1F2937;
+      --text-secondary: #6B7280;
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F9FAFB;
+      --bg-tertiary: #EFF6FF;
+      --border-color: #E5E7EB;
+      --success-color: #059669;
+      --warning-color: #D97706;
+      --error-color: #DC2626;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+      --code-bg: #1E293B;
+      --code-text: #E2E8F0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background-color: var(--bg-secondary);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      padding: 2rem 0;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1.125rem;
+      opacity: 0.9;
+    }
+
+    .nav {
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+      background: var(--bg-tertiary);
+      color: var(--primary-color);
+    }
+
+    .nav-link.active {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .main {
+      padding: 3rem 0;
+    }
+
+    .section {
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .section-description {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .example-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .example-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .example-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-color);
+    }
+
+    .example-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .example-header {
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .example-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .example-description {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .example-meta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .example-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      background: var(--bg-tertiary);
+      color: var(--primary-color);
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .example-content {
+      padding: 1.5rem;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 0.75rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      position: relative;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .code-block::before {
+      content: attr(data-lang);
+      position: absolute;
+      top: 0.5rem;
+      right: 0.75rem;
+      background: var(--primary-color);
+      color: white;
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.25rem;
+      font-size: 0.625rem;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .example-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #3730A3;
+    }
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .category-filter {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+      background: var(--bg-tertiary);
+    }
+
+    .search-container {
+      margin-bottom: 2rem;
+    }
+
+    .search-input {
+      width: 100%;
+      max-width: 400px;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgb(79 70 229 / 0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .examples-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+    }
+
+    .copy-indicator {
+      position: absolute;
+      top: 0.5rem;
+      right: 3rem;
+      background: var(--success-color);
+      color: white;
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.25rem;
+      font-size: 0.625rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .copy-indicator.show {
+      opacity: 1;
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <h1>
+        <i class="fas fa-code"></i>
+        Code Examples
+      </h1>
+      <p>Ready-to-use examples for common use cases and integration patterns</p>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <div class="container">
+      <ul class="nav-links">
+        <li><a href="../developer-portal.html" class="nav-link">← Back to Portal</a></li>
+        <li><a href="#" class="nav-link active">Code Examples</a></li>
+        <li><a href="../integration-guides/index.html" class="nav-link">Integration Guides</a></li>
+        <li><a href="../api-playground.html" class="nav-link">API Playground</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="container">
+      <!-- Search and Filter -->
+      <div class="search-container">
+        <input type="search" class="search-input" id="search-input" placeholder="Search examples...">
+      </div>
+
+      <div class="category-filter">
+        <button class="filter-btn active" data-category="all">All Examples</button>
+        <button class="filter-btn" data-category="basic">Basic Operations</button>
+        <button class="filter-btn" data-category="advanced">Advanced Features</button>
+        <button class="filter-btn" data-category="realtime">Real-time</button>
+        <button class="filter-btn" data-category="analytics">Analytics</button>
+        <button class="filter-btn" data-category="integration">Framework Integration</button>
+      </div>
+
+      <!-- Examples Grid -->
+      <div class="examples-grid" id="examples-grid">
+        <!-- Basic Memory Operations -->
+        <div class="example-card" data-category="basic" data-keywords="remember store memory basic">
+          <div class="example-header">
+            <div class="example-title">Basic Memory Storage</div>
+            <div class="example-description">Store a simple memory with metadata</div>
+            <div class="example-meta">
+              <span class="example-tag">
+                <i class="fas fa-tag"></i>
+                Basic
+              </span>
+              <span class="example-tag">
+                <i class="fab fa-js"></i>
+                JavaScript
+              </span>
+            </div>
+          </div>
+          <div class="example-content">
+            <div class="code-block" data-lang="javascript">
+              import MemorAISDK from '@memorai/sdk';
+
+              const sdk = new MemorAISDK({
+              baseURL: 'http://localhost:4950',
+              apiKey: 'your-api-key'
+              });
+
+              async function storeMemory() {
+              try {
+              const memory = await sdk.remember({
+              content: 'User prefers dark mode and compact layout',
+              agentId: 'user-preferences-agent',
+              metadata: {
+              importance: 7,
+              priority: 'high',
+              tags: ['ui', 'preferences', 'settings'],
+              project: 'user-customization'
+              }
+              });
+
+              console.log('Memory stored:', memory);
+              return memory;
+              } catch (error) {
+              console.error('Failed to store memory:', error);
+              throw error;
+              }
+              }
+
+              // Usage
+              storeMemory();</div>
+            <div class="example-actions">
+              <button class="btn btn-primary" onclick="copyCode(this)">
+                <i class="fas fa-copy"></i>
+                Copy Code
+              </button>
+              <a href="#" class="btn btn-secondary">
+                <i class="fas fa-play"></i>
+                Try in Playground
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Memory Search -->
+        <div class="example-card" data-category="basic" data-keywords="search recall query filter">
+          <div class="example-header">
+            <div class="example-title">Memory Search & Filtering</div>
+            <div class="example-description">Search memories with advanced filtering options</div>
+            <div class="example-meta">
+              <span class="example-tag">
+                <i class="fas fa-tag"></i>
+                Basic
+              </span>
+              <span class="example-tag">
+                <i class="fab fa-js"></i>
+                JavaScript
+              </span>
+            </div>
+          </div>
+          <div class="example-content">
+            <div class="code-block" data-lang="javascript">
+              async function searchMemories() {
+              try {
+              // Basic search
+              const basicResults = await sdk.recall({
+              query: 'user preferences',
+              agentId: 'user-preferences-agent',
+              limit: 10
+              });
+
+              // Advanced search with filtering
+              const advancedResults = await sdk.recall({
+              query: 'user interface customization',
+              agentId: 'user-preferences-agent',
+              limit: 20,
+              minImportance: 5,
+              project: 'user-customization',
+              includeOtherAgents: false
+              });
+
+              // Search with date range (if supported)
+              const recentResults = await sdk.recall({
+              query: 'recent changes',
+              agentId: 'user-preferences-agent',
+              limit: 15,
+              dateRange: {
+              start: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // Last 7 days
+              end: new Date()
+              }
+              });
+
+              console.log('Search results:', {
+              basic: basicResults,
+              advanced: advancedResults,
+              recent: recentResults
+              });
+
+              return { basicResults, advancedResults, recentResults };
+              } catch (error) {
+              console.error('Search failed:', error);
+              throw error;
+              }
+              }
+
+              // Usage with error handling
+              searchMemories()
+              .then(results => {
+              // Process search results
+              results.basicResults.forEach(memory => {
+              console.log(`Memory: ${memory.content} (Importance: ${memory.metadata.importance})`);
+              });
+              })
+              .catch(error => {
+              console.error('Search operation failed:', error);
+              });</div>
+            <div class="example-actions">
+              <button class="btn btn-primary" onclick="copyCode(this)">
+                <i class="fas fa-copy"></i>
+                Copy Code
+              </button>
+              <a href="#" class="btn btn-secondary">
+                <i class="fas fa-play"></i>
+                Try in Playground
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- React Integration -->
+        <div class="example-card" data-category="integration" data-keywords="react hooks useMemorAI component">
+          <div class="example-header">
+            <div class="example-title">React Memory Component</div>
+            <div class="example-description">Complete React component with memory operations</div>
+            <div class="example-meta">
+              <span class="example-tag">
+                <i class="fas fa-tag"></i>
+                Integration
+              </span>
+              <span class="example-tag">
+                <i class="fab fa-react"></i>
+                React
+              </span>
+            </div>
+          </div>
+          <div class="example-content">
+            <div class="code-block" data-lang="jsx">
+              import React, { useState, useCallback } from 'react';
+              import { useMemorAI } from '@memorai/react';
+
+              function MemoryManager() {
+              const [searchQuery, setSearchQuery] = useState('');
+              const [memories, setMemories] = useState([]);
+              const [newMemory, setNewMemory] = useState('');
+
+              const {
+              remember,
+              recall,
+              forget,
+              isConnected,
+              isLoading,
+              error
+              } = useMemorAI({
+              baseURL: process.env.REACT_APP_MEMORAI_BASE_URL,
+              agentId: 'memory-manager',
+              enableWebSocket: true
+              });
+
+              const handleSearch = useCallback(async () => {
+              if (!searchQuery.trim()) return;
+
+              try {
+              const results = await recall({
+              query: searchQuery,
+              limit: 20
+              });
+              setMemories(results);
+              } catch (err) {
+              console.error('Search failed:', err);
+              }
+              }, [searchQuery, recall]);
+
+              const handleRemember = async () => {
+              if (!newMemory.trim()) return;
+
+              try {
+              await remember({
+              content: newMemory,
+              agentId: 'memory-manager',
+              metadata: {
+              importance: 5,
+              tags: ['user-input'],
+              timestamp: new Date().toISOString()
+              }
+              });
+
+              setNewMemory('');
+              // Refresh search if there's an active query
+              if (searchQuery) {
+              handleSearch();
+              }
+              } catch (err) {
+              console.error('Remember failed:', err);
+              }
+              };
+
+              const handleForget = async (memoryId) => {
+              try {
+              await forget(memoryId);
+              setMemories(prev => prev.filter(m => m.id !== memoryId));
+              } catch (err) {
+              console.error('Forget failed:', err);
+              }
+              };
+
+              if (isLoading) return <div>Connecting to MemorAI...</div>;
+              if (error) return <div>Error: {error.message}</div>;
+
+              return (
+              <div className="memory-manager">
+                <div className="status">
+                  Status: {isConnected ? '✅ Connected' : '❌ Disconnected'}
+                </div>
+
+                <div className="controls">
+                  <input type="text" value={newMemory} onChange={(e)=> setNewMemory(e.target.value)}
+                  placeholder="Enter memory content..."
+                  onKeyPress={(e) => e.key === 'Enter' && handleRemember()}
+                  />
+                  <button onClick={handleRemember}>Remember</button>
+                </div>
+
+                <div className="search">
+                  <input type="search" value={searchQuery} onChange={(e)=> setSearchQuery(e.target.value)}
+                  placeholder="Search memories..."
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                  />
+                  <button onClick={handleSearch}>Search</button>
+                </div>
+
+                <div className="memories">
+                  <h3>Memories ({memories.length})</h3>
+                  {memories.map(memory => (
+                  <div key={memory.id} className="memory-item">
+                    <div className="content">{memory.content}</div>
+                    <div className="metadata">
+                      Importance: {memory.metadata?.importance || 'N/A'} |
+                      Updated: {new Date(memory.updatedAt).toLocaleString()}
+                    </div>
+                    <button onClick={()=> handleForget(memory.id)}>Delete</button>
+                  </div>
+                  ))}
+                </div>
+              </div>
+              );
+              }
+
+              export default MemoryManager;
+            </div>
+            <div class="example-actions">
+              <button class="btn btn-primary" onclick="copyCode(this)">
+                <i class="fas fa-copy"></i>
+                Copy Code
+              </button>
+              <a href="../integration-guides/react.html" class="btn btn-secondary">
+                <i class="fas fa-book"></i>
+                React Guide
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- WebSocket Real-time -->
+        <div class="example-card" data-category="realtime" data-keywords="websocket realtime live updates subscription">
+          <div class="example-header">
+            <div class="example-title">Real-time Memory Updates</div>
+            <div class="example-description">WebSocket integration for live memory updates</div>
+            <div class="example-meta">
+              <span class="example-tag">
+                <i class="fas fa-tag"></i>
+                Real-time
+              </span>
+              <span class="example-tag">
+                <i class="fas fa-bolt"></i>
+                WebSocket
+              </span>
+            </div>
+          </div>
+          <div class="example-content">
+            <div class="code-block" data-lang="javascript">
+              class RealtimeMemorySubscription {
+              constructor(config) {
+              this.sdk = new MemorAISDK(config);
+              this.isSubscribed = false;
+              this.listeners = new Map();
+              }
+
+              // Subscribe to memory updates
+              async subscribe(filters = {}) {
+              try {
+              await this.sdk.connect();
+
+              // Subscribe to memory events
+              this.sdk.on('memoryCreated', (memory) => {
+              this.notifyListeners('created', memory);
+              });
+
+              this.sdk.on('memoryUpdated', (memory) => {
+              this.notifyListeners('updated', memory);
+              });
+
+              this.sdk.on('memoryDeleted', (memoryId) => {
+              this.notifyListeners('deleted', { id: memoryId });
+              });
+
+              // Apply subscription filters
+              if (Object.keys(filters).length > 0) {
+              await this.sdk.setSubscriptionFilters(filters);
+              }
+
+              this.isSubscribed = true;
+              console.log('Subscribed to memory updates');
+              } catch (error) {
+              console.error('Failed to subscribe:', error);
+              throw error;
+              }
+              }
+
+              // Add event listener
+              addEventListener(event, callback) {
+              if (!this.listeners.has(event)) {
+              this.listeners.set(event, new Set());
+              }
+              this.listeners.get(event).add(callback);
+              }
+
+              // Remove event listener
+              removeEventListener(event, callback) {
+              const listeners = this.listeners.get(event);
+              if (listeners) {
+              listeners.delete(callback);
+              }
+              }
+
+              // Notify all listeners of an event
+              notifyListeners(event, data) {
+              const listeners = this.listeners.get(event);
+              if (listeners) {
+              listeners.forEach(callback => {
+              try {
+              callback(data);
+              } catch (error) {
+              console.error('Listener error:', error);
+              }
+              });
+              }
+              }
+
+              // Unsubscribe
+              async unsubscribe() {
+              try {
+              await this.sdk.disconnect();
+              this.isSubscribed = false;
+              this.listeners.clear();
+              console.log('Unsubscribed from memory updates');
+              } catch (error) {
+              console.error('Failed to unsubscribe:', error);
+              }
+              }
+              }
+
+              // Usage example
+              const subscription = new RealtimeMemorySubscription({
+              baseURL: 'http://localhost:4950',
+              apiKey: 'your-api-key',
+              enableWebSocket: true
+              });
+
+              // Add event listeners
+              subscription.addEventListener('created', (memory) => {
+              console.log('New memory created:', memory.content);
+              updateUI('add', memory);
+              });
+
+              subscription.addEventListener('updated', (memory) => {
+              console.log('Memory updated:', memory.content);
+              updateUI('update', memory);
+              });
+
+              subscription.addEventListener('deleted', (memory) => {
+              console.log('Memory deleted:', memory.id);
+              updateUI('remove', memory);
+              });
+
+              // Start subscription with filters
+              subscription.subscribe({
+              importance: { min: 5 },
+              tags: ['important', 'urgent'],
+              agentId: 'my-agent'
+              });
+
+              function updateUI(action, memory) {
+              // Update your UI based on the memory event
+              const memoryElement = document.getElementById(`memory-${memory.id}`);
+
+              switch (action) {
+              case 'add':
+              addMemoryToUI(memory);
+              break;
+              case 'update':
+              updateMemoryInUI(memory);
+              break;
+              case 'remove':
+              if (memoryElement) {
+              memoryElement.remove();
+              }
+              break;
+              }
+              }
+
+              // Cleanup when page unloads
+              window.addEventListener('beforeunload', () => {
+              subscription.unsubscribe();
+              });</div>
+            <div class="example-actions">
+              <button class="btn btn-primary" onclick="copyCode(this)">
+                <i class="fas fa-copy"></i>
+                Copy Code
+              </button>
+              <a href="#" class="btn btn-secondary">
+                <i class="fas fa-play"></i>
+                Try in Playground
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytics Dashboard -->
+        <div class="example-card" data-category="analytics"
+          data-keywords="analytics dashboard metrics clustering insights">
+          <div class="example-header">
+            <div class="example-title">Analytics Dashboard</div>
+            <div class="example-description">Complete analytics dashboard with memory insights</div>
+            <div class="example-meta">
+              <span class="example-tag">
+                <i class="fas fa-tag"></i>
+                Analytics
+              </span>
+              <span class="example-tag">
+                <i class="fas fa-chart-bar"></i>
+                Dashboard
+              </span>
+            </div>
+          </div>
+          <div class="example-content">
+            <div class="code-block" data-lang="javascript">
+              class MemoryAnalyticsDashboard {
+              constructor(sdk) {
+              this.sdk = sdk;
+              this.analytics = null;
+              this.updateInterval = null;
+              }
+
+              async initialize(agentId, refreshInterval = 30000) {
+              try {
+              // Load initial analytics
+              await this.loadAnalytics(agentId);
+
+              // Set up auto-refresh
+              this.updateInterval = setInterval(() => {
+              this.loadAnalytics(agentId);
+              }, refreshInterval);
+
+              console.log('Analytics dashboard initialized');
+              } catch (error) {
+              console.error('Failed to initialize dashboard:', error);
+              throw error;
+              }
+              }
+
+              async loadAnalytics(agentId) {
+              try {
+              const [analytics, clusters, insights] = await Promise.all([
+              this.sdk.getAnalytics({
+              agentId,
+              timeRange: 'last_30_days',
+              includeUsagePatterns: true,
+              includePerformanceMetrics: true,
+              includeTrendAnalysis: true
+              }),
+              this.sdk.clusterMemories({
+              agentId,
+              clusterCount: 5,
+              options: {
+              semanticWeight: 0.7,
+              temporalWeight: 0.2,
+              importanceWeight: 0.1
+              }
+              }),
+              this.sdk.generateInsights({
+              agentId,
+              level: 'COMPREHENSIVE',
+              strategy: 'THEMATIC',
+              options: {
+              includeStatistics: true,
+              includeKeywords: true,
+              includeSentiment: true
+              }
+              })
+              ]);
+
+              this.analytics = { analytics, clusters, insights };
+              this.renderDashboard();
+              } catch (error) {
+              console.error('Failed to load analytics:', error);
+              }
+              }
+
+              renderDashboard() {
+              if (!this.analytics) return;
+
+              const { analytics, clusters, insights } = this.analytics;
+
+              // Render usage patterns
+              this.renderUsagePatterns(analytics.usagePatterns);
+
+              // Render performance metrics
+              this.renderPerformanceMetrics(analytics.performanceMetrics);
+
+              // Render memory clusters
+              this.renderMemoryClusters(clusters);
+
+              // Render insights
+              this.renderInsights(insights);
+
+              // Update timestamp
+              document.getElementById('last-updated').textContent =
+              `Last updated: ${new Date().toLocaleString()}`;
+              }
+
+              renderUsagePatterns(patterns) {
+              const container = document.getElementById('usage-patterns');
+              container.innerHTML = `
+              <h3>Usage Patterns</h3>
+              <div class="metrics-grid">
+                <div class="metric">
+                  <div class="metric-value">${patterns.totalMemories}</div>
+                  <div class="metric-label">Total Memories</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-value">${patterns.activeAgents}</div>
+                  <div class="metric-label">Active Agents</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-value">${patterns.averageImportance.toFixed(1)}</div>
+                  <div class="metric-label">Avg Importance</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-value">${patterns.memoryGrowthRate}%</div>
+                  <div class="metric-label">Growth Rate</div>
+                </div>
+              </div>
+              `;
+              }
+
+              renderPerformanceMetrics(metrics) {
+              const container = document.getElementById('performance-metrics');
+              container.innerHTML = `
+              <h3>Performance Metrics</h3>
+              <div class="metrics-grid">
+                <div class="metric">
+                  <div class="metric-value">${metrics.averageResponseTime}ms</div>
+                  <div class="metric-label">Avg Response Time</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-value">${metrics.successRate}%</div>
+                  <div class="metric-label">Success Rate</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-value">${metrics.cacheHitRate}%</div>
+                  <div class="metric-label">Cache Hit Rate</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-value">${metrics.errorRate}%</div>
+                  <div class="metric-label">Error Rate</div>
+                </div>
+              </div>
+              `;
+              }
+
+              renderMemoryClusters(clusters) {
+              const container = document.getElementById('memory-clusters');
+              const clustersHtml = clusters.clusters.map((cluster, index) => `
+              <div class="cluster">
+                <h4>Cluster ${index + 1} (${cluster.memories.length} memories)</h4>
+                <div class="cluster-keywords">
+                  ${cluster.keywords.map(keyword => `<span class="keyword">${keyword}</span>`).join('')}
+                </div>
+                <div class="cluster-quality">Quality Score: ${cluster.qualityScore.toFixed(3)}</div>
+              </div>
+              `).join('');
+
+              container.innerHTML = `
+              <h3>Memory Clusters</h3>
+              <div class="clusters-container">
+                ${clustersHtml}
+              </div>
+              <div class="clustering-summary">
+                <p>Silhouette Score: ${clusters.silhouetteScore.toFixed(3)}</p>
+                <p>Total Clusters: ${clusters.clusters.length}</p>
+                <p>Algorithm: ${clusters.algorithm}</p>
+              </div>
+              `;
+              }
+
+              renderInsights(insights) {
+              const container = document.getElementById('insights');
+              container.innerHTML = `
+              <h3>AI-Generated Insights</h3>
+              <div class="insights-content">
+                <div class="insight-section">
+                  <h4>Key Findings</h4>
+                  <ul>
+                    ${insights.keyFindings.map(finding => `<li>${finding}</li>`).join('')}
+                  </ul>
+                </div>
+                <div class="insight-section">
+                  <h4>Recommendations</h4>
+                  <ul>
+                    ${insights.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                  </ul>
+                </div>
+                <div class="insight-section">
+                  <h4>Statistics</h4>
+                  <div class="stats">
+                    ${Object.entries(insights.statistics).map(([key, value]) =>
+                    `<div class="stat"><span class="stat-key">${key}:</span> <span class="stat-value">${value}</span>
+                    </div>`
+                    ).join('')}
+                  </div>
+                </div>
+              </div>
+              `;
+              }
+
+              destroy() {
+              if (this.updateInterval) {
+              clearInterval(this.updateInterval);
+              }
+              }
+              }
+
+              // Usage
+              const sdk = new MemorAISDK({
+              baseURL: 'http://localhost:4950',
+              apiKey: 'your-api-key'
+              });
+
+              const dashboard = new MemoryAnalyticsDashboard(sdk);
+
+              // Initialize dashboard
+              dashboard.initialize('analytics-agent', 30000) // Refresh every 30 seconds
+              .then(() => {
+              console.log('Dashboard ready');
+              })
+              .catch(error => {
+              console.error('Dashboard initialization failed:', error);
+              });
+
+              // Cleanup on page unload
+              window.addEventListener('beforeunload', () => {
+              dashboard.destroy();
+              });
+            </div>
+            <div class="example-actions">
+              <button class="btn btn-primary" onclick="copyCode(this)">
+                <i class="fas fa-copy"></i>
+                Copy Code
+              </button>
+              <a href="#" class="btn btn-secondary">
+                <i class="fas fa-chart-bar"></i>
+                View Dashboard Demo
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Memory Clustering -->
+        <div class="example-card" data-category="advanced"
+          data-keywords="clustering ai semantic grouping machine learning">
+          <div class="example-header">
+            <div class="example-title">AI-Powered Memory Clustering</div>
+            <div class="example-description">Advanced clustering with semantic analysis and quality metrics</div>
+            <div class="example-meta">
+              <span class="example-tag">
+                <i class="fas fa-tag"></i>
+                Advanced
+              </span>
+              <span class="example-tag">
+                <i class="fas fa-brain"></i>
+                AI
+              </span>
+            </div>
+          </div>
+          <div class="example-content">
+            <div class="code-block" data-lang="javascript">
+              async function performAdvancedClustering(sdk, agentId) {
+              try {
+              // Configure clustering options
+              const clusteringOptions = {
+              // Semantic weight - how much to consider content similarity
+              semanticWeight: 0.7,
+
+              // Temporal weight - how much to consider time-based grouping
+              temporalWeight: 0.2,
+
+              // Importance weight - how much to consider importance scores
+              importanceWeight: 0.1,
+
+              // Minimum cluster size
+              minClusterSize: 3,
+
+              // Maximum number of clusters
+              maxClusters: 10,
+
+              // Quality threshold - minimum acceptable silhouette score
+              qualityThreshold: 0.3,
+
+              // Enable advanced features
+              enableSemanticEnhancement: true,
+              includeKeywordExtraction: true,
+              includeSentimentAnalysis: true
+              };
+
+              // Perform clustering
+              console.log('Starting memory clustering...');
+              const clusterResult = await sdk.clusterMemories({
+              agentId: agentId,
+              clusterCount: 5, // Desired number of clusters
+              options: clusteringOptions
+              });
+
+              // Analyze clustering results
+              const analysis = analyzeClusters(clusterResult);
+
+              // Generate cluster reports
+              const reports = generateClusterReports(clusterResult);
+
+              // Optimize clustering if quality is low
+              if (clusterResult.silhouetteScore < clusteringOptions.qualityThreshold) { console.log('Clustering quality
+                is low, attempting optimization...'); const optimizedResult=await optimizeClustering(sdk, agentId,
+                clusterResult); return optimizedResult; } return { clustering: clusterResult, analysis: analysis,
+                reports: reports }; } catch (error) { console.error('Clustering failed:', error); throw error; } }
+                function analyzeClusters(clusterResult) { const analysis={ totalMemories: 0, clusterSizes: [],
+                qualityMetrics: { overallScore: clusterResult.silhouetteScore, cohesionScores: [], separationScores: []
+                }, topKeywords: new Set(), themesIdentified: [] }; clusterResult.clusters.forEach((cluster, index)=> {
+                analysis.totalMemories += cluster.memories.length;
+                analysis.clusterSizes.push(cluster.memories.length);
+                analysis.qualityMetrics.cohesionScores.push(cluster.cohesionScore);
+                analysis.qualityMetrics.separationScores.push(cluster.separationScore);
+
+                // Collect keywords
+                cluster.keywords.forEach(keyword => analysis.topKeywords.add(keyword));
+
+                // Identify themes
+                if (cluster.theme) {
+                analysis.themesIdentified.push({
+                clusterId: index,
+                theme: cluster.theme,
+                confidence: cluster.themeConfidence,
+                memoryCount: cluster.memories.length
+                });
+                }
+                });
+
+                // Calculate statistics
+                analysis.averageClusterSize = analysis.totalMemories / clusterResult.clusters.length;
+                analysis.clusterSizeVariance = calculateVariance(analysis.clusterSizes);
+                analysis.topKeywords = Array.from(analysis.topKeywords).slice(0, 20);
+
+                return analysis;
+                }
+
+                function generateClusterReports(clusterResult) {
+                return clusterResult.clusters.map((cluster, index) => {
+                // Calculate cluster statistics
+                const memoryCount = cluster.memories.length;
+                const avgImportance = cluster.memories.reduce((sum, mem) =>
+                sum + (mem.metadata?.importance || 0), 0) / memoryCount;
+                const dateRange = getDateRange(cluster.memories);
+
+                // Extract common patterns
+                const commonPatterns = extractCommonPatterns(cluster.memories);
+
+                // Generate summary
+                const summary = generateClusterSummary(cluster);
+
+                return {
+                clusterId: index,
+                title: `Cluster ${index + 1}: ${cluster.theme || 'Mixed Content'}`,
+                summary: summary,
+                statistics: {
+                memoryCount: memoryCount,
+                averageImportance: avgImportance,
+                dateRange: dateRange,
+                qualityScore: cluster.qualityScore,
+                cohesionScore: cluster.cohesionScore,
+                separationScore: cluster.separationScore
+                },
+                keywords: cluster.keywords,
+                commonPatterns: commonPatterns,
+                recommendations: generateClusterRecommendations(cluster)
+                };
+                });
+                }
+
+                async function optimizeClustering(sdk, agentId, initialResult) {
+                const optimizationStrategies = [
+                // Try different cluster counts
+                { clusterCount: Math.max(2, initialResult.clusters.length - 1) },
+                { clusterCount: Math.min(10, initialResult.clusters.length + 1) },
+
+                // Adjust weight distributions
+                {
+                clusterCount: initialResult.clusters.length,
+                options: { semanticWeight: 0.8, temporalWeight: 0.15, importanceWeight: 0.05 }
+                },
+                {
+                clusterCount: initialResult.clusters.length,
+                options: { semanticWeight: 0.6, temporalWeight: 0.3, importanceWeight: 0.1 }
+                }
+                ];
+
+                let bestResult = initialResult;
+                let bestScore = initialResult.silhouetteScore;
+
+                for (const strategy of optimizationStrategies) {
+                try {
+                const result = await sdk.clusterMemories({
+                agentId: agentId,
+                clusterCount: strategy.clusterCount,
+                options: {
+                enableSemanticEnhancement: true,
+                includeKeywordExtraction: true,
+                ...strategy.options
+                }
+                });
+
+                if (result.silhouetteScore > bestScore) {
+                bestResult = result;
+                bestScore = result.silhouetteScore;
+                console.log(`Improved clustering score: ${bestScore}`);
+                }
+                } catch (error) {
+                console.warn('Optimization strategy failed:', error);
+                }
+                }
+
+                return bestResult;
+                }
+
+                function calculateVariance(numbers) {
+                const mean = numbers.reduce((sum, n) => sum + n, 0) / numbers.length;
+                const squaredDiffs = numbers.map(n => Math.pow(n - mean, 2));
+                return squaredDiffs.reduce((sum, sq) => sum + sq, 0) / numbers.length;
+                }
+
+                function getDateRange(memories) {
+                const dates = memories.map(m => new Date(m.createdAt));
+                return {
+                earliest: new Date(Math.min(...dates)),
+                latest: new Date(Math.max(...dates))
+                };
+                }
+
+                function extractCommonPatterns(memories) {
+                const patterns = {
+                commonTags: {},
+                frequentPhrases: {},
+                importanceLevels: {}
+                };
+
+                memories.forEach(memory => {
+                // Count common tags
+                if (memory.metadata?.tags) {
+                memory.metadata.tags.forEach(tag => {
+                patterns.commonTags[tag] = (patterns.commonTags[tag] || 0) + 1;
+                });
+                }
+
+                // Count importance levels
+                const importance = memory.metadata?.importance || 0;
+                const level = importance < 3 ? 'low' : importance < 7 ? 'medium' : 'high' ;
+                  patterns.importanceLevels[level]=(patterns.importanceLevels[level] || 0) + 1; }); return patterns; }
+                  function generateClusterSummary(cluster) { const memoryCount=cluster.memories.length; const
+                  theme=cluster.theme || 'mixed topics' ; const avgImportance=cluster.memories.reduce((sum, mem)=>
+                  sum + (mem.metadata?.importance || 0), 0) / memoryCount;
+
+                  return `This cluster contains ${memoryCount} memories related to ${theme}. ` +
+                  `The average importance score is ${avgImportance.toFixed(1)}, ` +
+                  `and the cluster quality score is ${cluster.qualityScore.toFixed(3)}.`;
+                  }
+
+                  function generateClusterRecommendations(cluster) {
+                  const recommendations = [];
+
+                  if (cluster.qualityScore < 0.3) { recommendations.push('Consider splitting this cluster for better
+                    cohesion'); } if (cluster.memories.length < 3) { recommendations.push('This cluster may be too
+                    small; consider merging with similar clusters'); } if (cluster.separationScore < 0.5) {
+                    recommendations.push('Increase semantic differentiation from other clusters'); } const
+                    avgImportance=cluster.memories.reduce((sum, mem)=>
+                    sum + (mem.metadata?.importance || 0), 0) / cluster.memories.length;
+
+                    if (avgImportance > 7) {
+                    recommendations.push('High-importance cluster; consider prioritizing in UI');
+                    } else if (avgImportance < 3) { recommendations.push('Low-importance cluster; consider archiving old
+                      memories'); } return recommendations; } // Usage example async function runClusteringExample() {
+                      const sdk=new MemorAISDK({ baseURL: 'http://localhost:4950' , apiKey: 'your-api-key' }); try {
+                      const result=await performAdvancedClustering(sdk, 'data-analysis-agent' ); console.log('Clustering
+                      Results:'); console.log(`Total clusters: ${result.clustering.clusters.length}`);
+                      console.log(`Overall quality score: ${result.clustering.silhouetteScore}`); console.log(`Total
+                      memories clustered: ${result.analysis.totalMemories}`); // Display cluster reports
+                      result.reports.forEach((report, index)=> {
+                      console.log(`\n${report.title}`);
+                      console.log(report.summary);
+                      console.log('Keywords:', report.keywords.join(', '));
+                      console.log('Recommendations:', report.recommendations);
+                      });
+
+                      } catch (error) {
+                      console.error('Clustering example failed:', error);
+                      }
+                      }
+
+                      // Run the example
+                      runClusteringExample();</div>
+            <div class="example-actions">
+              <button class="btn btn-primary" onclick="copyCode(this)">
+                <i class="fas fa-copy"></i>
+                Copy Code
+              </button>
+              <a href="#" class="btn btn-secondary">
+                <i class="fas fa-play"></i>
+                Try in Playground
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No results message -->
+      <div id="no-results" style="display: none; text-align: center; padding: 3rem; color: var(--text-secondary);">
+        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+        <h3>No examples found</h3>
+        <p>Try adjusting your search or filter criteria</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Search and filter functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      const searchInput = document.getElementById('search-input');
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const exampleCards = document.querySelectorAll('.example-card');
+      const examplesGrid = document.getElementById('examples-grid');
+      const noResults = document.getElementById('no-results');
+
+      let currentCategory = 'all';
+      let currentSearch = '';
+
+      // Search functionality
+      searchInput.addEventListener('input', function (e) {
+        currentSearch = e.target.value.toLowerCase().trim();
+        filterExamples();
+      });
+
+      // Category filter functionality
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          // Update active button
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+
+          currentCategory = this.getAttribute('data-category');
+          filterExamples();
+        });
+      });
+
+      function filterExamples() {
+        let visibleCount = 0;
+
+        exampleCards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          const keywords = card.getAttribute('data-keywords') || '';
+          const title = card.querySelector('.example-title').textContent.toLowerCase();
+          const description = card.querySelector('.example-description').textContent.toLowerCase();
+
+          // Check category filter
+          const categoryMatch = currentCategory === 'all' || category === currentCategory;
+
+          // Check search filter
+          const searchMatch = currentSearch === '' ||
+            title.includes(currentSearch) ||
+            description.includes(currentSearch) ||
+            keywords.includes(currentSearch);
+
+          if (categoryMatch && searchMatch) {
+            card.style.display = 'block';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Show/hide no results message
+        if (visibleCount === 0) {
+          examplesGrid.style.display = 'none';
+          noResults.style.display = 'block';
+        } else {
+          examplesGrid.style.display = 'grid';
+          noResults.style.display = 'none';
+        }
+      }
+    });
+
+    // Copy code functionality
+    function copyCode(button) {
+      const codeBlock = button.closest('.example-content').querySelector('.code-block');
+      const code = codeBlock.textContent;
+
+      navigator.clipboard.writeText(code).then(() => {
+        // Show copy indicator
+        let indicator = codeBlock.querySelector('.copy-indicator');
+        if (!indicator) {
+          indicator = document.createElement('div');
+          indicator.className = 'copy-indicator';
+          indicator.textContent = 'Copied!';
+          codeBlock.appendChild(indicator);
+        }
+
+        indicator.classList.add('show');
+
+        // Update button text temporarily
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        button.style.background = 'var(--success-color)';
+
+        setTimeout(() => {
+          indicator.classList.remove('show');
+          button.innerHTML = originalText;
+          button.style.background = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy code:', err);
+        alert('Failed to copy code to clipboard');
+      });
+    }
+
+    // Code block click to copy
+    document.addEventListener('DOMContentLoaded', function () {
+      const codeBlocks = document.querySelectorAll('.code-block');
+
+      codeBlocks.forEach(block => {
+        block.style.cursor = 'pointer';
+        block.title = 'Click to copy code';
+
+        block.addEventListener('click', function (e) {
+          // Don't copy if clicking on the copy indicator
+          if (e.target.classList.contains('copy-indicator')) return;
+
+          const code = this.textContent;
+          navigator.clipboard.writeText(code).then(() => {
+            // Visual feedback
+            let indicator = this.querySelector('.copy-indicator');
+            if (!indicator) {
+              indicator = document.createElement('div');
+              indicator.className = 'copy-indicator';
+              indicator.textContent = 'Copied!';
+              this.appendChild(indicator);
+            }
+
+            indicator.classList.add('show');
+
+            setTimeout(() => {
+              indicator.classList.remove('show');
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

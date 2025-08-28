@@ -25,7 +25,7 @@ let toolsList = [];
 server.stderr.on('data', (data) => {
     const message = data.toString();
     console.log('🖥️ Server:', message.trim());
-    
+
     if (message.includes('Enhanced GlassMCP Server started successfully')) {
         serverReady = true;
         console.log('✅ Server started successfully, testing tools...');
@@ -36,7 +36,7 @@ server.stderr.on('data', (data) => {
 server.stdout.on('data', (data) => {
     const message = data.toString();
     console.log('📤 Server Output:', message.trim());
-    
+
     // Try to parse JSON responses
     try {
         const lines = message.trim().split('\n');
@@ -46,7 +46,7 @@ server.stdout.on('data', (data) => {
                 if (parsed.result && parsed.result.tools) {
                     toolsList = parsed.result.tools;
                     console.log('🛠️ Available tools:', toolsList.map(t => t.name).join(', '));
-                    
+
                     // Find glass_vision tool
                     const glassVision = toolsList.find(t => t.name === 'glass_vision');
                     if (glassVision) {
@@ -77,13 +77,13 @@ function testTools() {
         id: 1,
         method: 'tools/list'
     };
-    
+
     server.stdin.write(JSON.stringify(request) + '\n');
 }
 
 function testGlassVision() {
     console.log('🎯 Testing glass_vision capture_screen operation...');
-    
+
     const request = {
         jsonrpc: '2.0',
         id: 2,
@@ -95,13 +95,13 @@ function testGlassVision() {
             }
         }
     };
-    
+
     server.stdin.write(JSON.stringify(request) + '\n');
-    
+
     // Test analyze_screen after a delay
     setTimeout(() => {
         console.log('🔍 Testing glass_vision analyze_screen operation...');
-        
+
         const analyzeRequest = {
             jsonrpc: '2.0',
             id: 3,
@@ -116,16 +116,16 @@ function testGlassVision() {
                 }
             }
         };
-        
+
         server.stdin.write(JSON.stringify(analyzeRequest) + '\n');
-        
+
         // End test after analysis
         setTimeout(() => {
             console.log('✅ Glass Vision testing complete!');
             server.kill();
             process.exit(0);
         }, 5000);
-        
+
     }, 2000);
 }
 

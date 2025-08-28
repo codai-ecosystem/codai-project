@@ -1,8 +1,15 @@
 'use client';
 
+/**
+ * RomAI AGI Dashboard - Enhanced UI/UX with Themes and Animations
+ * Modern dashboard with dark/light mode, Romanian internationalization, and beautiful animations
+ */
+
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatedHero } from '../../components/ui/animated-hero';
+import { ThemeToggle } from '../../components/theme/theme-toggle';
 import {
   Brain,
   Cpu,
@@ -17,7 +24,10 @@ import {
   Languages,
   Flag,
   Settings,
-  ChevronRight
+  ChevronRight,
+  CheckCircle,
+  XCircle,
+  AlertCircle
 } from 'lucide-react';
 
 interface RealAGIData {

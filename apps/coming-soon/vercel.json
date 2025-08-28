@@ -1,0 +1,102 @@
+{
+    "version": 2,
+    "framework": "nextjs",
+    "buildCommand": "next build",
+    "outputDirectory": ".next",
+    "installCommand": "npm install --legacy-peer-deps",
+    "devCommand": "npm run dev",
+    "trailingSlash": false,
+    "cleanUrls": true,
+    "regions": [
+        "iad1",
+        "fra1",
+        "hnd1"
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "X-Frame-Options",
+                    "value": "DENY"
+                },
+                {
+                    "key": "X-Content-Type-Options",
+                    "value": "nosniff"
+                },
+                {
+                    "key": "Referrer-Policy",
+                    "value": "origin-when-cross-origin"
+                },
+                {
+                    "key": "Permissions-Policy",
+                    "value": "camera=(), microphone=(), geolocation=(), payment=()"
+                },
+                {
+                    "key": "X-DNS-Prefetch-Control",
+                    "value": "on"
+                },
+                {
+                    "key": "Strict-Transport-Security",
+                    "value": "max-age=31536000; includeSubDomains; preload"
+                }
+            ]
+        },
+        {
+            "source": "/favicon.ico",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=31536000, immutable"
+                }
+            ]
+        },
+        {
+            "source": "/_next/static/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=31536000, immutable"
+                }
+            ]
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/home",
+            "destination": "/",
+            "permanent": true
+        },
+        {
+            "source": "/coming-soon",
+            "destination": "/",
+            "permanent": true
+        },
+        {
+            "source": "/www.codai.ro/(.*)",
+            "destination": "https://codai.ro/$1",
+            "permanent": true
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/api/(.*)",
+            "destination": "/api/$1"
+        },
+        {
+            "source": "/health",
+            "destination": "/api/health"
+        }
+    ],
+    "env": {
+        "NEXT_PUBLIC_SITE_URL": "https://codai.ro",
+        "NEXT_PUBLIC_SITE_NAME": "CODAI - The Ultimate AI Ecosystem",
+        "NODE_ENV": "production",
+        "NEXT_TELEMETRY_DISABLED": "1"
+    },
+    "functions": {
+        "app/api/health/route.js": {
+            "maxDuration": 10
+        }
+    }
+}

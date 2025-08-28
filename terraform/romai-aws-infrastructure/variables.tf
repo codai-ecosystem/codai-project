@@ -1,19 +1,6 @@
 # Flexible Terraform Configuration for Alternative GPU Instances
 
-variabl# Launch template for GPU cluster
-resource "aws_launch_template" "romai_cluster_template" {
-  name_prefix   = "romai-${var.instance_type}-"
-  image_id      = data.aws_ami.ubuntu_hpc.id
-  instance_type = var.instance_type
-  key_name      = var.ssh_key_name
-  
-  vpc_security_group_ids = [
-    aws_security_group.gpu_cluster.id
-  ]
-  
-  iam_instance_profile {
-    name = aws_iam_instance_profile.gpu_instance_profile.name
-  }e" {
+variable "instance_type" {
   description = "GPU instance type to deploy"
   type        = string
   default     = "p3dn.24xlarge"
@@ -32,7 +19,7 @@ resource "aws_launch_template" "romai_cluster_template" {
 variable "cluster_size" {
   description = "Number of instances in the cluster"
   type        = number
-  default     = 6
+  default     = 0  # Set to 0 to disable GPU cluster deployment initially
 }
 
 # Instance specifications lookup
@@ -86,30 +73,24 @@ locals {
   monthly_cost   = local.selected_specs.cost_per_hour * 24 * 30 * var.cluster_size
 }
 
-# Update launch template with dynamic instance configuration
+# Launch template for GPU cluster (only created if cluster_size > 0)
 resource "aws_launch_template" "romai_cluster_template" {
+  count = var.cluster_size > 0 ? 1 : 0
+  
   name_prefix   = "romai-${var.instance_type}-"
-  image_id      = data.aws_ami.gpu_optimized.id
+  image_id      = data.aws_ami.ubuntu_hpc.id
   instance_type = var.instance_type
-  key_name      = aws_key_pair.romai_cluster_key.key_name
+  key_name      = var.ssh_key_name
   
   vpc_security_group_ids = [
-    aws_security_group.romai_cluster_sg.id,
-    aws_security_group.romai_efa_sg.id
+    aws_security_group.gpu_cluster.id
   ]
   
   iam_instance_profile {
-    name = aws_iam_instance_profile.romai_cluster_profile.name
+    name = aws_iam_instance_profile.gpu_instance_profile.name
   }
 
-  user_data = base64encode(templatefile("${path.module}/user_data_flexible.sh", {
-    cluster_name     = "romai-${var.instance_type}-cluster"
-    instance_type    = var.instance_type
-    gpu_type         = local.selected_specs.gpu_type
-    total_nodes      = var.cluster_size
-    fsx_dns_name     = aws_fsx_lustre_file_system.romai_storage.dns_name
-    fsx_mount_name   = aws_fsx_lustre_file_system.romai_storage.mount_name
-  }))
+  user_data = var.cluster_size > 0 ? base64encode(file("${path.module}/user_data_simple.sh")) : null
 
   tag_specifications {
     resource_type = "instance"
@@ -127,12 +108,12 @@ resource "aws_launch_template" "romai_cluster_template" {
   }
 }
 
-# Dynamic instance creation based on cluster size
+# Dynamic instance creation based on cluster size (only if cluster_size > 0)
 resource "aws_instance" "romai_cluster_nodes" {
   count = var.cluster_size
   
   launch_template {
-    id      = aws_launch_template.romai_cluster_template.id
+    id      = aws_launch_template.romai_cluster_template[0].id
     version = "$Latest"
   }
   
@@ -155,9 +136,9 @@ resource "aws_instance" "romai_cluster_nodes" {
   }
 }
 
-# Output comprehensive cluster information
+# Output comprehensive cluster information (only if cluster enabled)
 output "cluster_summary" {
-  value = {
+  value = var.cluster_size > 0 ? {
     instance_type    = var.instance_type
     cluster_size     = var.cluster_size
     gpu_type         = local.selected_specs.gpu_type
@@ -168,28 +149,28 @@ output "cluster_summary" {
     monthly_cost_usd = local.monthly_cost
     network_performance = "${local.selected_specs.network_gbps} Gbps"
     storage_type     = local.selected_specs.storage_type
-  }
+  } : null
   description = "Complete cluster configuration summary"
 }
 
 output "cost_analysis" {
-  value = {
+  value = var.cluster_size > 0 ? {
     hourly_cost       = local.selected_specs.cost_per_hour * var.cluster_size
     daily_cost        = local.selected_specs.cost_per_hour * 24 * var.cluster_size
     monthly_cost      = local.monthly_cost
     annual_cost       = local.monthly_cost * 12
     cost_per_gpu_hour = local.selected_specs.cost_per_hour / local.selected_specs.gpus
-  }
+  } : null
   description = "Detailed cost breakdown for the cluster"
 }
 
 output "performance_metrics" {
-  value = {
+  value = var.cluster_size > 0 ? {
     total_gpu_memory_gb    = tonumber(replace(local.selected_specs.gpu_memory, "GB", "")) * local.total_gpus
     memory_per_node_gb     = local.selected_specs.memory
     total_memory_gb        = local.selected_specs.memory * var.cluster_size
     network_bandwidth_gbps = local.selected_specs.network_gbps
     estimated_dataset_processing_time = local.selected_specs.gpu_type == "A100" ? "8-12 hours" : local.selected_specs.gpu_type == "V100" ? "12-18 hours" : "18-24 hours"
-  }
+  } : null
   description = "Performance and capacity metrics"
 }

@@ -1,0 +1,798 @@
+# Database Performance Optimization for Essential CodAI Services  
+# Version: 1.0
+# Query Optimization | Connection Pooling | Read Replicas | Intelligent Indexing
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-optimization-config
+  namespace: codai-production
+data:
+  database-config.json: |
+    {
+      "connection_pooling": {
+        "enabled": true,
+        "primary_pool": {
+          "max_connections": 100,
+          "min_connections": 10,
+          "idle_timeout": 300,
+          "connection_lifetime": 3600,
+          "validation_query": "SELECT 1",
+          "validation_interval": 30
+        },
+        "read_replica_pool": {
+          "max_connections": 200,
+          "min_connections": 20,
+          "idle_timeout": 300,
+          "connection_lifetime": 3600,
+          "load_balance_strategy": "round_robin",
+          "failover_enabled": true
+        },
+        "connection_monitoring": {
+          "enabled": true,
+          "metrics": ["active_connections", "idle_connections", "wait_time", "query_time"],
+          "alert_thresholds": {
+            "connection_utilization": 85,
+            "average_wait_time": 100,
+            "slow_query_threshold": 1000
+          }
+        }
+      },
+      "query_optimization": {
+        "enabled": true,
+        "auto_explain": {
+          "enabled": true,
+          "log_min_duration": 1000,
+          "log_analyze": true,
+          "log_buffers": true,
+          "log_timing": true
+        },
+        "query_cache": {
+          "enabled": true,
+          "cache_size": "256mb",
+          "cache_ttl": 600,
+          "invalidation_strategy": "tag_based"
+        },
+        "prepared_statements": {
+          "enabled": true,
+          "max_prepared_statements": 1000,
+          "auto_prepare": true
+        },
+        "batch_operations": {
+          "enabled": true,
+          "batch_size": 1000,
+          "batch_timeout": 5000
+        }
+      },
+      "indexing_strategy": {
+        "auto_indexing": {
+          "enabled": true,
+          "analysis_frequency": "daily",
+          "suggestion_threshold": 10,
+          "auto_create": false
+        },
+        "index_monitoring": {
+          "enabled": true,
+          "unused_index_threshold": 30,
+          "duplicate_detection": true,
+          "fragmentation_monitoring": true
+        },
+        "composite_indexes": {
+          "optimization": true,
+          "covering_indexes": true,
+          "partial_indexes": true
+        }
+      },
+      "read_replica_config": {
+        "enabled": true,
+        "replica_count": 3,
+        "replication_lag_threshold": 100,
+        "auto_failover": true,
+        "read_preference": "secondary_preferred",
+        "routing_rules": {
+          "analytics_queries": "read_replica",
+          "reporting_queries": "read_replica",
+          "user_sessions": "primary",
+          "real_time_data": "primary"
+        }
+      },
+      "performance_monitoring": {
+        "enabled": true,
+        "metrics_collection": {
+          "query_performance": true,
+          "connection_stats": true,
+          "lock_monitoring": true,
+          "deadlock_detection": true,
+          "table_stats": true
+        },
+        "slow_query_log": {
+          "enabled": true,
+          "threshold": 1000,
+          "log_queries_not_using_indexes": true,
+          "log_slow_admin_statements": true
+        },
+        "performance_insights": {
+          "enabled": true,
+          "retention_period": 7,
+          "feature_status": "enabled"
+        }
+      },
+      "optimization_rules": {
+        "table_partitioning": {
+          "enabled": true,
+          "strategies": ["range", "hash", "list"],
+          "auto_partition": false,
+          "partition_pruning": true
+        },
+        "vacuum_settings": {
+          "autovacuum": true,
+          "autovacuum_scale_factor": 0.1,
+          "autovacuum_analyze_scale_factor": 0.05,
+          "vacuum_cost_limit": 200
+        },
+        "memory_optimization": {
+          "shared_buffers": "256MB",
+          "effective_cache_size": "1GB",
+          "work_mem": "4MB",
+          "maintenance_work_mem": "64MB"
+        }
+      }
+    }
+
+  postgresql-performance.conf: |
+    # PostgreSQL Performance Configuration for CodAI Services
+    
+    # Memory Settings
+    shared_buffers = 256MB
+    effective_cache_size = 1GB
+    work_mem = 4MB
+    maintenance_work_mem = 64MB
+    
+    # Checkpoint Settings
+    checkpoint_completion_target = 0.9
+    wal_buffers = 16MB
+    default_statistics_target = 100
+    
+    # Connection Settings
+    max_connections = 300
+    superuser_reserved_connections = 3
+    
+    # Query Planner
+    random_page_cost = 1.1
+    effective_io_concurrency = 200
+    
+    # Write Ahead Logging
+    wal_level = replica
+    max_wal_senders = 10
+    max_replication_slots = 10
+    
+    # Logging
+    log_min_duration_statement = 1000
+    log_checkpoints = on
+    log_connections = on
+    log_disconnections = on
+    log_lock_waits = on
+    log_temp_files = 0
+    log_autovacuum_min_duration = 0
+    
+    # Auto Vacuum
+    autovacuum = on
+    autovacuum_max_workers = 3
+    autovacuum_naptime = 1min
+    autovacuum_vacuum_threshold = 50
+    autovacuum_analyze_threshold = 50
+    autovacuum_vacuum_scale_factor = 0.1
+    autovacuum_analyze_scale_factor = 0.05
+    autovacuum_freeze_max_age = 200000000
+    autovacuum_multixact_freeze_max_age = 400000000
+    
+    # Background Writer
+    bgwriter_delay = 200ms
+    bgwriter_lru_maxpages = 100
+    bgwriter_lru_multiplier = 2.0
+
+---
+# PostgreSQL Primary Database with Optimization
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql-primary-optimized
+  namespace: codai-production
+  labels:
+    app: postgresql-primary
+    component: database-optimization
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql-primary
+  template:
+    metadata:
+      labels:
+        app: postgresql-primary
+        component: database-optimization
+    spec:
+      securityContext:
+        fsGroup: 999
+        runAsUser: 999
+        runAsGroup: 999
+      containers:
+      - name: postgresql
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+          name: postgresql
+        env:
+        - name: POSTGRES_DB
+          value: "codai_primary"
+        - name: POSTGRES_USER
+          value: "codai_admin"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secrets
+              key: admin-password
+        - name: POSTGRES_INITDB_ARGS
+          value: "--auth-host=md5"
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        command:
+        - postgres
+        - -c
+        - config_file=/etc/postgresql/postgresql.conf
+        volumeMounts:
+        - name: postgresql-config
+          mountPath: /etc/postgresql
+        - name: postgresql-data
+          mountPath: /var/lib/postgresql/data
+        - name: postgresql-init
+          mountPath: /docker-entrypoint-initdb.d
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 2Gi
+          limits:
+            cpu: 4000m
+            memory: 8Gi
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - codai_admin
+            - -d
+            - codai_primary
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - codai_admin
+            - -d
+            - codai_primary
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: postgresql-config
+        configMap:
+          name: postgresql-performance-config
+      - name: postgresql-init
+        configMap:
+          name: postgresql-init-scripts
+      - name: postgresql-data
+        persistentVolumeClaim:
+          claimName: postgresql-primary-pvc
+
+---
+# PostgreSQL Read Replica Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql-read-replica
+  namespace: codai-production
+  labels:
+    app: postgresql-read-replica
+    component: database-optimization
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postgresql-read-replica
+  template:
+    metadata:
+      labels:
+        app: postgresql-read-replica
+        component: database-optimization
+    spec:
+      securityContext:
+        fsGroup: 999
+        runAsUser: 999
+        runAsGroup: 999
+      containers:
+      - name: postgresql
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+          name: postgresql
+        env:
+        - name: POSTGRES_DB
+          value: "codai_primary"
+        - name: POSTGRES_USER
+          value: "codai_replica"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secrets
+              key: replica-password
+        - name: POSTGRES_PRIMARY_HOST
+          value: "postgresql-primary.codai-production.svc.cluster.local"
+        - name: POSTGRES_PRIMARY_PORT
+          value: "5432"
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        command:
+        - postgres
+        - -c
+        - config_file=/etc/postgresql/postgresql.conf
+        volumeMounts:
+        - name: postgresql-config
+          mountPath: /etc/postgresql
+        - name: postgresql-data
+          mountPath: /var/lib/postgresql/data
+        - name: replica-init
+          mountPath: /docker-entrypoint-initdb.d
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - codai_replica
+            - -d
+            - codai_primary
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - codai_replica
+            - -d
+            - codai_primary
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: postgresql-config
+        configMap:
+          name: postgresql-performance-config
+      - name: replica-init
+        configMap:
+          name: postgresql-replica-init
+      - name: postgresql-data
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-performance-config
+  namespace: codai-production
+data:
+  postgresql.conf: |
+    # PostgreSQL Performance Configuration for CodAI Services
+    shared_buffers = 256MB
+    effective_cache_size = 1GB
+    work_mem = 4MB
+    maintenance_work_mem = 64MB
+    checkpoint_completion_target = 0.9
+    wal_buffers = 16MB
+    default_statistics_target = 100
+    max_connections = 300
+    superuser_reserved_connections = 3
+    random_page_cost = 1.1
+    effective_io_concurrency = 200
+    wal_level = replica
+    max_wal_senders = 10
+    max_replication_slots = 10
+    log_min_duration_statement = 1000
+    log_checkpoints = on
+    log_connections = on
+    log_disconnections = on
+    log_lock_waits = on
+    log_temp_files = 0
+    log_autovacuum_min_duration = 0
+    autovacuum = on
+    autovacuum_max_workers = 3
+    autovacuum_naptime = 1min
+    autovacuum_vacuum_threshold = 50
+    autovacuum_analyze_threshold = 50
+    autovacuum_vacuum_scale_factor = 0.1
+    autovacuum_analyze_scale_factor = 0.05
+    autovacuum_freeze_max_age = 200000000
+    autovacuum_multixact_freeze_max_age = 400000000
+    bgwriter_delay = 200ms
+    bgwriter_lru_maxpages = 100
+    bgwriter_lru_multiplier = 2.0
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-init-scripts
+  namespace: codai-production
+data:
+  01-create-databases.sql: |
+    -- Create optimized databases for CodAI services
+    CREATE DATABASE codai_auth;
+    CREATE DATABASE codai_hub;
+    CREATE DATABASE codai_memorai;
+    CREATE DATABASE codai_tenants;
+    CREATE DATABASE codai_audit;
+    CREATE DATABASE codai_analytics;
+    
+    -- Create users with appropriate permissions
+    CREATE USER codai_auth_user WITH ENCRYPTED PASSWORD 'codai_auth_password_2025';
+    CREATE USER codai_hub_user WITH ENCRYPTED PASSWORD 'codai_hub_password_2025';
+    CREATE USER codai_memorai_user WITH ENCRYPTED PASSWORD 'codai_memorai_password_2025';
+    CREATE USER codai_tenant_user WITH ENCRYPTED PASSWORD 'codai_tenant_password_2025';
+    CREATE USER codai_audit_user WITH ENCRYPTED PASSWORD 'codai_audit_password_2025';
+    CREATE USER codai_analytics_user WITH ENCRYPTED PASSWORD 'codai_analytics_password_2025';
+    
+    -- Grant permissions
+    GRANT ALL PRIVILEGES ON DATABASE codai_auth TO codai_auth_user;
+    GRANT ALL PRIVILEGES ON DATABASE codai_hub TO codai_hub_user;
+    GRANT ALL PRIVILEGES ON DATABASE codai_memorai TO codai_memorai_user;
+    GRANT ALL PRIVILEGES ON DATABASE codai_tenants TO codai_tenant_user;
+    GRANT ALL PRIVILEGES ON DATABASE codai_audit TO codai_audit_user;
+    GRANT ALL PRIVILEGES ON DATABASE codai_analytics TO codai_analytics_user;
+
+  02-create-extensions.sql: |
+    -- Enable required extensions for performance
+    \c codai_auth;
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    CREATE EXTENSION IF NOT EXISTS "btree_gin";
+    CREATE EXTENSION IF NOT EXISTS "btree_gist";
+    CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
+    
+    \c codai_hub;
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    CREATE EXTENSION IF NOT EXISTS "btree_gin";
+    CREATE EXTENSION IF NOT EXISTS "pg_trgm";
+    CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
+    
+    \c codai_memorai;
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    CREATE EXTENSION IF NOT EXISTS "vector";
+    CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
+    
+    \c codai_tenants;
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    CREATE EXTENSION IF NOT EXISTS "btree_gin";
+    CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
+    
+    \c codai_audit;
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    CREATE EXTENSION IF NOT EXISTS "btree_gin";
+    CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
+    
+    \c codai_analytics;
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    CREATE EXTENSION IF NOT EXISTS "btree_gin";
+    CREATE EXTENSION IF NOT EXISTS "btree_gist";
+    CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
+
+  03-create-indexes.sql: |
+    -- Create performance-optimized indexes
+    \c codai_auth;
+    -- User authentication indexes
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_users_email_hash ON users USING hash(email);
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_users_created_at_btree ON users(created_at);
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at) WHERE expires_at > NOW();
+    
+    \c codai_hub;
+    -- Hub service indexes
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_projects_tenant_id ON projects(tenant_id);
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_projects_status ON projects(status) WHERE status = 'active';
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_tasks_project_id ON tasks(project_id);
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_tasks_assignee_id ON tasks(assignee_id);
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_tasks_status_priority ON tasks(status, priority);
+    
+    \c codai_memorai;
+    -- MemorAI indexes
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_memories_agent_id ON memories(agent_id);
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_memories_importance ON memories(importance) WHERE importance >= 7;
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_memories_created_at ON memories(created_at);
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_memories_content_gin ON memories USING gin(to_tsvector('english', content));
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-replica-init
+  namespace: codai-production
+data:
+  setup-replica.sh: |
+    #!/bin/bash
+    set -e
+    
+    # Wait for primary to be ready
+    echo "Waiting for primary database to be ready..."
+    until pg_isready -h $POSTGRES_PRIMARY_HOST -p $POSTGRES_PRIMARY_PORT -U postgres; do
+      sleep 2
+    done
+    
+    echo "Primary database is ready. Setting up replica..."
+    
+    # Create base backup from primary
+    pg_basebackup -h $POSTGRES_PRIMARY_HOST -p $POSTGRES_PRIMARY_PORT -U postgres -D $PGDATA -P -W -R
+    
+    echo "Replica setup completed."
+
+---
+# Database Connection Pool Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-database-pool
+  namespace: codai-production
+  labels:
+    app: codai-database-pool
+    component: database-optimization
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: codai-database-pool
+  template:
+    metadata:
+      labels:
+        app: codai-database-pool
+        component: database-optimization
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-database-pool
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: pgbouncer
+        image: pgbouncer/pgbouncer:latest
+        ports:
+        - containerPort: 5432
+          name: pgbouncer
+        env:
+        - name: DATABASES_HOST
+          value: "postgresql-primary.codai-production.svc.cluster.local"
+        - name: DATABASES_PORT
+          value: "5432"
+        - name: DATABASES_USER
+          value: "codai_admin"
+        - name: DATABASES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secrets
+              key: admin-password
+        - name: POOL_MODE
+          value: "transaction"
+        - name: MAX_CLIENT_CONN
+          value: "1000"
+        - name: DEFAULT_POOL_SIZE
+          value: "25"
+        - name: SERVER_RESET_QUERY
+          value: "DISCARD ALL"
+        volumeMounts:
+        - name: pgbouncer-config
+          mountPath: /etc/pgbouncer
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        livenessProbe:
+          tcpSocket:
+            port: 5432
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          tcpSocket:
+            port: 5432
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: pgbouncer-config
+        configMap:
+          name: pgbouncer-config
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgbouncer-config
+  namespace: codai-production
+data:
+  pgbouncer.ini: |
+    [databases]
+    codai_auth = host=postgresql-primary.codai-production.svc.cluster.local port=5432 dbname=codai_auth
+    codai_hub = host=postgresql-primary.codai-production.svc.cluster.local port=5432 dbname=codai_hub  
+    codai_memorai = host=postgresql-primary.codai-production.svc.cluster.local port=5432 dbname=codai_memorai
+    codai_tenants = host=postgresql-primary.codai-production.svc.cluster.local port=5432 dbname=codai_tenants
+    codai_audit = host=postgresql-primary.codai-production.svc.cluster.local port=5432 dbname=codai_audit
+    codai_analytics = host=postgresql-primary.codai-production.svc.cluster.local port=5432 dbname=codai_analytics
+    
+    [pgbouncer]
+    listen_addr = 0.0.0.0
+    listen_port = 5432
+    auth_type = md5
+    auth_file = /etc/pgbouncer/userlist.txt
+    admin_users = postgres
+    stats_users = stats, postgres
+    pool_mode = transaction
+    server_reset_query = DISCARD ALL
+    max_client_conn = 1000
+    default_pool_size = 25
+    max_db_connections = 100
+    max_user_connections = 100
+    server_round_robin = 1
+    ignore_startup_parameters = extra_float_digits
+    server_check_delay = 30
+    server_check_query = select 1
+    server_lifetime = 3600
+    server_idle_timeout = 600
+    log_connections = 1
+    log_disconnections = 1
+    log_pooler_errors = 1
+
+  userlist.txt: |
+    "codai_admin" "md5..." 
+    "codai_auth_user" "md5..."
+    "codai_hub_user" "md5..."
+    "codai_memorai_user" "md5..."
+    "codai_tenant_user" "md5..."
+    "codai_audit_user" "md5..."
+    "codai_analytics_user" "md5..."
+
+---
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-primary
+  namespace: codai-production
+  labels:
+    app: postgresql-primary
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgresql
+  selector:
+    app: postgresql-primary
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-read-replica
+  namespace: codai-production
+  labels:
+    app: postgresql-read-replica
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgresql
+  selector:
+    app: postgresql-read-replica
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-database-pool
+  namespace: codai-production
+  labels:
+    app: codai-database-pool
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: pgbouncer
+  selector:
+    app: codai-database-pool
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-database-pool
+  namespace: codai-production
+  labels:
+    app: codai-database-pool
+
+---
+# PostgreSQL Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  admin-password: Y29kYWktcG9zdGdyZXNxbC1hZG1pbi1wYXNzd29yZC0yMDI1  # codai-postgresql-admin-password-2025
+  replica-password: Y29kYWktcG9zdGdyZXNxbC1yZXBsaWNhLXBhc3N3b3JkLTIwMjU=  # codai-postgresql-replica-password-2025
+
+---
+# Persistent Volume Claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-primary-pvc
+  namespace: codai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+
+---
+# HPA for Database Pool
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-database-pool-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-database-pool
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

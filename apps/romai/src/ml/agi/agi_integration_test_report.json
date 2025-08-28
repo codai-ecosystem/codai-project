@@ -1,0 +1,316 @@
+{
+  "test_session_id": "agi_test_1756322903",
+  "start_time": "2025-08-27T22:28:23.713385",
+  "end_time": "2025-08-27T22:28:31.421946",
+  "duration_seconds": 7.708561,
+  "overall_success": true,
+  "total_components": 5,
+  "successful_components": 5,
+  "benchmarks": [
+    {
+      "benchmark_name": "ARC-AGI",
+      "total_tests": 5,
+      "passed_tests": 0,
+      "success_rate": 0.0,
+      "average_score": 0.0,
+      "average_latency_ms": 0.0,
+      "peak_memory_mb": 0.0,
+      "component_results": [
+        {
+          "component_name": "compositional_reasoning",
+          "test_name": "arc_arc_001",
+          "success": false,
+          "score": 0.0,
+          "latency_ms": 0.0,
+          "memory_usage_mb": 0.0,
+          "details": {},
+          "error": "CompositionalReasoningEngine.solve_arc_task() takes 2 positional arguments but 4 were given"
+        },
+        {
+          "component_name": "compositional_reasoning",
+          "test_name": "arc_arc_002",
+          "success": false,
+          "score": 0.0,
+          "latency_ms": 0.0,
+          "memory_usage_mb": 0.0,
+          "details": {},
+          "error": "CompositionalReasoningEngine.solve_arc_task() takes 2 positional arguments but 4 were given"
+        },
+        {
+          "component_name": "compositional_reasoning",
+          "test_name": "arc_arc_003",
+          "success": false,
+          "score": 0.0,
+          "latency_ms": 0.0,
+          "memory_usage_mb": 0.0,
+          "details": {},
+          "error": "CompositionalReasoningEngine.solve_arc_task() takes 2 positional arguments but 4 were given"
+        },
+        {
+          "component_name": "compositional_reasoning",
+          "test_name": "arc_arc_004",
+          "success": false,
+          "score": 0.0,
+          "latency_ms": 0.0,
+          "memory_usage_mb": 0.0,
+          "details": {},
+          "error": "CompositionalReasoningEngine.solve_arc_task() takes 2 positional arguments but 4 were given"
+        },
+        {
+          "component_name": "compositional_reasoning",
+          "test_name": "arc_arc_005",
+          "success": false,
+          "score": 0.0,
+          "latency_ms": 0.0,
+          "memory_usage_mb": 0.0,
+          "details": {},
+          "error": "CompositionalReasoningEngine.solve_arc_task() takes 2 positional arguments but 4 were given"
+        }
+      ]
+    },
+    {
+      "benchmark_name": "Mathematical_Reasoning",
+      "total_tests": 5,
+      "passed_tests": 5,
+      "success_rate": 1.0,
+      "average_score": 0.7,
+      "average_latency_ms": 13.388538360595703,
+      "peak_memory_mb": 100.0,
+      "component_results": [
+        {
+          "component_name": "mathematical_reasoning",
+          "test_name": "math_001",
+          "success": true,
+          "score": 0.7,
+          "latency_ms": 5.667686462402344,
+          "memory_usage_mb": 30.0,
+          "details": {
+            "problem_type": "calculus",
+            "difficulty": "medium"
+          },
+          "error": null
+        },
+        {
+          "component_name": "mathematical_reasoning",
+          "test_name": "math_002",
+          "success": true,
+          "score": 0.7,
+          "latency_ms": 15.354633331298828,
+          "memory_usage_mb": 30.0,
+          "details": {
+            "problem_type": "algebra",
+            "difficulty": "easy"
+          },
+          "error": null
+        },
+        {
+          "component_name": "mathematical_reasoning",
+          "test_name": "math_003",
+          "success": true,
+          "score": 0.7,
+          "latency_ms": 15.385150909423828,
+          "memory_usage_mb": 30.0,
+          "details": {
+            "problem_type": "calculus",
+            "difficulty": "medium"
+          },
+          "error": null
+        },
+        {
+          "component_name": "mathematical_reasoning",
+          "test_name": "math_004",
+          "success": true,
+          "score": 0.7,
+          "latency_ms": 15.260934829711914,
+          "memory_usage_mb": 30.0,
+          "details": {
+            "problem_type": "calculus",
+            "difficulty": "hard"
+          },
+          "error": null
+        },
+        {
+          "component_name": "mathematical_reasoning",
+          "test_name": "math_005",
+          "success": true,
+          "score": 0.7,
+          "latency_ms": 15.274286270141602,
+          "memory_usage_mb": 30.0,
+          "details": {
+            "problem_type": "number_theory",
+            "difficulty": "medium"
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "benchmark_name": "Logical_Inference",
+      "total_tests": 5,
+      "passed_tests": 5,
+      "success_rate": 1.0,
+      "average_score": 0.75,
+      "average_latency_ms": 15.266847610473633,
+      "peak_memory_mb": 80.0,
+      "component_results": [
+        {
+          "component_name": "logical_inference",
+          "test_name": "logic_001",
+          "success": true,
+          "score": 0.75,
+          "latency_ms": 15.169382095336914,
+          "memory_usage_mb": 25.0,
+          "details": {
+            "reasoning_type": "deductive",
+            "premises_length": 38
+          },
+          "error": null
+        },
+        {
+          "component_name": "logical_inference",
+          "test_name": "logic_002",
+          "success": true,
+          "score": 0.75,
+          "latency_ms": 15.287160873413086,
+          "memory_usage_mb": 25.0,
+          "details": {
+            "reasoning_type": "abductive",
+            "premises_length": 52
+          },
+          "error": null
+        },
+        {
+          "component_name": "logical_inference",
+          "test_name": "logic_003",
+          "success": true,
+          "score": 0.75,
+          "latency_ms": 15.245199203491211,
+          "memory_usage_mb": 25.0,
+          "details": {
+            "reasoning_type": "inductive",
+            "premises_length": 49
+          },
+          "error": null
+        },
+        {
+          "component_name": "logical_inference",
+          "test_name": "logic_004",
+          "success": true,
+          "score": 0.75,
+          "latency_ms": 15.269041061401367,
+          "memory_usage_mb": 25.0,
+          "details": {
+            "reasoning_type": "deductive",
+            "premises_length": 44
+          },
+          "error": null
+        },
+        {
+          "component_name": "logical_inference",
+          "test_name": "logic_005",
+          "success": true,
+          "score": 0.75,
+          "latency_ms": 15.363454818725586,
+          "memory_usage_mb": 25.0,
+          "details": {
+            "reasoning_type": "deductive",
+            "premises_length": 34
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "benchmark_name": "Real_World_Problems",
+      "total_tests": 5,
+      "passed_tests": 5,
+      "success_rate": 1.0,
+      "average_score": 0.8480000000000001,
+      "average_latency_ms": 15.129852294921875,
+      "peak_memory_mb": 120.0,
+      "component_results": [
+        {
+          "component_name": "integrated_problem_solving",
+          "test_name": "real_001",
+          "success": true,
+          "score": 0.8999999999999999,
+          "latency_ms": 15.300512313842773,
+          "memory_usage_mb": 60.0,
+          "details": {
+            "domain": "operations",
+            "complexity": "medium",
+            "scenario": "Schedule optimization"
+          },
+          "error": null
+        },
+        {
+          "component_name": "integrated_problem_solving",
+          "test_name": "real_002",
+          "success": true,
+          "score": 0.7200000000000001,
+          "latency_ms": 15.02680778503418,
+          "memory_usage_mb": 60.0,
+          "details": {
+            "domain": "business",
+            "complexity": "high",
+            "scenario": "Resource allocation"
+          },
+          "error": null
+        },
+        {
+          "component_name": "integrated_problem_solving",
+          "test_name": "real_003",
+          "success": true,
+          "score": 0.99,
+          "latency_ms": 14.876604080200195,
+          "memory_usage_mb": 60.0,
+          "details": {
+            "domain": "logistics",
+            "complexity": "medium",
+            "scenario": "Route planning"
+          },
+          "error": null
+        },
+        {
+          "component_name": "integrated_problem_solving",
+          "test_name": "real_004",
+          "success": true,
+          "score": 0.95,
+          "latency_ms": 15.359640121459961,
+          "memory_usage_mb": 60.0,
+          "details": {
+            "domain": "nlp",
+            "complexity": "low",
+            "scenario": "Text analysis"
+          },
+          "error": null
+        },
+        {
+          "component_name": "integrated_problem_solving",
+          "test_name": "real_005",
+          "success": true,
+          "score": 0.68,
+          "latency_ms": 15.085697174072266,
+          "memory_usage_mb": 60.0,
+          "details": {
+            "domain": "analytics",
+            "complexity": "high",
+            "scenario": "Data prediction"
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "performance_metrics": {
+    "total_tests": 20,
+    "total_passed": 15,
+    "overall_success_rate": 0.75,
+    "average_success_rate": 0.75,
+    "average_score": 0.5745,
+    "average_latency_ms": 10.946309566497803,
+    "peak_memory_mb": 120.0,
+    "performance_efficiency": 52.48344170333997
+  },
+  "agi_readiness_score": 0.9
+}

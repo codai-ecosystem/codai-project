@@ -125,21 +125,21 @@ describe('Glass MCP Consolidated Tools', () => {
     describe('Tool Discovery', () => {
         it('should list all available tools including consolidated ones', async () => {
             const response = await client.sendRequest('tools/list');
-            
+
             expect(response.result).toBeDefined();
             expect(response.result.tools).toBeInstanceOf(Array);
-            
+
             const tools = response.result.tools;
             const toolNames = tools.map((tool: any) => tool.name);
-            
+
             // Check for consolidated tools
             expect(toolNames).toContain('glass_windows');
             expect(toolNames).toContain('glass_clipboard');
-            
+
             // Check for legacy tools with deprecation warnings
             expect(toolNames).toContain('window_list');
             expect(toolNames).toContain('clipboard_get_text');
-            
+
             // Check for remaining individual tools
             expect(toolNames).toContain('system_info');
             expect(toolNames).toContain('file_read');
@@ -148,7 +148,7 @@ describe('Glass MCP Consolidated Tools', () => {
         it('should have proper schemas for consolidated tools', async () => {
             const response = await client.sendRequest('tools/list');
             const tools = response.result.tools;
-            
+
             const glassWindows = tools.find((tool: any) => tool.name === 'glass_windows');
             expect(glassWindows).toBeDefined();
             expect(glassWindows.inputSchema.properties.operation).toBeDefined();
@@ -156,7 +156,7 @@ describe('Glass MCP Consolidated Tools', () => {
             expect(glassWindows.inputSchema.properties.operation.enum).toContain('focus');
             expect(glassWindows.inputSchema.properties.operation.enum).toContain('extract_text');
             expect(glassWindows.inputSchema.properties.operation.enum).toContain('send_text');
-            
+
             const glassClipboard = tools.find((tool: any) => tool.name === 'glass_clipboard');
             expect(glassClipboard).toBeDefined();
             expect(glassClipboard.inputSchema.properties.operation.enum).toContain('get_text');
@@ -176,7 +176,7 @@ describe('Glass MCP Consolidated Tools', () => {
             expect(response.result).toBeDefined();
             expect(response.result.content).toBeDefined();
             expect(response.result.content[0].type).toBe('text');
-            
+
             // Parse the JSON response
             const resultData = JSON.parse(response.result.content[0].text);
             expect(Array.isArray(resultData)).toBe(true);
@@ -240,7 +240,7 @@ describe('Glass MCP Consolidated Tools', () => {
 
         it('should execute set_text operation', async () => {
             const testText = 'Test clipboard content from MCP';
-            
+
             const response = await client.sendRequest('tools/call', {
                 name: 'glass_clipboard',
                 arguments: {
@@ -251,7 +251,7 @@ describe('Glass MCP Consolidated Tools', () => {
 
             expect(response.result).toBeDefined();
             expect(response.result.content).toBeDefined();
-            
+
             // Verify the text was set by getting it back
             const getResponse = await client.sendRequest('tools/call', {
                 name: 'glass_clipboard',
@@ -328,7 +328,7 @@ describe('Glass MCP Consolidated Tools', () => {
 
             expect(response.result).toBeDefined();
             expect(response.result.content).toBeDefined();
-            
+
             const systemData = JSON.parse(response.result.content[0].text);
             expect(systemData.computerName).toBeDefined();
             expect(systemData.userName).toBeDefined();
@@ -346,7 +346,7 @@ describe('Glass MCP Consolidated Tools', () => {
 
             expect(response.result).toBeDefined();
             expect(response.result.content).toBeDefined();
-            
+
             const existsData = JSON.parse(response.result.content[0].text);
             expect(existsData.exists).toBe(true);
         });
@@ -390,7 +390,7 @@ describe('Glass MCP Consolidated Tools', () => {
 
     describe('Performance and Reliability', () => {
         it('should handle multiple rapid requests', async () => {
-            const promises = Array.from({ length: 5 }, (_, i) => 
+            const promises = Array.from({ length: 5 }, (_, i) =>
                 client.sendRequest('tools/call', {
                     name: 'glass_clipboard',
                     arguments: {
@@ -400,7 +400,7 @@ describe('Glass MCP Consolidated Tools', () => {
             );
 
             const responses = await Promise.all(promises);
-            
+
             responses.forEach(response => {
                 expect(response.result).toBeDefined();
                 expect(response.result.content).toBeDefined();
@@ -484,10 +484,10 @@ describe('Integration Tests', () => {
         });
 
         const windows = JSON.parse(windowsResponse.result.content[0].text);
-        
+
         if (windows.length > 0) {
             const firstWindow = windows[0];
-            
+
             // Try to focus the window
             const focusResponse = await client.sendRequest('tools/call', {
                 name: 'glass_windows',
@@ -499,7 +499,7 @@ describe('Integration Tests', () => {
             });
 
             expect(focusResponse.result).toBeDefined();
-            
+
             // Try to extract text from the window
             const extractResponse = await client.sendRequest('tools/call', {
                 name: 'glass_windows',

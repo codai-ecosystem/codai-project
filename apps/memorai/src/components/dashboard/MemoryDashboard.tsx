@@ -120,7 +120,7 @@ const MemoryDashboard = memo(() => {
     return (
         <DashboardLayout
             title="Memory Dashboard"
-            subtitle="Manage and explore your AI-powered memory collection"
+            description="Manage and explore your AI-powered memory collection"
         >
             <div className="space-y-6">
                 {/* Stats Grid */}
@@ -178,7 +178,15 @@ const MemoryDashboard = memo(() => {
 
                     {/* Memory Management */}
                     <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-                        <MemoryManagement />
+                        <MemoryManagement 
+                            stats={{
+                                totalMemories: 245,
+                                recentMemories: 18,
+                                favorites: 23,
+                                connections: 12
+                            }}
+                            isLoading={false}
+                        />
                     </div>
                 </div>
             </div>

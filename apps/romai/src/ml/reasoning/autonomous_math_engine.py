@@ -41,6 +41,15 @@ except ImportError as e:
     ENHANCED_PARSER_AVAILABLE = False
     logger.warning(f"Enhanced mathematical expression parser not available: {e}")
 
+# Word problem parser integration
+try:
+    from .word_problem_parser import WordProblemParser
+    WORD_PROBLEM_PARSER_AVAILABLE = True
+    logger.info("📝 Word problem parser loaded successfully")
+except ImportError as e:
+    WORD_PROBLEM_PARSER_AVAILABLE = False
+    logger.warning(f"Word problem parser not available: {e}")
+
 @dataclass
 class MathematicalResult:
     """Standardized result class for mathematical operations"""
@@ -116,6 +125,14 @@ class RealNeuralMathematicalEngine:
         else:
             self.enhanced_parser = None
             logger.warning("⚠️ Enhanced parser not available, using fallback patterns")
+        
+        # Initialize word problem parser
+        if WORD_PROBLEM_PARSER_AVAILABLE:
+            self.word_problem_parser = WordProblemParser()
+            logger.info("📝 Word problem parser initialized")
+        else:
+            self.word_problem_parser = None
+            logger.warning("⚠️ Word problem parser not available")
             
         logger.info("🧮 RealNeuralMathematicalEngine initialized with DeepSeek-R1 reasoning")
     
@@ -314,12 +331,57 @@ Working through the solution:
             reasoning_steps.append(f"Final expression to evaluate: {expression}")
             
             return expression, reasoning_steps
+        
+        # FALLBACK: If no complex patterns matched, try standard extraction
+        reasoning_steps.append("No complex patterns matched, falling back to standard extraction")
+        try:
+            expression, method = self._extract_mathematical_expression(problem)
+            reasoning_steps.append(f"Standard extraction: {expression} via {method}")
+            return expression, reasoning_steps
+        except Exception as e:
+            reasoning_steps.append(f"Standard extraction failed: {e}")
+            # Final fallback - return the problem as-is for SymPy to handle
+            return problem, reasoning_steps
     
     def _extract_mathematical_expression(self, problem: str) -> Tuple[str, str]:
         """Extract mathematical expression from natural language"""
         problem = problem.strip()
         
-        # Try enhanced parser first if available
+        # PRIORITY 0: Check for explicit mathematical functions first (sqrt, factorial, etc.)
+        sqrt_patterns = {
+            r'(?i)calculate\s+sqrt\((\d+)\)': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)what\s+is\s+sqrt\((\d+)\)\s*\??': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)what\s+is\s+√(\d+)\s*\??': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)calculate\s+√(\d+)': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)sqrt\((\d+)\)': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)√(\d+)': lambda m: f"sqrt({m.group(1)})",
+        }
+        
+        for pattern, transformer in sqrt_patterns.items():
+            match = re.search(pattern, problem)
+            if match:
+                expression = transformer(match)
+                logger.info(f"🎯 Square root pattern matched: '{problem}' -> '{expression}'")
+                return expression, "sqrt_pattern"
+        
+        # PRIORITY 1: Try word problem parser first (best for natural language)
+        if WORD_PROBLEM_PARSER_AVAILABLE and self.word_problem_parser:
+            try:
+                logger.info(f"📝 Word problem parser attempting: '{problem}'")
+                parse_result = self.word_problem_parser.parse_word_problem(problem)
+                
+                if parse_result.confidence >= 0.8 and parse_result.expression:
+                    logger.info(f"🎯 Word problem parser SUCCESS: '{problem}' -> '{parse_result.expression}' (confidence: {parse_result.confidence:.2f})")
+                    return parse_result.expression, f"word_problem_parser_{parse_result.operation_type.value}"
+                elif parse_result.confidence >= 0.5 and parse_result.expression:
+                    logger.info(f"⚠️ Word problem parser MODERATE: '{problem}' -> '{parse_result.expression}' (confidence: {parse_result.confidence:.2f})")
+                    return parse_result.expression, f"word_problem_parser_{parse_result.operation_type.value}"
+                else:
+                    logger.info(f"❌ Word problem parser low confidence: {parse_result.confidence:.2f} for '{problem}'")
+            except Exception as e:
+                logger.warning(f"Word problem parser error for '{problem}': {e}")
+        
+        # PRIORITY 2: Try enhanced parser (good for mathematical expressions)
         if ENHANCED_PARSER_AVAILABLE and self.enhanced_parser:
             try:
                 logger.debug(f"Enhanced parser trying: '{problem}'")
@@ -337,7 +399,7 @@ Working through the solution:
                 import traceback
                 logger.debug(f"Enhanced parser traceback: {traceback.format_exc()}")
         
-        # Fallback to original patterns for backward compatibility
+        # PRIORITY 3: Fallback to original patterns for backward compatibility
         # First, try to extract natural language math questions
         natural_patterns = {
             r'(?i)what\s+is\s+(\d+)\s*\+\s*(\d+)\s*\??': lambda m: f"({m.group(1)}+{m.group(2)})",
@@ -349,6 +411,13 @@ Working through the solution:
             r'(?i)calculate\s+(\d+)\s*\+\s*(\d+)': lambda m: f"({m.group(1)}+{m.group(2)})",
             r'(?i)(\d+)\s*plus\s*(\d+)': lambda m: f"({m.group(1)}+{m.group(2)})",
             r'(?i)(\d+)\s*minus\s*(\d+)': lambda m: f"({m.group(1)}-{m.group(2)})",
+            # Add sqrt patterns
+            r'(?i)calculate\s+sqrt\((\d+)\)': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)what\s+is\s+sqrt\((\d+)\)\s*\??': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)what\s+is\s+√(\d+)\s*\??': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)calculate\s+√(\d+)': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)sqrt\((\d+)\)': lambda m: f"sqrt({m.group(1)})",
+            r'(?i)√(\d+)': lambda m: f"sqrt({m.group(1)})",
             r'(?i)(\d+)\s*times\s*(\d+)': lambda m: f"({m.group(1)}*{m.group(2)})",
             r'(?i)(\d+)\s*divided\s+by\s*(\d+)': lambda m: f"({m.group(1)}/{m.group(2)})",
         }
@@ -868,7 +937,9 @@ Working through the solution:
                 reasoning_steps.append(f"Expression: {expression}")
                 
                 # Directly use SymPy for algebra (handles solve() calls)
-                return self._solve_with_sympy(expression, problem)
+                result, steps = self._solve_with_sympy(expression, problem)
+                reasoning_steps.extend(steps)
+                return result, reasoning_steps
                 
             elif problem_type == "complex_expressions":
                 reasoning_steps.append("🧠 Applying complex expression analysis")
@@ -885,11 +956,15 @@ Working through the solution:
             
             # Fall back to SymPy for other cases
             reasoning_steps.append("🔬 Applying SymPy symbolic computation")
-            return self._solve_with_sympy(expression, problem)
+            result, steps = self._solve_with_sympy(expression, problem)
+            reasoning_steps.extend(steps)
+            return result, reasoning_steps
             
         except Exception as e:
             reasoning_steps.append(f"❌ Enhanced reasoning failed: {str(e)}")
-            return self._solve_with_sympy(expression, problem)
+            result, steps = self._solve_with_sympy(expression, problem)
+            reasoning_steps.extend(steps)
+            return result, reasoning_steps
     
     async def solve_mathematical_problem(self, problem: str) -> MathematicalResult:
         """
@@ -899,16 +974,21 @@ Working through the solution:
         has_romanian_context = False
         original_problem = problem
         
-        if ROMANIAN_INTEGRATION_AVAILABLE and romanian_math_intelligence.detect_romanian_mathematical_query(problem):
+        # Fix Romanian integration - make synchronous call
+        if ROMANIAN_INTEGRATION_AVAILABLE:
             try:
-                # Translate Romanian to mathematical notation first
-                translated_problem = romanian_math_intelligence.translate_to_mathematical_notation(problem)
-                if translated_problem and translated_problem != problem:
-                    problem = translated_problem
-                    has_romanian_context = True
-                    
-                print(f"🇷🇴 Romanian query detected")
-                print(f"🔄 Translated: '{original_problem}' → '{problem}'")
+                # Check if it's a Romanian query (synchronous check)
+                is_romanian = hasattr(romanian_math_intelligence, 'is_romanian_query') and romanian_math_intelligence.is_romanian_query(problem)
+                
+                if is_romanian or any(word in problem.lower() for word in ['dacă', 'sunt', 'am', 'mai', 'câte']):
+                    # Translate Romanian to mathematical notation
+                    translated_problem = romanian_math_intelligence.translate_to_mathematical_notation(problem)
+                    if translated_problem and translated_problem != problem:
+                        problem = translated_problem
+                        has_romanian_context = True
+                        
+                    print(f"🇷🇴 Romanian query detected")
+                    print(f"🔄 Translated: '{original_problem}' → '{problem}'")
             except Exception as e:
                 print(f"⚠️ Romanian translation error: {e}")
                 # Continue with original problem if translation fails

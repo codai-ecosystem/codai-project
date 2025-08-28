@@ -797,7 +797,7 @@ export default function Collections() {
                                             {collection.metadata.status}
                                         </span>
                                         {collection.isPublic && (
-                                            <Globe className="w-3 h-3 text-green-600" title="Public" />
+                                            <Globe className="w-3 h-3 text-green-600" />
                                         )}
                                     </div>
 
@@ -878,7 +878,7 @@ export default function Collections() {
                                             {collection.metadata.status}
                                         </span>
                                         {collection.isPublic && (
-                                            <Globe className="w-3 h-3 text-green-600" title="Public" />
+                                            <Globe className="w-3 h-3 text-green-600" />
                                         )}
                                     </div>
                                     <p className="text-sm text-gray-600 truncate mt-1">{collection.description}</p>

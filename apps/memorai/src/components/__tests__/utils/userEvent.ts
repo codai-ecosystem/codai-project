@@ -25,7 +25,7 @@ export function getSharedUserEvent(): UserEvent {
       writeToClipboard: true, // Enable since setup.ts makes clipboard configurable
       
       // Microsoft accessibility: Respect user's reduced motion preferences
-      advanceTimers: vi => vi.advanceTimersByTime,
+      advanceTimers: (time: number) => vi.advanceTimersByTime(time),
       
       // Microsoft performance: Reasonable delays for testing
       delay: null, // No delay for faster tests

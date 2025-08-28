@@ -18,7 +18,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import TeamWorkspaceService, { TeamRole, Permission } from '../../../../services/collaboration/TeamWorkspaceService';
+import TeamWorkspaceService, { TeamRole, Permission, WorkspaceSettings, ActivityType } from '../../../../services/collaboration/TeamWorkspaceService';
 
 // Initialize the team workspace service
 const workspaceService = new TeamWorkspaceService();
@@ -96,6 +96,19 @@ const ActivityQuerySchema = z.object({
     endDate: z.string().optional()
 });
 
+// Helper function to validate and convert strings to ActivityType
+function validateActivityTypes(types?: string[]): ActivityType[] | undefined {
+    if (!types) return undefined;
+    
+    const validActivityTypes: ActivityType[] = [
+        'memory_created', 'memory_updated', 'memory_deleted', 'memory_shared',
+        'member_added', 'member_removed', 'role_changed', 'settings_updated',
+        'workspace_created', 'collaboration_started'
+    ];
+    
+    return types.filter(type => validActivityTypes.includes(type as ActivityType)) as ActivityType[];
+}
+
 const AnalyticsQuerySchema = z.object({
     timeRange: z.enum(['day', 'week', 'month', 'quarter', 'year']).optional().default('month')
 });
@@ -118,7 +131,7 @@ export async function POST(request: NextRequest) {
             description: validatedData.description,
             ownerId: validatedData.ownerId,
             template: validatedData.template,
-            settings: validatedData.settings,
+            settings: validatedData.settings as Partial<WorkspaceSettings>,
             initialMembers: validatedData.initialMembers
         });
 
@@ -218,7 +231,7 @@ export async function GET(request: NextRequest) {
                 }
 
                 // Parse activity query parameters
-                const activityQuery = ActivityQuerySchema.parse({
+                const rawQuery = ActivityQuerySchema.parse({
                     limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined,
                     offset: searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : undefined,
                     types: searchParams.get('types')?.split(','),
@@ -226,6 +239,12 @@ export async function GET(request: NextRequest) {
                     startDate: searchParams.get('startDate'),
                     endDate: searchParams.get('endDate')
                 });
+
+                // Convert to proper ActivityType[] format for service
+                const activityQuery = {
+                    ...rawQuery,
+                    types: validateActivityTypes(rawQuery.types)
+                };
 
                 const activityData = await workspaceService.getWorkspaceActivity(workspaceId, activityQuery);
 
@@ -338,7 +357,7 @@ export async function PUT(request: NextRequest) {
                 }
 
                 const updateData = UpdateWorkspaceSchema.parse(body);
-                const updatedWorkspace = await workspaceService.updateWorkspaceSettings(workspaceId, userId, updateData.settings || {});
+                const updatedWorkspace = await workspaceService.updateWorkspaceSettings(workspaceId, userId, updateData.settings as Partial<WorkspaceSettings> || {});
 
                 return NextResponse.json({
                     success: true,

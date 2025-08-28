@@ -156,7 +156,7 @@ const SearchInput = memo(forwardRef<HTMLInputElement, SearchInputProps>(({
 
   // Keyboard navigation for suggestion badges
   const handleSuggestionKeyDown = useCallback((
-    e: React.KeyboardEvent<HTMLButtonElement>,
+    e: React.KeyboardEvent<HTMLElement>,
     suggestion: string,
     index: number
   ) => {

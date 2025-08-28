@@ -1,0 +1,149 @@
+{
+  "system": {
+    "version": "9.0.0",
+    "environment": "production",
+    "logLevel": "info",
+    "enableMetrics": true,
+    "metricsInterval": 30000
+  },
+  "vision": {
+    "screenCapture": {
+      "enabled": true,
+      "quality": "high",
+      "frameRate": 30,
+      "enableCaching": true,
+      "cacheSize": 100,
+      "timeout": 5000
+    },
+    "ocr": {
+      "enabled": true,
+      "languages": [
+        "en",
+        "ro"
+      ],
+      "accuracy": "balanced",
+      "enablePreprocessing": true,
+      "confidenceThreshold": 0.8
+    },
+    "objectDetection": {
+      "enabled": true,
+      "model": "yolov8s",
+      "confidenceThreshold": 0.7,
+      "nmsThreshold": 0.5,
+      "maxDetections": 100
+    }
+  },
+  "automation": {
+    "enabled": true,
+    "timeout": 10000,
+    "retryAttempts": 3,
+    "retryDelay": 1000,
+    "enableSmartWait": true,
+    "popupHandling": {
+      "enabled": true,
+      "timeout": 5000,
+      "strategies": [
+        "auto",
+        "dismiss",
+        "accept"
+      ]
+    },
+    "elementDetection": {
+      "enableVisualSearch": true,
+      "enableTextSearch": true,
+      "enablePatternMatching": true,
+      "searchTimeout": 3000
+    }
+  },
+  "intelligence": {
+    "contextAnalysis": {
+      "enabled": true,
+      "analysisDepth": "detailed",
+      "historySize": 50,
+      "enablePrediction": true
+    },
+    "decisionEngine": {
+      "enabled": true,
+      "confidenceThreshold": 0.8,
+      "enableRiskAssessment": true,
+      "enableOptimization": true
+    },
+    "learning": {
+      "enabled": true,
+      "learningRate": 0.1,
+      "adaptationSpeed": "medium",
+      "enablePersonalization": true
+    },
+    "errorRecovery": {
+      "enabled": true,
+      "maxRetryAttempts": 3,
+      "recoveryStrategies": [
+        "retry",
+        "alternative",
+        "rollback"
+      ],
+      "enableAutoCorrection": true
+    }
+  },
+  "drawing": {
+    "visualFeedback": {
+      "enabled": true,
+      "precision": 1,
+      "smoothing": true,
+      "enableRealTimeAnalysis": true
+    },
+    "shapeRecognition": {
+      "enabled": true,
+      "accuracy": "advanced",
+      "enableCorrection": true,
+      "correctionThreshold": 0.8
+    },
+    "pathOptimization": {
+      "enabled": true,
+      "level": "advanced",
+      "enableSmoothing": true,
+      "enableSimplification": true,
+      "enableSpeedOptimization": true
+    }
+  },
+  "performance": {
+    "maxConcurrentOperations": 5,
+    "memoryThresholdMB": 512,
+    "cpuThresholdPercent": 80,
+    "enableAutoOptimization": true,
+    "enableResourceMonitoring": true,
+    "cacheConfiguration": {
+      "maxSize": 1000,
+      "ttl": 300000,
+      "compressionEnabled": true
+    }
+  },
+  "security": {
+    "enableSecureMode": false,
+    "enableAuditLogging": true,
+    "allowedOperations": [
+      "*"
+    ],
+    "deniedOperations": [],
+    "encryptionEnabled": false
+  },
+  "integration": {
+    "mcp": {
+      "serverPort": 4950,
+      "enableWebSocket": true,
+      "enableHTTP": true,
+      "corsEnabled": true,
+      "corsOrigins": [
+        "*"
+      ]
+    },
+    "external": {
+      "enableAPIAccess": false,
+      "apiKeys": {},
+      "webhooks": {
+        "enabled": false,
+        "endpoints": []
+      }
+    }
+  }
+}

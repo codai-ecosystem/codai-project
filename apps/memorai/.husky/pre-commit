@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run linting and type checking
+echo "🔍 Running pre-commit hooks..."
+
+# Check for staged files
+staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ts|tsx|js|jsx)$')
+
+if [ -z "$staged_files" ]; then
+  echo "✅ No staged files to check"
+  exit 0
+fi
+
+echo "📝 Staged files: $staged_files"
+
+# Run lint-staged for TypeScript/JavaScript files
+echo "🧹 Running lint-staged..."
+npx lint-staged
+
+# Type check
+echo "🔍 Running TypeScript type check..."
+pnpm type-check
+
+# Run tests affected by changes
+echo "🧪 Running tests for changed files..."
+pnpm test:unit --run --changed --passWithNoTests
+
+echo "✅ Pre-commit checks completed successfully!"

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "glass-mcp-comprehensive": {
+      "command": "npx",
+      "args": [
+        "--yes",
+        "@codai/glass-mcp@latest"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=2048"
+      }
+    }
+  }
+}

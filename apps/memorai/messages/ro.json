@@ -1,0 +1,379 @@
+{
+  "common": {
+    "loading": "Se încarcă...",
+    "error": "Eroare",
+    "success": "Succes", 
+    "cancel": "Anulează",
+    "save": "Salvează",
+    "delete": "Șterge",
+    "edit": "Editează",
+    "create": "Creează",
+    "update": "Actualizează",
+    "search": "Caută",
+    "filter": "Filtrează",
+    "sort": "Sortează",
+    "clear": "Curăță",
+    "close": "Închide",
+    "open": "Deschide",
+    "back": "Înapoi",
+    "next": "Următorul",
+    "previous": "Anterior",
+    "home": "Acasă",
+    "settings": "Setări",
+    "help": "Ajutor",
+    "logout": "Delogare",
+    "login": "Autentificare",
+    "signup": "Înregistrare",
+    "profile": "Profil",
+    "dashboard": "Tablou de Bord",
+    "analytics": "Analize",
+    "memories": "Memorii",
+    "welcome": "Bun venit",
+    "goodbye": "La revedere",
+    "language": "Limbă",
+    "theme": "Temă",
+    "light": "Luminoasă",
+    "dark": "Întunecată",
+    "system": "Sistem",
+    "auto": "Automat"
+  },
+  "navigation": {
+    "home": "Acasă",
+    "dashboard": "Tablou de Bord",
+    "memories": "Memorii",
+    "analytics": "Analize", 
+    "settings": "Setări",
+    "profile": "Profil",
+    "help": "Ajutor și Suport",
+    "documentation": "Documentație",
+    "api": "Referință API",
+    "changelog": "Istoric Modificări",
+    "feedback": "Feedback",
+    "contact": "Contactează-ne"
+  },
+  "auth": {
+    "signin": "Autentificare",
+    "signup": "Înregistrare", 
+    "signout": "Delogare",
+    "email": "Email",
+    "password": "Parolă",
+    "confirmPassword": "Confirmă Parola",
+    "forgotPassword": "Ai uitat parola?",
+    "resetPassword": "Resetează Parola",
+    "rememberMe": "Ține-mă minte",
+    "createAccount": "Creează Cont",
+    "haveAccount": "Ai deja un cont?",
+    "noAccount": "Nu ai cont?",
+    "loginError": "Autentificarea a eșuat. Verifică credențialele.",
+    "signupError": "Înregistrarea a eșuat. Încearcă din nou.",
+    "resetError": "Resetarea parolei a eșuat. Încearcă din nou.",
+    "emailRequired": "Email-ul este obligatoriu",
+    "passwordRequired": "Parola este obligatorie",
+    "passwordTooShort": "Parola trebuie să aibă cel puțin 8 caractere",
+    "emailInvalid": "Introdu o adresă de email validă",
+    "passwordsDoNotMatch": "Parolele nu se potrivesc",
+    "accountCreated": "Cont creat cu succes!",
+    "checkEmail": "Verifică email-ul pentru instrucțiunile de verificare",
+    "emailVerified": "Email verificat cu succes!",
+    "passwordReset": "Parolă resetată cu succes!",
+    "loginSuccess": "Bun venit înapoi!",
+    "logoutSuccess": "Ai fost delogat cu succes"
+  },
+  "dashboard": {
+    "title": "Tablou de Bord",
+    "subtitle": "Prezentarea generală MemorAI",
+    "totalMemories": "Total Memorii",
+    "recentMemories": "Memorii Recente",
+    "memoryGrowth": "Creșterea Memoriilor",
+    "quickActions": "Acțiuni Rapide",
+    "createMemory": "Creează Memorie",
+    "searchMemories": "Caută Memorii",
+    "viewAnalytics": "Vezi Analizele",
+    "exportData": "Exportă Datele",
+    "welcomeMessage": "Bun venit la tabloul tău de bord MemorAI",
+    "noMemories": "Nu ai creat încă nicio memorie",
+    "getStarted": "Începe prin crearea primei tale memorii",
+    "stats": {
+      "memoriesCount": "{count} {count, plural, =0 {memorii} =1 {memorie} other {memorii}}",
+      "todayMemories": "{count} create astăzi",
+      "weekMemories": "{count} create săptămâna aceasta",
+      "monthMemories": "{count} create luna aceasta"
+    }
+  },
+  "memories": {
+    "title": "Memorii",
+    "subtitle": "Baza ta personală de cunoștințe",
+    "createNew": "Creează Memorie Nouă",
+    "searchPlaceholder": "Caută prin memoriile tale...",
+    "noMemories": "Nu s-au găsit memorii",
+    "emptyState": "Începe construirea bazei tale de cunoștințe prin crearea primei memorii",
+    "filters": {
+      "all": "Toate Memoriile",
+      "recent": "Recente",
+      "favorites": "Favorite", 
+      "archived": "Arhivate",
+      "shared": "Partajate"
+    },
+    "sortBy": {
+      "created": "Data Creării",
+      "updated": "Ultima Actualizare",
+      "title": "Titlu",
+      "importance": "Importanță"
+    },
+    "card": {
+      "createdAt": "Creat {date}",
+      "updatedAt": "Actualizat {date}",
+      "tags": "Etichete",
+      "importance": "Importanță",
+      "edit": "Editează Memoria",
+      "delete": "Șterge Memoria",
+      "share": "Partajează Memoria",
+      "favorite": "Adaugă la Favorite",
+      "unfavorite": "Elimină din Favorite",
+      "archive": "Arhivează",
+      "unarchive": "Dezarhivează"
+    },
+    "create": {
+      "title": "Creează Memorie Nouă",
+      "titleLabel": "Titlul Memoriei",
+      "titlePlaceholder": "Introdu un titlu descriptiv...",
+      "contentLabel": "Conținut",
+      "contentPlaceholder": "Ce ai vrea să ții minte?",
+      "tagsLabel": "Etichete",
+      "tagsPlaceholder": "Adaugă etichete pentru a organiza memoria...",
+      "importanceLabel": "Importanță",
+      "importanceLevels": {
+        "low": "Scăzută",
+        "medium": "Medie",
+        "high": "Înaltă",
+        "critical": "Critică"
+      },
+      "privacy": "Confidențialitate",
+      "privacyLevels": {
+        "private": "Privată",
+        "shared": "Partajată",
+        "public": "Publică"
+      },
+      "save": "Salvează Memoria",
+      "saving": "Se salvează...",
+      "cancel": "Anulează",
+      "success": "Memorie creată cu succes!",
+      "error": "Crearea memoriei a eșuat. Încearcă din nou."
+    },
+    "edit": {
+      "title": "Editează Memoria",
+      "save": "Actualizează Memoria",
+      "saving": "Se actualizează...",
+      "success": "Memorie actualizată cu succes!",
+      "error": "Actualizarea memoriei a eșuat. Încearcă din nou."
+    },
+    "delete": {
+      "title": "Șterge Memoria",
+      "message": "Ești sigur că vrei să ștergi această memorie? Această acțiune nu poate fi anulată.",
+      "confirm": "Șterge",
+      "cancel": "Anulează",
+      "success": "Memorie ștearsă cu succes!",
+      "error": "Ștergerea memoriei a eșuat. Încearcă din nou."
+    }
+  },
+  "analytics": {
+    "title": "Analize",
+    "subtitle": "Perspective asupra utilizării memoriilor tale",
+    "sections": {
+      "overview": "Prezentare Generală",
+      "trends": "Tendințe",
+      "insights": "Perspective"
+    },
+    "exportData": "Exportă Datele",
+    "dateRange": "Intervalul de Date",
+    "lastWeek": "Ultimele 7 zile",
+    "lastMonth": "Ultimele 30 de zile", 
+    "lastQuarter": "Ultimele 3 luni",
+    "lastYear": "Ultimul an",
+    "custom": "Interval personalizat",
+    "metrics": {
+      "totalMemories": "Total Memorii",
+      "memoriesCreated": "Memorii Create",
+      "memoriesUpdated": "Memorii Actualizate",
+      "tagsUsed": "Etichete Folosite",
+      "searchQueries": "Căutări Efectuate",
+      "averageImportance": "Importanța Medie",
+      "memoryGrowthRate": "Rata de Creștere"
+    },
+    "charts": {
+      "memoryCreationOverTime": "Crearea Memoriilor în Timp",
+      "memoryDistributionByImportance": "Distribuția Memoriilor după Importanță",
+      "topTags": "Etichetele Cele Mai Folosite",
+      "activityHeatmap": "Harta Activității",
+      "searchTrends": "Tendințele de Căutare"
+    },
+    "insights": {
+      "mostActiveDay": "Cea mai activă zi a ta este {day}",
+      "favoriteTag": "Eticheta ta cea mai folosită este '{tag}'",
+      "memoryStreak": "Ai creat memorii {days} zile consecutiv!",
+      "importanceBalance": "Te concentrezi {percentage}% pe memorii de importanță mare",
+      "searchBehavior": "Cauți memorii în medie {count} ori pe săptămână"
+    }
+  },
+  "settings": {
+    "title": "Setări",
+    "subtitle": "Personalizează experiența ta MemorAI",
+    "sections": {
+      "account": "Cont",
+      "appearance": "Aspectul",
+      "privacy": "Confidențialitate",
+      "notifications": "Notificări",
+      "data": "Date",
+      "advanced": "Avansat"
+    },
+    "account": {
+      "profile": "Informații Profil",
+      "email": "Adresa de Email",
+      "password": "Parolă",
+      "twoFactor": "Autentificare în Doi Pași",
+      "deleteAccount": "Șterge Contul",
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "username": "Nume Utilizator",
+      "bio": "Bio",
+      "avatar": "Poză de Profil",
+      "timezone": "Fus Orar",
+      "language": "Limbă",
+      "updateProfile": "Actualizează Profilul",
+      "changePassword": "Schimbă Parola",
+      "currentPassword": "Parola Curentă",
+      "newPassword": "Parola Nouă",
+      "confirmNewPassword": "Confirmă Parola Nouă"
+    },
+    "appearance": {
+      "theme": "Temă",
+      "colorScheme": "Schema de Culori",
+      "fontSize": "Mărimea Fontului",
+      "compactMode": "Mod Compact",
+      "animations": "Animații",
+      "themes": {
+        "light": "Luminoasă",
+        "dark": "Întunecată", 
+        "system": "Sistem"
+      },
+      "fontSizes": {
+        "small": "Mică",
+        "medium": "Medie",
+        "large": "Mare"
+      }
+    },
+    "privacy": {
+      "defaultPrivacy": "Nivelul Implicit de Confidențialitate",
+      "searchable": "Fă memoriile căutabile",
+      "analytics": "Urmărirea analitică",
+      "dataPurchase": "Colectarea datelor",
+      "shareWithTeam": "Partajează cu membrii echipei"
+    },
+    "notifications": {
+      "email": "Notificări Email",
+      "push": "Notificări Push", 
+      "digest": "Rezumat Săptămânal",
+      "reminders": "Mementouri pentru Memorii",
+      "updates": "Actualizări Produs",
+      "marketing": "Comunicări Marketing"
+    },
+    "data": {
+      "export": "Exportă Datele",
+      "import": "Importă Datele",
+      "backup": "Backup",
+      "restore": "Restaurează",
+      "exportAll": "Exportă Toate Memoriile",
+      "exportSelected": "Exportă Selecțiile",
+      "importFromFile": "Importă din Fișier",
+      "createBackup": "Creează Backup",
+      "scheduleBackup": "Programează Backup Automat"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "editProfile": "Editează Profilul",
+    "viewProfile": "Vezi Profilul",
+    "publicProfile": "Profil Public",
+    "achievements": "Realizări",
+    "stats": "Statistici",
+    "joinedDate": "Membru din {date}",
+    "lastActive": "Ultima activitate {date}",
+    "memoryCount": "{count} memorii",
+    "tagCount": "{count} etichete folosite",
+    "streakCount": "Serie de {count} zile"
+  },
+  "help": {
+    "title": "Ajutor și Suport",
+    "search": "Caută articole de ajutor...",
+    "categories": {
+      "gettingStarted": "Primii Pași",
+      "memories": "Gestionarea Memoriilor",
+      "search": "Căutare și Descoperire",
+      "analytics": "Analize și Perspective",
+      "account": "Setări Cont",
+      "privacy": "Confidențialitate și Securitate",
+      "api": "API și Integrări",
+      "billing": "Facturare și Planuri",
+      "troubleshooting": "Rezolvarea Problemelor"
+    },
+    "contact": {
+      "title": "Contactează Suportul",
+      "description": "Nu găsești ceea ce cauți? Contactează echipa noastră de suport.",
+      "email": "Suport Email",
+      "chat": "Chat Live", 
+      "documentation": "Documentație",
+      "community": "Forum Comunitate"
+    },
+    "faq": {
+      "title": "Întrebări Frecvente",
+      "howToCreate": "Cum creez o memorie?",
+      "howToSearch": "Cum caut prin memoriile mele?",
+      "howToExport": "Cum îmi export datele?",
+      "howToShare": "Cum partajez memoriile?",
+      "howToDelete": "Cum șterg o memorie?",
+      "whatIsImportance": "Ce înseamnă nivelul de importanță?",
+      "howToBackup": "Cum îmi fac backup la memorii?",
+      "howToChangeTheme": "Cum schimb tema?"
+    }
+  },
+  "errors": {
+    "general": "Ceva nu a mers bine. Încearcă din nou.",
+    "network": "Eroare de rețea. Verifică conexiunea.",
+    "notFound": "Pagina nu a fost găsită",
+    "unauthorized": "Nu ești autorizat să accesezi această resursă",
+    "forbidden": "Acces interzis",
+    "serverError": "Eroare de server. Încearcă din nou mai târziu.",
+    "validationFailed": "Verifică introducerea datelor și încearcă din nou",
+    "sessionExpired": "Sesiunea a expirat. Autentifică-te din nou.",
+    "rateLimited": "Prea multe cereri. Încearcă din nou mai târziu.",
+    "fileTooBig": "Fișierul este prea mare. Mărimea maximă este {size}MB",
+    "invalidFile": "Format de fișier invalid",
+    "uploadFailed": "Încărcarea a eșuat. Încearcă din nou."
+  },
+  "validation": {
+    "required": "Acest câmp este obligatoriu",
+    "minLength": "Trebuie să aibă cel puțin {min} caractere",
+    "maxLength": "Nu trebuie să aibă mai mult de {max} caractere",
+    "email": "Introdu o adresă de email validă",
+    "url": "Introdu un URL valid",
+    "number": "Introdu un număr valid",
+    "integer": "Introdu un număr întreg",
+    "positive": "Trebuie să fie un număr pozitiv",
+    "min": "Trebuie să fie cel puțin {min}",
+    "max": "Nu trebuie să fie mai mult de {max}",
+    "pattern": "Format invalid"
+  },
+  "theme": {
+    "light": "Luminos",
+    "dark": "Întunecat",
+    "system": "Sistem",
+    "toggleTheme": "Schimbă tema",
+    "currentTheme": "Tema curentă: {theme}",
+    "themeSettings": "Setări Temă",
+    "appearance": "Aspect",
+    "chooseTheme": "Alege tema preferată",
+    "systemDescription": "Folosește setările sistemului",
+    "lightDescription": "Mod luminos pentru medii luminoase",
+    "darkDescription": "Mod întunecat pentru medii cu puțină lumină"
+  }
+}

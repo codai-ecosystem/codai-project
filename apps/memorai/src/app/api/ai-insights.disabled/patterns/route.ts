@@ -19,8 +19,7 @@ export async function POST(request: NextRequest) {
         }
 
         const patterns = await aiInsightsService.identifyMemoryPatterns(
-            memories,
-            patternTypes
+            memories
         );
 
         return NextResponse.json({

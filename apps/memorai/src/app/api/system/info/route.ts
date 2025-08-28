@@ -41,7 +41,7 @@ export async function GET(
         // Get database info
         let databaseInfo = {
             status: 'unknown',
-            collections: [],
+            collections: [] as string[],
             totalDocuments: 0
         };
 

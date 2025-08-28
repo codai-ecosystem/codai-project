@@ -1,0 +1,842 @@
+# GitHub Actions CI/CD Pipelines for Essential CodAI Services
+# Version: 1.0
+# Multi-Stage Pipeline | Blue-Green Deployment | Automated Testing | Security Scanning
+name: Essential CodAI Services - Production CI/CD Pipeline
+on:
+  push:
+    branches: [main, dev, staging]
+    paths:
+      - 'apps/**'
+      - 'packages/**'
+      - 'kubernetes/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+  
+  # Manual workflow dispatch
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      deployment_strategy:
+        description: 'Deployment strategy'
+        required: true
+        default: 'blue-green'
+        type: choice
+        options:
+          - blue-green
+          - canary
+          - rolling
+      skip_tests:
+        description: 'Skip tests (emergency only)'
+        required: false
+        default: false
+        type: boolean
+
+# Global environment variables
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: codai-ecosystem/essential-codai
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  KUBECTL_VERSION: 'v1.28.0'
+  HELM_VERSION: 'v3.12.0'
+
+# Define reusable job configurations
+jobs:
+  # =====================================================
+  # STAGE 1: CODE QUALITY & SECURITY ANALYSIS
+  # =====================================================
+  code-quality:
+    name: Code Quality & Security Analysis
+    runs-on: ubuntu-latest
+    outputs:
+      services-matrix: ${{ steps.detect-changes.outputs.services }}
+      should-deploy: ${{ steps.detect-changes.outputs.should-deploy }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better analysis
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install Dependencies
+        run: |
+          npm ci
+          pip install -r requirements.txt 2>/dev/null || echo "No Python requirements"
+      
+      - name: Detect Changed Services
+        id: detect-changes
+        run: |
+          # Detect which services have changed
+          CHANGED_SERVICES=""
+          if git diff --name-only HEAD~1 HEAD | grep -q "apps/codai/"; then
+            CHANGED_SERVICES="$CHANGED_SERVICES codai-main"
+          fi
+          if git diff --name-only HEAD~1 HEAD | grep -q "packages/identity-api/"; then
+            CHANGED_SERVICES="$CHANGED_SERVICES identity-api"
+          fi
+          if git diff --name-only HEAD~1 HEAD | grep -q "packages/hub-api/"; then
+            CHANGED_SERVICES="$CHANGED_SERVICES hub-api"
+          fi
+          if git diff --name-only HEAD~1 HEAD | grep -q "packages/memorai-mcp/"; then
+            CHANGED_SERVICES="$CHANGED_SERVICES memorai-mcp"
+          fi
+          if git diff --name-only HEAD~1 HEAD | grep -q "apps/memorai/"; then
+            CHANGED_SERVICES="$CHANGED_SERVICES memorai-frontend"
+          fi
+          if git diff --name-only HEAD~1 HEAD | grep -q "packages/cbd-database/"; then
+            CHANGED_SERVICES="$CHANGED_SERVICES cbd-database"
+          fi
+          
+          # Set matrix for parallel jobs
+          echo "services=$(echo $CHANGED_SERVICES | jq -R -s -c 'split(" ") | map(select(length > 0))')" >> $GITHUB_OUTPUT
+          echo "should-deploy=$(if [ -n \"$CHANGED_SERVICES\" ]; then echo 'true'; else echo 'false'; fi)" >> $GITHUB_OUTPUT
+      
+      - name: ESLint Code Analysis
+        if: contains(steps.detect-changes.outputs.services, 'codai-main') || contains(steps.detect-changes.outputs.services, 'identity-api')
+        run: |
+          npm run lint -- --format=json --output-file=eslint-results.json || true
+          echo "ESLint analysis completed"
+      
+      - name: Prettier Code Formatting Check
+        if: contains(steps.detect-changes.outputs.services, 'codai-main') || contains(steps.detect-changes.outputs.services, 'identity-api')
+        run: |
+          npm run format:check || {
+            echo "Code formatting issues detected. Run 'npm run format' to fix."
+            exit 1
+          }
+      
+      - name: SonarQube Analysis
+        if: env.SONAR_TOKEN != ''
+        uses: sonarqube-quality-gate-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          scanMetadataReportFile: .scannerwork/report-task.txt
+      
+      - name: Upload Code Quality Results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: code-quality-results
+          path: |
+            eslint-results.json
+            .scannerwork/
+            coverage/
+          retention-days: 7
+
+  # =====================================================
+  # STAGE 2: SECURITY SCANNING
+  # =====================================================
+  security-scanning:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    needs: code-quality
+    if: needs.code-quality.outputs.should-deploy == 'true'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install Dependencies
+        run: npm ci
+      
+      - name: Snyk Security Scan - Dependencies
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --all-projects --severity-threshold=high --json-file-output=snyk-deps.json
+        continue-on-error: true
+      
+      - name: Snyk Security Scan - Code
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code test
+          args: --severity-threshold=high --json-file-output=snyk-code.json
+        continue-on-error: true
+      
+      - name: OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'Essential CodAI Services'
+          path: '.'
+          format: 'JSON'
+          out: 'owasp-dependency-check'
+          args: >
+            --enableRetired
+            --enableExperimental
+            --failOnCVSS 7.0
+      
+      - name: Semgrep Security Analysis
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/security-audit
+            p/owasp-top-ten
+            p/javascript
+            p/typescript
+            p/python
+          generateSarif: "1"
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+      
+      - name: Upload Security Results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: security-scan-results
+          path: |
+            snyk-*.json
+            owasp-dependency-check/
+            semgrep.sarif
+          retention-days: 7
+      
+      - name: Security Gate Check
+        run: |
+          # Check if any critical vulnerabilities were found
+          CRITICAL_VULNS=0
+          
+          if [ -f "snyk-deps.json" ]; then
+            CRITICAL_VULNS=$((CRITICAL_VULNS + $(jq '.vulnerabilities[] | select(.severity == "critical") | length' snyk-deps.json 2>/dev/null || echo 0)))
+          fi
+          
+          if [ -f "snyk-code.json" ]; then
+            CRITICAL_VULNS=$((CRITICAL_VULNS + $(jq '.runs[0].results[] | select(.level == "error") | length' snyk-code.json 2>/dev/null || echo 0)))
+          fi
+          
+          echo "Critical vulnerabilities found: $CRITICAL_VULNS"
+          
+          if [ $CRITICAL_VULNS -gt 0 ]; then
+            echo "❌ Security gate failed: Critical vulnerabilities detected"
+            echo "Please review and fix security issues before deployment"
+            exit 1
+          else
+            echo "✅ Security gate passed: No critical vulnerabilities"
+          fi
+
+  # =====================================================
+  # STAGE 3: AUTOMATED TESTING
+  # =====================================================
+  testing:
+    name: Automated Testing
+    runs-on: ubuntu-latest
+    needs: [code-quality, security-scanning]
+    if: needs.code-quality.outputs.should-deploy == 'true' && !inputs.skip_tests
+    strategy:
+      matrix:
+        test-suite: [unit, integration, e2e]
+        service: ${{ fromJSON(needs.code-quality.outputs.services-matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Setup Test Environment
+        run: |
+          npm ci
+          # Start required services for integration/e2e tests
+          docker-compose -f docker-compose.test.yml up -d postgres redis
+          sleep 10
+      
+      - name: Run Unit Tests
+        if: matrix.test-suite == 'unit'
+        run: |
+          npm run test:unit -- --service=${{ matrix.service }} --coverage --ci
+          npm run test:coverage-report
+      
+      - name: Run Integration Tests
+        if: matrix.test-suite == 'integration'
+        run: |
+          npm run test:integration -- --service=${{ matrix.service }}
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://test:test@localhost:5432/codai_test
+          REDIS_URL: redis://localhost:6379/1
+      
+      - name: Run E2E Tests
+        if: matrix.test-suite == 'e2e'
+        run: |
+          # Install Playwright browsers
+          npx playwright install --with-deps
+          npm run test:e2e -- --service=${{ matrix.service }}
+        env:
+          NODE_ENV: test
+          BASE_URL: http://localhost:3000
+      
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results-${{ matrix.test-suite }}-${{ matrix.service }}
+          path: |
+            coverage/
+            test-results/
+            playwright-report/
+          retention-days: 7
+      
+      - name: Test Results Summary
+        if: always()
+        run: |
+          echo "## Test Results for ${{ matrix.service }} - ${{ matrix.test-suite }}" >> $GITHUB_STEP_SUMMARY
+          if [ -f "test-results/results.json" ]; then
+            node -e "
+              const results = JSON.parse(require('fs').readFileSync('test-results/results.json', 'utf8'));
+              console.log('**Passed:** ' + results.passed);
+              console.log('**Failed:** ' + results.failed);
+              console.log('**Skipped:** ' + results.skipped);
+              console.log('**Coverage:** ' + (results.coverage || 'N/A'));
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # =====================================================
+  # STAGE 4: CONTAINER BUILD & SCAN
+  # =====================================================
+  build-containers:
+    name: Build & Scan Containers
+    runs-on: ubuntu-latest
+    needs: [code-quality, security-scanning, testing]
+    if: always() && needs.code-quality.outputs.should-deploy == 'true' && (needs.testing.result == 'success' || inputs.skip_tests)
+    strategy:
+      matrix:
+        service: ${{ fromJSON(needs.code-quality.outputs.services-matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Log in to Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract Metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.service }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix=sha-,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+      
+      - name: Build and Push Container
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./apps/${{ matrix.service }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_VERSION=${{ env.NODE_VERSION }}
+            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            VCS_REF=${{ github.sha }}
+            VERSION=${{ steps.meta.outputs.version }}
+      
+      - name: Container Security Scan with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:${{ steps.meta.outputs.version }}
+          format: 'sarif'
+          output: 'trivy-${{ matrix.service }}.sarif'
+          severity: 'CRITICAL,HIGH'
+      
+      - name: Container Security Scan with Snyk
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:${{ steps.meta.outputs.version }}
+          args: --severity-threshold=high --json-file-output=snyk-container-${{ matrix.service }}.json
+        continue-on-error: true
+      
+      - name: Upload Container Scan Results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: container-scan-results-${{ matrix.service }}
+          path: |
+            trivy-${{ matrix.service }}.sarif
+            snyk-container-${{ matrix.service }}.json
+          retention-days: 7
+      
+      - name: Container Security Gate
+        run: |
+          # Check container scan results
+          CRITICAL_ISSUES=0
+          
+          if [ -f "snyk-container-${{ matrix.service }}.json" ]; then
+            CRITICAL_ISSUES=$(jq '.vulnerabilities[] | select(.severity == "critical") | length' snyk-container-${{ matrix.service }}.json 2>/dev/null || echo 0)
+          fi
+          
+          echo "Critical container vulnerabilities: $CRITICAL_ISSUES"
+          
+          if [ $CRITICAL_ISSUES -gt 0 ]; then
+            echo "❌ Container security gate failed for ${{ matrix.service }}"
+            exit 1
+          else
+            echo "✅ Container security gate passed for ${{ matrix.service }}"
+          fi
+
+  # =====================================================
+  # STAGE 5: STAGING DEPLOYMENT
+  # =====================================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [code-quality, build-containers]
+    if: always() && needs.code-quality.outputs.should-deploy == 'true' && needs.build-containers.result == 'success'
+    environment: 
+      name: staging
+      url: https://staging.codai.ro
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: ${{ env.KUBECTL_VERSION }}
+      
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: ${{ env.HELM_VERSION }}
+      
+      - name: Configure Kubernetes Context
+        run: |
+          echo "${{ secrets.KUBE_CONFIG_STAGING }}" | base64 -d > ~/.kube/config
+          kubectl config use-context staging
+      
+      - name: Deploy to Staging
+        run: |
+          # Update image tags in Kubernetes manifests
+          for service in $(echo '${{ needs.code-quality.outputs.services-matrix }}' | jq -r '.[]'); do
+            IMAGE_TAG="sha-${GITHUB_SHA:0:7}"
+            IMAGE_NAME="${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${service}:${IMAGE_TAG}"
+            
+            # Update deployment manifest
+            kubectl set image deployment/codai-${service} codai-${service}=${IMAGE_NAME} -n codai-staging
+          done
+          
+          # Apply any new manifests
+          kubectl apply -f kubernetes/manifests/ -n codai-staging
+      
+      - name: Wait for Deployment
+        run: |
+          for service in $(echo '${{ needs.code-quality.outputs.services-matrix }}' | jq -r '.[]'); do
+            kubectl rollout status deployment/codai-${service} -n codai-staging --timeout=600s
+          done
+      
+      - name: Staging Health Check
+        run: |
+          echo "Running staging health checks..."
+          
+          # Wait for services to be ready
+          sleep 30
+          
+          # Test all service health endpoints
+          HEALTH_CHECK_PASSED=true
+          
+          for service in $(echo '${{ needs.code-quality.outputs.services-matrix }}' | jq -r '.[]'); do
+            echo "Checking health for ${service}..."
+            
+            # Port forward to health endpoint
+            kubectl port-forward service/codai-${service} 8080:80 -n codai-staging &
+            PF_PID=$!
+            sleep 5
+            
+            # Test health endpoint
+            if curl -f -m 10 http://localhost:8080/health; then
+              echo "✅ ${service} health check passed"
+            else
+              echo "❌ ${service} health check failed"
+              HEALTH_CHECK_PASSED=false
+            fi
+            
+            # Cleanup port forward
+            kill $PF_PID 2>/dev/null || true
+          done
+          
+          if [ "$HEALTH_CHECK_PASSED" != "true" ]; then
+            echo "❌ Staging deployment health checks failed"
+            exit 1
+          else
+            echo "✅ All staging health checks passed"
+          fi
+      
+      - name: Run Staging Tests
+        run: |
+          # Run smoke tests against staging environment
+          npm run test:smoke -- --baseUrl=https://staging.codai.ro
+          
+          # Run API integration tests
+          npm run test:api -- --baseUrl=https://staging-api.codai.ro
+      
+      - name: Notify Staging Deployment
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#deployments'
+          message: |
+            Staging Deployment ${{ job.status }}
+            
+            Services: ${{ join(fromJSON(needs.code-quality.outputs.services-matrix), ', ') }}
+            Commit: ${{ github.sha }}
+            Author: ${{ github.actor }}
+            
+            Staging URL: https://staging.codai.ro
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # =====================================================
+  # STAGE 6: PRODUCTION DEPLOYMENT
+  # =====================================================
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [code-quality, build-containers, deploy-staging]
+    if: github.ref == 'refs/heads/main' && needs.deploy-staging.result == 'success'
+    environment:
+      name: production
+      url: https://codai.ro
+    strategy:
+      matrix:
+        service: ${{ fromJSON(needs.code-quality.outputs.services-matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: ${{ env.KUBECTL_VERSION }}
+      
+      - name: Setup Helm  
+        uses: azure/setup-helm@v3
+        with:
+          version: ${{ env.HELM_VERSION }}
+      
+      - name: Configure Kubernetes Context
+        run: |
+          echo "${{ secrets.KUBE_CONFIG_PRODUCTION }}" | base64 -d > ~/.kube/config
+          kubectl config use-context production
+      
+      - name: Blue-Green Deployment
+        if: inputs.deployment_strategy == 'blue-green' || github.event_name != 'workflow_dispatch'
+        run: |
+          SERVICE_NAME="codai-${{ matrix.service }}"
+          IMAGE_TAG="sha-${GITHUB_SHA:0:7}"
+          IMAGE_NAME="${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:${IMAGE_TAG}"
+          
+          echo "Starting blue-green deployment for ${SERVICE_NAME}"
+          
+          # Check current active environment
+          CURRENT_ENV=$(kubectl get service ${SERVICE_NAME} -n codai-production -o jsonpath='{.spec.selector.environment}' 2>/dev/null || echo "blue")
+          NEW_ENV=$([ "$CURRENT_ENV" = "blue" ] && echo "green" || echo "blue")
+          
+          echo "Current environment: $CURRENT_ENV, Deploying to: $NEW_ENV"
+          
+          # Update the inactive environment
+          kubectl set image deployment/${SERVICE_NAME}-${NEW_ENV} ${SERVICE_NAME}=${IMAGE_NAME} -n codai-production
+          kubectl rollout status deployment/${SERVICE_NAME}-${NEW_ENV} -n codai-production --timeout=600s
+          
+          # Health check new environment
+          kubectl port-forward service/${SERVICE_NAME}-${NEW_ENV} 8080:80 -n codai-production &
+          PF_PID=$!
+          sleep 10
+          
+          if curl -f -m 30 http://localhost:8080/health; then
+            echo "✅ Health check passed for new environment"
+          else
+            echo "❌ Health check failed for new environment"
+            kill $PF_PID 2>/dev/null || true
+            exit 1
+          fi
+          
+          kill $PF_PID 2>/dev/null || true
+          
+          # Switch traffic to new environment
+          kubectl patch service ${SERVICE_NAME} -n codai-production -p '{"spec":{"selector":{"environment":"'${NEW_ENV}'"}}}'
+          
+          echo "✅ Blue-green deployment completed for ${SERVICE_NAME}"
+      
+      - name: Canary Deployment
+        if: inputs.deployment_strategy == 'canary'
+        run: |
+          SERVICE_NAME="codai-${{ matrix.service }}"
+          IMAGE_TAG="sha-${GITHUB_SHA:0:7}"
+          IMAGE_NAME="${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:${IMAGE_TAG}"
+          
+          echo "Starting canary deployment for ${SERVICE_NAME}"
+          
+          # Deploy canary version
+          kubectl set image deployment/${SERVICE_NAME}-canary ${SERVICE_NAME}=${IMAGE_NAME} -n codai-production
+          kubectl rollout status deployment/${SERVICE_NAME}-canary -n codai-production --timeout=600s
+          
+          # Gradual traffic shifting: 5% -> 25% -> 50% -> 100%
+          for TRAFFIC in 5 25 50 100; do
+            echo "Shifting ${TRAFFIC}% traffic to canary"
+            
+            # Update Istio VirtualService for traffic splitting
+            kubectl patch virtualservice ${SERVICE_NAME} -n codai-production --type='json' -p="[
+              {
+                \"op\": \"replace\",
+                \"path\": \"/spec/http/0/route/0/weight\",
+                \"value\": $((100 - TRAFFIC))
+              },
+              {
+                \"op\": \"replace\",
+                \"path\": \"/spec/http/0/route/1/weight\", 
+                \"value\": ${TRAFFIC}
+              }
+            ]"
+            
+            # Wait and monitor metrics
+            sleep 120
+            
+            # Check error rates and response times
+            ERROR_RATE=$(kubectl exec -n istio-system deployment/prometheus -- /bin/sh -c "
+              curl -s 'http://localhost:9090/api/v1/query?query=rate(istio_requests_total{destination_service_name=\"${SERVICE_NAME}\",response_code!~\"2..\"}[5m])' |
+              jq -r '.data.result[0].value[1] // \"0\"'
+            " 2>/dev/null || echo "0")
+            
+            if (( $(echo "$ERROR_RATE > 0.01" | bc -l) )); then
+              echo "❌ High error rate detected: $ERROR_RATE. Rolling back..."
+              kubectl patch virtualservice ${SERVICE_NAME} -n codai-production --type='json' -p="[
+                {\"op\": \"replace\", \"path\": \"/spec/http/0/route/0/weight\", \"value\": 100},
+                {\"op\": \"replace\", \"path\": \"/spec/http/0/route/1/weight\", \"value\": 0}
+              ]"
+              exit 1
+            fi
+          done
+          
+          # Promote canary to production
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${IMAGE_NAME} -n codai-production
+          kubectl rollout status deployment/${SERVICE_NAME} -n codai-production --timeout=600s
+          
+          # Reset traffic to 100% production
+          kubectl patch virtualservice ${SERVICE_NAME} -n codai-production --type='json' -p="[
+            {\"op\": \"replace\", \"path\": \"/spec/http/0/route/0/weight\", \"value\": 100},
+            {\"op\": \"replace\", \"path\": \"/spec/http/0/route/1/weight\", \"value\": 0}
+          ]"
+          
+          echo "✅ Canary deployment completed for ${SERVICE_NAME}"
+      
+      - name: Post-Deployment Validation
+        run: |
+          echo "Running post-deployment validation for ${{ matrix.service }}"
+          
+          # Wait for service to stabilize
+          sleep 60
+          
+          # Run production smoke tests
+          kubectl port-forward service/codai-${{ matrix.service }} 8080:80 -n codai-production &
+          PF_PID=$!
+          sleep 10
+          
+          # Health check
+          if curl -f -m 30 http://localhost:8080/health; then
+            echo "✅ Production health check passed"
+          else
+            echo "❌ Production health check failed"
+            kill $PF_PID 2>/dev/null || true
+            exit 1
+          fi
+          
+          # Performance check
+          RESPONSE_TIME=$(curl -o /dev/null -s -w "%{time_total}" http://localhost:8080/health)
+          if (( $(echo "$RESPONSE_TIME > 1.0" | bc -l) )); then
+            echo "⚠️ Slow response time: ${RESPONSE_TIME}s"
+          else
+            echo "✅ Response time acceptable: ${RESPONSE_TIME}s"
+          fi
+          
+          kill $PF_PID 2>/dev/null || true
+      
+      - name: Update Deployment Status
+        if: always()
+        run: |
+          # Record deployment in monitoring system
+          curl -X POST "${{ secrets.MONITORING_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"service\": \"${{ matrix.service }}\",
+              \"version\": \"sha-${GITHUB_SHA:0:7}\",
+              \"environment\": \"production\",
+              \"status\": \"${{ job.status }}\",
+              \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+              \"deployer\": \"${{ github.actor }}\",
+              \"commit\": \"${{ github.sha }}\"
+            }" 2>/dev/null || echo "Failed to record deployment"
+
+  # =====================================================
+  # STAGE 7: POST-DEPLOYMENT MONITORING
+  # =====================================================
+  post-deployment-monitoring:
+    name: Post-Deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: always() && needs.deploy-production.result == 'success'
+    steps:
+      - name: Setup Monitoring
+        run: |
+          echo "Setting up post-deployment monitoring..."
+          
+          # Install monitoring tools
+          curl -LO "https://storage.googleapis.com/kubernetes-release/release/${{ env.KUBECTL_VERSION }}/bin/linux/amd64/kubectl"
+          chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+      
+      - name: Configure Kubernetes Context
+        run: |
+          echo "${{ secrets.KUBE_CONFIG_PRODUCTION }}" | base64 -d > ~/.kube/config
+          kubectl config use-context production
+      
+      - name: Monitor Deployment Health
+        run: |
+          echo "Monitoring deployment health for 10 minutes..."
+          
+          END_TIME=$(($(date +%s) + 600)) # 10 minutes
+          
+          while [ $(date +%s) -lt $END_TIME ]; do
+            echo "Checking deployment health... $(date)"
+            
+            # Check pod health
+            UNHEALTHY_PODS=$(kubectl get pods -n codai-production -l app.kubernetes.io/managed-by=essential-codai-pipeline --field-selector=status.phase!=Running --no-headers 2>/dev/null | wc -l)
+            
+            if [ $UNHEALTHY_PODS -gt 0 ]; then
+              echo "⚠️ Found $UNHEALTHY_PODS unhealthy pods"
+              kubectl get pods -n codai-production -l app.kubernetes.io/managed-by=essential-codai-pipeline
+            else
+              echo "✅ All pods healthy"
+            fi
+            
+            # Check service response times
+            SLOW_SERVICES=0
+            for service in $(echo '${{ needs.code-quality.outputs.services-matrix }}' | jq -r '.[]'); do
+              kubectl port-forward service/codai-${service} 8080:80 -n codai-production >/dev/null 2>&1 &
+              PF_PID=$!
+              sleep 2
+              
+              RESPONSE_TIME=$(curl -o /dev/null -s -w "%{time_total}" http://localhost:8080/health 2>/dev/null || echo "999")
+              
+              if (( $(echo "$RESPONSE_TIME > 0.5" | bc -l) )); then
+                echo "⚠️ Slow response from ${service}: ${RESPONSE_TIME}s"
+                SLOW_SERVICES=$((SLOW_SERVICES + 1))
+              fi
+              
+              kill $PF_PID 2>/dev/null || true
+            done
+            
+            if [ $SLOW_SERVICES -gt 0 ]; then
+              echo "⚠️ $SLOW_SERVICES services responding slowly"
+            fi
+            
+            sleep 60
+          done
+          
+          echo "✅ Post-deployment monitoring completed"
+      
+      - name: Generate Deployment Report
+        run: |
+          echo "## 🚀 Deployment Report" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Time:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployer:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Services Deployed:** ${{ join(fromJSON(needs.code-quality.outputs.services-matrix), ', ') }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Service health status
+          echo "### Service Health Status" >> $GITHUB_STEP_SUMMARY
+          for service in $(echo '${{ needs.code-quality.outputs.services-matrix }}' | jq -r '.[]'); do
+            kubectl port-forward service/codai-${service} 8080:80 -n codai-production >/dev/null 2>&1 &
+            PF_PID=$!
+            sleep 2
+            
+            if curl -f -m 10 http://localhost:8080/health >/dev/null 2>&1; then
+              echo "- ✅ **${service}**: Healthy" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- ❌ **${service}**: Unhealthy" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            kill $PF_PID 2>/dev/null || true
+          done
+      
+      - name: Notify Deployment Success
+        if: success()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          channel: '#deployments'
+          message: |
+            🚀 **Production Deployment Successful!**
+            
+            **Services:** ${{ join(fromJSON(needs.code-quality.outputs.services-matrix), ', ') }}
+            **Commit:** ${{ github.sha }}
+            **Deployer:** ${{ github.actor }}
+            
+            **Production URL:** https://codai.ro
+            
+            All services are healthy and responding normally.
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      
+      - name: Notify Deployment Issues
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          channel: '#deployments'
+          message: |
+            ❌ **Production Deployment Issues Detected**
+            
+            **Services:** ${{ join(fromJSON(needs.code-quality.outputs.services-matrix), ', ') }}
+            **Commit:** ${{ github.sha }}
+            **Deployer:** ${{ github.actor }}
+            
+            Please check the deployment logs and monitoring dashboards.
+            
+            **Action Required:** Manual intervention may be needed.
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RomAI Production Monitoring Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .status-healthy {
+            background-color: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-unhealthy {
+            background-color: #fecaca;
+            color: #991b1b;
+            border-color: #fca5a5;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-error {
+            background-color: #fef3c7;
+            color: #a16207;
+            border-color: #fde68a;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .metric-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            border-left-width: 4px;
+        }
+
+        .metric-good {
+            border-left-color: #10b981;
+        }
+
+        .metric-warning {
+            border-left-color: #f59e0b;
+        }
+
+        .metric-critical {
+            border-left-color: #ef4444;
+        }
+
+        .alert-critical {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+            color: #991b1b;
+            border-width: 1px;
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            border-color: #fde68a;
+            color: #a16207;
+            border-width: 1px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center">
+                    <i class="fas fa-brain text-3xl text-indigo-600 mr-3"></i>
+                    <h1 class="text-3xl font-bold text-gray-900">RomAI Production Monitoring</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <div id="connection-status" class="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
+                        <span class="text-sm text-gray-600">Live</span>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        Last update: <span id="last-update">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- System Overview -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">System Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="metric-card metric-good">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Overall Health</p>
+                            <p id="overall-health" class="text-2xl font-bold text-gray-900">--</p>
+                        </div>
+                        <i class="fas fa-heart text-3xl text-green-500"></i>
+                    </div>
+                </div>
+
+                <div class="metric-card metric-warning">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Success Rate</p>
+                            <p id="success-rate" class="text-2xl font-bold text-gray-900">--%</p>
+                        </div>
+                        <i class="fas fa-chart-line text-3xl text-yellow-500"></i>
+                    </div>
+                </div>
+
+                <div class="metric-card metric-critical">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Avg Response Time</p>
+                            <p id="avg-response-time" class="text-2xl font-bold text-gray-900">--ms</p>
+                        </div>
+                        <i class="fas fa-clock text-3xl text-red-500"></i>
+                    </div>
+                </div>
+
+                <div class="metric-card metric-good">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Active Services</p>
+                            <p id="active-services" class="text-2xl font-bold text-gray-900">-/-</p>
+                        </div>
+                        <i class="fas fa-server text-3xl text-indigo-500"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Health -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Service Health</h2>
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Service</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Response Time</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="health-table" class="bg-white divide-y divide-gray-200">
+                        <!-- Health data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Performance Metrics</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Mathematical Reasoning</h3>
+                    <div id="math-perf" class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Status:</span>
+                            <span id="math-status" class="text-sm font-medium">--</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Response Time:</span>
+                            <span id="math-time" class="text-sm font-medium">--ms</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Confidence:</span>
+                            <span id="math-confidence" class="text-sm font-medium">--%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Logical Reasoning</h3>
+                    <div id="logic-perf" class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Status:</span>
+                            <span id="logic-status" class="text-sm font-medium">--</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Response Time:</span>
+                            <span id="logic-time" class="text-sm font-medium">--ms</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Confidence:</span>
+                            <span id="logic-confidence" class="text-sm font-medium">--%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Romanian Intelligence</h3>
+                    <div id="romanian-perf" class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Status:</span>
+                            <span id="romanian-status" class="text-sm font-medium">--</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Response Time:</span>
+                            <span id="romanian-time" class="text-sm font-medium">--ms</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Success Rate:</span>
+                            <span id="romanian-success" class="text-sm font-medium">--%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Response Time Chart -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Response Time Trends</h2>
+            <div class="bg-white rounded-lg shadow p-6">
+                <canvas id="responseTimeChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Recent Alerts</h2>
+            <div id="alerts-container" class="space-y-4">
+                <!-- Alerts will be populated here -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // WebSocket connection for real-time updates
+        let socket = null;
+        let connectionStatus = document.getElementById('connection-status');
+        let responseTimeChart = null;
+        let responseTimeData = [];
+
+        function initWebSocket() {
+            const wsUrl = `ws://${window.location.host}/ws`;
+            socket = new WebSocket(wsUrl);
+
+            socket.onopen = function (event) {
+                console.log('WebSocket connected');
+                connectionStatus.className = 'w-3 h-3 bg-green-400 rounded-full mr-2';
+            };
+
+            socket.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                updateDashboard(data);
+            };
+
+            socket.onclose = function (event) {
+                console.log('WebSocket disconnected');
+                connectionStatus.className = 'w-3 h-3 bg-red-400 rounded-full mr-2';
+                // Reconnect after 5 seconds
+                setTimeout(initWebSocket, 5000);
+            };
+
+            socket.onerror = function (error) {
+                console.log('WebSocket error:', error);
+                connectionStatus.className = 'w-3 h-3 bg-red-400 rounded-full mr-2';
+            };
+        }
+
+        function updateDashboard(data) {
+            updateSystemOverview(data);
+            updateHealthTable(data.health_status || {});
+            updatePerformanceMetrics(data.performance_metrics || {});
+            updateAlerts(data.alerts || []);
+            updateResponseTimeChart(data);
+
+            // Update last update time
+            document.getElementById('last-update').textContent =
+                new Date(data.last_update).toLocaleTimeString();
+        }
+
+        function updateSystemOverview(data) {
+            const systemStatus = data.system_status || {};
+
+            document.getElementById('overall-health').textContent =
+                (systemStatus.overall_health || '--').toUpperCase();
+            document.getElementById('success-rate').textContent =
+                `${systemStatus.success_rate || 0}%`;
+            document.getElementById('active-services').textContent =
+                `${systemStatus.healthy_services || 0}/${systemStatus.total_services || 0}`;
+
+            const perfSummary = data.performance_summary || {};
+            document.getElementById('avg-response-time').textContent =
+                `${perfSummary.avg_response_time_ms || 0}ms`;
+
+            // Update metric card colors based on status
+            updateMetricCardColors(systemStatus, perfSummary);
+        }
+
+        function updateMetricCardColors(systemStatus, perfSummary) {
+            // Health card
+            const healthCard = document.querySelector('.metric-card:first-child');
+            if (systemStatus.overall_health === 'healthy') {
+                healthCard.className = 'metric-card metric-good';
+            } else {
+                healthCard.className = 'metric-card metric-critical';
+            }
+
+            // Response time card
+            const responseCard = document.querySelector('.metric-card:nth-child(3)');
+            if (perfSummary.avg_response_time_ms < 500) {
+                responseCard.className = 'metric-card metric-good';
+            } else if (perfSummary.avg_response_time_ms < 1000) {
+                responseCard.className = 'metric-card metric-warning';
+            } else {
+                responseCard.className = 'metric-card metric-critical';
+            }
+        }
+
+        function updateHealthTable(healthData) {
+            const tbody = document.getElementById('health-table');
+            tbody.innerHTML = '';
+
+            Object.entries(healthData).forEach(([name, health]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-${health.status}">
+                            ${health.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${health.response_time_ms}ms</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${health.error || 'OK'}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updatePerformanceMetrics(perfData) {
+            // Mathematical Reasoning
+            const mathData = perfData.math_reasoning || {};
+            document.getElementById('math-status').textContent = mathData.success ? 'Success' : 'Failed';
+            document.getElementById('math-time').textContent = `${mathData.response_time_ms || 0}ms`;
+            document.getElementById('math-confidence').textContent = `${Math.round((mathData.confidence || 0) * 100)}%`;
+
+            // Logical Reasoning
+            const logicData = perfData.logic_reasoning || {};
+            document.getElementById('logic-status').textContent = logicData.success ? 'Success' : 'Failed';
+            document.getElementById('logic-time').textContent = `${logicData.response_time_ms || 0}ms`;
+            document.getElementById('logic-confidence').textContent = `${Math.round((logicData.confidence || 0) * 100)}%`;
+
+            // Romanian Intelligence
+            const romanianData = perfData.romanian_intelligence || {};
+            document.getElementById('romanian-status').textContent = romanianData.success ? 'Success' : 'Failed';
+            document.getElementById('romanian-time').textContent = `${romanianData.response_time_ms || 0}ms`;
+            document.getElementById('romanian-success').textContent = romanianData.success ? '100%' : '0%';
+        }
+
+        function updateAlerts(alerts) {
+            const container = document.getElementById('alerts-container');
+            container.innerHTML = '';
+
+            if (alerts.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">No recent alerts</p>';
+                return;
+            }
+
+            alerts.forEach(alert => {
+                const div = document.createElement('div');
+                div.className = `p-4 rounded-lg border alert-${alert.severity}`;
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-medium">${alert.type.toUpperCase()}</h4>
+                            <p class="text-sm mt-1">${alert.message}</p>
+                        </div>
+                        <span class="text-xs">${new Date(alert.timestamp).toLocaleTimeString()}</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateResponseTimeChart(data) {
+            const ctx = document.getElementById('responseTimeChart').getContext('2d');
+
+            // Add current data point
+            const currentTime = new Date().toLocaleTimeString();
+            const avgResponseTime = data.performance_summary?.avg_response_time_ms || 0;
+
+            responseTimeData.push({
+                time: currentTime,
+                value: avgResponseTime
+            });
+
+            // Keep only last 20 data points
+            if (responseTimeData.length > 20) {
+                responseTimeData.shift();
+            }
+
+            if (!responseTimeChart) {
+                responseTimeChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: responseTimeData.map(d => d.time),
+                        datasets: [{
+                            label: 'Average Response Time (ms)',
+                            data: responseTimeData.map(d => d.value),
+                            borderColor: 'rgb(99, 102, 241)',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Response Time Trend'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Response Time (ms)'
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                responseTimeChart.data.labels = responseTimeData.map(d => d.time);
+                responseTimeChart.data.datasets[0].data = responseTimeData.map(d => d.value);
+                responseTimeChart.update();
+            }
+        }
+
+        // Initialize WebSocket connection on page load
+        window.onload = function () {
+            initWebSocket();
+        };
+    </script>
+</body>
+
+</html>

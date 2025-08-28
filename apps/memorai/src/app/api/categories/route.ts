@@ -27,7 +27,8 @@ export async function GET(request: NextRequest) {
             case 'stats':
                 // Get category statistics for user's memories
                 try {
-                    const memories = await cbdClient.findDocuments('memories', { userId });
+                    const memoriesResponse = await cbdClient.findDocuments('memories', { userId });
+                    const memories = memoriesResponse.data || [];
                     const stats = memoryCategorizationService.getCategoryStats(memories);
                     return NextResponse.json({
                         success: true,
@@ -50,7 +51,8 @@ export async function GET(request: NextRequest) {
             case 'suggestions':
                 // Get recategorization suggestions
                 try {
-                    const memories = await cbdClient.findDocuments('memories', { userId });
+                    const memoriesResponse = await cbdClient.findDocuments('memories', { userId });
+                    const memories = memoriesResponse.data || [];
                     const suggestions = memoryCategorizationService.suggestRecategorization(memories);
                     return NextResponse.json({
                         success: true,
@@ -105,7 +107,8 @@ export async function POST(request: NextRequest) {
                 }
 
                 try {
-                    const memory = await cbdClient.getDocument('memories', memoryId);
+                    const memoryResponse = await cbdClient.getDocument('memories', memoryId);
+                    const memory = memoryResponse.data;
                     if (!memory || memory.userId !== userId) {
                         return NextResponse.json({
                             success: false,
@@ -158,8 +161,9 @@ export async function POST(request: NextRequest) {
             case 'auto_categorize_all':
                 // Auto-categorize all uncategorized memories
                 try {
-                    const memories = await cbdClient.findDocuments('memories', { userId });
-                    const uncategorizedMemories = memories.filter(m =>
+                    const memoriesResponse = await cbdClient.findDocuments('memories', { userId });
+                    const memories = memoriesResponse.data || [];
+                    const uncategorizedMemories = memories.filter((m: any) =>
                         !m.category || m.category === 'general' || m.category === 'other'
                     );
 
@@ -250,7 +254,8 @@ export async function PUT(request: NextRequest) {
         try {
             const results = [];
             for (const memoryId of memoryIds) {
-                const memory = await cbdClient.getDocument('memories', memoryId);
+                const memoryResponse = await cbdClient.getDocument('memories', memoryId);
+                const memory = memoryResponse.data;
                 if (memory && memory.userId === userId) {
                     const updatedMemory = {
                         ...memory,

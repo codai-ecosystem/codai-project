@@ -1,0 +1,213 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-hub-api
+  namespace: codai-production
+  labels:
+    app: codai-hub-api
+    component: hub
+    tier: backend
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: codai-hub-api
+  template:
+    metadata:
+      labels:
+        app: codai-hub-api
+        component: hub
+        tier: backend
+    spec:
+      containers:
+      - name: hub-api
+        image: codai/hub-api:latest
+        ports:
+        - containerPort: 8110
+          name: http
+          protocol: TCP
+        - containerPort: 8111
+          name: websocket
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "8110"
+        - name: WEBSOCKET_PORT
+          value: "8111"
+        - name: HUB_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: codai-hub-secrets
+              key: api-key
+        - name: WEBSOCKET_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codai-hub-secrets
+              key: websocket-secret
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: codai-redis-secrets
+              key: host
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: codai-redis-secrets
+              key: password
+        resources:
+          requests:
+            cpu: "150m"
+            memory: "256Mi"
+          limits:
+            cpu: "750m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-hub-api-service
+  namespace: codai-production
+  labels:
+    app: codai-hub-api
+    component: hub
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8110
+    targetPort: http
+    protocol: TCP
+    name: http
+  - port: 8111
+    targetPort: websocket
+    protocol: TCP
+    name: websocket
+  selector:
+    app: codai-hub-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-memorai-mcp
+  namespace: codai-production
+  labels:
+    app: codai-memorai-mcp
+    component: memory
+    tier: backend
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: codai-memorai-mcp
+  template:
+    metadata:
+      labels:
+        app: codai-memorai-mcp
+        component: memory
+        tier: backend
+    spec:
+      containers:
+      - name: memorai-mcp
+        image: codai/memorai-mcp:latest
+        ports:
+        - containerPort: 4950
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4950"
+        - name: MCP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codai-memorai-secrets
+              key: mcp-secret
+        - name: MEMORY_DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: host
+        - name: MEMORY_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: password
+        - name: AZURE_OPENAI_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: codai-ai-secrets
+              key: azure-openai-endpoint
+        - name: AZURE_OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: codai-ai-secrets
+              key: azure-openai-api-key
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-memorai-mcp-service
+  namespace: codai-production
+  labels:
+    app: codai-memorai-mcp
+    component: memory
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4950
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: codai-memorai-mcp

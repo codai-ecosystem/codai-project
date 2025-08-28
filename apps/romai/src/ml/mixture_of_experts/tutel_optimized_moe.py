@@ -951,6 +951,23 @@ def create_romai_tutel_moe_small() -> RomAITutelMoESystem:
     logger.info("🔬 Created RomAI Small (7B) model for development")
     return system
 
+def create_romai_tutel_moe_instant() -> RomAITutelMoESystem:
+    """Create instant lightweight mock system for rapid development"""
+    config = TutelMoEConfig()
+    config.hidden_size = 512
+    config.intermediate_size = 1024
+    config.num_layers = 2  # Minimal layers for instant startup
+    config.num_experts = 4  # Minimal experts
+    config.num_experts_per_token = 1  # Single expert mode
+    config.romanian_expert_boost = 1.0
+    config.cultural_routing_enabled = False  # Disabled for speed
+    config.use_deepspeed_zero = False
+    config.use_tutel_megablocks = False
+    
+    system = RomAITutelMoESystem(config)
+    logger.info("⚡ Created RomAI Instant (Mock) model for rapid development")
+    return system
+
 # Compatibility aliases
 RomAIMoESystem = RomAITutelMoESystem
 create_production_moe = create_romai_tutel_moe_671b
@@ -1103,3 +1120,50 @@ def store_implementation_memory():
 implementation_info = store_implementation_memory()
 if implementation_info:
     logger.info("✅ Implementation details prepared successfully")
+
+# Additional dataclasses and types needed by the package
+@dataclass
+class MoEMetrics:
+    """MoE performance metrics"""
+    total_parameters: int = 0
+    active_parameters: int = 0
+    expert_utilization: Dict[str, float] = field(default_factory=dict)
+    routing_accuracy: float = 0.0
+    inference_time: float = 0.0
+    memory_usage: float = 0.0
+    cultural_routing_score: float = 0.0
+
+@dataclass
+class ExpertInfo:
+    """Information about individual experts"""
+    expert_id: int
+    specialty: str
+    parameters: int
+    utilization: float
+    performance_score: float
+    cultural_affinity: Optional[str] = None
+
+# Export all public classes and functions
+__all__ = [
+    # Core MoE Classes
+    'RomAITutelMoESystem',
+    'TutelMoEConfig',
+    'MoEMetrics', 
+    'ExpertInfo',
+    
+    # Layer Classes
+    'TutelExpertLayer',
+    'TutelSharedExpertLayer',
+    'TutelOptimizedMoELayer',
+    
+    # Factory Functions
+    'create_romai_tutel_moe_671b',
+    'create_romai_tutel_moe_large',
+    'create_romai_tutel_moe_medium',
+    'create_romai_tutel_moe_small',
+    'create_romai_tutel_moe_instant',
+    
+    # Utilities
+    'benchmark_tutel_moe_system',
+    'store_implementation_memory',
+]

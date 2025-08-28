@@ -1,0 +1,87 @@
+{
+  "name": "@codai/cautai-cli",
+  "version": "1.0.0",
+  "description": "Cautai CLI - Local-first AI search engine accessible via npx",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "cautai": "./bin/cautai.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "unbuild",
+    "build:watch": "unbuild --watch",
+    "dev": "tsx src/cli.ts",
+    "test": "vitest",
+    "test:unit": "vitest run --reporter=verbose",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "clean": "rimraf dist",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "cli",
+    "search-engine",
+    "ai-search",
+    "mcp",
+    "cautai",
+    "npx",
+    "interactive"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT",
+  "dependencies": {
+    "@codai/cautai-mcp": "workspace:*",
+    "@codai/cautai-config": "workspace:*",
+    "commander": "^12.0.0",
+    "inquirer": "^9.2.12",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.1",
+    "conf": "^12.0.0",
+    "update-notifier": "^7.0.0",
+    "boxen": "^7.1.1",
+    "ink": "^4.4.1",
+    "ink-text-input": "^5.0.1",
+    "react": "^18.2.0",
+    "terminal-link": "^3.0.0",
+    "zod": "^3.22.4",
+    "fast-csv": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.10",
+    "@types/inquirer": "^9.0.7",
+    "@types/update-notifier": "^6.0.8",
+    "@types/react": "^18.2.48",
+    "typescript": "^5.9.2",
+    "tsx": "^4.7.1",
+    "unbuild": "^2.0.0",
+    "vitest": "^1.2.2",
+    "@vitest/coverage-v8": "^1.2.2",
+    "rimraf": "^5.0.5",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "preferGlobal": true,
+  "publishConfig": {
+    "access": "public"
+  }
+}

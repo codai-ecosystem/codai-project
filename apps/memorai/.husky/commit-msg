@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Commit message validation
+echo "🔍 Validating commit message..."
+
+# Check commit message format (Conventional Commits)
+commit_regex='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?: .{1,50}$'
+
+if ! grep -qE "$commit_regex" "$1"; then
+  echo "❌ Invalid commit message format!"
+  echo ""
+  echo "📋 Commit message should follow Conventional Commits format:"
+  echo "   <type>[optional scope]: <description>"
+  echo ""
+  echo "📝 Examples:"
+  echo "   feat: add memory search functionality"
+  echo "   fix(api): resolve authentication issue" 
+  echo "   docs: update API documentation"
+  echo "   test: add unit tests for memory service"
+  echo ""
+  echo "🔗 More info: https://www.conventionalcommits.org/"
+  exit 1
+fi
+
+echo "✅ Commit message format is valid!"

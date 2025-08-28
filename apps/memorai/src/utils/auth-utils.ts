@@ -62,21 +62,19 @@ export class AuthenticationService {
         const jwt = await import('jsonwebtoken');
         const jti = crypto.randomUUID();
         
-        const payload: JWTPayload = {
+        const payload = {
             sub: user.id,
             email: user.email,
             role: user.role,
             permissions: user.permissions,
-            iat: Math.floor(Date.now() / 1000),
-            exp: Math.floor(Date.now() / 1000) + this.parseExpiration(this.jwtExpiration),
             jti
         };
 
-        const accessToken = jwt.sign(payload, this.jwtSecret, {
+        const accessToken = jwt.default.sign(payload, this.jwtSecret, {
             expiresIn: this.jwtExpiration,
             issuer: 'memorai',
             audience: 'memorai-api'
-        });
+        }) as string;
 
         const refreshPayload = {
             sub: user.id,
@@ -84,11 +82,11 @@ export class AuthenticationService {
             jti: crypto.randomUUID()
         };
 
-        const refreshToken = jwt.sign(refreshPayload, this.jwtSecret, {
-            expiresIn: this.refreshTokenExpiration,
+        const refreshToken = jwt.default.sign(refreshPayload, this.jwtSecret, {
+            expiresIn: '30d',
             issuer: 'memorai',
             audience: 'memorai-api'
-        });
+        }) as string;
 
         return { accessToken, refreshToken };
     }
@@ -137,7 +135,7 @@ export class AuthenticationService {
      * Generate API key
      */
     generateAPIKey(userId: string, name: string, permissions: string[]): APIKey {
-        const key = `${appName}_${crypto.randomBytes(32).toString('hex')}`;
+        const key = `memorai_${crypto.randomBytes(32).toString('hex')}`;
         
         return {
             id: crypto.randomUUID(),
@@ -251,7 +249,7 @@ export function requireAuth(permissions: string[] = []) {
             req.user = decoded;
             next();
         } catch (error) {
-            return res.status(401).json({ error: error.message });
+            return res.status(401).json({ error: error instanceof Error ? error.message : 'Authentication failed' });
         }
     };
 }
@@ -287,7 +285,7 @@ export function requireAPIKey(permissions: string[] = []) {
             req.apiKey = keyData;
             next();
         } catch (error) {
-            return res.status(401).json({ error: error.message });
+            return res.status(401).json({ error: error instanceof Error ? error.message : 'API key validation failed' });
         }
     };
 }

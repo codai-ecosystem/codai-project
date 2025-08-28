@@ -1,0 +1,20 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./apps/cautai-server" },
+    { "path": "./apps/romcp-web" },
+    { "path": "./packages/cautai-mcp" },
+    { "path": "./packages/cautai-cli" },
+    { "path": "./packages/cautai-client" },
+    { "path": "./packages/cautai-vscode" },
+    { "path": "./packages/cautai-config" },
+    { "path": "./packages/cautai-i18n" },
+    { "path": "./packages/cautai-ui" }
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true
+  }
+}

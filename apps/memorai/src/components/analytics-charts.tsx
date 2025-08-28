@@ -123,7 +123,6 @@ export const SimpleLineChart: React.FC<SimpleLineChartProps> = ({
             fill="#3b82f6"
             stroke="white"
             strokeWidth="2"
-            title={`${point.name}: ${point.value}`}
           />
         ))}
 
@@ -208,7 +207,6 @@ export const SimplePieChart: React.FC<SimplePieChartProps> = ({
               fill={slice.color}
               stroke="white"
               strokeWidth="2"
-              title={`${slice.name}: ${slice.value} (${slice.percentage}%)`}
             />
           ))}
         </svg>

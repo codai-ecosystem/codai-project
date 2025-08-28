@@ -1,0 +1,197 @@
+# MemorAI MCP Server - Service Definitions
+# LoadBalancer and ClusterIP services for internal and external access
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-mcp-service
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: service
+    app.kubernetes.io/version: "9.5.0"
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
+    service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: "/health"
+spec:
+  type: LoadBalancer
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800  # 3 hours
+  selector:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: server
+  ports:
+  - name: http
+    port: 4950
+    targetPort: http
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: metrics
+    protocol: TCP
+
+---
+# Internal service for cluster communication
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-mcp-internal
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: internal-service
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: server
+  ports:
+  - name: http
+    port: 4950
+    targetPort: http
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: metrics
+    protocol: TCP
+
+---
+# Headless service for StatefulSet-like discovery
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-mcp-headless
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: headless-service
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: server
+  ports:
+  - name: http
+    port: 4950
+    targetPort: http
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: metrics
+    protocol: TCP
+
+---
+# PostgreSQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-service
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: database
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: database
+  ports:
+  - name: postgresql
+    port: 5432
+    targetPort: 5432
+    protocol: TCP
+
+---
+# Redis Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: cache
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: cache
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: 6379
+    protocol: TCP
+
+---
+# CBD Database Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-database-service
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: cbd-database
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: cbd-database
+  ports:
+  - name: http
+    port: 4180
+    targetPort: 4180
+    protocol: TCP
+
+---
+# Prometheus Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-service
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: monitoring
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: prometheus
+  ports:
+  - name: prometheus
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+
+---
+# Grafana Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+  namespace: memorai-mcp
+  labels:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: dashboard
+    app.kubernetes.io/version: "9.5.0"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: memorai-mcp
+    app.kubernetes.io/component: grafana
+  ports:
+  - name: grafana
+    port: 3000
+    targetPort: 3000
+    protocol: TCP

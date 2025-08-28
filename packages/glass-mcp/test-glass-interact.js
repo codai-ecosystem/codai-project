@@ -106,26 +106,26 @@ async function testGlassInteract() {
     console.log('='.repeat(60));
     console.log('📋 This will test intelligent clicking, typing, gestures, and shortcuts');
     console.log('👀 Watch your screen for visual feedback and interactions!\n');
-    
+
     let successCount = 0;
     let failureCount = 0;
-    
+
     for (const test of tests) {
         console.log(`\n🔧 Running: ${test.name}`);
-        
+
         // Wait for delay if specified
         if (test.delay) {
             console.log(`⏳ Waiting ${test.delay}ms for previous operation...`);
             await new Promise(resolve => setTimeout(resolve, test.delay));
         }
-        
+
         try {
             const result = await runMCPCommand(test.tool, test.arguments);
-            
+
             if (result && result.success !== false) {
                 console.log(`✅ ${test.name}: SUCCESS`);
                 successCount++;
-                
+
                 // Log specific result details
                 if (result.clickedAt) {
                     console.log(`   📍 Clicked at: (${result.clickedAt.x}, ${result.clickedAt.y})`);
@@ -155,17 +155,17 @@ async function testGlassInteract() {
             failureCount++;
             console.log(`   💥 Exception: ${error.message}`);
         }
-        
+
         // Brief pause between tests for visual clarity
         await new Promise(resolve => setTimeout(resolve, 800));
     }
-    
+
     console.log('\n' + '='.repeat(60));
     console.log('🎯 Glass Interact Tool Test Results:');
     console.log(`✅ Successful: ${successCount}/${tests.length}`);
     console.log(`❌ Failed: ${failureCount}/${tests.length}`);
     console.log(`📊 Success Rate: ${Math.round((successCount / tests.length) * 100)}%`);
-    
+
     if (successCount === tests.length) {
         console.log('\n🎉 ALL TESTS PASSED! Glass Interact Tool is fully functional!');
     } else if (successCount > 0) {
@@ -173,7 +173,7 @@ async function testGlassInteract() {
     } else {
         console.log('\n🚨 ALL TESTS FAILED. Please check Glass Interact Tool implementation.');
     }
-    
+
     console.log('\n🚀 Glass MCP Smart Interaction Engine: Ready for production use!');
 }
 
@@ -188,23 +188,23 @@ function runMCPCommand(tool, args) {
                 arguments: args
             }
         };
-        
+
         const mcp = spawn('node', ['dist/mcp-server.js'], {
             stdio: ['pipe', 'pipe', 'pipe'],
             cwd: __dirname
         });
-        
+
         let stdout = '';
         let stderr = '';
-        
+
         mcp.stdout.on('data', (data) => {
             stdout += data.toString();
         });
-        
+
         mcp.stderr.on('data', (data) => {
             stderr += data.toString();
         });
-        
+
         mcp.on('close', (code) => {
             try {
                 if (stdout.trim()) {
@@ -219,7 +219,7 @@ function runMCPCommand(tool, args) {
                         }
                     }
                 }
-                
+
                 if (stderr) {
                     reject(new Error(`MCP Error: ${stderr}`));
                 } else {
@@ -229,11 +229,11 @@ function runMCPCommand(tool, args) {
                 reject(error);
             }
         });
-        
+
         // Send request
         mcp.stdin.write(JSON.stringify(request) + '\n');
         mcp.stdin.end();
-        
+
         // Timeout after 30 seconds
         setTimeout(() => {
             mcp.kill();

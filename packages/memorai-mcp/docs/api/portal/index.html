@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemorAI MCP Server API Documentation</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui.css" />
+    <link rel="icon" type="image/png" href="https://petstore.swagger.io/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="https://petstore.swagger.io/favicon-16x16.png" sizes="16x16" />
+    <style>
+        html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            margin: 0;
+            background: #fafafa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        /* Custom styling for MemorAI branding */
+        .topbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 0;
+        }
+
+        .topbar .download-url-wrapper {
+            display: none;
+        }
+
+        .swagger-ui .topbar .topbar-wrapper::before {
+            content: "MemorAI MCP Server";
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-right: 20px;
+        }
+
+        .swagger-ui .topbar .topbar-wrapper::after {
+            content: "v9.5.0";
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: auto;
+        }
+
+        /* Custom header banner */
+        .api-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        .api-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        .api-header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin: 10px 0 0 0;
+        }
+
+        .api-header .version-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        /* Quick links section */
+        .quick-links {
+            background: #f8f9fa;
+            padding: 30px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .quick-links .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .quick-links h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .link-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .link-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .link-card h3 {
+            margin: 0 0 10px 0;
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        .link-card p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .api-header h1 {
+                font-size: 2rem;
+            }
+
+            .api-header .subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        /* Hide the Swagger UI header when loaded */
+        .swagger-ui .info {
+            margin: 0;
+        }
+
+        .swagger-ui .scheme-container {
+            background: #fafafa;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Custom Header -->
+    <div class="api-header">
+        <h1>MemorAI MCP Server</h1>
+        <p class="subtitle">Enterprise-Grade Memory Management API</p>
+        <div class="version-badge">API Version 9.5.0</div>
+    </div>
+
+    <!-- Quick Links Section -->
+    <div class="quick-links">
+        <div class="container">
+            <h2>Quick Start Resources</h2>
+            <div class="links-grid">
+                <a href="../sdks/javascript/README.md" class="link-card" target="_blank">
+                    <h3>🟨 JavaScript/TypeScript SDK</h3>
+                    <p>Official Node.js client with full TypeScript support and WebSocket capabilities</p>
+                </a>
+
+                <a href="../sdks/python/README.md" class="link-card" target="_blank">
+                    <h3>🐍 Python SDK</h3>
+                    <p>Comprehensive Python client with sync/async support and dataclass models</p>
+                </a>
+
+                <a href="../sdks/java/README.md" class="link-card" target="_blank">
+                    <h3>☕ Java SDK</h3>
+                    <p>Enterprise Java client with CompletableFuture async operations</p>
+                </a>
+
+                <a href="../examples/javascript/basic-integration.js" class="link-card" target="_blank">
+                    <h3>📝 Code Examples</h3>
+                    <p>Ready-to-use integration examples in multiple programming languages</p>
+                </a>
+
+                <a href="https://github.com/memorai/memorai-mcp" class="link-card" target="_blank">
+                    <h3>📚 GitHub Repository</h3>
+                    <p>Source code, issues, and contributions for the MemorAI MCP project</p>
+                </a>
+
+                <a href="mailto:team@memorai.com" class="link-card">
+                    <h3>💬 Support</h3>
+                    <p>Get help from our team or report issues with the API</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swagger UI Container -->
+    <div id="swagger-ui"></div>
+
+    <!-- Swagger UI JavaScript -->
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-standalone-preset.js"></script>
+
+    <script>
+        window.onload = function () {
+            // Begin Swagger UI call region
+            const ui = SwaggerUIBundle({
+                url: '../openapi.yaml',
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                validatorUrl: null,
+                tryItOutEnabled: true,
+                requestInterceptor: function (request) {
+                    // Add custom headers or modify requests here if needed
+                    return request;
+                },
+                responseInterceptor: function (response) {
+                    // Process responses if needed
+                    return response;
+                },
+                onComplete: function () {
+                    console.log('MemorAI API Documentation loaded successfully');
+                },
+                docExpansion: 'list', // 'list', 'full', or 'none'
+                defaultModelsExpandDepth: 2,
+                defaultModelExpandDepth: 2,
+                displayOperationId: false,
+                showExtensions: true,
+                showCommonExtensions: true,
+                supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+                // Custom configuration for MemorAI
+                customOptions: {
+                    brandName: 'MemorAI MCP Server',
+                    brandVersion: 'v9.5.0'
+                }
+            });
+            // End Swagger UI call region
+
+            // Custom enhancements
+            setTimeout(function () {
+                // Add custom styling or behavior after Swagger UI loads
+                const infoSection = document.querySelector('.swagger-ui .information-container');
+                if (infoSection) {
+                    // Hide default title since we have custom header
+                    const title = infoSection.querySelector('.title');
+                    if (title) {
+                        title.style.display = 'none';
+                    }
+                }
+
+                // Add authentication helper
+                const authSection = document.querySelector('.swagger-ui .auth-wrapper');
+                if (authSection) {
+                    const helper = document.createElement('div');
+                    helper.className = 'auth-helper';
+                    helper.innerHTML = `
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 4px; margin-bottom: 20px; border-left: 4px solid #2196f3;">
+                            <strong>🔐 Authentication:</strong> This API uses Bearer token authentication. 
+                            Get your API key from the MemorAI dashboard and enter it in the "Authorize" section above.
+                        </div>
+                    `;
+                    authSection.parentNode.insertBefore(helper, authSection);
+                }
+
+                // Add endpoint categories info
+                const operationsContainer = document.querySelector('.swagger-ui .operations-tag');
+                if (operationsContainer) {
+                    const categoriesInfo = document.createElement('div');
+                    categoriesInfo.innerHTML = `
+                        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <h3 style="margin-top: 0;">📋 API Categories</h3>
+                            <ul style="margin: 0; padding-left: 20px;">
+                                <li><strong>System:</strong> Health checks and system status</li>
+                                <li><strong>Memory Operations:</strong> Store, retrieve, and manage memories</li>
+                                <li><strong>Analytics:</strong> Insights and performance metrics</li>
+                                <li><strong>Network:</strong> Distributed memory operations</li>
+                                <li><strong>Administration:</strong> System management and configuration</li>
+                            </ul>
+                        </div>
+                    `;
+                    operationsContainer.parentNode.insertBefore(categoriesInfo, operationsContainer);
+                }
+            }, 1000);
+
+            window.ui = ui;
+        };
+
+        // Add some helpful JavaScript utilities
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function () {
+                console.log('Copied to clipboard: ' + text);
+            }, function (err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function (e) {
+            // Ctrl+K or Cmd+K to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                const searchInput = document.querySelector('.swagger-ui .search input');
+                if (searchInput) {
+                    searchInput.focus();
+                }
+            }
+        });
+    </script>
+
+    <!-- Custom footer -->
+    <footer style="background: #333; color: white; text-align: center; padding: 20px 0; margin-top: 50px;">
+        <p>&copy; 2025 MemorAI Team. Licensed under MIT License.</p>
+        <p>
+            <a href="https://github.com/memorai/memorai-mcp" style="color: #667eea; text-decoration: none;">GitHub</a> |
+            <a href="https://memorai.com" style="color: #667eea; text-decoration: none;">Website</a> |
+            <a href="mailto:team@memorai.com" style="color: #667eea; text-decoration: none;">Support</a>
+        </p>
+    </footer>
+</body>
+
+</html>

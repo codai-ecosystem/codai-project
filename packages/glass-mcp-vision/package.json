@@ -1,0 +1,99 @@
+{
+  "name": "@codai/glass-mcp-vision",
+  "version": "9.0.4",
+  "description": "Glass MCP v9.0.1 - AI-Powered Windows Automation with Visual Intelligence (Lite Version)",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "windows-automation",
+    "ui-automation",
+    "screen-capture",
+    "ocr",
+    "object-detection",
+    "ai-vision",
+    "intelligent-automation",
+    "visual-feedback",
+    "drawing-automation",
+    "glass-ai"
+  ],
+  "author": "Glass MCP Vision Team",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/glass-mcp-launcher.js",
+  "bin": {
+    "glass-mcp-server": "dist/glass-mcp-launcher.js",
+    "glass-mcp-test": "dist/test-suite.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/glass-mcp-launcher.d.ts",
+      "import": "./dist/glass-mcp-launcher.js"
+    },
+    "./test-suite": {
+      "types": "./dist/test-suite.d.ts",
+      "import": "./dist/test-suite.js"
+    },
+    "./integration-optimizer": {
+      "types": "./dist/integration-optimizer.d.ts",
+      "import": "./dist/integration-optimizer.js"
+    },
+    "./configuration-manager": {
+      "types": "./dist/configuration-manager.d.ts",
+      "import": "./dist/configuration-manager.js"
+    },
+    "./performance-monitor": {
+      "types": "./dist/performance-monitor.d.ts",
+      "import": "./dist/performance-monitor.js"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc --outDir dist --declaration",
+    "dev": "tsc --watch --outDir dist --declaration",
+    "start": "node dist/mcp-server-v9.js",
+    "test": "node dist/test-suite.js",
+    "test:all": "node dist/test-suite.js all",
+    "benchmark": "node dist/test-suite.js performance-benchmarks",
+    "health-check": "node -e \"import('./dist/integration-optimizer.js').then(m => m.createGlassMCPIntegrationOptimizer().then(o => o.performHealthCheck()))\"",
+    "optimize": "node -e \"import('./dist/integration-optimizer.js').then(m => m.createGlassMCPIntegrationOptimizer().then(o => o.startContinuousMonitoring()))\"",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.4",
+    "node-fetch": "^3.3.2",
+    "ws": "^8.14.2",
+    "commander": "^11.1.0",
+    "chalk": "^5.3.0",
+    "conf": "^11.0.2",
+    "lodash": "^4.17.21",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "@types/ws": "^8.5.6",
+    "@types/lodash": "^4.14.199",
+    "@types/uuid": "^9.0.6",
+    "typescript": "^5.2.2",
+    "rimraf": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "os": [
+    "win32"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glass-ai/mcp-vision"
+  },
+  "bugs": {
+    "url": "https://github.com/glass-ai/mcp-vision/issues"
+  },
+  "homepage": "https://github.com/glass-ai/mcp-vision#readme"
+}

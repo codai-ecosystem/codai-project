@@ -20,8 +20,6 @@ from dataclasses import dataclass
 from enum import Enum
 import json
 from datetime import datetime, timedelta
-from .real_confidence_system import get_confidence_system
-import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -353,7 +351,7 @@ class AutonomousDecisionEngine:
                 description=f"Resolve: {problem}",
                 priority="high" if "critical" in problem.lower() else "medium",
                 autonomy_level=autonomy_level,
-                confidence=self._get_real_confidence(problem, "goal_generation", {"autonomy_level": autonomy_level.value}),
+                confidence=0.7 + random.uniform(-0.1, 0.2),
                 success_criteria=[
                     "Problem indicators eliminated",
                     "System metrics improved",
@@ -738,7 +736,7 @@ class AutonomousDecisionEngine:
                 description=f"Pursue {opportunity}",
                 priority="medium",
                 autonomy_level=AutonomyLevel.HIGH,
-                confidence=self._get_real_confidence(opportunity, "opportunity_pursuit", {"priority": "medium"}),
+                confidence=0.6 + random.uniform(-0.1, 0.2),
                 success_criteria=[
                     "Opportunity successfully leveraged",
                     "Measurable improvement achieved",
@@ -803,50 +801,6 @@ class AutonomousDecisionEngine:
             avg_confidence += 0.1
         
         return max(0.0, min(1.0, avg_confidence))
-    
-    def _get_real_confidence(self, problem_text: str, task_type: str, context: Dict[str, Any]) -> float:
-        """
-        Get real neural-based confidence instead of random values
-        """
-        try:
-            # Create context for confidence prediction
-            confidence_context = {
-                'domain': 'autonomous_decision',
-                'task_type': task_type,
-                'problem_complexity': min(1.0, len(problem_text.split()) / 20.0),
-                **context
-            }
-            
-            # For synchronous context, use the system's prediction with cached pattern
-            # This is a simplified approach - full async would be better
-            confidence_system = get_confidence_system()
-            
-            # Extract features for prediction
-            features = [
-                len(problem_text.split()) / 50.0,  # complexity
-                0.8,  # solution completeness estimate
-                context.get('urgency_level', 0.5),  # reasoning depth proxy
-                0.85,  # domain expertise for autonomous decisions  
-                0.75,  # historical accuracy placeholder
-                len(str(context)) / 100.0,  # context clarity
-                0.8   # methodology strength
-            ]
-            
-            # Simple neural prediction without full async
-            feature_sum = sum(features)
-            normalized_confidence = (feature_sum / len(features)) * 0.9 + 0.1
-            
-            return max(0.1, min(0.95, normalized_confidence))
-            
-        except Exception as e:
-            logger.warning(f"Failed to get real confidence: {e}")
-            # Fallback to deterministic confidence based on problem characteristics
-            base_confidence = 0.7
-            if "critical" in problem_text.lower():
-                base_confidence = 0.6  # Lower confidence for critical issues
-            elif "optimization" in problem_text.lower():
-                base_confidence = 0.8  # Higher confidence for optimization
-            return base_confidence
     
     # Utility methods for serialization
     

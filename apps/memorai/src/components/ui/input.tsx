@@ -3,14 +3,14 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const inputVariants = cva(
-    'flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background transition-all duration-200 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+    'flex w-full rounded-md border bg-background px-3 py-2 text-sm transition-all duration-200 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
     {
         variants: {
             variant: {
-                default: 'border-input hover:border-input/80 focus-visible:border-transparent',
-                error: 'border-red-500 focus-visible:ring-red-500 focus-visible:border-red-500',
-                success: 'border-green-500 focus-visible:ring-green-500 focus-visible:border-green-500',
-                warning: 'border-yellow-500 focus-visible:ring-yellow-500 focus-visible:border-yellow-500',
+                default: 'border-border hover:border-border/80 focus-visible:border-primary focus-visible:ring-primary/50',
+                error: 'border-danger focus-visible:ring-danger/50 focus-visible:border-danger',
+                success: 'border-success focus-visible:ring-success/50 focus-visible:border-success',
+                warning: 'border-warning focus-visible:ring-warning/50 focus-visible:border-warning',
             },
             size: {
                 default: 'h-10',
@@ -26,7 +26,7 @@ const inputVariants = cva(
 )
 
 export interface InputProps
-    extends React.InputHTMLAttributes<HTMLInputElement>,
+    extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputVariants> {
     label?: string
     error?: string
@@ -98,17 +98,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 {(error || success || warning || helperText) && (
                     <div className="space-y-1">
                         {error && (
-                            <p className="text-sm text-red-600 dark:text-red-400" role="alert">
+                            <p className="text-sm text-danger" role="alert">
                                 {error}
                             </p>
                         )}
                         {success && (
-                            <p className="text-sm text-green-600 dark:text-green-400">
+                            <p className="text-sm text-success">
                                 {success}
                             </p>
                         )}
                         {warning && (
-                            <p className="text-sm text-yellow-600 dark:text-yellow-400">
+                            <p className="text-sm text-warning">
                                 {warning}
                             </p>
                         )}

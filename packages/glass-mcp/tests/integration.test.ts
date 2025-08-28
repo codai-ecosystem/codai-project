@@ -66,23 +66,23 @@ describe('Glass MCP v7.0 Integration Tests', () => {
     it('should integrate all Glass MCP components successfully', async () => {
       // Create intelligence stack
       const intelligenceStack = await IntelligenceProviderFactory.createIntelligenceStack();
-      
+
       expect(intelligenceStack.contextAnalyzer).toBeDefined();
       expect(intelligenceStack.decisionEngine).toBeDefined();
       expect(intelligenceStack.learningSystem).toBeDefined();
-      
+
       // Test intelligence components
       const mockContext = createMockAutomationContext();
-      
+
       const analysisResult = await intelligenceStack.contextAnalyzer.analyzeContext(mockContext);
       expect(analysisResult.confidence).toBeGreaterThan(0);
-      
+
       const decisionResult = await intelligenceStack.decisionEngine.makeDecision(
-        mockContext, 
+        mockContext,
         ['option1', 'option2', 'option3']
       );
       expect(decisionResult.confidence).toBeGreaterThan(0);
-      
+
       const learningFeedback = await intelligenceStack.learningSystem.learn({
         success: true,
         performance: 0.85,
@@ -112,7 +112,7 @@ describe('Glass MCP v7.0 Integration Tests', () => {
             timeout: 5000,
             retryAttempts: 2
           },
-          
+
           // Phase 2: AI Intelligence Analysis
           {
             id: 'ai-analysis-task',
@@ -127,7 +127,7 @@ describe('Glass MCP v7.0 Integration Tests', () => {
             retryAttempts: 2,
             dependencies: ['screen-capture-task']
           },
-          
+
           // Phase 3: Drawing Intelligence (simulated)
           {
             id: 'shape-recognition-task',
@@ -143,7 +143,7 @@ describe('Glass MCP v7.0 Integration Tests', () => {
             retryAttempts: 1,
             dependencies: ['ai-analysis-task']
           },
-          
+
           // Phase 4: Advanced Automation
           {
             id: 'ui-automation-task',
@@ -159,7 +159,7 @@ describe('Glass MCP v7.0 Integration Tests', () => {
             retryAttempts: 3,
             dependencies: ['shape-recognition-task']
           },
-          
+
           // Validation and feedback
           {
             id: 'validation-task',
@@ -217,7 +217,7 @@ describe('Glass MCP v7.0 Integration Tests', () => {
 
       const startTime = Date.now();
       const results = await Promise.all(
-        parallelWorkflows.map(workflow => 
+        parallelWorkflows.map(workflow =>
           orchestrator.executeWorkflow(workflow, workflow.context)
         )
       );
@@ -240,7 +240,7 @@ describe('Glass MCP v7.0 Integration Tests', () => {
       expect(initialHealth.overall).toBe('healthy');
 
       // Create multiple concurrent workflows to stress test
-      const loadTestWorkflows = Array.from({ length: 10 }, (_, i) => 
+      const loadTestWorkflows = Array.from({ length: 10 }, (_, i) =>
         createTestWorkflow(`load-test-${i}`, WorkflowPriority.NORMAL)
       );
 
@@ -375,7 +375,7 @@ describe('Glass MCP v7.0 Integration Tests', () => {
   describe('Performance and Scalability', () => {
     it('should meet performance benchmarks', async () => {
       const benchmarkWorkflow = createTestWorkflow('performance-benchmark', WorkflowPriority.HIGH);
-      
+
       const performance = await measurePerformance(
         async () => await orchestrator.executeWorkflow(benchmarkWorkflow, benchmarkWorkflow.context),
         5
@@ -400,13 +400,13 @@ describe('Glass MCP v7.0 Integration Tests', () => {
       const results = [];
 
       for (const test of scalabilityTests) {
-        const workflows = Array.from({ length: test.concurrency }, (_, i) => 
+        const workflows = Array.from({ length: test.concurrency }, (_, i) =>
           createTestWorkflow(`scalability-${test.name.toLowerCase().replace(' ', '-')}-${i}`, WorkflowPriority.NORMAL)
         );
 
         const startTime = Date.now();
         const workflowResults = await Promise.all(
-          workflows.map(workflow => 
+          workflows.map(workflow =>
             orchestrator.executeWorkflow(workflow, workflow.context)
           )
         );
@@ -485,7 +485,7 @@ describe('Glass MCP v7.0 Integration Tests', () => {
       // System should handle failures gracefully
       expect(result).toBeDefined();
       expect(result.workflowId).toBe(failingWorkflow.id);
-      
+
       // Check that system remains healthy despite failures
       const healthReport = await orchestrator.getSystemHealth();
       expect(['healthy', 'degraded'].includes(healthReport.overall)).toBe(true);

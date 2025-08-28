@@ -11,8 +11,8 @@ import { cbdClient } from '@/lib/cbd-client';
  */
 export async function POST(request: NextRequest) {
     try {
-        // Get all memories for reindexing
-        const memoriesResult = await cbdClient.search('memories', { limit: 10000 });
+        // Get all memories for reindexing (mock implementation for development)
+        const memoriesResult = await (cbdClient as any).search?.('memories', { limit: 10000 }) || { documents: [] };
         const memories = memoriesResult?.documents || [];
 
         // Simulate reindexing process

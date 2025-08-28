@@ -2,14 +2,15 @@ import React from 'react'
 import { cn } from '@/lib/utils'
 
 interface LoadingSpinnerProps {
-    size?: 'sm' | 'md' | 'lg' | 'xl'
-    color?: 'primary' | 'secondary' | 'white' | 'gray' | 'blue'
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'muted' | 'foreground'
     className?: string
     ariaLabel?: string
     role?: boolean // Allow disabling role
 }
 
 const sizeClasses = {
+    xs: 'h-3 w-3',
     sm: 'h-4 w-4',
     md: 'h-6 w-6',
     lg: 'h-8 w-8',
@@ -18,10 +19,13 @@ const sizeClasses = {
 
 const colorClasses = {
     primary: 'text-primary',
-    secondary: 'text-secondary',
-    white: 'text-white',
-    gray: 'text-gray-500',
-    blue: 'text-blue-600'
+    secondary: 'text-secondary', 
+    success: 'text-success',
+    warning: 'text-warning',
+    danger: 'text-danger',
+    info: 'text-info',
+    muted: 'text-muted-foreground',
+    foreground: 'text-foreground'
 }
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
@@ -63,7 +67,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
 interface LoadingDotsProps {
     size?: 'sm' | 'md' | 'lg'
-    color?: 'gray' | 'blue' | 'green' | 'red'
+    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'muted'
     className?: string
     ariaLabel?: string
 }
@@ -75,15 +79,18 @@ const dotSizeClasses = {
 }
 
 const dotColorClasses = {
-    gray: 'bg-gray-600',
-    blue: 'bg-blue-600',
-    green: 'bg-green-600',
-    red: 'bg-red-600'
+    primary: 'bg-primary',
+    secondary: 'bg-secondary',
+    success: 'bg-success',
+    warning: 'bg-warning',
+    danger: 'bg-danger',
+    info: 'bg-info',
+    muted: 'bg-muted-foreground'
 }
 
 export const LoadingDots: React.FC<LoadingDotsProps> = ({
     size = 'md',
-    color = 'gray',
+    color = 'primary',
     className,
     ariaLabel = 'Loading'
 }) => {
@@ -95,7 +102,7 @@ export const LoadingDots: React.FC<LoadingDotsProps> = ({
                     className={cn(
                         'rounded-full animate-pulse',
                         dotSizeClasses[size],
-                        dotColorClasses[color]
+                        dotColorClasses[color as keyof typeof dotColorClasses]
                     )}
                     style={{
                         animationDelay: `${index * 0.2}s`,
@@ -126,7 +133,7 @@ export const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
                 <div
                     key={index}
                     className={cn(
-                        'h-4 bg-gray-200 dark:bg-gray-700 rounded',
+                        'h-4 bg-muted rounded',
                         animate && 'animate-pulse',
                         index === lines - 1 && lines > 1 && 'w-3/4' // Last line shorter
                     )}
@@ -140,8 +147,8 @@ interface LoadingOverlayProps {
     show?: boolean
     message?: string
     className?: string
-    spinnerSize?: 'sm' | 'md' | 'lg'
-    spinnerColor?: 'primary' | 'secondary' | 'white'
+    spinnerSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+    spinnerColor?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'muted' | 'foreground'
 }
 
 export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
@@ -149,7 +156,7 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
     message,
     className,
     spinnerSize = 'lg',
-    spinnerColor = 'primary'
+    spinnerColor = 'foreground'
 }) => {
     if (!show) {
         return null
@@ -158,16 +165,16 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
     return (
         <div
             className={cn(
-                'fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center',
+                'fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50',
                 className
             )}
             role="status"
             aria-label="Loading overlay"
         >
-            <div className="flex flex-col items-center space-y-4">
+            <div className="flex flex-col items-center space-y-4 bg-card p-6 rounded-lg border shadow-lg">
                 <LoadingSpinner size={spinnerSize} color={spinnerColor} role={false} />
                 {message && (
-                    <p className="text-sm text-white">{message}</p>
+                    <p className="text-sm text-foreground">{message}</p>
                 )}
             </div>
         </div>

@@ -1,0 +1,115 @@
+# Cautai Development Environment Override
+# Enhanced development experience with hot reloading and debugging
+
+version: '3.8'
+
+services:
+  # Development overrides for MCP server
+  cautai-mcp-server:
+    build:
+      target: builder  # Use builder stage for development
+    environment:
+      NODE_ENV: development
+      LOG_LEVEL: debug
+      CAUTAI_DEBUG: "true"
+      HOT_RELOAD: "true"
+      ENABLE_DEBUG_ENDPOINTS: "true"
+    volumes:
+      # Mount source code for hot reloading
+      - ./packages/cautai-mcp/src:/app/packages/cautai-mcp/src
+      - ./packages/cautai-client/src:/app/packages/cautai-client/src
+      - ./packages/cautai-logger/src:/app/packages/cautai-logger/src
+      - ./packages/cautai-i18n/src:/app/packages/cautai-i18n/src
+      - ./packages/cautai-config:/app/packages/cautai-config
+      - cautai_dev_node_modules:/app/node_modules
+    command: ["npm", "run", "dev:mcp"]
+    ports:
+      - "9229:9229"  # Node.js debugging port
+
+  # Development overrides for HTTP server
+  cautai-http-server:
+    build:
+      target: builder
+    environment:
+      NODE_ENV: development
+      LOG_LEVEL: debug
+      ENABLE_DEBUG_ENDPOINTS: "true"
+      HOT_RELOAD: "true"
+    volumes:
+      - ./apps/cautai-server/src:/app/apps/cautai-server/src
+      - ./packages/cautai-client/src:/app/packages/cautai-client/src
+      - cautai_dev_node_modules:/app/node_modules
+    command: ["npm", "run", "dev:http"]
+    ports:
+      - "9230:9230"  # Node.js debugging port
+
+  # Development overrides for web frontend
+  romcp-web:
+    build:
+      target: deps  # Use deps stage and run dev server
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:4003
+      NEXT_PUBLIC_MCP_URL: ws://localhost:3001
+      WATCHPACK_POLLING: "true"  # Enable polling for file changes in Docker
+    volumes:
+      # Mount source code for hot reloading
+      - ./apps/romcp-web/src:/app/apps/romcp-web/src
+      - ./apps/romcp-web/pages:/app/apps/romcp-web/pages
+      - ./apps/romcp-web/public:/app/apps/romcp-web/public
+      - ./apps/romcp-web/styles:/app/apps/romcp-web/styles
+      - ./packages/cautai-ui/src:/app/packages/cautai-ui/src
+      - ./packages/cautai-i18n/src:/app/packages/cautai-i18n/src
+      - cautai_dev_node_modules:/app/node_modules
+      - romcp_dev_next:/app/apps/romcp-web/.next
+    command: ["npm", "run", "dev"]
+    ports:
+      - "3000:3000"
+
+  # Development database with expanded logging
+  cautai-postgres:
+    environment:
+      POSTGRES_LOG_STATEMENT: all
+      POSTGRES_LOG_MIN_DURATION_STATEMENT: 0
+    volumes:
+      - ./scripts/dev-seed-data.sql:/docker-entrypoint-initdb.d/02-seed-data.sql:ro
+    ports:
+      - "4301:5432"  # Expose for external DB tools
+
+  # Development Redis with debug info
+  cautai-redis:
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru --loglevel debug
+    ports:
+      - "8021:6379"  # Expose for external Redis tools
+
+  # Development tools container
+  cautai-dev-tools:
+    image: node:20-alpine
+    container_name: cautai-dev-tools
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - cautai_dev_node_modules:/app/node_modules
+    environment:
+      NODE_ENV: development
+    networks:
+      - cautai-network
+    command: tail -f /dev/null  # Keep container running
+    profiles: ["dev-tools"]
+
+  # Mailhog for email testing (development only)
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: cautai-mailhog
+    ports:
+      - "1025:1025"  # SMTP port
+      - "8025:8025"  # Web UI port
+    networks:
+      - cautai-network
+    profiles: ["dev-tools"]
+
+volumes:
+  cautai_dev_node_modules:
+    name: cautai_dev_node_modules
+  romcp_dev_next:
+    name: romcp_dev_next

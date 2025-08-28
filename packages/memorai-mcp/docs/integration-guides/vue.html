@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Vue 3 Integration Guide for MemorAI - Complete documentation with composables, examples, and best practices">
+  <title>Vue 3 Integration - MemorAI Developer Documentation</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #4F46E5;
+      --secondary-color: #10B981;
+      --accent-color: #F59E0B;
+      --vue-color: #4FC08D;
+      --text-primary: #1F2937;
+      --text-secondary: #6B7280;
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F9FAFB;
+      --bg-tertiary: #EFF6FF;
+      --border-color: #E5E7EB;
+      --success-color: #059669;
+      --warning-color: #D97706;
+      --error-color: #DC2626;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+      --code-bg: #1E293B;
+      --code-text: #E2E8F0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background-color: var(--bg-secondary);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--vue-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      padding: 3rem 0;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .vue-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .nav {
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+      background: var(--bg-tertiary);
+      color: var(--primary-color);
+    }
+
+    .nav-link.active {
+      background: var(--vue-color);
+      color: white;
+    }
+
+    .main {
+      padding: 3rem 0;
+    }
+
+    .section {
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .section-description {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      position: relative;
+      border: 1px solid #334155;
+    }
+
+    .code-block::before {
+      content: attr(data-lang);
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: var(--vue-color);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.625rem;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .install-command {
+      background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
+      border: 1px solid var(--vue-color);
+      border-left: 4px solid var(--vue-color);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .feature-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--vue-color);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--vue-color);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .feature-description {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .feature-code {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: var(--vue-color);
+    }
+
+    .api-section {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      margin: 2rem 0;
+      overflow: hidden;
+    }
+
+    .api-header {
+      background: var(--bg-secondary);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .api-content {
+      padding: 1.5rem;
+    }
+
+    .method-signature {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--primary-color);
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      margin: 1rem 0;
+      font-family: monospace;
+      font-size: 0.875rem;
+      color: var(--primary-color);
+    }
+
+    .parameter-list {
+      margin: 1rem 0;
+    }
+
+    .parameter {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+      padding: 0.5rem;
+      background: var(--bg-secondary);
+      border-radius: 0.5rem;
+    }
+
+    .parameter-name {
+      font-weight: 600;
+      color: var(--vue-color);
+      min-width: 120px;
+    }
+
+    .parameter-type {
+      font-family: monospace;
+      background: var(--bg-tertiary);
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.25rem;
+      color: var(--primary-color);
+      font-size: 0.75rem;
+      min-width: 80px;
+    }
+
+    .parameter-description {
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .best-practices {
+      background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+      border: 1px solid var(--warning-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .best-practices h4 {
+      color: var(--warning-color);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .best-practices ul {
+      color: #92400E;
+      margin-left: 1rem;
+    }
+
+    .best-practices li {
+      margin-bottom: 0.5rem;
+    }
+
+    .toc {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .toc h3 {
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .toc ul {
+      list-style: none;
+      margin-left: 0;
+    }
+
+    .toc a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.25rem 0;
+      display: block;
+      transition: color 0.2s;
+    }
+
+    .toc a:hover {
+      color: var(--vue-color);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .parameter {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <h1>
+        <i class="fab fa-vuejs"></i>
+        Vue 3 Integration Guide
+      </h1>
+      <p>Complete documentation for integrating MemorAI with Vue 3 applications</p>
+      <div class="vue-logo">
+        <i class="fab fa-vuejs"></i>
+        Vue 3 Compatible
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <div class="container">
+      <ul class="nav-links">
+        <li><a href="../developer-portal.html" class="nav-link">← Back to Portal</a></li>
+        <li><a href="index.html" class="nav-link">Integration Overview</a></li>
+        <li><a href="#" class="nav-link active">Vue 3</a></li>
+        <li><a href="react.html" class="nav-link">React</a></li>
+        <li><a href="../api-playground.html" class="nav-link">API Playground</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="container">
+      <!-- Table of Contents -->
+      <div class="toc">
+        <h3>Table of Contents</h3>
+        <ul>
+          <li><a href="#installation">📦 Installation</a></li>
+          <li><a href="#setup">⚙️ Setup & Configuration</a></li>
+          <li><a href="#composables">🎯 Composables API</a></li>
+          <li><a href="#examples">💡 Usage Examples</a></li>
+          <li><a href="#typescript">📘 TypeScript Integration</a></li>
+          <li><a href="#best-practices">✨ Best Practices</a></li>
+          <li><a href="#troubleshooting">🔧 Troubleshooting</a></li>
+        </ul>
+      </div>
+
+      <!-- Installation -->
+      <section class="section" id="installation">
+        <h2 class="section-title">📦 Installation</h2>
+        <p class="section-description">
+          Install MemorAI SDK with Vue 3 integration support. The package includes TypeScript definitions and Vue 3
+          composables.
+        </p>
+
+        <div class="code-block install-command" data-lang="bash">
+          # Install MemorAI SDK with Vue integration
+          npm install @memorai/sdk @memorai/vue
+
+          # Or with Yarn
+          yarn add @memorai/sdk @memorai/vue
+
+          # Or with PNPM
+          pnpm add @memorai/sdk @memorai/vue</div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-title">
+              <i class="fas fa-puzzle-piece"></i>
+              Vue 3 Composables
+            </div>
+            <div class="feature-description">
+              Ready-to-use composables following Vue 3 composition API patterns
+            </div>
+            <div class="feature-code">useMemorAI(), useMemorySearch(), useMemoryAnalytics()</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">
+              <i class="fab fa-js-square"></i>
+              TypeScript Support
+            </div>
+            <div class="feature-description">
+              Full TypeScript definitions with excellent IntelliSense support
+            </div>
+            <div class="feature-code">interface MemoryData, type MemoryFilters</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">
+              <i class="fas fa-bolt"></i>
+              Reactive Integration
+            </div>
+            <div class="feature-description">
+              Reactive refs and computed properties for seamless Vue integration
+            </div>
+            <div class="feature-code">const { memories } = useMemorAI()</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Setup & Configuration -->
+      <section class="section" id="setup">
+        <h2 class="section-title">⚙️ Setup & Configuration</h2>
+        <p class="section-description">
+          Configure MemorAI in your Vue 3 application with the plugin system or direct composable usage.
+        </p>
+
+        <h3>Global Plugin Setup (Recommended)</h3>
+        <div class="code-block" data-lang="javascript">
+          // main.js or main.ts
+          import { createApp } from 'vue'
+          import { MemorAIPlugin } from '@memorai/vue'
+          import App from './App.vue'
+
+          const app = createApp(App)
+
+          // Configure MemorAI plugin
+          app.use(MemorAIPlugin, {
+          baseURL: process.env.VUE_APP_MEMORAI_BASE_URL || 'http://localhost:4950',
+          apiKey: process.env.VUE_APP_MEMORAI_API_KEY,
+          defaultAgentId: 'vue-app',
+          enableWebSocket: true,
+          retryConfig: {
+          maxRetries: 3,
+          retryDelay: 1000,
+          backoffMultiplier: 2
+          },
+          // Global error handler
+          onError: (error) => {
+          console.error('MemorAI Error:', error)
+          }
+          })
+
+          app.mount('#app')</div>
+
+        <h3>Environment Variables Setup</h3>
+        <div class="code-block" data-lang="bash">
+          # .env.local
+          VUE_APP_MEMORAI_BASE_URL=http://localhost:4950
+          VUE_APP_MEMORAI_API_KEY=your-api-key-here
+          VUE_APP_MEMORAI_AGENT_ID=vue-application</div>
+
+        <h3>Manual Configuration (Alternative)</h3>
+        <div class="code-block" data-lang="javascript">
+          // composables/memorai.js
+          import { MemorAISDK } from '@memorai/sdk'
+
+          export const memoraiSDK = new MemorAISDK({
+          baseURL: process.env.VUE_APP_MEMORAI_BASE_URL,
+          apiKey: process.env.VUE_APP_MEMORAI_API_KEY,
+          enableWebSocket: true,
+          onError: (error) => {
+          console.error('MemorAI SDK Error:', error)
+          }
+          })
+
+          export { useMemorAI, useMemorySearch, useMemoryAnalytics } from '@memorai/vue'</div>
+      </section>
+
+      <!-- Composables API -->
+      <section class="section" id="composables">
+        <h2 class="section-title">🎯 Composables API</h2>
+        <p class="section-description">
+          Vue 3 composables provide reactive, declarative access to MemorAI functionality.
+        </p>
+
+        <!-- useMemorAI -->
+        <div class="api-section">
+          <div class="api-header">useMemorAI - Core Memory Operations</div>
+          <div class="api-content">
+            <div class="method-signature">
+              const {
+              remember, recall, updateMemory, forgetMemory,
+              isConnected, isLoading, error, connectionStatus
+              } = useMemorAI(config?)
+            </div>
+
+            <div class="parameter-list">
+              <h4>Parameters:</h4>
+              <div class="parameter">
+                <div class="parameter-name">config</div>
+                <div class="parameter-type">object?</div>
+                <div class="parameter-description">Optional configuration object</div>
+              </div>
+            </div>
+
+            <div class="parameter-list">
+              <h4>Returns:</h4>
+              <div class="parameter">
+                <div class="parameter-name">remember</div>
+                <div class="parameter-type">function</div>
+                <div class="parameter-description">Store a new memory</div>
+              </div>
+              <div class="parameter">
+                <div class="parameter-name">recall</div>
+                <div class="parameter-type">function</div>
+                <div class="parameter-description">Search and retrieve memories</div>
+              </div>
+              <div class="parameter">
+                <div class="parameter-name">updateMemory</div>
+                <div class="parameter-type">function</div>
+                <div class="parameter-description">Update existing memory</div>
+              </div>
+              <div class="parameter">
+                <div class="parameter-name">forgetMemory</div>
+                <div class="parameter-type">function</div>
+                <div class="parameter-description">Delete a memory</div>
+              </div>
+              <div class="parameter">
+                <div class="parameter-name">isConnected</div>
+                <div class="parameter-type">Ref&lt;boolean&gt;</div>
+                <div class="parameter-description">Reactive connection status</div>
+              </div>
+              <div class="parameter">
+                <div class="parameter-name">isLoading</div>
+                <div class="parameter-type">Ref&lt;boolean&gt;</div>
+                <div class="parameter-description">Reactive loading state</div>
+              </div>
+              <div class="parameter">
+                <div class="parameter-name">error</div>
+                <div class="parameter-type">Ref&lt;Error?&gt;</div>
+                <div class="parameter-description">Reactive error state</div>
+              </div>
+            </div>
+
+            <div class="code-block" data-lang="javascript">
+              // Basic usage in a component
+              import { useMemorAI } from '@memorai/vue'
+
+              export default {
+              setup() {
+              const {
+              remember,
+              recall,
+              updateMemory,
+              forgetMemory,
+              isConnected,
+              isLoading,
+              error
+              } = useMemorAI({
+              agentId: 'user-preferences'
+              })
+
+              const storeUserPreference = async (preference) => {
+              try {
+              const memory = await remember({
+              content: `User prefers ${preference}`,
+              agentId: 'user-preferences',
+              metadata: {
+              importance: 7,
+              tags: ['preferences', 'ui'],
+              category: 'user-settings'
+              }
+              })
+              console.log('Preference stored:', memory)
+              } catch (err) {
+              console.error('Failed to store preference:', err)
+              }
+              }
+
+              const searchPreferences = async (query) => {
+              try {
+              const results = await recall({
+              query,
+              agentId: 'user-preferences',
+              limit: 10
+              })
+              return results
+              } catch (err) {
+              console.error('Search failed:', err)
+              return []
+              }
+              }
+
+              return {
+              storeUserPreference,
+              searchPreferences,
+              isConnected,
+              isLoading,
+              error
+              }
+              }
+              }</div>
+          </div>
+        </div>
+
+        <!-- useMemorySearch -->
+        <div class="api-section">
+          <div class="api-header">useMemorySearch - Advanced Search Functionality</div>
+          <div class="api-content">
+            <div class="method-signature">
+              const {
+              search, results, isSearching, searchError,
+              filters, updateFilters, clearResults
+              } = useMemorySearch(config?)
+            </div>
+
+            <div class="code-block" data-lang="javascript">
+              import { useMemorySearch } from '@memorai/vue'
+              import { ref, computed } from 'vue'
+
+              export default {
+              setup() {
+              const {
+              search,
+              results,
+              isSearching,
+              searchError,
+              filters,
+              updateFilters,
+              clearResults
+              } = useMemorySearch({
+              agentId: 'content-manager',
+              defaultFilters: {
+              minImportance: 5,
+              tags: ['important']
+              }
+              })
+
+              const searchQuery = ref('')
+
+              const performSearch = async () => {
+              if (!searchQuery.value.trim()) return
+
+              await search({
+              query: searchQuery.value,
+              limit: 20
+              })
+              }
+
+              const filteredResults = computed(() => {
+              return results.value.filter(memory =>
+              memory.metadata?.importance >= filters.value.minImportance
+              )
+              })
+
+              const updateImportanceFilter = (importance) => {
+              updateFilters({ minImportance: importance })
+              }
+
+              return {
+              searchQuery,
+              performSearch,
+              filteredResults,
+              isSearching,
+              searchError,
+              updateImportanceFilter,
+              clearResults
+              }
+              }
+              }</div>
+          </div>
+        </div>
+
+        <!-- useMemoryAnalytics -->
+        <div class="api-section">
+          <div class="api-header">useMemoryAnalytics - Analytics & Insights</div>
+          <div class="api-content">
+            <div class="method-signature">
+              const {
+              analytics, insights, clusters,
+              refreshAnalytics, isAnalyzing, analyticsError
+              } = useMemoryAnalytics(agentId, options?)
+            </div>
+
+            <div class="code-block" data-lang="javascript">
+              import { useMemoryAnalytics } from '@memorai/vue'
+              import { onMounted, watch } from 'vue'
+
+              export default {
+              setup() {
+              const {
+              analytics,
+              insights,
+              clusters,
+              refreshAnalytics,
+              isAnalyzing,
+              analyticsError
+              } = useMemoryAnalytics('analytics-agent', {
+              autoRefresh: true,
+              refreshInterval: 30000, // 30 seconds
+              includeInsights: true,
+              includeClusters: true
+              })
+
+              // Auto-refresh on mount
+              onMounted(() => {
+              refreshAnalytics()
+              })
+
+              // Watch for changes and log
+              watch([analytics, insights, clusters], ([newAnalytics, newInsights, newClusters]) => {
+              if (newAnalytics) {
+              console.log('Analytics updated:', newAnalytics)
+              }
+              if (newInsights) {
+              console.log('Insights generated:', newInsights)
+              }
+              if (newClusters) {
+              console.log('Clusters updated:', newClusters)
+              }
+              })
+
+              return {
+              analytics,
+              insights,
+              clusters,
+              refreshAnalytics,
+              isAnalyzing,
+              analyticsError
+              }
+              }
+              }</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Usage Examples -->
+      <section class="section" id="examples">
+        <h2 class="section-title">💡 Usage Examples</h2>
+        <p class="section-description">
+          Complete examples showing how to integrate MemorAI in real Vue 3 applications.
+        </p>
+
+        <h3>Memory Manager Component</h3>
+        <div class="code-block" data-lang="vue">
+          <template>
+            <div class="memory-manager">
+              <!-- Connection Status -->
+              <div class="status-bar" :class="{ connected: isConnected, disconnected: !isConnected }">
+                <span v-if="isConnected" class="status-indicator">
+                  ✅ Connected to MemorAI
+                </span>
+                <span v-else class="status-indicator">
+                  ❌ Disconnected from MemorAI
+                </span>
+              </div>
+
+              <!-- Error Display -->
+              <div v-if="error" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ error.message }}
+                <button @click="error = null" class="close-error">×</button>
+              </div>
+
+              <!-- Memory Input -->
+              <div class="memory-input">
+                <h3>Add New Memory</h3>
+                <form @submit.prevent="handleAddMemory">
+                  <textarea v-model="newMemoryContent" placeholder="Enter memory content..." rows="3"
+                    required></textarea>
+
+                  <div class="input-row">
+                    <input v-model="newMemoryImportance" type="number" min="1" max="10"
+                      placeholder="Importance (1-10)" />
+                    <input v-model="newMemoryTags" type="text" placeholder="Tags (comma-separated)" />
+                  </div>
+
+                  <button type="submit" :disabled="isLoading || !newMemoryContent.trim()">
+                    <i class="fas fa-plus"></i>
+                    {{ isLoading ? 'Adding...' : 'Add Memory' }}
+                  </button>
+                </form>
+              </div>
+
+              <!-- Memory Search -->
+              <div class="memory-search">
+                <h3>Search Memories</h3>
+                <div class="search-controls">
+                  <input v-model="searchQuery" type="search" placeholder="Search memories..."
+                    @keyup.enter="performSearch" />
+                  <button @click="performSearch" :disabled="isSearching">
+                    <i class="fas fa-search"></i>
+                    {{ isSearching ? 'Searching...' : 'Search' }}
+                  </button>
+                  <button @click="clearResults" :disabled="results.length === 0">
+                    <i class="fas fa-times"></i>
+                    Clear
+                  </button>
+                </div>
+
+                <!-- Search Filters -->
+                <div class="search-filters">
+                  <label>
+                    Min Importance:
+                    <input v-model="filters.minImportance" type="range" min="1" max="10"
+                      @change="updateFilters({ minImportance: filters.minImportance })" />
+                    <span>{{ filters.minImportance }}</span>
+                  </label>
+                  <label>
+                    Tags:
+                    <input v-model="tagFilter" type="text" placeholder="Filter by tags..." />
+                  </label>
+                </div>
+              </div>
+
+              <!-- Memory Results -->
+              <div class="memory-results">
+                <h3>Memories ({{ filteredResults.length }})</h3>
+                <div v-if="filteredResults.length === 0" class="no-results">
+                  <i class="fas fa-search"></i>
+                  <p>No memories found. Try adjusting your search or filters.</p>
+                </div>
+
+                <div v-else class="memory-list">
+                  <div v-for="memory in filteredResults" :key="memory.id" class="memory-item"
+                    :class="{ 'high-importance': memory.metadata?.importance >= 8 }">
+                    <div class="memory-content">
+                      {{ memory.content }}
+                    </div>
+                    <div class="memory-metadata">
+                      <span class="importance">
+                        <i class="fas fa-star"></i>
+                        {{ memory.metadata?.importance || 'N/A' }}
+                      </span>
+                      <span class="created-at">
+                        <i class="fas fa-clock"></i>
+                        {{ formatDate(memory.createdAt) }}
+                      </span>
+                      <div class="memory-tags">
+                        <span v-for="tag in memory.metadata?.tags || []" :key="tag" class="tag">
+                          #{{ tag }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="memory-actions">
+                      <button @click="editMemory(memory)" class="edit-btn">
+                        <i class="fas fa-edit"></i>
+                        Edit
+                      </button>
+                      <button @click="deleteMemory(memory.id)" class="delete-btn">
+                        <i class="fas fa-trash"></i>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Analytics Panel -->
+              <div v-if="analytics" class="analytics-panel">
+                <h3>Memory Analytics</h3>
+                <div class="analytics-grid">
+                  <div class="metric">
+                    <div class="metric-value">{{ analytics.totalMemories }}</div>
+                    <div class="metric-label">Total Memories</div>
+                  </div>
+                  <div class="metric">
+                    <div class="metric-value">{{ analytics.averageImportance.toFixed(1) }}</div>
+                    <div class="metric-label">Avg Importance</div>
+                  </div>
+                  <div class="metric">
+                    <div class="metric-value">{{ analytics.memoryGrowthRate }}%</div>
+                    <div class="metric-label">Growth Rate</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <script>
+            import { ref, computed, onMounted } from 'vue'
+            import { useMemorAI, useMemorySearch, useMemoryAnalytics } from '@memorai/vue'
+
+            export default {
+              name: 'MemoryManager',
+              setup() {
+                // Composables
+                const { remember, recall, updateMemory, forgetMemory, isConnected, isLoading, error } = useMemorAI({
+                  agentId: 'vue-memory-manager'
+                })
+
+                const { search, results, isSearching, filters, updateFilters, clearResults } = useMemorySearch({
+                  agentId: 'vue-memory-manager'
+                })
+
+                const { analytics, refreshAnalytics } = useMemoryAnalytics('vue-memory-manager', {
+                  autoRefresh: true,
+                  refreshInterval: 60000
+                })
+
+                // Reactive data
+                const newMemoryContent = ref('')
+                const newMemoryImportance = ref(5)
+                const newMemoryTags = ref('')
+                const searchQuery = ref('')
+                const tagFilter = ref('')
+
+                // Computed
+                const filteredResults = computed(() => {
+                  let filtered = results.value
+
+                  if (tagFilter.value) {
+                    const tags = tagFilter.value.toLowerCase().split(',').map(t => t.trim())
+                    filtered = filtered.filter(memory =>
+                      memory.metadata?.tags?.some(tag =>
+                        tags.some(filterTag => tag.toLowerCase().includes(filterTag))
+                      )
+                    )
+                  }
+
+                  return filtered
+                })
+
+                // Methods
+                const handleAddMemory = async () => {
+                  if (!newMemoryContent.value.trim()) return
+
+                  try {
+                    const tags = newMemoryTags.value
+                      .split(',')
+                      .map(tag => tag.trim())
+                      .filter(tag => tag.length > 0)
+
+                    await remember({
+                      content: newMemoryContent.value,
+                      agentId: 'vue-memory-manager',
+                      metadata: {
+                        importance: parseInt(newMemoryImportance.value),
+                        tags: tags.length > 0 ? tags : undefined,
+                        createdBy: 'vue-memory-manager',
+                        version: '1.0'
+                      }
+                    })
+
+                    // Reset form
+                    newMemoryContent.value = ''
+                    newMemoryImportance.value = 5
+                    newMemoryTags.value = ''
+
+                    // Refresh search if there's an active query
+                    if (searchQuery.value) {
+                      await performSearch()
+                    }
+                  } catch (err) {
+                    console.error('Failed to add memory:', err)
+                  }
+                }
+
+                const performSearch = async () => {
+                  if (!searchQuery.value.trim()) return
+
+                  try {
+                    await search({
+                      query: searchQuery.value,
+                      limit: 20
+                    })
+                  } catch (err) {
+                    console.error('Search failed:', err)
+                  }
+                }
+
+                const editMemory = async (memory) => {
+                  // Simple edit implementation
+                  const newContent = prompt('Edit memory content:', memory.content)
+                  if (!newContent || newContent === memory.content) return
+
+                  try {
+                    await updateMemory(memory.id, {
+                      content: newContent,
+                      metadata: {
+                        ...memory.metadata,
+                        updatedAt: new Date().toISOString(),
+                        updatedBy: 'vue-memory-manager'
+                      }
+                    })
+
+                    // Refresh search results
+                    if (searchQuery.value) {
+                      await performSearch()
+                    }
+                  } catch (err) {
+                    console.error('Failed to update memory:', err)
+                  }
+                }
+
+                const deleteMemory = async (memoryId) => {
+                  if (!confirm('Are you sure you want to delete this memory?')) return
+
+                  try {
+                    await forgetMemory(memoryId)
+
+                    // Remove from results
+                    const index = results.value.findIndex(m => m.id === memoryId)
+                    if (index !== -1) {
+                      results.value.splice(index, 1)
+                    }
+                  } catch (err) {
+                    console.error('Failed to delete memory:', err)
+                  }
+                }
+
+                const formatDate = (dateString) => {
+                  return new Date(dateString).toLocaleString()
+                }
+
+                // Initialize
+                onMounted(() => {
+                  refreshAnalytics()
+                })
+
+                return {
+                  // Data
+                  newMemoryContent,
+                  newMemoryImportance,
+                  newMemoryTags,
+                  searchQuery,
+                  tagFilter,
+
+                  // Computed
+                  filteredResults,
+
+                  // Methods
+                  handleAddMemory,
+                  performSearch,
+                  editMemory,
+                  deleteMemory,
+                  formatDate,
+                  clearResults,
+                  updateFilters,
+
+                  // From composables
+                  isConnected,
+                  isLoading,
+                  error,
+                  results,
+                  isSearching,
+                  filters,
+                  analytics
+                }
+              }
+            }
+          </script>
+
+          <style scoped>
+            .memory-manager {
+              max-width: 1200px;
+              margin: 0 auto;
+              padding: 2rem;
+              font-family: 'Inter', sans-serif;
+            }
+
+            .status-bar {
+              padding: 0.75rem 1rem;
+              border-radius: 0.5rem;
+              margin-bottom: 2rem;
+              font-weight: 500;
+            }
+
+            .status-bar.connected {
+              background: #D1FAE5;
+              color: #065F46;
+              border: 1px solid #A7F3D0;
+            }
+
+            .status-bar.disconnected {
+              background: #FEE2E2;
+              color: #991B1B;
+              border: 1px solid #FECACA;
+            }
+
+            .error-message {
+              background: #FEE2E2;
+              border: 1px solid #FECACA;
+              color: #991B1B;
+              padding: 1rem;
+              border-radius: 0.5rem;
+              margin-bottom: 2rem;
+              position: relative;
+            }
+
+            .close-error {
+              position: absolute;
+              top: 0.5rem;
+              right: 0.5rem;
+              background: none;
+              border: none;
+              font-size: 1.25rem;
+              cursor: pointer;
+            }
+
+            .memory-input,
+            .memory-search,
+            .memory-results,
+            .analytics-panel {
+              background: white;
+              border: 1px solid #E5E7EB;
+              border-radius: 1rem;
+              padding: 1.5rem;
+              margin-bottom: 2rem;
+            }
+
+            .memory-input h3,
+            .memory-search h3,
+            .memory-results h3,
+            .analytics-panel h3 {
+              margin-bottom: 1rem;
+              color: #1F2937;
+            }
+
+            .memory-input textarea {
+              width: 100%;
+              padding: 0.75rem;
+              border: 1px solid #D1D5DB;
+              border-radius: 0.5rem;
+              resize: vertical;
+              margin-bottom: 1rem;
+            }
+
+            .input-row {
+              display: flex;
+              gap: 1rem;
+              margin-bottom: 1rem;
+            }
+
+            .input-row input {
+              flex: 1;
+              padding: 0.75rem;
+              border: 1px solid #D1D5DB;
+              border-radius: 0.5rem;
+            }
+
+            .search-controls {
+              display: flex;
+              gap: 1rem;
+              margin-bottom: 1rem;
+            }
+
+            .search-controls input {
+              flex: 1;
+              padding: 0.75rem;
+              border: 1px solid #D1D5DB;
+              border-radius: 0.5rem;
+            }
+
+            .search-filters {
+              display: flex;
+              gap: 2rem;
+              padding: 1rem;
+              background: #F9FAFB;
+              border-radius: 0.5rem;
+            }
+
+            .search-filters label {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              font-size: 0.875rem;
+            }
+
+            .no-results {
+              text-align: center;
+              color: #6B7280;
+              padding: 2rem;
+            }
+
+            .memory-list {
+              display: flex;
+              flex-direction: column;
+              gap: 1rem;
+            }
+
+            .memory-item {
+              border: 1px solid #E5E7EB;
+              border-radius: 0.5rem;
+              padding: 1rem;
+              transition: all 0.2s;
+            }
+
+            .memory-item:hover {
+              border-color: #4F46E5;
+              box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            }
+
+            .memory-item.high-importance {
+              border-color: #F59E0B;
+              background: #FFFBEB;
+            }
+
+            .memory-content {
+              margin-bottom: 0.75rem;
+              font-size: 1rem;
+              line-height: 1.5;
+            }
+
+            .memory-metadata {
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+              margin-bottom: 0.75rem;
+              font-size: 0.875rem;
+              color: #6B7280;
+            }
+
+            .memory-tags {
+              display: flex;
+              gap: 0.5rem;
+            }
+
+            .tag {
+              background: #EFF6FF;
+              color: #1D4ED8;
+              padding: 0.125rem 0.375rem;
+              border-radius: 0.25rem;
+              font-size: 0.75rem;
+            }
+
+            .memory-actions {
+              display: flex;
+              gap: 0.5rem;
+            }
+
+            .edit-btn,
+            .delete-btn {
+              padding: 0.375rem 0.75rem;
+              border: none;
+              border-radius: 0.375rem;
+              font-size: 0.75rem;
+              cursor: pointer;
+              transition: all 0.2s;
+            }
+
+            .edit-btn {
+              background: #EFF6FF;
+              color: #1D4ED8;
+            }
+
+            .edit-btn:hover {
+              background: #DBEAFE;
+            }
+
+            .delete-btn {
+              background: #FEE2E2;
+              color: #DC2626;
+            }
+
+            .delete-btn:hover {
+              background: #FECACA;
+            }
+
+            .analytics-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+              gap: 1rem;
+            }
+
+            .metric {
+              text-align: center;
+              padding: 1rem;
+              background: #F9FAFB;
+              border-radius: 0.5rem;
+            }
+
+            .metric-value {
+              font-size: 2rem;
+              font-weight: 700;
+              color: #4FC08D;
+            }
+
+            .metric-label {
+              font-size: 0.875rem;
+              color: #6B7280;
+              margin-top: 0.25rem;
+            }
+
+            button {
+              background: #4FC08D;
+              color: white;
+              border: none;
+              padding: 0.75rem 1.5rem;
+              border-radius: 0.5rem;
+              cursor: pointer;
+              font-weight: 500;
+              transition: all 0.2s;
+            }
+
+            button:hover {
+              background: #10B981;
+            }
+
+            button:disabled {
+              background: #9CA3AF;
+              cursor: not-allowed;
+            }
+          </style>
+        </div>
+      </section>
+
+      <!-- TypeScript Integration -->
+      <section class="section" id="typescript">
+        <h2 class="section-title">📘 TypeScript Integration</h2>
+        <p class="section-description">
+          MemorAI provides excellent TypeScript support with full type definitions for Vue 3 composables.
+        </p>
+
+        <div class="code-block" data-lang="typescript">
+          // types/memorai.d.ts - Custom type extensions
+          import { Ref } from 'vue'
+
+          export interface UserMemoryData {
+          userId: string
+          preferences: Record<string, any>
+            settings: UserSettings
+            lastLogin: Date
+            }
+
+            export interface UserSettings {
+            theme: 'light' | 'dark' | 'auto'
+            language: string
+            notifications: boolean
+            privacy: PrivacySettings
+            }
+
+            export interface PrivacySettings {
+            shareAnalytics: boolean
+            shareUsage: boolean
+            allowCookies: boolean
+            }
+
+            // Composable with TypeScript
+            export interface MemoryManagerState {
+            memories: Ref<Memory[]>
+              isLoading: Ref<boolean>
+                error: Ref<Error | null>
+                  searchQuery: Ref<string>
+                    filters: Ref<MemoryFilters>
+                      }
+
+                      // Component with TypeScript
+                      export default defineComponent({
+                      name: 'TypedMemoryComponent',
+                      setup(): MemoryManagerState {
+                      const {
+                      remember,
+                      recall,
+                      isConnected,
+                      isLoading,
+                      error
+                      } = useMemorAI<UserMemoryData>({
+                        agentId: 'user-manager',
+                        enableWebSocket: true
+                        })
+
+                        const memories: Ref<Memory<UserMemoryData>[]> = ref([])
+                          const searchQuery: Ref<string> = ref('')
+                            const filters: Ref<MemoryFilters> = ref({
+                              minImportance: 5,
+                              tags: ['important'],
+                              dateRange: {
+                              start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                              end: new Date()
+                              }
+                              })
+
+                              const storeUserMemory = async (userData: UserMemoryData): Promise<Memory<UserMemoryData>>
+                                => {
+                                return await remember({
+                                content: `User ${userData.userId} preferences updated`,
+                                agentId: 'user-manager',
+                                metadata: {
+                                importance: 8,
+                                tags: ['user-data', 'preferences'],
+                                entityType: 'user_memory',
+                                priority: 'high'
+                                },
+                                data: userData
+                                })
+                                }
+
+                                const searchUserMemories = async (userId: string): Promise<Memory<UserMemoryData>[]> =>
+                                  {
+                                  const results = await recall({
+                                  query: `user ${userId}`,
+                                  agentId: 'user-manager',
+                                  limit: 50,
+                                  includeOtherAgents: false
+                                  })
+
+                                  // Type assertion with runtime validation
+                                  return results.filter((memory): memory is Memory<UserMemoryData> => {
+                                    return memory.data && 'userId' in memory.data
+                                    })
+                                    }
+
+                                    return {
+                                    memories,
+                                    isLoading,
+                                    error,
+                                    searchQuery,
+                                    filters,
+                                    storeUserMemory,
+                                    searchUserMemories
+                                    }
+                                    }
+                                    })</div>
+
+        <div class="best-practices">
+          <h4>
+            <i class="fas fa-lightbulb"></i>
+            TypeScript Best Practices
+          </h4>
+          <ul>
+            <li>Use generic types for memory data: <code>useMemorAI&lt;MyDataType&gt;()</code></li>
+            <li>Define interfaces for memory metadata and custom data</li>
+            <li>Use strict TypeScript configuration for better type safety</li>
+            <li>Leverage Vue 3's <code>defineComponent</code> for better type inference</li>
+            <li>Create custom composables with proper return type annotations</li>
+            <li>Use type guards for runtime validation of memory data</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Best Practices -->
+      <section class="section" id="best-practices">
+        <h2 class="section-title">✨ Best Practices</h2>
+        <p class="section-description">
+          Follow these best practices to build robust, performant Vue 3 applications with MemorAI.
+        </p>
+
+        <div class="best-practices">
+          <h4>
+            <i class="fas fa-star"></i>
+            Performance Optimization
+          </h4>
+          <ul>
+            <li>Use <code>shallowRef</code> for large memory collections to reduce reactivity overhead</li>
+            <li>Implement virtual scrolling for large memory lists</li>
+            <li>Debounce search inputs to prevent excessive API calls</li>
+            <li>Cache frequently accessed memories using Vue's <code>computed</code> properties</li>
+            <li>Use <code>readonly</code> refs for data that shouldn't be mutated</li>
+            <li>Implement proper cleanup in <code>onUnmounted</code> hooks</li>
+          </ul>
+        </div>
+
+        <div class="code-block" data-lang="javascript">
+          // Performance optimized memory search
+          import { ref, shallowRef, computed, watch, onUnmounted } from 'vue'
+          import { debounce } from 'lodash-es'
+
+          export default {
+          setup() {
+          const { search, isSearching } = useMemorySearch()
+
+          // Use shallowRef for large collections
+          const memories = shallowRef([])
+          const searchQuery = ref('')
+
+          // Debounced search function
+          const debouncedSearch = debounce(async (query) => {
+          if (!query.trim()) return
+
+          const results = await search({
+          query,
+          limit: 100
+          })
+
+          // Replace entire array for shallowRef
+          memories.value = results
+          }, 300)
+
+          // Watch search query with debouncing
+          watch(searchQuery, (newQuery) => {
+          debouncedSearch(newQuery)
+          })
+
+          // Computed filtered results
+          const filteredMemories = computed(() => {
+          return memories.value.filter(memory =>
+          memory.metadata?.importance >= 5
+          )
+          })
+
+          // Cleanup
+          onUnmounted(() => {
+          debouncedSearch.cancel()
+          })
+
+          return {
+          searchQuery,
+          filteredMemories,
+          isSearching
+          }
+          }
+          }</div>
+
+        <div class="best-practices">
+          <h4>
+            <i class="fas fa-shield-alt"></i>
+            Error Handling & Reliability
+          </h4>
+          <ul>
+            <li>Always handle errors gracefully with try-catch blocks</li>
+            <li>Provide user-friendly error messages and recovery options</li>
+            <li>Implement retry logic for failed operations</li>
+            <li>Use loading states to improve user experience</li>
+            <li>Validate data before sending to MemorAI APIs</li>
+            <li>Implement offline fallbacks when possible</li>
+          </ul>
+        </div>
+
+        <div class="best-practices">
+          <h4>
+            <i class="fas fa-code"></i>
+            Code Organization
+          </h4>
+          <ul>
+            <li>Create custom composables for reusable MemorAI logic</li>
+            <li>Use provide/inject for sharing MemorAI configuration</li>
+            <li>Separate business logic from UI components</li>
+            <li>Use TypeScript for better type safety and developer experience</li>
+            <li>Follow Vue 3 composition API best practices</li>
+            <li>Document your memory schemas and agent configurations</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Troubleshooting -->
+      <section class="section" id="troubleshooting">
+        <h2 class="section-title">🔧 Troubleshooting</h2>
+        <p class="section-description">
+          Common issues and solutions when integrating MemorAI with Vue 3.
+        </p>
+
+        <div class="api-section">
+          <div class="api-header">Common Issues</div>
+          <div class="api-content">
+            <h4>Connection Issues</h4>
+            <div class="code-block" data-lang="javascript">
+              // Debug connection problems
+              import { useMemorAI } from '@memorai/vue'
+              import { onMounted } from 'vue'
+
+              export default {
+              setup() {
+              const { isConnected, error } = useMemorAI({
+              baseURL: process.env.VUE_APP_MEMORAI_BASE_URL,
+              timeout: 10000, // 10 second timeout
+              retryConfig: {
+              maxRetries: 3,
+              retryDelay: 2000
+              },
+              onError: (error) => {
+              console.error('MemorAI Connection Error:', error)
+
+              if (error.code === 'ECONNREFUSED') {
+              console.log('Is MemorAI server running?')
+              }
+
+              if (error.status === 401) {
+              console.log('Check your API key configuration')
+              }
+
+              if (error.status === 429) {
+              console.log('Rate limit exceeded, implementing backoff...')
+              }
+              }
+              })
+
+              onMounted(() => {
+              // Test connection on mount
+              if (!isConnected.value) {
+              console.warn('Not connected to MemorAI server')
+              }
+              })
+
+              return { isConnected, error }
+              }
+              }</div>
+
+            <h4>Reactivity Issues</h4>
+            <div class="code-block" data-lang="javascript">
+              // Fix reactivity problems
+              import { ref, reactive, toRefs } from 'vue'
+
+              // ❌ Don't destructure reactive objects directly
+              const { remember, recall } = useMemorAI() // Loses reactivity
+
+              // ✅ Use toRefs for destructuring
+              const memoraiState = useMemorAI()
+              const { remember, recall, isConnected, error } = toRefs(memoraiState)
+
+              // ✅ Or access properties directly
+              const memorai = useMemorAI()
+              // memorai.isConnected, memorai.error, etc.</div>
+
+            <h4>Memory Updates Not Reflecting</h4>
+            <div class="code-block" data-lang="javascript">
+              // Ensure proper state updates
+              const { recall } = useMemorAI()
+              const memories = ref([])
+
+              const updateMemoryList = async () => {
+              try {
+              const results = await recall({ query: 'all', limit: 100 })
+
+              // ✅ Replace entire array to trigger reactivity
+              memories.value = results
+
+              // ❌ Don't mutate existing array elements
+              // memories.value.push(...results) // May not trigger updates
+
+              } catch (error) {
+              console.error('Failed to update memories:', error)
+              }
+              }</div>
+          </div>
+        </div>
+
+        <div class="best-practices">
+          <h4>
+            <i class="fas fa-tools"></i>
+            Debug Tips
+          </h4>
+          <ul>
+            <li>Use Vue DevTools to inspect reactive state</li>
+            <li>Enable MemorAI debug logging in development</li>
+            <li>Check network tab for API request/response details</li>
+            <li>Verify environment variables are properly loaded</li>
+            <li>Test with different agent IDs to isolate issues</li>
+            <li>Use browser console to inspect MemorAI SDK state</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+
+</html>

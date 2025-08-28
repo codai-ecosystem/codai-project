@@ -1,0 +1,200 @@
+# MemorAI MCP Server - Prometheus Configuration
+# Comprehensive metrics collection and monitoring setup
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'memorai-mcp-production'
+    service: 'memorai-mcp-server'
+    version: '9.5.0'
+
+rule_files:
+  - "alert-rules.yml"
+  - "recording-rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # MemorAI MCP Server - Main Application
+  - job_name: 'memorai-mcp-server'
+    static_configs:
+      - targets: ['memorai-mcp-service:4950']
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    honor_labels: true
+    params:
+      format: ['prometheus']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_node_name]
+        target_label: node
+
+  # PostgreSQL Database Metrics
+  - job_name: 'postgresql'
+    static_configs:
+      - targets: ['postgresql-service:5432']
+    metrics_path: /metrics
+    scrape_interval: 30s
+    params:
+      collect[]:
+        - 'pg_stat_database'
+        - 'pg_stat_bgwriter'
+        - 'pg_stat_activity'
+        - 'pg_locks'
+        - 'pg_replication'
+
+  # Redis Cache Metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-service:6379']
+    metrics_path: /metrics
+    scrape_interval: 15s
+
+  # CBD Database Metrics
+  - job_name: 'cbd-database'
+    static_configs:
+      - targets: ['cbd-database-service:4180']
+    metrics_path: /metrics
+    scrape_interval: 15s
+
+  # Kubernetes Cluster Metrics
+  - job_name: 'kubernetes-apiservers'
+    kubernetes_sd_configs:
+      - role: endpoints
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: default;kubernetes;https
+
+  # Kubernetes Node Metrics
+  - job_name: 'kubernetes-nodes'
+    kubernetes_sd_configs:
+      - role: node
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+
+  # Kubernetes Pod Metrics
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: replace
+        target_label: kubernetes_pod_name
+
+  # Custom Application Metrics
+  - job_name: 'memorai-mcp-custom-metrics'
+    static_configs:
+      - targets: ['memorai-mcp-service:4950']
+    metrics_path: /metrics/custom
+    scrape_interval: 5s
+    honor_labels: true
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'memorai_(.+)'
+        target_label: __name__
+        replacement: 'memorai_mcp_${1}'
+
+  # Network Performance Metrics
+  - job_name: 'network-metrics'
+    static_configs:
+      - targets: ['memorai-mcp-service:4950']
+    metrics_path: /metrics/network
+    scrape_interval: 10s
+
+  # Memory System Metrics
+  - job_name: 'memory-system-metrics'
+    static_configs:
+      - targets: ['memorai-mcp-service:4950']
+    metrics_path: /metrics/memory
+    scrape_interval: 5s
+    honor_labels: true
+    params:
+      collect[]:
+        - 'memory_operations'
+        - 'memory_distribution'
+        - 'memory_network_effects'
+        - 'memory_analytics'
+
+  # Business Metrics
+  - job_name: 'business-metrics'
+    static_configs:
+      - targets: ['memorai-mcp-service:4950']
+    metrics_path: /metrics/business
+    scrape_interval: 30s
+    honor_labels: true
+
+  # Health Check Monitoring
+  - job_name: 'health-checks'
+    static_configs:
+      - targets:
+        - 'memorai-mcp-service:4950'
+        - 'postgresql-service:5432'
+        - 'redis-service:6379'
+        - 'cbd-database-service:4180'
+    metrics_path: /health
+    scrape_interval: 10s
+    scrape_timeout: 3s
+    honor_labels: true
+
+# Storage Configuration
+storage:
+  tsdb:
+    path: /prometheus/data
+    retention.time: 30d
+    retention.size: 10GB
+    min-block-duration: 2h
+    max-block-duration: 25h
+    wal-compression: true
+
+# Remote Storage (optional for long-term storage)
+remote_write:
+  - url: "https://prometheus-remote-storage.example.com/api/v1/write"
+    name: "long-term-storage"
+    queue_config:
+      capacity: 10000
+      max_samples_per_send: 2000
+      batch_send_deadline: 5s
+      min_shards: 1
+      max_shards: 10
+
+# Global Configuration
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  query_log_file: /prometheus/logs/query.log

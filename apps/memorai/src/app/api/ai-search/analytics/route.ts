@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
         const metrics = await aiSearchService.getSearchMetrics();
 
         // Enhanced metrics with additional insights
-        const enhancedMetrics = {
+        const enhancedMetrics: any = {
             ...metrics,
             insights: {
                 searchEfficiency: {

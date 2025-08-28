@@ -136,7 +136,7 @@ export function authenticateAdmin(request: NextRequest): NextResponse | null {
 /**
  * Security headers for all API responses
  */
-export function addSecurityHeaders(response: NextResponse): NextResponse {
+export function addSecurityHeaders<T = any>(response: NextResponse<T>): NextResponse<T> {
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('X-Frame-Options', 'DENY');
     response.headers.set('X-XSS-Protection', '1; mode=block');

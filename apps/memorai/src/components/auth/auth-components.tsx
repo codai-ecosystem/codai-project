@@ -135,7 +135,7 @@ export function ProtectedRoute({
 
     // Check role requirements
     if (requireRoles.length > 0) {
-        const userRoles = session.user?.roles || [];
+        const userRoles = session.user?.role ? [session.user.role] : [];
         const hasRequiredRole = requireRoles.some(role => userRoles.includes(role));
 
         if (!hasRequiredRole) {
@@ -156,9 +156,9 @@ export function ProtectedRoute({
         }
     }
 
-    // Check permission requirements
+    // Check permission requirements  
     if (requirePermissions.length > 0) {
-        const userPermissions = session.user?.permissions || [];
+        const userPermissions: string[] = []; // TODO: implement permissions system
         const hasRequiredPermission = requirePermissions.some(permission =>
             userPermissions.includes(permission)
         );

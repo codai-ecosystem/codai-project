@@ -81,7 +81,18 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
     const startTime = process.hrtime.bigint();
 
     try {
-        const cacheStats = memoryCache.getStats();
+        const rawCacheStats = memoryCache.getStats();
+
+        // Transform cache stats to match expected interface
+        const cacheStats = {
+            hits: rawCacheStats.cacheHits,
+            misses: rawCacheStats.cacheMisses,
+            sets: rawCacheStats.totalRequests, // Approximation
+            evictions: 0, // Not tracked in current implementation
+            hitRate: rawCacheStats.hitRate,
+            cacheSize: rawCacheStats.totalEntries,
+            maxSize: 1000 // Default max from MemoryCache
+        };
 
         const averageResponseTime = performanceStats.responseTimes.length > 0
             ? performanceStats.responseTimes.reduce((a, b) => a + b, 0) / performanceStats.responseTimes.length
@@ -122,7 +133,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
                     user: Math.round(cpuUsage.user / 1000 * 100) / 100, // ms
                     system: Math.round(cpuUsage.system / 1000 * 100) / 100 // ms
                 },
-                loadAverage: typeof process.loadavg === 'function' ? process.loadavg() : undefined,
+                loadAverage: (process as any).loadavg ? (process as any).loadavg() : undefined,
                 platform: process.platform,
                 nodeVersion: process.version
             }

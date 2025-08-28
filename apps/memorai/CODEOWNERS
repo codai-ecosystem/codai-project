@@ -1,0 +1,134 @@
+# Code Owners - MemorAI
+
+# Global ownership - Core team has oversight of all changes
+* @codai-ecosystem/core-team
+
+# Architecture and Design
+/.arch/ @codai-ecosystem/architects @codai-ecosystem/senior-engineers
+/docs/architecture/ @codai-ecosystem/architects
+BACKLOG.md @codai-ecosystem/product-managers @codai-ecosystem/architects
+TEST_PLAN.md @codai-ecosystem/qa-engineers @codai-ecosystem/senior-engineers
+
+# Configuration and Infrastructure
+/.github/ @codai-ecosystem/devops-engineers @codai-ecosystem/core-team
+/docker/ @codai-ecosystem/devops-engineers
+/kubernetes/ @codai-ecosystem/devops-engineers
+docker-compose*.yml @codai-ecosystem/devops-engineers
+Dockerfile* @codai-ecosystem/devops-engineers
+
+# CI/CD and Quality
+/.github/workflows/ @codai-ecosystem/devops-engineers @codai-ecosystem/qa-engineers
+/.husky/ @codai-ecosystem/senior-engineers
+.eslintrc* @codai-ecosystem/senior-engineers
+.prettierrc* @codai-ecosystem/senior-engineers
+vitest.config.ts @codai-ecosystem/qa-engineers @codai-ecosystem/senior-engineers
+playwright.config.ts @codai-ecosystem/qa-engineers
+
+# Package Configuration
+package.json @codai-ecosystem/senior-engineers @codai-ecosystem/devops-engineers
+pnpm-lock.yaml @codai-ecosystem/senior-engineers
+tsconfig*.json @codai-ecosystem/senior-engineers
+
+# Source Code - Frontend
+/src/app/ @codai-ecosystem/frontend-engineers @codai-ecosystem/senior-engineers
+/src/components/ @codai-ecosystem/frontend-engineers @codai-ecosystem/ux-engineers
+/src/components/ui/ @codai-ecosystem/ux-engineers @codai-ecosystem/frontend-engineers
+
+# Source Code - Services and Business Logic
+/src/services/ @codai-ecosystem/senior-engineers @codai-ecosystem/backend-engineers
+/src/lib/memory/ @codai-ecosystem/ai-engineers @codai-ecosystem/senior-engineers
+/src/lib/mcp/ @codai-ecosystem/ai-engineers @codai-ecosystem/protocol-engineers
+/src/lib/auth/ @codai-ecosystem/security-engineers @codai-ecosystem/backend-engineers
+/src/lib/database/ @codai-ecosystem/database-engineers @codai-ecosystem/backend-engineers
+
+# AI and ML Components
+/src/lib/ai/ @codai-ecosystem/ai-engineers @codai-ecosystem/ml-engineers
+/src/lib/embeddings/ @codai-ecosystem/ai-engineers
+/src/lib/vector/ @codai-ecosystem/ai-engineers @codai-ecosystem/database-engineers
+
+# Type Definitions and Schemas
+/src/types/ @codai-ecosystem/senior-engineers @codai-ecosystem/backend-engineers
+/src/schemas/ @codai-ecosystem/backend-engineers @codai-ecosystem/api-engineers
+
+# API Routes and Endpoints
+/src/app/api/ @codai-ecosystem/backend-engineers @codai-ecosystem/api-engineers
+/src/app/api/auth/ @codai-ecosystem/security-engineers @codai-ecosystem/backend-engineers
+/src/app/api/memory/ @codai-ecosystem/ai-engineers @codai-ecosystem/backend-engineers
+/src/app/api/mcp/ @codai-ecosystem/ai-engineers @codai-ecosystem/protocol-engineers
+
+# Testing
+/tests/ @codai-ecosystem/qa-engineers @codai-ecosystem/senior-engineers
+/tests/unit/ @codai-ecosystem/qa-engineers @codai-ecosystem/backend-engineers
+/tests/integration/ @codai-ecosystem/qa-engineers @codai-ecosystem/backend-engineers
+/tests/e2e/ @codai-ecosystem/qa-engineers @codai-ecosystem/frontend-engineers
+
+# Security and Compliance
+/security/ @codai-ecosystem/security-engineers @codai-ecosystem/compliance-officers
+/src/lib/security/ @codai-ecosystem/security-engineers
+/src/middleware/auth.ts @codai-ecosystem/security-engineers @codai-ecosystem/backend-engineers
+/src/middleware/rate-limit.ts @codai-ecosystem/security-engineers
+
+# Database and Migrations
+/database/ @codai-ecosystem/database-engineers @codai-ecosystem/backend-engineers
+/migrations/ @codai-ecosystem/database-engineers
+/src/lib/database/migrations/ @codai-ecosystem/database-engineers
+/src/lib/database/seeds/ @codai-ecosystem/database-engineers
+
+# Documentation
+README.md @codai-ecosystem/technical-writers @codai-ecosystem/senior-engineers
+CONTRIBUTING.md @codai-ecosystem/community-managers @codai-ecosystem/senior-engineers
+CHANGELOG.md @codai-ecosystem/product-managers @codai-ecosystem/senior-engineers
+/docs/ @codai-ecosystem/technical-writers
+
+# Internationalization
+/src/lib/i18n/ @codai-ecosystem/i18n-engineers @codai-ecosystem/frontend-engineers
+/locales/ @codai-ecosystem/i18n-engineers @codai-ecosystem/translators
+/messages/ @codai-ecosystem/i18n-engineers @codai-ecosystem/translators
+
+# Styling and Design System
+/src/styles/ @codai-ecosystem/ux-engineers @codai-ecosystem/frontend-engineers
+tailwind.config.js @codai-ecosystem/ux-engineers @codai-ecosystem/frontend-engineers
+/src/components/design-system/ @codai-ecosystem/ux-engineers
+
+# Performance and Monitoring
+/src/lib/monitoring/ @codai-ecosystem/sre-engineers @codai-ecosystem/senior-engineers
+/src/lib/analytics/ @codai-ecosystem/data-engineers @codai-ecosystem/product-managers
+next.config.js @codai-ecosystem/senior-engineers @codai-ecosystem/performance-engineers
+
+# Dependencies and Security
+package.json @codai-ecosystem/security-engineers @codai-ecosystem/senior-engineers
+.nvmrc @codai-ecosystem/devops-engineers
+.node-version @codai-ecosystem/devops-engineers
+
+# Environment Configuration
+.env.example @codai-ecosystem/devops-engineers @codai-ecosystem/security-engineers
+.env.local.example @codai-ecosystem/devops-engineers
+
+# Protocol-Specific Files
+/src/lib/mcp/protocol/ @codai-ecosystem/protocol-engineers @codai-ecosystem/ai-engineers
+/src/lib/mcp/tools/ @codai-ecosystem/ai-engineers @codai-ecosystem/tool-engineers
+/src/lib/mcp/client/ @codai-ecosystem/protocol-engineers @codai-ecosystem/backend-engineers
+
+# Critical Business Logic - Requires Multiple Approvals
+/src/services/MemoryService.ts @codai-ecosystem/ai-engineers @codai-ecosystem/senior-engineers @codai-ecosystem/architects
+/src/lib/memory/core.ts @codai-ecosystem/ai-engineers @codai-ecosystem/senior-engineers @codai-ecosystem/architects
+/src/lib/auth/session.ts @codai-ecosystem/security-engineers @codai-ecosystem/senior-engineers @codai-ecosystem/architects
+
+# High-Risk Changes - Additional Security Review Required
+/src/lib/auth/ @codai-ecosystem/security-engineers @codai-ecosystem/senior-engineers @codai-ecosystem/security-leads
+/src/middleware/security.ts @codai-ecosystem/security-engineers @codai-ecosystem/security-leads
+/src/lib/crypto/ @codai-ecosystem/security-engineers @codai-ecosystem/cryptography-engineers
+
+# Data Privacy and GDPR
+/src/lib/privacy/ @codai-ecosystem/privacy-engineers @codai-ecosystem/compliance-officers @codai-ecosystem/legal-team
+/src/lib/gdpr/ @codai-ecosystem/privacy-engineers @codai-ecosystem/compliance-officers
+
+# Release and Deployment
+CHANGELOG.md @codai-ecosystem/release-managers @codai-ecosystem/product-managers
+VERSION @codai-ecosystem/release-managers
+/scripts/deploy/ @codai-ecosystem/devops-engineers @codai-ecosystem/release-managers
+
+# Emergency Contacts for Critical Issues
+# For urgent security issues: @codai-ecosystem/security-incident-response
+# For production outages: @codai-ecosystem/sre-on-call
+# For data breaches: @codai-ecosystem/data-incident-response

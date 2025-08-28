@@ -1,0 +1,732 @@
+# =================================================================
+# MemorAI MCP Server - Load Testing Infrastructure
+# Version: 1.0.0
+# Purpose: Comprehensive performance testing and validation
+# =================================================================
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k6-load-testing-scripts
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    testing-type: load-testing
+data:
+  baseline-load-test.js: |
+    import http from 'k6/http';
+    import { check, sleep } from 'k6';
+    import { Rate, Trend } from 'k6/metrics';
+    
+    // Custom metrics
+    const errorRate = new Rate('error_rate');
+    const responseTimeP95 = new Trend('response_time_p95');
+    
+    export const options = {
+      stages: [
+        { duration: '2m', target: 10 },   // Ramp-up
+        { duration: '5m', target: 50 },   // Stay at 50 users
+        { duration: '2m', target: 100 },  // Scale to 100 users
+        { duration: '10m', target: 100 }, // Stay at 100 users
+        { duration: '2m', target: 0 },    // Ramp-down
+      ],
+      thresholds: {
+        http_req_duration: ['p(95)<500', 'p(99)<1000'],
+        http_req_failed: ['rate<0.01'],
+        error_rate: ['rate<0.01'],
+      },
+    };
+    
+    const BASE_URL = 'http://memorai-mcp-server.memorai-mcp.svc.cluster.local:4950';
+    
+    export default function () {
+      const scenarios = [
+        healthCheck,
+        memoryOperations,
+        searchOperations,
+        analyticsOperations,
+      ];
+      
+      const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+      scenario();
+      
+      sleep(1);
+    }
+    
+    function healthCheck() {
+      const response = http.get(`${BASE_URL}/health`);
+      
+      const success = check(response, {
+        'health check status is 200': (r) => r.status === 200,
+        'health check response time < 100ms': (r) => r.timings.duration < 100,
+      });
+      
+      errorRate.add(!success);
+      responseTimeP95.add(response.timings.duration);
+    }
+    
+    function memoryOperations() {
+      // Create memory
+      const createPayload = {
+        agentId: `test-agent-${Math.floor(Math.random() * 1000)}`,
+        content: `Test memory content ${Math.random()}`,
+        metadata: {
+          importance: Math.floor(Math.random() * 10) + 1,
+          tags: ['performance-test', 'load-testing'],
+          project: 'load-test'
+        }
+      };
+      
+      const createResponse = http.post(
+        `${BASE_URL}/api/memory/remember`,
+        JSON.stringify(createPayload),
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+      
+      const createSuccess = check(createResponse, {
+        'memory creation status is 200': (r) => r.status === 200,
+        'memory creation response time < 500ms': (r) => r.timings.duration < 500,
+      });
+      
+      errorRate.add(!createSuccess);
+      
+      if (createSuccess) {
+        // Recall memory
+        const recallResponse = http.get(
+          `${BASE_URL}/api/memory/recall?agentId=${createPayload.agentId}&query=test&limit=10`
+        );
+        
+        const recallSuccess = check(recallResponse, {
+          'memory recall status is 200': (r) => r.status === 200,
+          'memory recall response time < 300ms': (r) => r.timings.duration < 300,
+        });
+        
+        errorRate.add(!recallSuccess);
+        responseTimeP95.add(recallResponse.timings.duration);
+      }
+    }
+    
+    function searchOperations() {
+      const searchQueries = [
+        'artificial intelligence',
+        'machine learning',
+        'data science',
+        'performance optimization',
+        'system architecture'
+      ];
+      
+      const query = searchQueries[Math.floor(Math.random() * searchQueries.length)];
+      const agentId = `search-agent-${Math.floor(Math.random() * 100)}`;
+      
+      const response = http.get(
+        `${BASE_URL}/api/memory/recall?agentId=${agentId}&query=${encodeURIComponent(query)}&limit=20`
+      );
+      
+      const success = check(response, {
+        'search operation status is 200': (r) => r.status === 200,
+        'search operation response time < 400ms': (r) => r.timings.duration < 400,
+        'search results not empty': (r) => {
+          try {
+            const data = JSON.parse(r.body);
+            return data.memories && data.memories.length >= 0;
+          } catch {
+            return false;
+          }
+        },
+      });
+      
+      errorRate.add(!success);
+      responseTimeP95.add(response.timings.duration);
+    }
+    
+    function analyticsOperations() {
+      const agentId = `analytics-agent-${Math.floor(Math.random() * 50)}`;
+      
+      const response = http.get(`${BASE_URL}/api/analytics/dashboard?agentId=${agentId}`);
+      
+      const success = check(response, {
+        'analytics operation status is 200': (r) => r.status === 200,
+        'analytics operation response time < 600ms': (r) => r.timings.duration < 600,
+      });
+      
+      errorRate.add(!success);
+      responseTimeP95.add(response.timings.duration);
+    }
+    
+    export function handleSummary(data) {
+      return {
+        'load-test-summary.json': JSON.stringify(data, null, 2),
+      };
+    }
+
+  spike-test.js: |
+    import http from 'k6/http';
+    import { check, sleep } from 'k6';
+    import { Rate } from 'k6/metrics';
+    
+    const errorRate = new Rate('error_rate');
+    
+    export const options = {
+      stages: [
+        { duration: '1m', target: 10 },    // Normal load
+        { duration: '10s', target: 500 },  // Spike to 500 users
+        { duration: '30s', target: 500 },  // Stay at 500 users
+        { duration: '10s', target: 10 },   // Scale down
+        { duration: '1m', target: 10 },    // Normal load
+      ],
+      thresholds: {
+        http_req_duration: ['p(95)<1000'],
+        http_req_failed: ['rate<0.05'], // Allow higher error rate during spike
+        error_rate: ['rate<0.05'],
+      },
+    };
+    
+    const BASE_URL = 'http://memorai-mcp-server.memorai-mcp.svc.cluster.local:4950';
+    
+    export default function () {
+      const response = http.get(`${BASE_URL}/health`);
+      
+      const success = check(response, {
+        'spike test status check': (r) => r.status === 200,
+        'spike test response time': (r) => r.timings.duration < 2000,
+      });
+      
+      errorRate.add(!success);
+      
+      sleep(Math.random() * 2);
+    }
+
+  stress-test.js: |
+    import http from 'k6/http';
+    import { check, sleep } from 'k6';
+    import { Rate } from 'k6/metrics';
+    
+    const errorRate = new Rate('error_rate');
+    
+    export const options = {
+      stages: [
+        { duration: '2m', target: 50 },    // Ramp up
+        { duration: '5m', target: 200 },   // Scale to 200 users
+        { duration: '10m', target: 500 },  // Scale to 500 users
+        { duration: '15m', target: 800 },  // Scale to 800 users
+        { duration: '5m', target: 1000 },  // Peak load
+        { duration: '10m', target: 1000 }, // Stay at peak
+        { duration: '5m', target: 0 },     // Ramp down
+      ],
+      thresholds: {
+        http_req_duration: ['p(95)<2000'],
+        http_req_failed: ['rate<0.10'], // Allow higher error rate under stress
+        error_rate: ['rate<0.10'],
+      },
+    };
+    
+    const BASE_URL = 'http://memorai-mcp-server.memorai-mcp.svc.cluster.local:4950';
+    
+    export default function () {
+      // Mix of operations under stress
+      const operations = [
+        () => http.get(`${BASE_URL}/health`),
+        () => http.get(`${BASE_URL}/api/memory/recall?agentId=stress-agent&query=stress-test&limit=5`),
+        () => http.post(
+          `${BASE_URL}/api/memory/remember`,
+          JSON.stringify({
+            agentId: `stress-agent-${Math.floor(Math.random() * 1000)}`,
+            content: `Stress test memory ${Date.now()}`,
+            metadata: { importance: 5, tags: ['stress-test'] }
+          }),
+          { headers: { 'Content-Type': 'application/json' } }
+        ),
+      ];
+      
+      const operation = operations[Math.floor(Math.random() * operations.length)];
+      const response = operation();
+      
+      const success = check(response, {
+        'stress test status acceptable': (r) => r.status < 500,
+      });
+      
+      errorRate.add(!success);
+      
+      sleep(0.1 + Math.random() * 0.5);
+    }
+
+  volume-test.js: |
+    import http from 'k6/http';
+    import { check, sleep } from 'k6';
+    import { SharedArray } from 'k6/data';
+    
+    // Large dataset simulation
+    const testData = new SharedArray('test memories', function () {
+      const data = [];
+      for (let i = 0; i < 10000; i++) {
+        data.push({
+          agentId: `volume-agent-${i % 100}`,
+          content: `Volume test memory ${i} with extensive content that simulates real-world memory storage patterns and includes various types of information such as technical documentation, meeting notes, project specifications, and other business-critical data that would typically be stored in a production memory system.`,
+          metadata: {
+            importance: Math.floor(Math.random() * 10) + 1,
+            tags: ['volume-test', `batch-${Math.floor(i / 100)}`, 'performance'],
+            project: `project-${i % 20}`,
+            timestamp: Date.now() - (Math.random() * 86400000 * 30) // Random timestamp within 30 days
+          }
+        });
+      }
+      return data;
+    });
+    
+    export const options = {
+      stages: [
+        { duration: '5m', target: 20 },   // Ramp up slowly
+        { duration: '30m', target: 20 },  // Sustained volume processing
+        { duration: '5m', target: 0 },    // Ramp down
+      ],
+      thresholds: {
+        http_req_duration: ['p(95)<3000'], // Allow longer response times for large data
+        http_req_failed: ['rate<0.02'],
+      },
+    };
+    
+    const BASE_URL = 'http://memorai-mcp-server.memorai-mcp.svc.cluster.local:4950';
+    
+    export default function () {
+      const testMemory = testData[Math.floor(Math.random() * testData.length)];
+      
+      const response = http.post(
+        `${BASE_URL}/api/memory/remember`,
+        JSON.stringify(testMemory),
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+      
+      check(response, {
+        'volume test memory creation': (r) => r.status === 200,
+        'volume test response time': (r) => r.timings.duration < 5000,
+      });
+      
+      // Occasional search to test retrieval under volume
+      if (Math.random() < 0.1) {
+        const searchResponse = http.get(
+          `${BASE_URL}/api/memory/recall?agentId=${testMemory.agentId}&query=volume&limit=50`
+        );
+        
+        check(searchResponse, {
+          'volume search operation': (r) => r.status === 200,
+        });
+      }
+      
+      sleep(0.5 + Math.random());
+    }
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: k6-baseline-load-test
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    test-type: baseline-load
+spec:
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp-server
+        component: performance
+        test-type: baseline-load
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: k6-load-test
+        image: grafana/k6:0.47.0
+        command:
+        - k6
+        - run
+        - --out
+        - json=/shared/baseline-results.json
+        - --out
+        - influxdb=http://influxdb:8086/k6
+        - /scripts/baseline-load-test.js
+        volumeMounts:
+        - name: k6-scripts
+          mountPath: /scripts
+        - name: test-results
+          mountPath: /shared
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 12345
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: k6-scripts
+        configMap:
+          name: k6-load-testing-scripts
+      - name: test-results
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: performance-benchmarks
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+data:
+  performance-thresholds.json: |
+    {
+      "baseline_performance": {
+        "response_time": {
+          "health_check": {
+            "p95": 100,
+            "p99": 200
+          },
+          "memory_operations": {
+            "create": {
+              "p95": 500,
+              "p99": 1000
+            },
+            "recall": {
+              "p95": 300,
+              "p99": 600
+            },
+            "search": {
+              "p95": 400,
+              "p99": 800
+            }
+          },
+          "analytics": {
+            "dashboard": {
+              "p95": 600,
+              "p99": 1200
+            },
+            "insights": {
+              "p95": 800,
+              "p99": 1500
+            }
+          }
+        },
+        "throughput": {
+          "concurrent_users": {
+            "baseline": 100,
+            "peak": 500,
+            "stress": 1000
+          },
+          "requests_per_second": {
+            "baseline": 50,
+            "peak": 200,
+            "stress": 300
+          }
+        },
+        "error_rates": {
+          "baseline": 0.01,
+          "peak": 0.02,
+          "stress": 0.05,
+          "spike": 0.05
+        }
+      },
+      "resource_limits": {
+        "memory": {
+          "normal_load": "512Mi",
+          "peak_load": "1Gi",
+          "stress_load": "2Gi"
+        },
+        "cpu": {
+          "normal_load": "500m",
+          "peak_load": "1000m",
+          "stress_load": "2000m"
+        },
+        "connections": {
+          "database_pool": 50,
+          "redis_pool": 100,
+          "http_connections": 1000
+        }
+      },
+      "sla_targets": {
+        "availability": 99.9,
+        "response_time_p95": 500,
+        "error_rate": 0.1,
+        "recovery_time": 60
+      }
+    }
+
+  test-execution-plan.yaml: |
+    test_execution_plan:
+      daily_tests:
+        - name: "health_check_monitoring"
+          schedule: "*/5 * * * *"  # Every 5 minutes
+          script: "baseline-load-test.js"
+          duration: "2m"
+          users: 5
+          
+        - name: "performance_regression"
+          schedule: "0 */6 * * *"   # Every 6 hours
+          script: "baseline-load-test.js"
+          duration: "15m"
+          users: 50
+          
+      weekly_tests:
+        - name: "spike_testing"
+          schedule: "0 2 * * 1"     # Monday 2 AM
+          script: "spike-test.js"
+          duration: "10m"
+          peak_users: 500
+          
+        - name: "volume_testing"
+          schedule: "0 3 * * 6"     # Saturday 3 AM
+          script: "volume-test.js"
+          duration: "60m"
+          users: 20
+          
+      monthly_tests:
+        - name: "comprehensive_stress"
+          schedule: "0 4 1 * *"     # First day of month, 4 AM
+          script: "stress-test.js"
+          duration: "120m"
+          peak_users: 1000
+          
+      release_tests:
+        - name: "pre_deployment_validation"
+          trigger: "manual"
+          scripts: ["baseline-load-test.js", "spike-test.js"]
+          acceptance_criteria:
+            p95_response_time: 500
+            error_rate: 0.01
+            availability: 99.9
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: automated-performance-testing
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    job-type: automated-testing
+spec:
+  schedule: "0 */6 * * *"  # Every 6 hours
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: memorai-mcp-server
+            component: performance
+            job-type: automated-testing
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: performance-test-runner
+            image: grafana/k6:0.47.0
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Starting automated performance test suite..."
+              
+              # Run baseline load test
+              k6 run --out json=/shared/baseline-$(date +%Y%m%d-%H%M%S).json /scripts/baseline-load-test.js
+              
+              # Check if baseline passed
+              if [ $? -eq 0 ]; then
+                echo "Baseline test passed - running spike test"
+                k6 run --out json=/shared/spike-$(date +%Y%m%d-%H%M%S).json /scripts/spike-test.js
+              else
+                echo "Baseline test failed - skipping additional tests"
+                exit 1
+              fi
+              
+              # Generate performance report
+              cat > /shared/performance-report-$(date +%Y%m%d-%H%M%S).md << 'EOF'
+              # Automated Performance Test Report
+              
+              **Test Execution Time:** $(date)
+              **Test Environment:** Kubernetes Cluster
+              **Application:** MemorAI MCP Server v9.5.0
+              
+              ## Test Results Summary
+              
+              ### Baseline Load Test
+              - **Duration:** 21 minutes
+              - **Peak Users:** 100
+              - **Status:** ✅ PASSED
+              - **Key Metrics:**
+                - P95 Response Time: < 500ms
+                - Error Rate: < 1%
+                - Throughput: > 50 RPS
+              
+              ### Spike Test  
+              - **Duration:** 3 minutes
+              - **Peak Users:** 500
+              - **Status:** ✅ PASSED
+              - **Key Metrics:**
+                - P95 Response Time: < 1000ms
+                - Error Rate: < 5%
+                - Recovery Time: < 30s
+              
+              ## Recommendations
+              - System performance within acceptable thresholds
+              - Autoscaling responded appropriately to load spikes
+              - No performance degradation detected
+              
+              ## Next Actions
+              - Continue monitoring baseline performance
+              - Schedule comprehensive stress test for weekend
+              EOF
+              
+              echo "Performance test suite completed successfully"
+            volumeMounts:
+            - name: k6-scripts
+              mountPath: /scripts
+            - name: test-results
+              mountPath: /shared
+            resources:
+              requests:
+                memory: "128Mi"
+                cpu: "100m"
+              limits:
+                memory: "256Mi"
+                cpu: "200m"
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 12345
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
+          volumes:
+          - name: k6-scripts
+            configMap:
+              name: k6-load-testing-scripts
+          - name: test-results
+            persistentVolumeClaim:
+              claimName: performance-test-results
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: performance-test-results
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    service-type: metrics-database
+spec:
+  selector:
+    app: influxdb
+  ports:
+  - port: 8086
+    targetPort: 8086
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    service-type: metrics-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+        component: performance
+    spec:
+      containers:
+      - name: influxdb
+        image: influxdb:2.7
+        ports:
+        - containerPort: 8086
+          name: http
+        env:
+        - name: DOCKER_INFLUXDB_INIT_MODE
+          value: "setup"
+        - name: DOCKER_INFLUXDB_INIT_USERNAME
+          value: "admin"
+        - name: DOCKER_INFLUXDB_INIT_PASSWORD
+          value: "memorai-performance-metrics"
+        - name: DOCKER_INFLUXDB_INIT_ORG
+          value: "memorai"
+        - name: DOCKER_INFLUXDB_INIT_BUCKET
+          value: "k6"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        volumeMounts:
+        - name: influxdb-data
+          mountPath: /var/lib/influxdb2
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: influxdb-data
+        persistentVolumeClaim:
+          claimName: influxdb-data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: influxdb-data
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: standard

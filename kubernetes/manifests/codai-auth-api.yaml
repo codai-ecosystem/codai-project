@@ -1,0 +1,204 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-production
+  labels:
+    name: codai-production
+    environment: production
+    project: essential-codai-services
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-auth-api
+  namespace: codai-production
+  labels:
+    app: codai-auth-api
+    component: authentication
+    tier: backend
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: codai-auth-api
+  template:
+    metadata:
+      labels:
+        app: codai-auth-api
+        component: authentication
+        tier: backend
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - codai-auth-api
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: auth-api
+        image: codai/auth-api:latest
+        ports:
+        - containerPort: 8100
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "8100"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: host
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: codai-database-secrets
+              key: password
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codai-auth-secrets
+              key: jwt-secret
+        - name: OAUTH_GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: codai-oauth-secrets
+              key: google-client-id
+        - name: OAUTH_GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codai-oauth-secrets
+              key: google-client-secret
+        - name: OAUTH_GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: codai-oauth-secrets
+              key: github-client-id
+        - name: OAUTH_GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codai-oauth-secrets
+              key: github-client-secret
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1001
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-auth-api-service
+  namespace: codai-production
+  labels:
+    app: codai-auth-api
+    component: authentication
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8100
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: codai-auth-api
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: codai-auth-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  jwt-secret: # base64 encoded JWT secret
+  mfa-encryption-key: # base64 encoded MFA encryption key
+  session-secret: # base64 encoded session secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: codai-oauth-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  google-client-id: # base64 encoded Google OAuth client ID
+  google-client-secret: # base64 encoded Google OAuth client secret
+  github-client-id: # base64 encoded GitHub OAuth client ID
+  github-client-secret: # base64 encoded GitHub OAuth client secret
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-auth-api-hpa
+  namespace: codai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-auth-api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 15

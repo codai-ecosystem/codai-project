@@ -1,0 +1,127 @@
+{
+  "test_summary": {
+    "total_tests": 12,
+    "passed_tests": 12,
+    "failed_tests": 0,
+    "success_rate": 100.0,
+    "total_execution_time": 2.1953036785125732
+  },
+  "module_availability": {
+    "multi_agent_coordination": true
+  },
+  "test_categories": {
+    "component_tests": {
+      "count": 4,
+      "passed": 4,
+      "success_rate": 100.0
+    },
+    "coordination_tests": {
+      "count": 3,
+      "passed": 3,
+      "success_rate": 100.0
+    },
+    "integration_tests": {
+      "count": 5,
+      "passed": 5,
+      "success_rate": 100.0
+    }
+  },
+  "performance_metrics": {
+    "start_time": 1756335473.3215117,
+    "communication_tests": {
+      "initialization": 0.012020587921142578,
+      "messaging": 0.0008792877197265625,
+      "latency": 0.0006837844848632812
+    },
+    "coordination_tests": {
+      "discovery": 0.0043027400970458984,
+      "capabilities": 0.006504535675048828,
+      "task_coordination": 0.003967761993408203
+    },
+    "distributed_reasoning_tests": {
+      "basic": 0.1122593879699707,
+      "consensus": 0.0011050701141357422
+    },
+    "integration_tests": {
+      "multi_agent_network": 0.00278472900390625,
+      "concurrent_coordination": 0.0010547637939453125,
+      "fault_tolerance": 2.0086050033569336,
+      "scalability": 0.0252840518951416
+    }
+  },
+  "detailed_results": [
+    {
+      "test_name": "agent_coordinator_initialization",
+      "passed": true,
+      "details": "Successfully initialized 3 agents (0.01s)",
+      "timestamp": "2025-08-28T01:57:53.342097"
+    },
+    {
+      "test_name": "inter_agent_communication",
+      "passed": true,
+      "details": "Communication system working (0.00s)",
+      "timestamp": "2025-08-28T01:57:53.345396"
+    },
+    {
+      "test_name": "agent_discovery",
+      "passed": true,
+      "details": "Discovery mechanism working (0.00s)",
+      "timestamp": "2025-08-28T01:57:53.350163"
+    },
+    {
+      "test_name": "capability_management",
+      "passed": true,
+      "details": "Capability management working (0.01s)",
+      "timestamp": "2025-08-28T01:57:53.357530"
+    },
+    {
+      "test_name": "task_coordination",
+      "passed": true,
+      "details": "Task coordination working (0.00s)",
+      "timestamp": "2025-08-28T01:57:53.361861"
+    },
+    {
+      "test_name": "distributed_reasoning",
+      "passed": true,
+      "details": "Distributed reasoning working (0.11s)",
+      "timestamp": "2025-08-28T01:57:53.474352"
+    },
+    {
+      "test_name": "consensus_formation",
+      "passed": true,
+      "details": "Consensus formation working (0.00s)",
+      "timestamp": "2025-08-28T01:57:53.475863"
+    },
+    {
+      "test_name": "multi_agent_network",
+      "passed": true,
+      "details": "Multi-agent network working (0.00s, 4 agents)",
+      "timestamp": "2025-08-28T01:57:53.478932"
+    },
+    {
+      "test_name": "concurrent_coordination",
+      "passed": true,
+      "details": "Concurrent coordination working (0.00s, 3 tasks)",
+      "timestamp": "2025-08-28T01:57:53.480120"
+    },
+    {
+      "test_name": "fault_tolerance",
+      "passed": true,
+      "details": "Fault tolerance working (2.01s)",
+      "timestamp": "2025-08-28T01:57:55.488848"
+    },
+    {
+      "test_name": "scalability",
+      "passed": true,
+      "details": "Scalability test completed (0.03s)",
+      "timestamp": "2025-08-28T01:57:55.515749"
+    },
+    {
+      "test_name": "communication_latency",
+      "passed": true,
+      "details": "Communication latency acceptable (Creation: 0.00ms, Serialize: 0.00ms, Deserialize: 0.00ms)",
+      "timestamp": "2025-08-28T01:57:55.516691"
+    }
+  ],
+  "recommendations": []
+}

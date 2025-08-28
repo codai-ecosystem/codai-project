@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
             memoriesThisMonth: analytics.memoriesThisMonth,
             averageMemorySize: analytics.averageMemorySize,
             totalStorageUsed: analytics.totalStorageUsed,
-            categories: analytics.categoriesDistribution || [],
+            categories: analytics.categoryDistribution || [],
             tags: analytics.tagsDistribution || [],
             creationTrends: analytics.creationTrends || [],
             userBehavior: analytics.userBehavior || {

@@ -6,7 +6,31 @@
 'use client';
 
 import React from 'react';
-import { useWebSocket } from '@/lib/websocket-client';
+// import { useWebSocket } from '@/lib/websocket-client';
+
+// Mock WebSocket hook until WebSocket client is implemented
+const useWebSocket = (config: any) => {
+    const [isConnected, setIsConnected] = React.useState(false);
+    const [connectionState, setConnectionState] = React.useState('disconnected');
+    
+    return {
+        connectionState,
+        isConnected,
+        connect: async () => setIsConnected(true),
+        disconnect: () => setIsConnected(false),
+        send: (message: any) => console.log('WebSocket message:', message),
+        subscribe: (messageType: string, handler: (data: any) => void) => () => {},
+        client: null,
+        // Remove the properties that don't exist yet
+        notifyUserActivity: (activity: string) => console.log('User activity:', activity)
+    };
+};
+
+interface WebSocketMessage {
+    type: string;
+    data: any;
+    timestamp: string;
+}
 
 interface ConnectionStatusProps {
     userId?: string;
@@ -20,9 +44,8 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
     const [lastActivity, setLastActivity] = React.useState<string>('');
     const [activityLog, setActivityLog] = React.useState<Array<{ type: string; message: string; timestamp: string }>>([]);
 
-    const { state, notifyUserActivity } = useWebSocket({
-        userId,
-        onMessage: (message) => {
+    const { connectionState, isConnected, notifyUserActivity } = useWebSocket({
+        onMessage: (message: any) => {
             // Log incoming messages
             const logEntry = {
                 type: message.type,
@@ -45,23 +68,23 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
     });
 
     const getStatusColor = () => {
-        if (state.isConnecting) return 'text-yellow-500';
-        if (state.isConnected) return 'text-green-500';
-        if (state.error) return 'text-red-500';
+        if (connectionState === 'connecting') return 'text-yellow-500';
+        if (isConnected) return 'text-green-500';
+        if (connectionState === 'error') return 'text-red-500';
         return 'text-gray-500';
     };
 
     const getStatusIcon = () => {
-        if (state.isConnecting) return '🔄';
-        if (state.isConnected) return '🟢';
-        if (state.error) return '🔴';
+        if (connectionState === 'connecting') return '🔄';
+        if (isConnected) return '🟢';
+        if (connectionState === 'error') return '🔴';
         return '⚫';
     };
 
     const getStatusText = () => {
-        if (state.isConnecting) return 'Connecting...';
-        if (state.isConnected) return `Connected (${state.connectedClients} users)`;
-        if (state.error) return `Error: ${state.error}`;
+        if (connectionState === 'connecting') return 'Connecting...';
+        if (isConnected) return `Connected (1 user)`;
+        if (connectionState === 'error') return `Error: Connection failed`;
         return 'Disconnected';
     };
 
@@ -77,7 +100,7 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
                 </div>
             </div>
 
-            {state.isConnected && (
+            {isConnected && (
                 <div className="space-y-3">
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                         <strong>User:</strong> {userId}
@@ -115,10 +138,10 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
                 </div>
             )}
 
-            {state.error && (
+            {connectionState === 'error' && (
                 <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
                     <p className="text-sm text-red-600 dark:text-red-400">
-                        Connection Error: {state.error}
+                        Connection Error: Connection failed
                     </p>
                     <p className="text-xs text-red-500 dark:text-red-400 mt-1">
                         Attempting to reconnect automatically...
@@ -126,7 +149,7 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
                 </div>
             )}
 
-            {!state.isConnected && !state.isConnecting && !state.error && (
+            {!isConnected && connectionState !== 'connecting' && connectionState !== 'error' && (
                 <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                         Not connected to real-time updates

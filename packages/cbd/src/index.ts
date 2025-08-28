@@ -1,34 +1,71 @@
 /**
- * CBD (Codai Better Database) Main Export
- * Revolutionary vector-native database system for AI memory storage
- * Enhanced with Enterprise Features: Clustering, Security, and High-Performance Server
+ * CBD (CODAI Better Database) v1.0.10
+ * Multi-paradigm database with HTAP capabilities
+ * Phase 1: HTAP Processing Engine & Multi-Paradigm Storage
  */
 
-export { CBDMemoryEngine } from './memory/MemoryEngine.js';
-export { FaissVectorStore, InMemoryVectorIndex } from './vector/VectorStore.js';
-export { OpenAIEmbeddingModel, LocalEmbeddingModel } from './embedding/EmbeddingService.js';
-export { CBDNativeStorageAdapter } from './storage/CBDNativeStorageAdapter.js';
+// Main CBD 2.0 Engine
+export { default as CBD2MainEngine, type CBD2Config, DEFAULT_CBD2_CONFIG } from './CBD2MainEngine.js';
 
-// HTAP Database Engines (Phase 1)
-export { CBDRowStoreEngine } from './htap/RowStoreEngine.js';
-export { CBDColumnarStoreEngine } from './htap/ColumnarStoreEngine.js';
-export { CBDDocumentStoreEngine } from './htap/DocumentStoreEngine.js';
-export { CBDQueryRouter } from './htap/QueryRouter.js';
+// HTAP Processing Engine
+export {
+    CBDHTAPProcessingEngine,
+    CBDQueryRouter,
+    type HTAPConfig,
+    type QueryContext,
+    type QueryResult,
+    type HTAPStats,
+    QueryType,
+    DEFAULT_HTAP_CONFIG
+} from './htap/HTAPProcessingEngine.js';
 
-// Graph Database Engine (Phase 2)
-export { CBDGraphDatabaseEngine } from './graph/GraphDatabaseEngine.js';
-export { CBDGremlinAPI } from './graph/GremlinAPI.js';
-export { CBDCypherEngine } from './graph/CypherEngine.js';
+// Multi-Paradigm Storage Engine
+export {
+    CBDMultiParadigmEngine,
+    CBDRelationalEngine,
+    CBDDocumentEngine,
+    CBDVectorEngine,
+    type MultiParadigmQuery,
+    type QueryOptions,
+    type ParadigmStats,
+    DBParadigm,
+    DEFAULT_MULTIPARADIGM_CONFIG
+} from './multiparadigm/MultiParadigmEngine.js';
 
-// Time-Series Database Engine (Phase 3)
-export { CBDTimeSeriesEngine } from './time-series/TimeSeriesEngine.js';
+// Performance Monitoring
+export {
+    PerformanceMetrics,
+    type QueryMetrics,
+    type SystemMetrics,
+    type HTAPMetrics
+} from './performance/PerformanceMetrics.js';
+
+// Version and build info
+export const CBD_VERSION = '1.0.10';
+export const CBD2_VERSION = '2.0.0-phase1';
+export const BUILD_DATE = new Date().toISOString();
+export const SUPPORTED_PARADIGMS = [
+    'relational',
+    'document',
+    'key-value',
+    'graph',
+    'vector',
+    'time-series',
+    'file-storage'
+];
+
+// Quick start factory function
+export function createCBD2Engine(config?: Partial<import('./CBD2MainEngine.js').CBD2Config>) {
+    const { default: CBD2MainEngine } = require('./CBD2MainEngine.js');
+    return new CBD2MainEngine(config);
+}
 
 // Multi-Modal Vector Database Engine (Phase 4)
-export { 
-  CBDMultiModalVectorEngine,
-  AzureMultiModalProvider,
-  VectorSimilarityEngine,
-  MultiModalFusionEngine 
+export {
+    CBDMultiModalVectorEngine,
+    AzureMultiModalProvider,
+    VectorSimilarityEngine,
+    MultiModalFusionEngine
 } from './multi-modal/MultiModalVectorEngine.js';
 
 // CND Compatibility Layer
@@ -119,9 +156,9 @@ export function createCBDEngine(config: Partial<import('./types/index.js').CBDCo
 }
 
 /**
- * CBD version and metadata
+ * CBD version and metadata  
  */
-export const CBD_VERSION = '1.1.0';
+export const CBD_LEGACY_VERSION = '1.1.0';
 export const CBD_DESCRIPTION = 'Codai Better Database - Revolutionary vector-native AI memory system with enterprise features';
 
 /**

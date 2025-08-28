@@ -1,0 +1,898 @@
+# Application Performance Monitoring & Tuning for Essential CodAI Services
+# Version: 1.0
+# APM | Memory Optimization | Response Time Monitoring | Performance Profiling
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: performance-monitoring-config
+  namespace: codai-production
+data:
+  apm-config.json: |
+    {
+      "application_performance_monitoring": {
+        "enabled": true,
+        "sampling_rate": 0.1,
+        "max_spans": 1000,
+        "max_events": 100,
+        "transaction_sample_rate": 1.0,
+        "environment": "production",
+        "service_name": "codai-services",
+        "service_version": "1.0.0",
+        "distributed_tracing": {
+          "enabled": true,
+          "propagation_headers": ["traceparent", "tracestate", "baggage"],
+          "correlation_id": true
+        },
+        "metrics": {
+          "enabled": true,
+          "interval": 30,
+          "custom_metrics": true,
+          "business_metrics": true
+        },
+        "error_tracking": {
+          "enabled": true,
+          "capture_errors": true,
+          "capture_unhandled": true,
+          "filter_sensitive_data": true
+        }
+      },
+      "memory_optimization": {
+        "enabled": true,
+        "heap_monitoring": {
+          "enabled": true,
+          "max_heap_size": "2g",
+          "heap_dump_on_oom": true,
+          "heap_dump_path": "/tmp/heap-dumps"
+        },
+        "garbage_collection": {
+          "enabled": true,
+          "gc_algorithm": "G1GC",
+          "young_gen_size": "512m",
+          "old_gen_size": "1g",
+          "gc_tuning": {
+            "max_gc_pause_millis": 200,
+            "gc_time_ratio": 99,
+            "adaptive_size_policy": true
+          }
+        },
+        "memory_leak_detection": {
+          "enabled": true,
+          "threshold": 85,
+          "check_interval": 60,
+          "alert_on_leak": true
+        },
+        "connection_pooling": {
+          "database": {
+            "max_pool_size": 100,
+            "min_pool_size": 10,
+            "idle_timeout": 300,
+            "leak_detection_threshold": 60000
+          },
+          "redis": {
+            "max_pool_size": 50,
+            "min_pool_size": 5,
+            "idle_timeout": 300,
+            "validation_interval": 30
+          }
+        }
+      },
+      "response_time_monitoring": {
+        "enabled": true,
+        "targets": {
+          "api_endpoints": {
+            "p50": 50,
+            "p95": 100,
+            "p99": 200,
+            "timeout": 5000
+          },
+          "database_queries": {
+            "p50": 10,
+            "p95": 50,
+            "p99": 100,
+            "slow_query_threshold": 1000
+          },
+          "external_services": {
+            "p50": 100,
+            "p95": 500,
+            "p99": 1000,
+            "circuit_breaker_threshold": 2000
+          }
+        },
+        "alerting": {
+          "enabled": true,
+          "channels": ["slack", "email", "pagerduty"],
+          "thresholds": {
+            "warning": 150,
+            "critical": 300
+          }
+        }
+      },
+      "profiling": {
+        "enabled": true,
+        "cpu_profiling": {
+          "enabled": true,
+          "sample_rate": 100,
+          "duration": 30,
+          "frequency": "hourly"
+        },
+        "memory_profiling": {
+          "enabled": true,
+          "sample_rate": 128,
+          "duration": 30,
+          "frequency": "daily"
+        },
+        "continuous_profiling": {
+          "enabled": true,
+          "upload_interval": 300,
+          "retention_days": 30
+        }
+      },
+      "load_testing": {
+        "enabled": true,
+        "scenarios": {
+          "baseline": {
+            "users": 100,
+            "duration": "5m",
+            "ramp_up": "1m"
+          },
+          "stress": {
+            "users": 1000,
+            "duration": "10m",
+            "ramp_up": "2m"
+          },
+          "spike": {
+            "users": 2000,
+            "duration": "2m",
+            "ramp_up": "30s"
+          },
+          "endurance": {
+            "users": 500,
+            "duration": "1h",
+            "ramp_up": "5m"
+          }
+        },
+        "success_criteria": {
+          "response_time_p95": 100,
+          "error_rate": 1,
+          "throughput_min": 1000
+        }
+      },
+      "optimization_strategies": {
+        "caching": {
+          "enabled": true,
+          "layers": ["memory", "redis", "cdn"],
+          "invalidation_strategy": "tag_based",
+          "warming_strategy": "predictive"
+        },
+        "compression": {
+          "enabled": true,
+          "algorithms": ["gzip", "brotli"],
+          "minimum_size": 1024
+        },
+        "async_processing": {
+          "enabled": true,
+          "queue_backend": "redis",
+          "max_workers": 10,
+          "retry_strategy": "exponential_backoff"
+        }
+      }
+    }
+
+  nodejs-optimization.js: |
+    // Node.js Performance Optimization Configuration
+    const performanceConfig = {
+      // V8 Engine Optimizations
+      v8Flags: [
+        '--max-old-space-size=2048',
+        '--optimize-for-size',
+        '--gc-interval=100',
+        '--expose-gc',
+        '--trace-gc-verbose'
+      ],
+      
+      // Memory Management
+      memoryManagement: {
+        heapSizeLimit: '2048m',
+        enableGC: true,
+        gcInterval: 100000,
+        memoryLeakDetection: true,
+        maxObjectSize: '100mb'
+      },
+      
+      // Event Loop Monitoring
+      eventLoop: {
+        monitorLag: true,
+        lagThreshold: 70,
+        reportInterval: 5000
+      },
+      
+      // HTTP Optimizations  
+      http: {
+        keepAlive: true,
+        keepAliveMsecs: 30000,
+        maxSockets: 50,
+        maxFreeSockets: 10,
+        timeout: 30000
+      },
+      
+      // Cluster Mode
+      cluster: {
+        enabled: true,
+        workers: 'auto', // Will use CPU count
+        respawn: true,
+        maxRestarts: 10
+      }
+    };
+
+  python-optimization.py: |
+    # Python Performance Optimization Configuration
+    import asyncio
+    import uvloop
+    
+    PERFORMANCE_CONFIG = {
+        # AsyncIO Optimizations
+        'event_loop': 'uvloop',  # Faster event loop
+        'max_workers': 10,
+        'connection_pool_size': 100,
+        'connection_pool_maxsize': 200,
+        
+        # Memory Management
+        'memory': {
+            'gc_threshold': (700, 10, 10),  # Tune garbage collection
+            'max_memory_usage': '2GB',
+            'memory_profiling': True,
+            'leak_detection': True
+        },
+        
+        # Database Optimizations
+        'database': {
+            'connection_pool_size': 20,
+            'connection_pool_overflow': 30,
+            'pool_recycle': 3600,
+            'echo': False,  # Disable query logging in production
+            'query_cache_size': 1000
+        },
+        
+        # Caching
+        'caching': {
+            'backend': 'redis',
+            'default_timeout': 300,
+            'key_prefix': 'codai:',
+            'serializer': 'pickle'
+        },
+        
+        # Logging
+        'logging': {
+            'level': 'INFO',
+            'format': 'json',
+            'async_logging': True,
+            'buffer_size': 1000
+        }
+    }
+
+---
+# APM Agent Deployment
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: codai-apm-agent
+  namespace: codai-production
+  labels:
+    app: codai-apm-agent
+    component: performance-monitoring
+spec:
+  selector:
+    matchLabels:
+      app: codai-apm-agent
+  template:
+    metadata:
+      labels:
+        app: codai-apm-agent
+        component: performance-monitoring
+    spec:
+      serviceAccountName: codai-apm-agent
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: apm-agent
+        image: elastic/apm-server:8.12.0
+        ports:
+        - containerPort: 8200
+          name: apm
+        env:
+        - name: ELASTIC_APM_SERVER_URL
+          value: "http://elasticsearch.codai-production.svc.cluster.local:9200"
+        - name: ELASTIC_APM_SECRET_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: apm-secrets
+              key: secret-token
+        volumeMounts:
+        - name: apm-config
+          mountPath: /usr/share/apm-server/apm-server.yml
+          subPath: apm-server.yml
+        - name: proc
+          mountPath: /host/proc
+          readOnly: true
+        - name: sys
+          mountPath: /host/sys
+          readOnly: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8200
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8200
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: apm-config
+        configMap:
+          name: apm-config
+      - name: proc
+        hostPath:
+          path: /proc
+      - name: sys
+        hostPath:
+          path: /sys
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apm-config
+  namespace: codai-production
+data:
+  apm-server.yml: |
+    apm-server:
+      host: "0.0.0.0:8200"
+      secret_token: "${ELASTIC_APM_SECRET_TOKEN}"
+      
+      rum:
+        enabled: true
+        event_rate:
+          limit: 300
+          lru_size: 1000
+        allow_origins: ['*']
+        
+      sampling:
+        keep_unsampled: false
+        
+    output.elasticsearch:
+      hosts: ["http://elasticsearch.codai-production.svc.cluster.local:9200"]
+      
+    setup.template.settings:
+      index.number_of_shards: 1
+      index.codec: best_compression
+      
+    logging.level: info
+    logging.to_files: true
+    logging.files:
+      path: /var/log/apm-server
+      name: apm-server
+      keepfiles: 7
+      permissions: 0644
+
+---
+# Performance Profiler Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-performance-profiler
+  namespace: codai-production
+  labels:
+    app: codai-performance-profiler
+    component: performance-monitoring
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-performance-profiler
+  template:
+    metadata:
+      labels:
+        app: codai-performance-profiler
+        component: performance-monitoring
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-performance-profiler
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: profiler
+        image: pyroscope/pyroscope:latest
+        ports:
+        - containerPort: 4040
+          name: http
+        env:
+        - name: PYROSCOPE_LOG_LEVEL
+          value: "info"
+        - name: PYROSCOPE_STORAGE_PATH
+          value: "/var/lib/pyroscope"
+        - name: PYROSCOPE_RETENTION_DURATION
+          value: "720h"  # 30 days
+        volumeMounts:
+        - name: profiler-data
+          mountPath: /var/lib/pyroscope
+        - name: profiler-config
+          mountPath: /etc/pyroscope
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 4040
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 4040
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: profiler-data
+        persistentVolumeClaim:
+          claimName: profiler-data-pvc
+      - name: profiler-config
+        configMap:
+          name: profiler-config
+
+---
+# Load Testing Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-load-tester
+  namespace: codai-production
+  labels:
+    app: codai-load-tester
+    component: performance-monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codai-load-tester
+  template:
+    metadata:
+      labels:
+        app: codai-load-tester
+        component: performance-monitoring
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-load-tester
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: k6
+        image: grafana/k6:latest
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - |
+          cat > /scripts/load-test.js << 'EOF'
+          import http from 'k6/http';
+          import { check, sleep } from 'k6';
+          import { Counter, Trend } from 'k6/metrics';
+          
+          // Custom metrics
+          const apiResponseTime = new Trend('api_response_time');
+          const apiErrors = new Counter('api_errors');
+          
+          export const options = {
+            scenarios: {
+              baseline: {
+                executor: 'ramping-vus',
+                startVUs: 0,
+                stages: [
+                  { duration: '1m', target: 100 },
+                  { duration: '5m', target: 100 },
+                  { duration: '1m', target: 0 },
+                ],
+              },
+              stress: {
+                executor: 'ramping-vus',
+                startVUs: 0,
+                stages: [
+                  { duration: '2m', target: 1000 },
+                  { duration: '10m', target: 1000 },
+                  { duration: '2m', target: 0 },
+                ],
+                startTime: '7m',
+              },
+            },
+            thresholds: {
+              http_req_duration: ['p(95)<100'],
+              http_req_failed: ['rate<0.01'],
+              api_response_time: ['p(95)<100'],
+            },
+          };
+          
+          const BASE_URL = __ENV.BASE_URL || 'http://nginx-load-balancer.codai-production.svc.cluster.local';
+          
+          export default function () {
+            // Test API endpoints
+            const endpoints = [
+              '/api/health',
+              '/api/auth/status',
+              '/api/hub/projects',
+              '/api/memorai/memories',
+            ];
+            
+            endpoints.forEach(endpoint => {
+              const response = http.get(`${BASE_URL}${endpoint}`, {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+              
+              const success = check(response, {
+                'status is 200': (r) => r.status === 200,
+                'response time < 100ms': (r) => r.timings.duration < 100,
+              });
+              
+              apiResponseTime.add(response.timings.duration);
+              
+              if (!success) {
+                apiErrors.add(1);
+              }
+            });
+            
+            sleep(1);
+          }
+          EOF
+          
+          # Keep container running
+          tail -f /dev/null
+        volumeMounts:
+        - name: test-scripts
+          mountPath: /scripts
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+      volumes:
+      - name: test-scripts
+        emptyDir: {}
+
+---
+# Memory Analyzer Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-memory-analyzer
+  namespace: codai-production
+  labels:
+    app: codai-memory-analyzer
+    component: performance-monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codai-memory-analyzer
+  template:
+    metadata:
+      labels:
+        app: codai-memory-analyzer
+        component: performance-monitoring
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: codai-memory-analyzer
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: memory-analyzer
+        image: node:18-alpine
+        ports:
+        - containerPort: 5000
+          name: http
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - |
+          cat > /app/analyzer.js << 'EOF'
+          const express = require('express');
+          const v8 = require('v8');
+          const process = require('process');
+          const app = express();
+          const port = 5000;
+          
+          app.use(express.json());
+          
+          // Memory analysis endpoint
+          app.get('/analyze', (req, res) => {
+            const memoryUsage = process.memoryUsage();
+            const heapStatistics = v8.getHeapStatistics();
+            const heapSpaceStatistics = v8.getHeapSpaceStatistics();
+            
+            const analysis = {
+              timestamp: new Date(),
+              memory_usage: {
+                rss: `${Math.round(memoryUsage.rss / 1024 / 1024 * 100) / 100} MB`,
+                heap_used: `${Math.round(memoryUsage.heapUsed / 1024 / 1024 * 100) / 100} MB`,
+                heap_total: `${Math.round(memoryUsage.heapTotal / 1024 / 1024 * 100) / 100} MB`,
+                external: `${Math.round(memoryUsage.external / 1024 / 1024 * 100) / 100} MB`,
+                array_buffers: `${Math.round(memoryUsage.arrayBuffers / 1024 / 1024 * 100) / 100} MB`
+              },
+              heap_statistics: {
+                total_heap_size: `${Math.round(heapStatistics.totalHeapSize / 1024 / 1024 * 100) / 100} MB`,
+                used_heap_size: `${Math.round(heapStatistics.usedHeapSize / 1024 / 1024 * 100) / 100} MB`,
+                heap_size_limit: `${Math.round(heapStatistics.heapSizeLimit / 1024 / 1024 * 100) / 100} MB`,
+                malloced_memory: `${Math.round(heapStatistics.mallocedMemory / 1024 / 1024 * 100) / 100} MB`,
+                peak_malloced_memory: `${Math.round(heapStatistics.peakMallocedMemory / 1024 / 1024 * 100) / 100} MB`
+              },
+              heap_spaces: heapSpaceStatistics.map(space => ({
+                space_name: space.spaceName,
+                space_size: `${Math.round(space.spaceSize / 1024 / 1024 * 100) / 100} MB`,
+                space_used_size: `${Math.round(space.spaceUsedSize / 1024 / 1024 * 100) / 100} MB`,
+                space_available_size: `${Math.round(space.spaceAvailableSize / 1024 / 1024 * 100) / 100} MB`,
+                physical_space_size: `${Math.round(space.physicalSpaceSize / 1024 / 1024 * 100) / 100} MB`
+              })),
+              recommendations: generateRecommendations(memoryUsage, heapStatistics)
+            };
+            
+            res.json(analysis);
+          });
+          
+          // Generate heap snapshot
+          app.post('/heap-snapshot', (req, res) => {
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const filename = `/tmp/heap-snapshot-${timestamp}.heapsnapshot`;
+            
+            try {
+              v8.writeHeapSnapshot(filename);
+              res.json({ success: true, filename, timestamp });
+            } catch (error) {
+              res.status(500).json({ success: false, error: error.message });
+            }
+          });
+          
+          // Force garbage collection
+          app.post('/gc', (req, res) => {
+            try {
+              if (global.gc) {
+                global.gc();
+                res.json({ success: true, message: 'Garbage collection triggered' });
+              } else {
+                res.json({ success: false, message: 'Garbage collection not exposed' });
+              }
+            } catch (error) {
+              res.status(500).json({ success: false, error: error.message });
+            }
+          });
+          
+          function generateRecommendations(memoryUsage, heapStats) {
+            const recommendations = [];
+            
+            const heapUsedPercent = (heapStats.usedHeapSize / heapStats.heapSizeLimit) * 100;
+            
+            if (heapUsedPercent > 80) {
+              recommendations.push('High heap usage detected. Consider increasing heap size limit or optimizing memory usage.');
+            }
+            
+            if (heapStats.mallocedMemory > heapStats.peakMallocedMemory * 0.8) {
+              recommendations.push('Memory allocation approaching peak. Monitor for potential memory leaks.');
+            }
+            
+            const rssToHeapRatio = memoryUsage.rss / memoryUsage.heapTotal;
+            if (rssToHeapRatio > 2) {
+              recommendations.push('High RSS to heap ratio indicates significant off-heap memory usage.');
+            }
+            
+            return recommendations;
+          }
+          
+          app.get('/health', (req, res) => {
+            res.json({ status: 'healthy', service: 'codai-memory-analyzer', timestamp: new Date() });
+          });
+          
+          app.listen(port, '0.0.0.0', () => {
+            console.log(`Memory Analyzer listening on port ${port}`);
+          });
+          EOF
+          
+          cd /app && npm init -y && npm install express
+          node --expose-gc analyzer.js
+        workingDir: /app
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+---
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-apm-agent
+  namespace: codai-production
+  labels:
+    app: codai-apm-agent
+spec:
+  ports:
+  - port: 8200
+    targetPort: 8200
+    name: apm
+  selector:
+    app: codai-apm-agent
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-performance-profiler
+  namespace: codai-production
+  labels:
+    app: codai-performance-profiler
+spec:
+  ports:
+  - port: 4040
+    targetPort: 4040
+    name: http
+  selector:
+    app: codai-performance-profiler
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-memory-analyzer
+  namespace: codai-production
+  labels:
+    app: codai-memory-analyzer
+spec:
+  ports:
+  - port: 80
+    targetPort: 5000
+    name: http
+  selector:
+    app: codai-memory-analyzer
+
+---
+# Service Accounts
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-apm-agent
+  namespace: codai-production
+  labels:
+    app: codai-apm-agent
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-performance-profiler
+  namespace: codai-production
+  labels:
+    app: codai-performance-profiler
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-load-tester
+  namespace: codai-production
+  labels:
+    app: codai-load-tester
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: codai-memory-analyzer
+  namespace: codai-production
+  labels:
+    app: codai-memory-analyzer
+
+---
+# APM Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: apm-secrets
+  namespace: codai-production
+type: Opaque
+data:
+  secret-token: Y29kYWktYXBtLXNlY3JldC10b2tlbi0yMDI1  # codai-apm-secret-token-2025
+
+---
+# Profiler Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: profiler-config
+  namespace: codai-production
+data:
+  config.yml: |
+    storage:
+      path: "/var/lib/pyroscope"
+      retention-duration: "720h"
+    
+    api:
+      bind-addr: ":4040"
+      base-url: ""
+      max-nodes-serialization: 2048
+      max-nodes-render: 8192
+    
+    log:
+      level: "info"
+      format: "logfmt"
+    
+    analytics:
+      opt-out: false
+    
+    auth:
+      disable: true
+
+---
+# Persistent Volume Claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: profiler-data-pvc
+  namespace: codai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: fast-ssd

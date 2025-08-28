@@ -1,0 +1,152 @@
+{
+  "timestamp": "2025-08-27T11:09:13.985Z",
+  "summary": {
+    "totalServices": 6,
+    "healthyServices": 6,
+    "totalFindings": 24
+  },
+  "results": [
+    {
+      "service": "CodAI Authentication API",
+      "port": 8100,
+      "healthCheck": "✅ Service healthy (404) - 13ms",
+      "securityHeaders": {
+        "present": [
+          "✅ x-content-type-options: nosniff",
+          "✅ content-security-policy: default-src 'none'"
+        ],
+        "missing": [
+          "❌ Missing x-frame-options (DENY or SAMEORIGIN)",
+          "❌ Missing x-xss-protection (1; mode=block)",
+          "❌ Missing strict-transport-security (max-age directive)"
+        ]
+      },
+      "xssTest": "✅ Basic XSS test passed",
+      "methodsTest": "⚠️ Potentially dangerous HTTP methods allowed: DELETE",
+      "findings": [
+        "❌ Missing x-frame-options (DENY or SAMEORIGIN)",
+        "❌ Missing x-xss-protection (1; mode=block)",
+        "❌ Missing strict-transport-security (max-age directive)",
+        "Dangerous HTTP methods: DELETE"
+      ]
+    },
+    {
+      "service": "CodAI API Gateway",
+      "port": 8010,
+      "healthCheck": "✅ Service healthy (503) - 3012ms",
+      "securityHeaders": {
+        "present": [
+          "✅ x-frame-options: DENY",
+          "✅ x-content-type-options: nosniff",
+          "✅ x-xss-protection: 1; mode=block"
+        ],
+        "missing": [
+          "❌ Missing strict-transport-security (max-age directive)",
+          "❌ Missing content-security-policy (CSP policy)"
+        ]
+      },
+      "xssTest": "✅ Basic XSS test passed",
+      "methodsTest": "⚠️ Potentially dangerous HTTP methods allowed: DELETE",
+      "findings": [
+        "❌ Missing strict-transport-security (max-age directive)",
+        "❌ Missing content-security-policy (CSP policy)",
+        "Dangerous HTTP methods: DELETE"
+      ]
+    },
+    {
+      "service": "CodAI Hub API",
+      "port": 8110,
+      "healthCheck": "✅ Service healthy (404) - 4ms",
+      "securityHeaders": {
+        "present": [
+          "✅ x-content-type-options: nosniff",
+          "✅ content-security-policy: default-src 'none'"
+        ],
+        "missing": [
+          "❌ Missing x-frame-options (DENY or SAMEORIGIN)",
+          "❌ Missing x-xss-protection (1; mode=block)",
+          "❌ Missing strict-transport-security (max-age directive)"
+        ]
+      },
+      "xssTest": "✅ Basic XSS test passed",
+      "methodsTest": "⚠️ Potentially dangerous HTTP methods allowed: DELETE",
+      "findings": [
+        "❌ Missing x-frame-options (DENY or SAMEORIGIN)",
+        "❌ Missing x-xss-protection (1; mode=block)",
+        "❌ Missing strict-transport-security (max-age directive)",
+        "Dangerous HTTP methods: DELETE"
+      ]
+    },
+    {
+      "service": "CodAI MemorAI MCP Service",
+      "port": 4950,
+      "healthCheck": "✅ Service healthy (200) - 4ms",
+      "securityHeaders": {
+        "present": [],
+        "missing": [
+          "❌ Missing x-frame-options (DENY or SAMEORIGIN)",
+          "❌ Missing x-content-type-options (nosniff)",
+          "❌ Missing x-xss-protection (1; mode=block)",
+          "❌ Missing strict-transport-security (max-age directive)",
+          "❌ Missing content-security-policy (CSP policy)"
+        ]
+      },
+      "xssTest": "✅ Basic XSS test passed",
+      "methodsTest": "⚠️ Potentially dangerous HTTP methods allowed: DELETE",
+      "findings": [
+        "❌ Missing x-frame-options (DENY or SAMEORIGIN)",
+        "❌ Missing x-content-type-options (nosniff)",
+        "❌ Missing x-xss-protection (1; mode=block)",
+        "❌ Missing strict-transport-security (max-age directive)",
+        "❌ Missing content-security-policy (CSP policy)",
+        "Dangerous HTTP methods: DELETE"
+      ]
+    },
+    {
+      "service": "CodAI CBD Database Service",
+      "port": 8180,
+      "healthCheck": "✅ Service healthy (200) - 7ms",
+      "securityHeaders": {
+        "present": [
+          "✅ x-frame-options: SAMEORIGIN",
+          "✅ x-content-type-options: nosniff",
+          "✅ x-xss-protection: 0",
+          "✅ strict-transport-security: max-age=31536000; includeSubDomains"
+        ],
+        "missing": [
+          "❌ Missing content-security-policy (CSP policy)"
+        ]
+      },
+      "xssTest": "✅ Basic XSS test passed",
+      "methodsTest": "⚠️ Potentially dangerous HTTP methods allowed: DELETE",
+      "findings": [
+        "❌ Missing content-security-policy (CSP policy)",
+        "Dangerous HTTP methods: DELETE"
+      ]
+    },
+    {
+      "service": "CodAI MemorAI Frontend",
+      "port": 8006,
+      "healthCheck": "✅ Service healthy (200) - 8ms",
+      "securityHeaders": {
+        "present": [],
+        "missing": [
+          "❌ Missing x-frame-options (DENY or SAMEORIGIN)",
+          "❌ Missing x-content-type-options (nosniff)",
+          "❌ Missing x-xss-protection (1; mode=block)",
+          "❌ Missing strict-transport-security (max-age directive)",
+          "❌ Missing content-security-policy (CSP policy)"
+        ]
+      },
+      "xssTest": "✅ Basic XSS test passed",
+      "methodsTest": "✅ HTTP methods check passed",
+      "findings": [
+        "❌ Missing x-frame-options (DENY or SAMEORIGIN)",
+        "❌ Missing x-content-type-options (nosniff)",
+        "❌ Missing x-xss-protection (1; mode=block)",
+        "❌ Missing strict-transport-security (max-age directive)",
+        "❌ Missing content-security-policy (CSP policy)"
+      ]
+    }
+  ]
+}

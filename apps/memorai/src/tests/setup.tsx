@@ -1,7 +1,11 @@
 // 2025 Test Setup - Modern Testing Best Practices
-import '@testing-library/jest-dom'
+// Note: jest-dom matchers are available via vitest globals
 import { beforeAll, afterEach, afterAll, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
+import React from 'react'
+
+// Enable React 18 concurrent features in tests
+global.React = React
 
 // Mock Next.js router
 vi.mock('next/router', () => ({
@@ -11,11 +15,11 @@ vi.mock('next/router', () => ({
       pathname: '/',
       query: {},
       asPath: '/',
-      push: vi.fn(),
-      replace: vi.fn(),
+      push: vi.fn(() => Promise.resolve(true)),
+      replace: vi.fn(() => Promise.resolve(true)),
       reload: vi.fn(),
       back: vi.fn(),
-      prefetch: vi.fn(),
+      prefetch: vi.fn(() => Promise.resolve()),
       beforePopState: vi.fn(),
       events: {
         on: vi.fn(),
@@ -45,6 +49,20 @@ vi.mock('next/navigation', () => ({
   usePathname() {
     return '/'
   },
+  notFound: vi.fn(),
+  redirect: vi.fn(),
+}))
+
+// Mock Next.js Link component
+vi.mock('next/link', () => ({
+  default: ({ children, href, ...props }: any) =>
+    React.createElement('a', { href, ...props }, children)
+}))
+
+// Mock Next.js Image component
+vi.mock('next/image', () => ({
+  default: ({ src, alt, ...props }: any) =>
+    React.createElement('img', { src, alt, ...props })
 }))
 
 // Mock environment variables

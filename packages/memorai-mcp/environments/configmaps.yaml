@@ -1,0 +1,217 @@
+# Multi-Environment Deployment Infrastructure
+# MemorAI MCP Server v9.5.0 - Phase 6 Task 9
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-env-config-development
+  namespace: memorai-development
+  labels:
+    app: memorai-mcp
+    environment: development
+    version: v9.5.0
+data:
+  # Environment Identification
+  ENVIRONMENT: "development"
+  NODE_ENV: "development"
+  
+  # API Configuration
+  MEMORAI_API_BASE_URL: "https://dev-api.memorai.com"
+  MEMORAI_MCP_PORT: "4950"
+  API_VERSION: "v9.5.0"
+  
+  # Database Configuration
+  CBD_BASE_URL: "http://cbd-database-dev:4180"
+  DATABASE_URL: "postgresql://memorai_dev:dev_password@postgres-dev:5432/memorai_dev"
+  DATABASE_SSL: "false"
+  DATABASE_POOL_SIZE: "10"
+  DATABASE_TIMEOUT: "30000"
+  
+  # Cache Configuration
+  REDIS_HOST: "redis-dev"
+  REDIS_PORT: "6379"
+  REDIS_URL: "redis://redis-dev:6379/0"
+  REDIS_DB: "0"
+  CACHE_TTL: "3600"
+  
+  # Vector Store Configuration
+  ENABLE_VECTOR_SEARCH: "true"
+  ENABLE_HYBRID_SEARCH: "true"
+  VECTOR_DIMENSION: "1536"
+  
+  # Feature Flags
+  ENABLE_RBAC: "true"
+  ENABLE_MONITORING: "true"
+  ENABLE_AUDIT_LOGGING: "true"
+  ENABLE_RATE_LIMITING: "true"
+  ENABLE_ANALYTICS: "true"
+  ENABLE_DEBUG_MODE: "true"
+  
+  # Logging Configuration
+  LOG_LEVEL: "DEBUG"
+  ROMAI_LOG_LEVEL: "DEBUG"
+  LOG_FORMAT: "json"
+  ENABLE_REQUEST_LOGGING: "true"
+  
+  # Performance Configuration
+  MAX_CONCURRENT_REQUESTS: "100"
+  REQUEST_TIMEOUT: "30000"
+  BATCH_SIZE: "50"
+  
+  # Azure OpenAI Configuration (Development)
+  AZURE_OPENAI_ENDPOINT: "https://dev-openai.openai.azure.com/"
+  AZURE_OPENAI_API_VERSION: "2024-02-01"
+  AZURE_OPENAI_DEPLOYMENT_NAME: "text-embedding-3-large"
+  
+  # Security Configuration
+  CORS_ENABLED: "true"
+  CORS_ORIGINS: "http://localhost:3000,http://localhost:4006,https://dev.memorai.com"
+  ENABLE_HELMET: "true"
+  
+  # Health Check Configuration
+  HEALTH_CHECK_INTERVAL: "10000"
+  DEPENDENCY_CHECK_TIMEOUT: "5000"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-env-config-staging
+  namespace: memorai-staging
+  labels:
+    app: memorai-mcp
+    environment: staging
+    version: v9.5.0
+data:
+  # Environment Identification
+  ENVIRONMENT: "staging"
+  NODE_ENV: "production"
+  
+  # API Configuration
+  MEMORAI_API_BASE_URL: "https://staging-api.memorai.com"
+  MEMORAI_MCP_PORT: "4950"
+  API_VERSION: "v9.5.0"
+  
+  # Database Configuration
+  CBD_BASE_URL: "http://cbd-database-staging:4180"
+  DATABASE_URL: "postgresql://memorai_staging:staging_password@postgres-staging:5432/memorai_staging"
+  DATABASE_SSL: "true"
+  DATABASE_POOL_SIZE: "20"
+  DATABASE_TIMEOUT: "15000"
+  
+  # Cache Configuration
+  REDIS_HOST: "redis-staging-cluster"
+  REDIS_PORT: "6379"
+  REDIS_URL: "redis://redis-staging-cluster:6379/0"
+  REDIS_DB: "0"
+  CACHE_TTL: "7200"
+  
+  # Vector Store Configuration
+  ENABLE_VECTOR_SEARCH: "true"
+  ENABLE_HYBRID_SEARCH: "true"
+  VECTOR_DIMENSION: "1536"
+  
+  # Feature Flags
+  ENABLE_RBAC: "true"
+  ENABLE_MONITORING: "true"
+  ENABLE_AUDIT_LOGGING: "true"
+  ENABLE_RATE_LIMITING: "true"
+  ENABLE_ANALYTICS: "true"
+  ENABLE_DEBUG_MODE: "false"
+  
+  # Logging Configuration
+  LOG_LEVEL: "INFO"
+  ROMAI_LOG_LEVEL: "INFO"
+  LOG_FORMAT: "json"
+  ENABLE_REQUEST_LOGGING: "true"
+  
+  # Performance Configuration
+  MAX_CONCURRENT_REQUESTS: "500"
+  REQUEST_TIMEOUT: "15000"
+  BATCH_SIZE: "100"
+  
+  # Azure OpenAI Configuration (Staging)
+  AZURE_OPENAI_ENDPOINT: "https://staging-openai.openai.azure.com/"
+  AZURE_OPENAI_API_VERSION: "2024-02-01"
+  AZURE_OPENAI_DEPLOYMENT_NAME: "text-embedding-3-large"
+  
+  # Security Configuration
+  CORS_ENABLED: "true"
+  CORS_ORIGINS: "https://staging.memorai.com,https://staging-app.memorai.com"
+  ENABLE_HELMET: "true"
+  
+  # Health Check Configuration
+  HEALTH_CHECK_INTERVAL: "30000"
+  DEPENDENCY_CHECK_TIMEOUT: "3000"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-env-config-production
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    environment: production
+    version: v9.5.0
+data:
+  # Environment Identification
+  ENVIRONMENT: "production"
+  NODE_ENV: "production"
+  
+  # API Configuration
+  MEMORAI_API_BASE_URL: "https://api.memorai.com"
+  MEMORAI_MCP_PORT: "4950"
+  API_VERSION: "v9.5.0"
+  
+  # Database Configuration
+  CBD_BASE_URL: "http://cbd-database-prod:4180"
+  DATABASE_URL: "postgresql://memorai_prod:prod_password@postgres-prod:5432/memorai_prod"
+  DATABASE_SSL: "true"
+  DATABASE_POOL_SIZE: "50"
+  DATABASE_TIMEOUT: "10000"
+  
+  # Cache Configuration
+  REDIS_HOST: "redis-production-cluster"
+  REDIS_PORT: "6379"
+  REDIS_URL: "redis://redis-production-cluster:6379/0"
+  REDIS_DB: "0"
+  CACHE_TTL: "14400"
+  
+  # Vector Store Configuration
+  ENABLE_VECTOR_SEARCH: "true"
+  ENABLE_HYBRID_SEARCH: "true"
+  VECTOR_DIMENSION: "1536"
+  
+  # Feature Flags
+  ENABLE_RBAC: "true"
+  ENABLE_MONITORING: "true"
+  ENABLE_AUDIT_LOGGING: "true"
+  ENABLE_RATE_LIMITING: "true"
+  ENABLE_ANALYTICS: "true"
+  ENABLE_DEBUG_MODE: "false"
+  
+  # Logging Configuration
+  LOG_LEVEL: "INFO"
+  ROMAI_LOG_LEVEL: "INFO"
+  LOG_FORMAT: "json"
+  ENABLE_REQUEST_LOGGING: "false"
+  
+  # Performance Configuration
+  MAX_CONCURRENT_REQUESTS: "2000"
+  REQUEST_TIMEOUT: "10000"
+  BATCH_SIZE: "200"
+  
+  # Azure OpenAI Configuration (Production)
+  AZURE_OPENAI_ENDPOINT: "https://prod-openai.openai.azure.com/"
+  AZURE_OPENAI_API_VERSION: "2024-02-01"
+  AZURE_OPENAI_DEPLOYMENT_NAME: "text-embedding-3-large"
+  
+  # Security Configuration
+  CORS_ENABLED: "true"
+  CORS_ORIGINS: "https://memorai.com,https://app.memorai.com"
+  ENABLE_HELMET: "true"
+  
+  # Health Check Configuration
+  HEALTH_CHECK_INTERVAL: "60000"
+  DEPENDENCY_CHECK_TIMEOUT: "2000"

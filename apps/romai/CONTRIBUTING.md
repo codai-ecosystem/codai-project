@@ -1,449 +1,268 @@
-# Contributing to ROMAI
+# Contributing to RomAI
 
-Thank you for your interest in contributing to ROMAI! This document provides guidelines and information for contributors.
+Welcome to RomAI, the Romanian Artificial General Intelligence project! We're building the world's most culturally intelligent Romanian AI assistant.
 
-## Table of Contents
+## Quick Start for Contributors
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Development Workflow](#development-workflow)
-- [Code Standards](#code-standards)
-- [Testing](#testing)
-- [Documentation](#documentation)
-- [Submitting Changes](#submitting-changes)
+1. **Fork & Clone**: Fork the repo and clone your fork
+2. **Setup**: Run `pnpm install` in `/apps/romai`
+3. **Cultural Context**: Familiarize yourself with Romanian cultural intelligence requirements
+4. **Development**: Follow our Romanian-first development principles
+5. **Testing**: Ensure 80%+ test coverage with Romanian cultural validation
+6. **Submit**: Create PR with cultural accuracy confirmation
 
-## Code of Conduct
+---
 
-By participating in this project, you agree to abide by our Code of Conduct:
+## Romanian Cultural Intelligence Principles
 
-- Be respectful and inclusive
-- Focus on constructive feedback
-- Help others learn and grow
-- Maintain a professional environment
+### Core Values
+- **Acuratețe Culturală** (Cultural Accuracy): All Romanian content must be historically and culturally accurate
+- **Sensibilitate Lingvistică** (Linguistic Sensitivity): Proper Romanian grammar, diacritics, and regional variations
+- **Respectul Tradițiilor** (Respect for Traditions): Honor Romanian cultural traditions and values
+- **Inovație Responsabilă** (Responsible Innovation): Advanced AI while preserving Romanian cultural identity
 
-## Getting Started
+### Romanian Context Requirements
+All contributions must consider Romanian cultural context:
+- **Historical Accuracy**: Verify Romanian historical facts and figures
+- **Linguistic Precision**: Use proper Romanian diacritics and grammar
+- **Cultural Sensitivity**: Respect Romanian traditions and values
+- **Regional Awareness**: Consider regional Romanian differences when relevant
 
-### Prerequisites
+---
 
-- Node.js 20+
-- pnpm 9+
-- Git
-- Azure OpenAI access (for testing)
+## Development Process
 
-### Development Setup
+### Getting Started
 
-1. **Fork and Clone**
+#### Prerequisites
+- **Node.js** 18+ with pnpm 9.15.9+
+- **Python** 3.11+ for ML backend
+- **Docker** for local development environment
+- **Basic Romanian** language understanding (recommended)
 
-   ```bash
-   git clone https://github.com/yourusername/romai.git
-   cd romai
-   ```
+#### Local Setup
+```bash
+# Clone your fork
+git clone https://github.com/YOUR_USERNAME/codai-project.git
+cd codai-project/apps/romai
 
-2. **Install Dependencies**
+# Install dependencies
+pnpm install
 
-   ```bash
-   pnpm install
-   ```
+# Setup local environment
+cp .env.example .env.local
 
-3. **Environment Setup**
+# Start development server
+pnpm dev
 
-   ```bash
-   cp .env.example .env
-   # Configure your Azure OpenAI credentials
-   ```
-
-4. **Build and Test**
-   ```bash
-   pnpm build
-   pnpm test
-   ```
-
-## Development Workflow
-
-### Branch Strategy
-
-- `main` - Production-ready code
-- `develop` - Integration branch for features
-- `feature/*` - Feature development
-- `bugfix/*` - Bug fixes
-- `hotfix/*` - Critical production fixes
-
-### Making Changes
-
-1. **Create Feature Branch**
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make Changes**
-   - Follow code standards
-   - Write tests
-   - Update documentation
-
-3. **Test Changes**
-
-   ```bash
-   pnpm build
-   pnpm test
-   pnpm lint
-   ```
-
-4. **Commit Changes**
-   ```bash
-   git add .
-   git commit -m "feat: add new feature"
-   ```
-
-### Commit Message Format
-
-We use [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>[optional scope]: <description>
-
-[optional body]
-
-[optional footer(s)]
+# Run tests
+pnpm test
 ```
 
-**Types:**
+#### Romanian Development Environment
+```bash
+# Verify Romanian cultural data is loaded
+pnpm run cultural:verify
 
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `style`: Code formatting
-- `refactor`: Code restructuring
-- `test`: Adding tests
-- `chore`: Build/tool changes
+# Test Romanian language processing
+pnpm run test:romanian-lang
 
-**Examples:**
-
-```
-feat(mcp): add Romanian expert tool
-fix(core): resolve Azure OpenAI connection issue
-docs(readme): update installation instructions
+# Validate cultural intelligence
+pnpm run test:cultural-accuracy
 ```
 
-## Code Standards
+### Contribution Workflow
 
-### TypeScript Guidelines
+#### 1. Issue Creation
+- **Feature Requests**: Must include Romanian cultural context justification
+- **Bug Reports**: Specify impact on Romanian user experience
+- **Cultural Issues**: Flag any Romanian cultural inaccuracies or sensitivities
 
-- Use strict TypeScript configuration
-- Prefer interfaces over types for objects
-- Use explicit return types for functions
-- Avoid `any` type usage
+#### 2. Branch Strategy
+```bash
+# Feature branches
+feature/romanian-cultural-enhancement
+feature/math-engine-romanian-terminology
+feature/security-gdpr-compliance
 
+# Bug fix branches  
+bugfix/romanian-diacritics-display
+bugfix/cultural-accuracy-validation
+
+# Hotfix branches (production issues)
+hotfix/critical-romanian-security-fix
+```
+
+#### 3. Development Standards
+
+##### Code Quality Requirements
+- **TypeScript Strict Mode**: All frontend code with strict typing
+- **ESLint Security**: Security-focused linting with Romanian context validation
+- **Prettier Formatting**: Consistent code style
+- **Test Coverage**: >80% overall, >90% for Romanian cultural intelligence
+
+##### Romanian Cultural Validation
 ```typescript
-// Good
-interface UserRequest {
-  query: string;
-  language: 'ro' | 'en';
-}
-
-async function processRequest(request: UserRequest): Promise<string> {
-  // implementation
-}
-
-// Avoid
-function processRequest(request: any): any {
-  // implementation
+// Example: Romanian cultural intelligence validation
+interface RomanianCulturalValidation {
+  accuracy_score: number;           // 0-1, must be >0.9
+  linguistic_quality: number;       // 0-1, must be >0.9
+  cultural_sensitivity: 'appropriate' | 'caution' | 'inappropriate'; // Must be 'appropriate'
+  historical_accuracy: boolean;     // Must be true
+  expert_reviewed: boolean;         // Required for cultural content
 }
 ```
 
-### Code Style
+##### Commit Standards
+```bash
+# Conventional Commits with Romanian context
+feat(cultural): add Brâncuși historical context engine
+fix(romanian): correct diacritic handling in math expressions
+docs(cultural): update Romanian cultural validation guidelines
 
-- Use Prettier for formatting
-- Follow ESLint rules
-- Use meaningful variable names
-- Add JSDoc comments for public APIs
+# Romanian-specific scopes
+cultural, romanian, math, logical, reasoning, security, gdpr, ui
+```
 
+#### 4. Testing Requirements
+
+##### Unit Tests (Required)
 ```typescript
-/**
- * Processes an intelligence request using ROMAI core engine
- * @param request - The intelligence request with query and context
- * @returns Promise resolving to the AI response
- */
-async function processIntelligenceRequest(
-  request: IntelligenceRequest
-): Promise<IntelligenceResponse> {
-  // implementation
-}
-```
-
-### Package Structure
-
-```
-packages/package-name/
-├── src/
-│   ├── index.ts          # Main export
-│   ├── types.ts          # Type definitions
-│   └── utils/            # Utility functions
-├── tests/
-│   ├── unit/             # Unit tests
-│   └── integration/      # Integration tests
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
-## Testing
-
-### Test Types
-
-1. **Unit Tests** - Test individual functions/classes
-2. **Integration Tests** - Test package interactions
-3. **End-to-End Tests** - Test complete workflows
-
-### Writing Tests
-
-```typescript
-import { describe, it, expect } from 'vitest';
-import { RomaiCore } from '../src/index';
-
-describe('RomaiCore', () => {
-  it('should initialize with valid config', () => {
-    const config = {
-      azure: {
-        apiKey: 'test-key',
-        endpoint: 'https://test.openai.azure.com/',
-        deploymentName: 'gpt-4',
-      },
-    };
-
-    const core = new RomaiCore(config);
-    expect(core).toBeDefined();
+// Romanian cultural intelligence tests
+describe('RomanianCulturalEngine', () => {
+  it('should validate Romanian historical accuracy', () => {
+    const result = culturalEngine.validateHistoricalFact('Mihai Eminescu');
+    expect(result.accuracy).toBeGreaterThan(0.9);
+    expect(result.culturalSensitivity).toBe('appropriate');
+  });
+  
+  it('should preserve Romanian diacritics', () => {
+    const text = culturalEngine.processText('Bună ziua! Cum vă simțiți?');
+    expect(text).toContain('ă');
+    expect(text).toContain('î');
+    expect(text).toContain('ș');
+    expect(text).toContain('ț');
   });
 });
 ```
 
-### Running Tests
+##### Integration Tests
+- **Romanian API Endpoints**: Full cultural intelligence pipeline testing
+- **Cultural Data Persistence**: Romanian cultural knowledge storage validation
+- **Performance**: Romanian query response time validation (<2s)
 
-```bash
-# All tests
-pnpm test
+##### E2E Tests
+- **Romanian User Journeys**: Complete user workflows in Romanian context
+- **Cultural Expert Scenarios**: Romanian cultural expert validation workflows
+- **Cross-browser**: Romanian language display across browsers
 
-# Specific package
-cd packages/romai-core
-pnpm test
+#### 5. Pull Request Process
 
-# Watch mode
-pnpm test:watch
+##### PR Requirements Checklist
+- [ ] **Romanian Cultural Review**: Cultural accuracy validated
+- [ ] **Test Coverage**: >80% overall, >90% cultural intelligence
+- [ ] **Performance**: Romanian query response times <2s
+- [ ] **Security**: GDPR compliance maintained
+- [ ] **Documentation**: Romanian context documented
+- [ ] **Expert Review**: Romanian cultural expert approval (for cultural features)
 
-# Coverage
-pnpm test:coverage
+---
+
+## Code Standards
+
+### Frontend Standards (Next.js + TypeScript)
+
+#### File Structure
+```
+src/
+├── components/
+│   ├── cultural/           # Romanian cultural UI components
+│   ├── math/              # Mathematical reasoning components  
+│   ├── common/            # Shared components
+│   └── ui/                # Base UI components
+├── hooks/
+│   ├── useCulturalContext # Romanian cultural context hook
+│   ├── useRomanianMath    # Romanian mathematical processing
+│   └── useLogicalReasoning # Logical reasoning hook
+├── services/
+│   ├── culturalIntelligence # Romanian cultural intelligence service
+│   ├── mathEngine         # Mathematical reasoning service
+│   └── api/               # API client services
+└── types/
+    ├── cultural.ts        # Romanian cultural type definitions
+    ├── mathematical.ts    # Mathematical reasoning types
+    └── api.ts             # API response types
 ```
 
-## Documentation
-
-### Documentation Standards
-
-- Use clear, concise language
-- Include code examples
-- Document all public APIs
-- Keep README files updated
-
-### API Documentation
-
-Use JSDoc for TypeScript:
-
-````typescript
-/**
- * ROMAI Core Intelligence Engine
- *
- * Provides Romanian AI capabilities with Azure OpenAI integration
- *
- * @example
- * ```typescript
- * const romai = new RomaiCore(config);
- * const response = await romai.processIntelligenceRequest({
- *   query: "Explică-mi despre istoria României",
- *   language: "ro"
- * });
- * ```
- */
-export class RomaiCore {
-  // implementation
+#### TypeScript Standards
+```typescript
+// Strict typing with Romanian context
+interface RomanianCulturalQuery {
+  readonly query: string;
+  readonly language: 'ro' | 'en';
+  readonly region?: RomanianRegion;
+  readonly cultural_context: CulturalContext;
+  readonly user_preferences: RomanianUserPreferences;
 }
-````
 
-### README Structure
+// Romanian enum definitions
+enum RomanianRegion {
+  MOLDOVA = 'moldova',
+  MUNTENIA = 'muntenia', 
+  TRANSILVANIA = 'transilvania',
+  OLTENIA = 'oltenia',
+  BANAT = 'banat',
+  CRISANA = 'crisana',
+  MARAMURES = 'maramures',
+  DOBROGEA = 'dobrogea'
+}
+```
 
-Each package should have:
+---
 
-1. Purpose and overview
-2. Installation instructions
-3. Usage examples
-4. API reference
-5. Contributing guidelines
+## Community Guidelines
 
-## Submitting Changes
+### Code of Conduct
+- **Respectful Communication**: Respectful discussion of Romanian cultural topics
+- **Inclusive Environment**: Welcome contributors from all Romanian regions
+- **Cultural Sensitivity**: Mindful discussion of Romanian historical and cultural topics
+- **Professional Collaboration**: Focus on technical excellence and cultural accuracy
 
-### Pull Request Process
+### Romanian Cultural Community
+- **Cultural Experts**: Romanian historians, linguists, and cultural experts welcome
+- **Regional Representation**: Contributors from all Romanian regions encouraged
+- **Educational Focus**: Share knowledge about Romanian culture and history
+- **Quality Standards**: Maintain high standards for Romanian cultural accuracy
 
-1. **Pre-submission Checklist**
-   - [ ] Code builds successfully
-   - [ ] All tests pass
-   - [ ] Linting passes
-   - [ ] Documentation updated
-   - [ ] CHANGELOG updated (if applicable)
+### Communication Channels
+- **GitHub Issues**: Technical discussions and feature requests
+- **Romanian Cultural Review**: Expert validation for cultural content
+- **Performance Discussions**: Romanian query optimization and scaling
+- **Security Forum**: GDPR and Romanian data protection topics
 
-2. **Create Pull Request**
-   - Use descriptive title
-   - Reference related issues
-   - Include screenshots if UI changes
-   - Add reviewers
-
-3. **Pull Request Template**
-
-   ```markdown
-   ## Description
-
-   Brief description of changes
-
-   ## Type of Change
-
-   - [ ] Bug fix
-   - [ ] New feature
-   - [ ] Breaking change
-   - [ ] Documentation update
-
-   ## Testing
-
-   - [ ] Unit tests added/updated
-   - [ ] Integration tests pass
-   - [ ] Manual testing completed
-
-   ## Checklist
-
-   - [ ] Code follows style guidelines
-   - [ ] Self-review completed
-   - [ ] Documentation updated
-   - [ ] No merge conflicts
-   ```
-
-### Review Process
-
-1. **Automated Checks**
-   - Build status
-   - Test results
-   - Code quality metrics
-   - Security scans
-
-2. **Code Review**
-   - Architecture feedback
-   - Code quality review
-   - Performance considerations
-   - Security review
-
-3. **Approval and Merge**
-   - Minimum 2 approvals for major changes
-   - Squash and merge for feature branches
-   - Update related documentation
-
-## Package-Specific Guidelines
-
-### @romai/types
-
-- Central type definitions
-- No runtime dependencies
-- Comprehensive JSDoc comments
-- Semantic versioning critical
-
-### @romai/core
-
-- Core AI engine
-- Performance-critical code
-- Extensive testing required
-- Azure OpenAI integration
-
-### @romai/mcp
-
-- MCP server implementation
-- Tool definitions and handlers
-- Integration testing with MCP clients
-- Romanian language optimization
-
-### Apps
-
-- Standalone applications
-- End-to-end testing
-- Performance monitoring
-- Production readiness
-
-## Release Process
-
-### Versioning
-
-We use [Semantic Versioning](https://semver.org/):
-
-- `MAJOR.MINOR.PATCH`
-- Breaking changes = MAJOR
-- New features = MINOR
-- Bug fixes = PATCH
-
-### Release Steps
-
-1. **Preparation**
-
-   ```bash
-   pnpm changeset
-   pnpm changeset:version
-   ```
-
-2. **Testing**
-
-   ```bash
-   pnpm build
-   pnpm test
-   pnpm lint
-   ```
-
-3. **Publication**
-   ```bash
-   pnpm changeset:publish
-   ```
+---
 
 ## Getting Help
 
-### Resources
+### Technical Support
+- **GitHub Issues**: Create issues for bugs and feature requests
+- **Documentation**: Comprehensive guides for Romanian cultural features
+- **Code Examples**: Romanian cultural intelligence implementation examples
+- **Performance Guidelines**: Romanian query optimization best practices
 
-- [Project Documentation](docs/)
-- [API Reference](docs/api/)
-- [Examples](examples/)
-- [Troubleshooting](docs/troubleshooting.md)
+### Romanian Cultural Support
+- **Cultural Expert Network**: Access to Romanian cultural experts
+- **Historical Validation**: Romanian historical fact verification
+- **Linguistic Review**: Romanian language and grammar validation
+- **Regional Context**: Understanding of Romanian regional differences
 
-### Support Channels
+---
 
-- **GitHub Issues** - Bug reports and feature requests
-- **GitHub Discussions** - Questions and community discussions
-- **Discord** - Real-time chat (CodAI Discord server)
-- **Email** - team@codai.ro for private matters
+**Welcome to the RomAI community!** Together, we're building the most culturally intelligent Romanian AI assistant while maintaining the highest standards of technical excellence and cultural respect.
 
-### Common Issues
+---
 
-1. **Build Errors**
-   - Check Node.js version (>=20)
-   - Verify pnpm version (>=9)
-   - Clear cache: `pnpm clean`
-
-2. **Test Failures**
-   - Update dependencies
-   - Check environment variables
-   - Review test logs
-
-3. **TypeScript Errors**
-   - Check tsconfig inheritance
-   - Verify package imports
-   - Update type definitions
-
-## Recognition
-
-Contributors will be recognized in:
-
-- CONTRIBUTORS.md file
-- Release notes
-- Project documentation
-- Annual contributor awards
-
-Thank you for contributing to ROMAI! 🇷🇴 🧠
+**Last Updated**: January 2025  
+**Review Cycle**: Monthly  
+**Cultural Expert Contact**: [cultural-expert@codai.ro](mailto:cultural-expert@codai.ro)  
+**Technical Lead Contact**: [tech-lead@codai.ro](mailto:tech-lead@codai.ro)

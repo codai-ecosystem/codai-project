@@ -1,0 +1,363 @@
+openapi: 3.0.3
+info:
+  title: CODAI API Gateway
+  description: Central API orchestration and routing service for CODAI ecosystem
+  version: 1.0.0
+  contact:
+    name: CODAI Team
+    email: tech@codai.com
+    url: https://codai.com/docs
+
+servers:
+  - url: http://localhost:8010/api/v1
+    description: Development server
+  - url: https://staging-api.codai.com/gateway/v1
+    description: Staging server
+  - url: https://api.codai.com/gateway/v1
+    description: Production server
+
+paths:
+  /health:
+    get:
+      summary: Gateway health check
+      description: Returns health status of the API gateway and upstream services
+      operationId: getGatewayHealth
+      tags: [System]
+      responses:
+        '200':
+          description: Gateway is healthy
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/HealthStatus'
+                  - type: object
+                    properties:
+                      upstreamServices:
+                        type: object
+                        properties:
+                          identity:
+                            $ref: '#/components/schemas/ServiceHealth'
+                          hub:
+                            $ref: '#/components/schemas/ServiceHealth'
+                          memorai:
+                            $ref: '#/components/schemas/ServiceHealth'
+                          bancai:
+                            $ref: '#/components/schemas/ServiceHealth'
+        '503':
+          description: Gateway or upstream services are unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+
+  /routes:
+    get:
+      summary: Get available service routes
+      description: Retrieve list of available service routes and their configurations
+      operationId: getRoutes
+      tags: [Routing]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Available routes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  routes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceRoute'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /metrics:
+    get:
+      summary: Get gateway metrics
+      description: Retrieve operational metrics for the API gateway
+      operationId: getMetrics
+      tags: [Monitoring]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Gateway metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayMetrics'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status, service, version, timestamp]
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Overall health status
+        service:
+          type: string
+          example: "CODAI API Gateway"
+          description: Service name
+        version:
+          type: string
+          example: "1.0.0"
+          description: Service version
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp
+        uptime:
+          type: number
+          description: Service uptime in seconds
+        requestCount:
+          type: number
+          description: Total requests processed
+        activeConnections:
+          type: number
+          description: Current active connections
+
+    ServiceHealth:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Service health status
+        responseTime:
+          type: number
+          description: Average response time in milliseconds
+        successRate:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Success rate (0.0 to 1.0)
+        lastCheck:
+          type: string
+          format: date-time
+          description: Last health check timestamp
+        endpoint:
+          type: string
+          example: "http://identity-service:4004"
+          description: Service endpoint URL
+
+    ServiceRoute:
+      type: object
+      required: [path, service, target, methods]
+      properties:
+        path:
+          type: string
+          example: "/identity/*"
+          description: Route path pattern
+        service:
+          type: string
+          example: "identity-service"
+          description: Target service name
+        target:
+          type: string
+          example: "http://identity-service:4004"
+          description: Target service URL
+        methods:
+          type: array
+          items:
+            type: string
+            enum: [GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD]
+          example: ["GET", "POST", "PUT", "DELETE"]
+          description: Allowed HTTP methods
+        authenticated:
+          type: boolean
+          default: true
+          description: Whether authentication is required
+        rateLimit:
+          type: object
+          properties:
+            requests:
+              type: number
+              example: 100
+              description: Maximum requests per window
+            window:
+              type: string
+              example: "15m"
+              description: Time window (e.g., 15m, 1h, 1d)
+            burst:
+              type: number
+              example: 20
+              description: Burst capacity
+        timeout:
+          type: number
+          example: 30000
+          description: Request timeout in milliseconds
+        retries:
+          type: number
+          example: 3
+          description: Number of retry attempts
+        circuitBreaker:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              default: true
+            threshold:
+              type: number
+              example: 5
+              description: Failure threshold
+            timeout:
+              type: number
+              example: 60000
+              description: Circuit breaker timeout in milliseconds
+
+    GatewayMetrics:
+      type: object
+      properties:
+        requests:
+          type: object
+          properties:
+            total:
+              type: number
+              description: Total requests processed
+            perSecond:
+              type: number
+              description: Requests per second (current)
+            byStatus:
+              type: object
+              additionalProperties:
+                type: number
+              example:
+                "200": 1500
+                "201": 300
+                "400": 50
+                "401": 25
+                "404": 10
+                "500": 5
+        latency:
+          type: object
+          properties:
+            p50:
+              type: number
+              description: 50th percentile latency in milliseconds
+            p95:
+              type: number
+              description: 95th percentile latency in milliseconds
+            p99:
+              type: number
+              description: 99th percentile latency in milliseconds
+            avg:
+              type: number
+              description: Average latency in milliseconds
+        upstreamServices:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              requests:
+                type: number
+              errors:
+                type: number
+              avgResponseTime:
+                type: number
+              successRate:
+                type: number
+        rateLimiting:
+          type: object
+          properties:
+            totalBlocked:
+              type: number
+              description: Total blocked requests
+            currentlyLimited:
+              type: array
+              items:
+                type: string
+              description: Currently rate-limited IP addresses
+        circuitBreakers:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              state:
+                type: string
+                enum: [closed, open, half-open]
+              failures:
+                type: number
+              lastFailure:
+                type: string
+                format: date-time
+
+    ErrorResponse:
+      type: object
+      required: [error, requestId, timestamp]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              example: "GATEWAY_ERROR"
+              description: Error code
+            message:
+              type: string
+              example: "Gateway processing error"
+              description: Error message
+            details:
+              type: object
+              additionalProperties: true
+              description: Additional error details
+        requestId:
+          type: string
+          format: uuid
+          description: Request identifier
+        timestamp:
+          type: string
+          format: date-time
+          description: Error timestamp
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authentication
+
+  responses:
+    UnauthorizedError:
+      description: Authentication required or token invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    
+    ForbiddenError:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    
+    ServiceUnavailable:
+      description: Gateway or upstream service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+tags:
+  - name: System
+    description: System health and status endpoints
+  - name: Routing
+    description: Route management and configuration
+  - name: Monitoring
+    description: Metrics and monitoring endpoints

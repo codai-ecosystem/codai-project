@@ -95,7 +95,7 @@ async function execPowerShellStructured(script: string): Promise<{
     stderr: string;
 }> {
     const tempFile = join(tmpdir(), `glass-mcp-${Date.now()}.ps1`);
-    
+
     // Wrap the script with structured output formatting
     const wrappedScript = `
     try {
@@ -106,20 +106,20 @@ async function execPowerShellStructured(script: string): Promise<{
         Write-Output "STACK|$($_.ScriptStackTrace)"
     }
     `;
-    
+
     writeFileSync(tempFile, wrappedScript, 'utf8');
 
     try {
         const result = await execAsyncPromisified(`pwsh -NoProfile -ExecutionPolicy Bypass -File "${tempFile}"`);
         const output = result.stdout.trim();
         const lines = output.split('\n').map(line => line.trim()).filter(line => line);
-        
+
         // Parse structured output
         for (const line of lines) {
             if (line.startsWith('SUCCESS|')) {
                 const message = line.substring(8);
                 let data: any = undefined;
-                
+
                 // Try to parse JSON data
                 try {
                     if (message.startsWith('{') || message.startsWith('[')) {
@@ -128,7 +128,7 @@ async function execPowerShellStructured(script: string): Promise<{
                 } catch {
                     // Not JSON, treat as message
                 }
-                
+
                 return {
                     success: true,
                     data: data,
@@ -149,7 +149,7 @@ async function execPowerShellStructured(script: string): Promise<{
                 console.warn('[PowerShell Stack Trace]:', line.substring(6));
             }
         }
-        
+
         // No structured output found, return raw result
         return {
             success: true,
@@ -182,24 +182,24 @@ function parsePowerShellOutput(output: string): {
 } {
     const lines = output.split('\n').map(line => line.trim()).filter(line => line);
     let hasStructuredOutput = false;
-    
+
     // Look for structured output markers
     for (const line of lines) {
         if (line.startsWith('SUCCESS|')) {
             hasStructuredOutput = true;
             const message = line.substring(8);
             let data: any = undefined;
-            
+
             // Try to parse JSON
             try {
-                if ((message.startsWith('{') && message.endsWith('}')) || 
+                if ((message.startsWith('{') && message.endsWith('}')) ||
                     (message.startsWith('[') && message.endsWith(']'))) {
                     data = JSON.parse(message);
                 }
             } catch {
                 // Not valid JSON, treat as plain text
             }
-            
+
             return {
                 success: true,
                 data: data,
@@ -215,7 +215,7 @@ function parsePowerShellOutput(output: string): {
             };
         }
     }
-    
+
     // No structured markers found
     return {
         success: output.length > 0 && !output.toLowerCase().includes('error') && !output.toLowerCase().includes('exception'),
@@ -226,18 +226,18 @@ function parsePowerShellOutput(output: string): {
 
 // Retry mechanism for PowerShell operations
 async function execPowerShellWithRetry(
-    script: string, 
-    maxRetries: number = 3, 
+    script: string,
+    maxRetries: number = 3,
     delayMs: number = 1000
 ): Promise<{ stdout: string; stderr: string }> {
     let lastError: Error | null = null;
-    
+
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
             return await execPowerShell(script);
         } catch (error) {
             lastError = error instanceof Error ? error : new Error(String(error));
-            
+
             if (attempt < maxRetries) {
                 console.warn(`PowerShell attempt ${attempt}/${maxRetries} failed: ${lastError.message}. Retrying in ${delayMs}ms...`);
                 await new Promise(resolve => setTimeout(resolve, delayMs));
@@ -245,7 +245,7 @@ async function execPowerShellWithRetry(
             }
         }
     }
-    
+
     throw new GlassMCPError(`PowerShell failed after ${maxRetries} attempts. Last error: ${lastError?.message}`);
 }
 
@@ -353,7 +353,7 @@ async function captureScreen(monitor?: number, region?: { x: number; y: number; 
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
-        
+
         if (output.startsWith('SUCCESS|')) {
             const parts = output.split('|');
             return {
@@ -474,7 +474,7 @@ async function performOCR(imagePath: string): Promise<OCRResult> {
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
-        
+
         if (output.startsWith('SUCCESS|')) {
             const jsonData = output.substring(8);
             return JSON.parse(jsonData);
@@ -572,13 +572,13 @@ async function detectPaintElements(): Promise<VisualElement[]> {
     
     Write-Output "SUCCESS|$($elements | ConvertTo-Json -Depth 3 -Compress)"
     `;
-    
+
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
         const lines = output.split('\n');
         const resultLine = lines.find(line => line.startsWith('SUCCESS|'));
-        
+
         if (resultLine) {
             const jsonData = resultLine.substring(8); // Remove "SUCCESS|"
             return JSON.parse(jsonData);
@@ -600,7 +600,7 @@ async function findPaintWindow(): Promise<number | null> {
         Write-Output "ERROR|Paint window not found"
     }
     `;
-    
+
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
@@ -623,7 +623,7 @@ async function detectUIElements(windowHandle?: number): Promise<VisualElement[]>
             return paintElements;
         }
     }
-    
+
     const script = `
     try {
         # Initialize UI Automation
@@ -749,7 +749,7 @@ async function detectUIElements(windowHandle?: number): Promise<VisualElement[]>
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
-        
+
         if (output.startsWith('SUCCESS|')) {
             const jsonData = output.substring(8);
             const elements = JSON.parse(jsonData) || [];
@@ -768,11 +768,11 @@ async function detectUIElements(windowHandle?: number): Promise<VisualElement[]>
 // Enhanced UI element detection with OCR and template matching
 async function detectUIElementsAdvanced(windowHandle?: number, useOCR: boolean = true): Promise<VisualElement[]> {
     const allElements: VisualElement[] = [];
-    
+
     // First, try standard UI Automation
     const standardElements = await detectUIElements(windowHandle);
     allElements.push(...standardElements);
-    
+
     // If OCR is enabled and we have few elements, enhance with OCR
     if (useOCR && allElements.length < 5) {
         try {
@@ -780,7 +780,7 @@ async function detectUIElementsAdvanced(windowHandle?: number, useOCR: boolean =
             const screenshot = await captureScreen();
             if (screenshot.success && screenshot.imagePath) {
                 const ocrResult = await performOCR(screenshot.imagePath);
-                
+
                 // Convert OCR words to UI elements
                 for (const word of ocrResult.words) {
                     if (word.confidence > 0.7 && word.text.length > 1) {
@@ -802,11 +802,11 @@ async function detectUIElementsAdvanced(windowHandle?: number, useOCR: boolean =
             console.log(`[OCR Enhancement] Failed: ${error}`);
         }
     }
-    
+
     // Add template-based element detection for common UI patterns
     const templateElements = await detectCommonUIPatterns(windowHandle);
     allElements.push(...templateElements);
-    
+
     // Remove duplicates based on proximity
     return deduplicateElements(allElements);
 }
@@ -814,7 +814,7 @@ async function detectUIElementsAdvanced(windowHandle?: number, useOCR: boolean =
 // Detect common UI patterns using template matching
 async function detectCommonUIPatterns(windowHandle?: number): Promise<VisualElement[]> {
     const elements: VisualElement[] = [];
-    
+
     const script = `
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
@@ -877,13 +877,13 @@ async function detectCommonUIPatterns(windowHandle?: number): Promise<VisualElem
         Write-Output "ERROR|$($_.Exception.Message)"
     }
     `;
-    
+
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
         const lines = output.split('\n');
         const resultLine = lines.find(line => line.startsWith('SUCCESS|') || line.startsWith('ERROR|'));
-        
+
         if (resultLine && resultLine.startsWith('SUCCESS|')) {
             const jsonData = resultLine.substring(8);
             return JSON.parse(jsonData);
@@ -899,23 +899,23 @@ async function detectCommonUIPatterns(windowHandle?: number): Promise<VisualElem
 function deduplicateElements(elements: VisualElement[]): VisualElement[] {
     const deduplicated: VisualElement[] = [];
     const proximityThreshold = 20; // pixels
-    
+
     for (const element of elements) {
         const isDuplicate = deduplicated.some(existing => {
             const dx = Math.abs(existing.bounds.x - element.bounds.x);
             const dy = Math.abs(existing.bounds.y - element.bounds.y);
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            return distance < proximityThreshold && 
-                   existing.type === element.type &&
-                   existing.text === element.text;
+
+            return distance < proximityThreshold &&
+                existing.type === element.type &&
+                existing.text === element.text;
         });
-        
+
         if (!isDuplicate) {
             deduplicated.push(element);
         }
     }
-    
+
     return deduplicated.sort((a, b) => b.confidence - a.confidence);
 }
 
@@ -972,13 +972,13 @@ async function detectColorElements(): Promise<VisualElement[]> {
         Write-Output "ERROR|$($_.Exception.Message)"
     }
     `;
-    
+
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
         const lines = output.split('\n');
         const resultLine = lines.find(line => line.startsWith('SUCCESS|') || line.startsWith('ERROR|'));
-        
+
         if (resultLine && resultLine.startsWith('SUCCESS|')) {
             const jsonData = resultLine.substring(8);
             return JSON.parse(jsonData);
@@ -1013,7 +1013,7 @@ async function analyzeScreen(options?: {
     $screen = [System.Windows.Forms.Screen]::PrimaryScreen
     Write-Output "$($screen.Bounds.Width)|$($screen.Bounds.Height)|$($screen.Primary)"
     `;
-    
+
     const screenInfoResult = await execPowerShell(screenInfoScript);
     const screenInfoParts = screenInfoResult.stdout.trim().split('|');
     const screenInfo = {
@@ -1027,7 +1027,7 @@ async function analyzeScreen(options?: {
         success: false,
         timestamp: analysisTimestamp
     };
-    
+
     if (opts.includeScreenCapture) {
         capture = await captureScreen(undefined, opts.region);
     }
@@ -1039,7 +1039,7 @@ async function analyzeScreen(options?: {
         words: [],
         lines: []
     };
-    
+
     if (opts.includeOCR && capture.success && capture.imagePath) {
         try {
             ocr = await performOCR(capture.imagePath);
@@ -1098,7 +1098,7 @@ const activeOverlays: OverlayWindow[] = [];
 
 // Create visual overlay using PowerShell with Windows Forms
 async function createOverlay(
-    overlayType: string, 
+    overlayType: string,
     bounds: { x: number; y: number; width: number; height: number },
     style: DrawingStyle = {},
     text?: string,
@@ -1110,7 +1110,7 @@ async function createOverlay(
     const thickness = style.thickness || 2;
     const opacity = Math.min(Math.max(style.opacity || 0.8, 0.1), 1.0);
     const fillColor = style.fillColor || 'Transparent';
-    
+
     const script = `
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
@@ -1228,11 +1228,11 @@ async function createOverlay(
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
-        
+
         if (output.startsWith('SUCCESS|')) {
             const parts = output.split('|');
             const returnedId = parts[1];
-            
+
             // Store overlay info
             activeOverlays.push({
                 id: overlayId,
@@ -1243,7 +1243,7 @@ async function createOverlay(
                 createdAt: new Date().toISOString(),
                 windowHandle: windowHandle?.toString()
             });
-            
+
             return {
                 success: true,
                 overlayId: returnedId,
@@ -1280,10 +1280,10 @@ async function highlightElement(
     animation: boolean = true
 ): Promise<{ success: boolean; highlightId: string; message?: string }> {
     const highlightId = `highlight_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     let overlayType = 'rectangle';
     let style: DrawingStyle = { color, thickness: 3, opacity: 0.8 };
-    
+
     switch (highlightStyle) {
         case 'background':
             overlayType = 'highlight';
@@ -1305,7 +1305,7 @@ async function highlightElement(
             style.thickness = 3;
             break;
     }
-    
+
     // Expand bounds slightly for better visibility
     const expandedBounds = {
         x: bounds.x - 2,
@@ -1313,9 +1313,9 @@ async function highlightElement(
         width: bounds.width + 4,
         height: bounds.height + 4
     };
-    
+
     const overlayResult = await createOverlay(overlayType, expandedBounds, style, undefined, duration);
-    
+
     return {
         success: overlayResult.success,
         highlightId: overlayResult.overlayId,
@@ -1330,11 +1330,11 @@ async function createPulseHighlight(
     duration: number
 ): Promise<{ success: boolean; highlightId: string; message?: string }> {
     const pulseId = `pulse_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Create 3 pulse cycles
     const pulseCount = Math.min(duration, 6);
     let successCount = 0;
-    
+
     for (let i = 0; i < pulseCount; i++) {
         setTimeout(async () => {
             const expandedBounds = {
@@ -1343,18 +1343,18 @@ async function createPulseHighlight(
                 width: bounds.width + (i * 4),
                 height: bounds.height + (i * 4)
             };
-            
+
             const opacity = 0.8 - (i * 0.2);
             const result = await createOverlay('rectangle', expandedBounds, {
                 color,
                 thickness: 2,
                 opacity: Math.max(opacity, 0.2)
             }, undefined, 0.5);
-            
+
             if (result.success) successCount++;
         }, i * 300);
     }
-    
+
     return {
         success: true,
         highlightId: pulseId,
@@ -1371,19 +1371,19 @@ async function createAnnotation(
     duration: number = 5
 ): Promise<{ success: boolean; annotationId: string; message?: string }> {
     const annotationId = `annotation_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Calculate text size estimate
     const fontSize = style.fontSize || 12;
     const charWidth = fontSize * 0.6;
     const lineHeight = fontSize * 1.2;
     const textWidth = text.length * charWidth;
     const textHeight = lineHeight;
-    
+
     // Determine annotation position
     let annotationX = targetPoint.x;
     let annotationY = targetPoint.y;
     const offset = 20;
-    
+
     switch (position) {
         case 'top':
             annotationY = targetPoint.y - textHeight - offset;
@@ -1404,7 +1404,7 @@ async function createAnnotation(
             annotationY = targetPoint.y - textHeight - offset;
             break;
     }
-    
+
     // Create text overlay
     const textResult = await createOverlay('text', {
         x: annotationX,
@@ -1417,7 +1417,7 @@ async function createAnnotation(
         borderColor: style.borderColor || '#808080',
         fontSize: fontSize
     }, text, duration);
-    
+
     if (!textResult.success) {
         return {
             success: false,
@@ -1425,7 +1425,7 @@ async function createAnnotation(
             message: textResult.message
         };
     }
-    
+
     // Create arrow pointing to target
     const arrowResult = await createOverlay('arrow', {
         x: Math.min(targetPoint.x, annotationX) - 5,
@@ -1436,7 +1436,7 @@ async function createAnnotation(
         color: style.color || '#000000',
         thickness: 2
     }, undefined, duration);
-    
+
     return {
         success: textResult.success && arrowResult.success,
         annotationId: annotationId,
@@ -1451,13 +1451,13 @@ async function clearOverlays(
 ): Promise<{ success: boolean; cleared: number; message: string }> {
     let clearedCount = 0;
     let targetOverlays = activeOverlays;
-    
+
     if (overlayId) {
         targetOverlays = activeOverlays.filter(o => o.id === overlayId);
     } else if (overlayType) {
         targetOverlays = activeOverlays.filter(o => o.type === overlayType);
     }
-    
+
     const script = `
     try {
         $clearedCount = 0
@@ -1477,14 +1477,14 @@ async function clearOverlays(
         Write-Output "ERROR|$($_.Exception.Message)"
     }
     `;
-    
+
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
-        
+
         if (output.startsWith('SUCCESS|')) {
             clearedCount = parseInt(output.split('|')[0].replace('SUCCESS|', '').split(' ')[0]);
-            
+
             // Remove from active overlays list
             if (overlayId) {
                 const index = activeOverlays.findIndex(o => o.id === overlayId);
@@ -1498,7 +1498,7 @@ async function clearOverlays(
             } else {
                 activeOverlays.splice(0);
             }
-            
+
             return {
                 success: true,
                 cleared: clearedCount,
@@ -1529,14 +1529,14 @@ async function captureWithOverlays(
     // For now, use the regular screen capture
     // In a full implementation, we would capture the screen including overlay graphics
     const capture = await captureScreen(undefined, region);
-    
+
     if (capture.success && outputPath && capture.imagePath !== outputPath) {
         // Copy to custom output path if specified
         const copyScript = `
         Copy-Item "${capture.imagePath}" "${outputPath}" -Force
         Write-Output "SUCCESS|${outputPath}"
         `;
-        
+
         try {
             await execPowerShell(copyScript);
             return {
@@ -1547,7 +1547,7 @@ async function captureWithOverlays(
             // Return original if copy fails
         }
     }
-    
+
     return capture;
 }
 
@@ -2032,7 +2032,7 @@ async function smartClick(
     } else if ('text' in target) {
         // Find element by text content
         const elements = await detectUIElements();
-        const element = elements.find(el => 
+        const element = elements.find(el =>
             el.text && el.text.toLowerCase().includes(target.text.toLowerCase())
         );
         if (!element) {
@@ -2130,7 +2130,7 @@ async function smartClick(
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
-        
+
         // Check if any line in the output contains SUCCESS or ERROR
         const lines = output.split('\n');
         const resultLine = lines.find(line => line.startsWith('SUCCESS|') || line.startsWith('ERROR|'));
@@ -2194,8 +2194,8 @@ async function smartType(
     if (target) {
         if ('elementId' in target) {
             const elements = await detectUIElements();
-            targetElement = elements.find(el => 
-                el.automationId === target.elementId || 
+            targetElement = elements.find(el =>
+                el.automationId === target.elementId ||
                 el.id === target.elementId
             );
             if (targetElement && targetElement.isClickable) {
@@ -2262,8 +2262,8 @@ async function smartType(
             success: output.startsWith('SUCCESS|'),
             text,
             targetElement,
-            message: output.startsWith('SUCCESS|') ? 
-                output.substring(8) : 
+            message: output.startsWith('SUCCESS|') ?
+                output.substring(8) :
                 (output.startsWith('ERROR|') ? output.substring(6) : 'Type operation failed')
         };
     } catch (error) {
@@ -2393,7 +2393,7 @@ async function performDragDrop(
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
-        
+
         // Check if any line in the output contains SUCCESS or ERROR
         const lines = output.split('\n');
         const resultLine = lines.find(line => line.startsWith('SUCCESS|') || line.startsWith('ERROR|'));
@@ -2443,7 +2443,7 @@ async function drawBezierCurve(
     steps: number = 50
 ): Promise<DragDropResult> {
     const points: { x: number; y: number }[] = [];
-    
+
     // Calculate Bezier curve points
     for (let i = 0; i <= steps; i++) {
         const t = i / steps;
@@ -2452,13 +2452,13 @@ async function drawBezierCurve(
         const uu = u * u;
         const uuu = uu * u;
         const ttt = tt * t;
-        
+
         const x = uuu * startPoint.x + 3 * uu * t * controlPoint1.x + 3 * u * tt * controlPoint2.x + ttt * endPoint.x;
         const y = uuu * startPoint.y + 3 * uu * t * controlPoint1.y + 3 * u * tt * controlPoint2.y + ttt * endPoint.y;
-        
+
         points.push({ x: Math.round(x), y: Math.round(y) });
     }
-    
+
     return await drawCurveFromPoints(points);
 }
 
@@ -2473,7 +2473,7 @@ async function drawCurveFromPoints(points: { x: number; y: number }[]): Promise<
             message: 'Need at least 2 points to draw a curve'
         };
     }
-    
+
     const script = `
     Add-Type -TypeDefinition '
     using System;
@@ -2499,11 +2499,11 @@ async function drawCurveFromPoints(points: { x: number; y: number }[]): Promise<
         Start-Sleep -Milliseconds 50
         
         # Draw curve by moving through all points
-        ${points.map((point, index) => 
-            index > 0 ? `
+        ${points.map((point, index) =>
+        index > 0 ? `
         [Mouse]::SetCursorPos(${point.x}, ${point.y})
         Start-Sleep -Milliseconds 20` : ''
-        ).join('')}
+    ).join('')}
         
         # Release mouse button
         [Mouse]::mouse_event([Mouse]::MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
@@ -2518,7 +2518,7 @@ async function drawCurveFromPoints(points: { x: number; y: number }[]): Promise<
     try {
         const result = await execPowerShell(script);
         const output = result.stdout.trim();
-        
+
         const lines = output.split('\n');
         const resultLine = lines.find(line => line.startsWith('SUCCESS|') || line.startsWith('ERROR|'));
 
@@ -2569,10 +2569,10 @@ async function drawArc(
     const midY = (startPoint.y + endPoint.y) / 2;
     const distance = Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2));
     const offset = distance * curvature;
-    
+
     let controlPoint1: { x: number; y: number };
     let controlPoint2: { x: number; y: number };
-    
+
     switch (direction) {
         case 'up':
             controlPoint1 = { x: startPoint.x + (midX - startPoint.x) * 0.5, y: midY - offset };
@@ -2592,7 +2592,7 @@ async function drawArc(
             controlPoint2 = { x: midX + offset, y: midY + (endPoint.y - midY) * 0.5 };
             break;
     }
-    
+
     return await drawBezierCurve(startPoint, controlPoint1, controlPoint2, endPoint);
 }
 
@@ -2603,14 +2603,14 @@ async function drawCircle(
     segments: number = 36
 ): Promise<DragDropResult> {
     const points: { x: number; y: number }[] = [];
-    
+
     for (let i = 0; i <= segments; i++) {
         const angle = (i / segments) * 2 * Math.PI;
         const x = center.x + radius * Math.cos(angle);
         const y = center.y + radius * Math.sin(angle);
         points.push({ x: Math.round(x), y: Math.round(y) });
     }
-    
+
     return await drawCurveFromPoints(points);
 }
 
@@ -2623,7 +2623,7 @@ async function drawSpiral(
     segments: number = 100
 ): Promise<DragDropResult> {
     const points: { x: number; y: number }[] = [];
-    
+
     for (let i = 0; i <= segments; i++) {
         const progress = i / segments;
         const angle = progress * turns * 2 * Math.PI;
@@ -2632,7 +2632,7 @@ async function drawSpiral(
         const y = center.y + radius * Math.sin(angle);
         points.push({ x: Math.round(x), y: Math.round(y) });
     }
-    
+
     return await drawCurveFromPoints(points);
 }
 
@@ -2664,7 +2664,7 @@ async function selectPaintTool(toolName: string): Promise<{ success: boolean; me
         const clickResult = await smartClick(position, 'left', false, true);
         return {
             success: clickResult.success,
-            message: clickResult.success 
+            message: clickResult.success
                 ? `Selected ${toolName} tool successfully`
                 : `Failed to select ${toolName} tool: ${clickResult.message}`
         };
@@ -2693,13 +2693,13 @@ async function drawRectangle(
             message: `Failed to select rectangle tool: ${toolResult.message}`
         };
     }
-    
+
     // Wait for tool to be selected
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     // Draw the rectangle by dragging from top-left to bottom-right
     const drawResult = await performDragDrop(topLeft, bottomRight, 800, true);
-    
+
     if (filled && drawResult.success) {
         // If filled rectangle requested, use fill tool
         await new Promise(resolve => setTimeout(resolve, 200));
@@ -2712,7 +2712,7 @@ async function drawRectangle(
             await smartClick({ x: centerX, y: centerY }, 'left', false, false);
         }
     }
-    
+
     return drawResult;
 }
 
@@ -2733,13 +2733,13 @@ async function drawEllipse(
             message: `Failed to select ellipse tool: ${toolResult.message}`
         };
     }
-    
+
     // Wait for tool to be selected
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     // Draw the ellipse by dragging from top-left to bottom-right
     const drawResult = await performDragDrop(topLeft, bottomRight, 800, true);
-    
+
     if (filled && drawResult.success) {
         // If filled ellipse requested, use fill tool
         await new Promise(resolve => setTimeout(resolve, 200));
@@ -2752,7 +2752,7 @@ async function drawEllipse(
             await smartClick({ x: centerX, y: centerY }, 'left', false, false);
         }
     }
-    
+
     return drawResult;
 }
 
@@ -2764,7 +2764,7 @@ async function drawCircleWithTool(
 ): Promise<DragDropResult> {
     const topLeft = { x: center.x - radius, y: center.y - radius };
     const bottomRight = { x: center.x + radius, y: center.y + radius };
-    
+
     return await drawEllipse(topLeft, bottomRight, filled);
 }
 
@@ -2784,10 +2784,10 @@ async function drawLineWithTool(
             message: `Failed to select line tool: ${toolResult.message}`
         };
     }
-    
+
     // Wait for tool to be selected
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     // Draw the line by dragging from start to end point
     return await performDragDrop(startPoint, endPoint, 600, true);
 }
@@ -2803,7 +2803,7 @@ async function drawPolygon(
             message: 'Polygon requires at least 3 points'
         };
     }
-    
+
     // Select the polygon tool
     const toolResult = await selectPaintTool('polygon');
     if (!toolResult.success) {
@@ -2812,10 +2812,10 @@ async function drawPolygon(
             message: `Failed to select polygon tool: ${toolResult.message}`
         };
     }
-    
+
     // Wait for tool to be selected
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     try {
         // Click each point to define the polygon
         for (let i = 0; i < points.length; i++) {
@@ -2829,10 +2829,10 @@ async function drawPolygon(
             // Small delay between points
             await new Promise(resolve => setTimeout(resolve, 200));
         }
-        
+
         // Double-click the first point to complete the polygon
         await smartClick(points[0], 'left', true, false);
-        
+
         if (filled) {
             // If filled polygon requested, use fill tool
             await new Promise(resolve => setTimeout(resolve, 500));
@@ -2845,7 +2845,7 @@ async function drawPolygon(
                 await smartClick({ x: centerX, y: centerY }, 'left', false, false);
             }
         }
-        
+
         return {
             success: true,
             message: `Successfully drew ${filled ? 'filled ' : ''}polygon with ${points.length} points`
@@ -2873,10 +2873,10 @@ async function drawCurveWithTool(
             message: `Failed to select curve tool: ${toolResult.message}`
         };
     }
-    
+
     // Wait for tool to be selected
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     try {
         // First, draw the base line
         const lineResult = await performDragDrop(startPoint, endPoint, 600, true);
@@ -2886,24 +2886,24 @@ async function drawCurveWithTool(
                 message: `Failed to draw base line: ${lineResult.message}`
             };
         }
-        
+
         await new Promise(resolve => setTimeout(resolve, 300));
-        
+
         // Add first control point
         if (controlPoint1) {
             await smartClick(controlPoint1, 'left', false, false);
             await new Promise(resolve => setTimeout(resolve, 200));
         }
-        
+
         // Add second control point
         if (controlPoint2) {
             await smartClick(controlPoint2, 'left', false, false);
             await new Promise(resolve => setTimeout(resolve, 200));
         }
-        
+
         // Click outside to finish the curve
         await smartClick({ x: startPoint.x - 100, y: startPoint.y - 100 }, 'left', false, false);
-        
+
         return {
             success: true,
             message: 'Successfully drew curve with Paint\'s curve tool'
@@ -2920,33 +2920,33 @@ async function drawCurveWithTool(
 class PaintDrawingEngine {
     private currentColor: string = '#000000';
     private currentTool: string = 'brush';
-    
+
     constructor() {
         // Initialize the drawing engine
     }
-    
+
     // Create a complex artwork from a description
     async createArtwork(description: string): Promise<{ success: boolean; message: string; operations: number }> {
         let operations = 0;
         const results: string[] = [];
-        
+
         try {
             // Parse the description and create drawing plan
             const plan = this.parseArtworkDescription(description);
-            
+
             for (const instruction of plan.instructions) {
                 const result = await this.executeDrawingInstruction(instruction);
                 operations++;
                 results.push(`${instruction.type}: ${result.success ? 'SUCCESS' : 'FAILED'}`);
-                
+
                 if (!result.success) {
                     console.warn(`Drawing instruction failed: ${instruction.type} - ${result.message}`);
                 }
-                
+
                 // Small delay between operations for stability
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
-            
+
             return {
                 success: true,
                 message: `Artwork creation completed. Executed ${operations} operations. Results: ${results.join(', ')}`,
@@ -2960,15 +2960,15 @@ class PaintDrawingEngine {
             };
         }
     }
-    
+
     // Parse artwork description into drawing instructions
     private parseArtworkDescription(description: string): { instructions: DrawingInstruction[] } {
         const instructions: DrawingInstruction[] = [];
         const canvas = { x: -1200, y: 500, width: 800, height: 600 }; // Typical Paint canvas area
-        
+
         // Simple pattern recognition for common requests
         const lowerDesc = description.toLowerCase();
-        
+
         if (lowerDesc.includes('house')) {
             // Draw a simple house
             instructions.push(
@@ -2976,11 +2976,13 @@ class PaintDrawingEngine {
                 { type: 'select_tool', tool: 'rectangle' },
                 { type: 'draw_rectangle', topLeft: { x: canvas.x + 200, y: canvas.y + 300 }, bottomRight: { x: canvas.x + 400, y: canvas.y + 450 }, filled: true },
                 { type: 'select_color', color: '#FF0000' }, // Red
-                { type: 'draw_polygon', points: [
-                    { x: canvas.x + 180, y: canvas.y + 300 },
-                    { x: canvas.x + 300, y: canvas.y + 200 },
-                    { x: canvas.x + 420, y: canvas.y + 300 }
-                ], filled: true },
+                {
+                    type: 'draw_polygon', points: [
+                        { x: canvas.x + 180, y: canvas.y + 300 },
+                        { x: canvas.x + 300, y: canvas.y + 200 },
+                        { x: canvas.x + 420, y: canvas.y + 300 }
+                    ], filled: true
+                },
                 { type: 'select_color', color: '#0000FF' }, // Blue
                 { type: 'draw_rectangle', topLeft: { x: canvas.x + 270, y: canvas.y + 350 }, bottomRight: { x: canvas.x + 320, y: canvas.y + 420 }, filled: true }
             );
@@ -2988,7 +2990,7 @@ class PaintDrawingEngine {
             // Draw a flower
             const centerX = canvas.x + 300;
             const centerY = canvas.y + 350;
-            
+
             instructions.push(
                 { type: 'select_color', color: '#FFFF00' }, // Yellow
                 { type: 'draw_circle', center: { x: centerX, y: centerY }, radius: 30, filled: true },
@@ -3008,7 +3010,7 @@ class PaintDrawingEngine {
             const colors = ['#FF0000', '#FF8000', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#8000FF'];
             const centerX = canvas.x + 400;
             const centerY = canvas.y + 500;
-            
+
             for (let i = 0; i < colors.length; i++) {
                 const radius = 150 - (i * 20);
                 instructions.push({
@@ -3028,7 +3030,7 @@ class PaintDrawingEngine {
             const centerX = canvas.x + 300;
             const centerY = canvas.y + 350;
             const points = this.calculateStarPoints(centerX, centerY, 60, 30, 5);
-            
+
             instructions.push(
                 { type: 'select_color', color: '#FFD700' }, // Gold
                 { type: 'draw_polygon', points, filled: true }
@@ -3044,21 +3046,21 @@ class PaintDrawingEngine {
             // Draw a mandala pattern
             const centerX = canvas.x + 300;
             const centerY = canvas.y + 350;
-            
+
             instructions.push(
                 { type: 'select_color', color: '#4B0082' } // Indigo
             );
-            
+
             // Create multiple circular patterns
             for (let layer = 1; layer <= 4; layer++) {
                 const radius = layer * 30;
                 const points = 8 * layer;
-                
+
                 for (let i = 0; i < points; i++) {
                     const angle = (i / points) * 2 * Math.PI;
                     const x = centerX + radius * Math.cos(angle);
                     const y = centerY + radius * Math.sin(angle);
-                    
+
                     instructions.push({
                         type: 'draw_circle',
                         center: { x, y },
@@ -3072,80 +3074,82 @@ class PaintDrawingEngine {
             instructions.push(
                 { type: 'select_color', color: '#FF0000' },
                 { type: 'select_tool', tool: 'brush' },
-                { type: 'draw_bezier_curve', 
-                  start: { x: canvas.x + 100, y: canvas.y + 200 },
-                  control1: { x: canvas.x + 200, y: canvas.y + 100 },
-                  control2: { x: canvas.x + 300, y: canvas.y + 300 },
-                  end: { x: canvas.x + 400, y: canvas.y + 200 } },
+                {
+                    type: 'draw_bezier_curve',
+                    start: { x: canvas.x + 100, y: canvas.y + 200 },
+                    control1: { x: canvas.x + 200, y: canvas.y + 100 },
+                    control2: { x: canvas.x + 300, y: canvas.y + 300 },
+                    end: { x: canvas.x + 400, y: canvas.y + 200 }
+                },
                 { type: 'select_color', color: '#00FF00' },
                 { type: 'draw_circle', center: { x: canvas.x + 250, y: canvas.y + 350 }, radius: 50, filled: false },
                 { type: 'select_color', color: '#0000FF' },
                 { type: 'draw_rectangle', topLeft: { x: canvas.x + 150, y: canvas.y + 300 }, bottomRight: { x: canvas.x + 350, y: canvas.y + 400 }, filled: false }
             );
         }
-        
+
         return { instructions };
     }
-    
+
     // Execute a single drawing instruction
     private async executeDrawingInstruction(instruction: DrawingInstruction): Promise<{ success: boolean; message: string }> {
         try {
             switch (instruction.type) {
                 case 'select_color':
                     return await this.selectColor(instruction.color);
-                    
+
                 case 'select_tool':
                     return await selectPaintTool(instruction.tool);
-                    
+
                 case 'draw_rectangle':
                     const rectResult = await drawRectangle(instruction.topLeft, instruction.bottomRight, instruction.filled);
                     return { success: rectResult.success, message: rectResult.message || 'Rectangle drawn' };
-                    
+
                 case 'draw_circle':
-                    const circleResult = instruction.filled 
+                    const circleResult = instruction.filled
                         ? await drawCircleWithTool(instruction.center, instruction.radius, true)
                         : await drawCircle(instruction.center, instruction.radius);
                     return { success: circleResult.success, message: circleResult.message || 'Circle drawn' };
-                    
+
                 case 'draw_ellipse':
                     const ellipseResult = await drawEllipse(instruction.topLeft, instruction.bottomRight, instruction.filled);
                     return { success: ellipseResult.success, message: ellipseResult.message || 'Ellipse drawn' };
-                    
+
                 case 'draw_line':
                     const lineResult = await drawLineWithTool(instruction.start, instruction.end);
                     return { success: lineResult.success, message: lineResult.message || 'Line drawn' };
-                    
+
                 case 'draw_polygon':
                     return await drawPolygon(instruction.points, instruction.filled);
-                    
+
                 case 'draw_bezier_curve':
                     const bezierResult = await drawBezierCurve(instruction.start, instruction.control1, instruction.control2, instruction.end);
                     return { success: bezierResult.success, message: bezierResult.message || 'Bezier curve drawn' };
-                    
+
                 case 'draw_arc':
                     const arcResult = await drawArc(instruction.start, instruction.end, instruction.curvature, instruction.direction);
                     return { success: arcResult.success, message: arcResult.message || 'Arc drawn' };
-                    
+
                 case 'draw_spiral':
                     const spiralResult = await drawSpiral(instruction.center, instruction.innerRadius, instruction.outerRadius, instruction.turns);
                     return { success: spiralResult.success, message: spiralResult.message || 'Spiral drawn' };
-                    
+
                 default:
                     return { success: false, message: `Unknown instruction type: ${(instruction as any).type}` };
             }
         } catch (error) {
-            return { 
-                success: false, 
-                message: `Error executing ${instruction.type}: ${error instanceof Error ? error.message : String(error)}` 
+            return {
+                success: false,
+                message: `Error executing ${instruction.type}: ${error instanceof Error ? error.message : String(error)}`
             };
         }
     }
-    
+
     // Calculate star points
     private calculateStarPoints(centerX: number, centerY: number, outerRadius: number, innerRadius: number, points: number): { x: number; y: number }[] {
         const starPoints: { x: number; y: number }[] = [];
         const angleStep = Math.PI / points;
-        
+
         for (let i = 0; i < points * 2; i++) {
             const radius = i % 2 === 0 ? outerRadius : innerRadius;
             const angle = i * angleStep - Math.PI / 2; // Start from top
@@ -3153,14 +3157,14 @@ class PaintDrawingEngine {
             const y = centerY + radius * Math.sin(angle);
             starPoints.push({ x: Math.round(x), y: Math.round(y) });
         }
-        
+
         return starPoints;
     }
-    
+
     // Select color with intelligent color mapping
     private async selectColor(color: string): Promise<{ success: boolean; message: string }> {
         this.currentColor = color;
-        
+
         // Use the Paint-specific color positions we defined earlier
         const colorMap: { [key: string]: { x: number; y: number } } = {
             '#000000': { x: -931, y: 365 }, // Black
@@ -3181,13 +3185,13 @@ class PaintDrawingEngine {
             '#4B0082': { x: -721, y: 398 }, // Indigo (approximate)
             '#8A2BE2': { x: -581, y: 398 }  // Blue Violet (approximate)
         };
-        
+
         const position = colorMap[color.toUpperCase()];
         if (position) {
             const clickResult = await smartClick(position, 'left', false, true);
             return {
                 success: clickResult.success,
-                message: clickResult.success 
+                message: clickResult.success
                     ? `Selected color ${color} successfully`
                     : `Failed to select color ${color}: ${clickResult.message}`
             };
@@ -3197,7 +3201,7 @@ class PaintDrawingEngine {
             const clickResult = await smartClick(blackPosition, 'left', false, true);
             return {
                 success: clickResult.success,
-                message: clickResult.success 
+                message: clickResult.success
                     ? `Selected fallback color (black) for ${color}`
                     : `Failed to select fallback color: ${clickResult.message}`
             };
@@ -3230,7 +3234,7 @@ class ColorPaletteManager {
         'purple': { hex: '#8000FF', position: { x: -581, y: 365 } },
         'magenta': { hex: '#FF00FF', position: { x: -546, y: 365 } }
     };
-    
+
     private readonly secondaryColors: { [name: string]: { hex: string; position: { x: number; y: number } } } = {
         'light_gray': { hex: '#C0C0C0', position: { x: -931, y: 398 } },
         'brown': { hex: '#804000', position: { x: -896, y: 398 } },
@@ -3245,55 +3249,55 @@ class ColorPaletteManager {
         'peach': { hex: '#FF8040', position: { x: -581, y: 398 } },
         'lavender': { hex: '#8040FF', position: { x: -546, y: 398 } }
     };
-    
+
     private currentColor: string = '#000000';
-    
+
     // Get all available colors
     getAllColors(): { [name: string]: { hex: string; position: { x: number; y: number } } } {
         return { ...this.primaryColors, ...this.secondaryColors };
     }
-    
+
     // Find closest color match
     findClosestColor(targetHex: string): { name: string; hex: string; position: { x: number; y: number }; distance: number } | null {
         const targetRgb = this.hexToRgb(targetHex);
         if (!targetRgb) return null;
-        
+
         let closestColor: { name: string; hex: string; position: { x: number; y: number }; distance: number } | null = null;
         let minDistance = Infinity;
-        
+
         const allColors = this.getAllColors();
-        
+
         for (const [name, color] of Object.entries(allColors)) {
             const colorRgb = this.hexToRgb(color.hex);
             if (!colorRgb) continue;
-            
+
             // Calculate color distance using Euclidean distance in RGB space
             const distance = Math.sqrt(
                 Math.pow(targetRgb.r - colorRgb.r, 2) +
                 Math.pow(targetRgb.g - colorRgb.g, 2) +
                 Math.pow(targetRgb.b - colorRgb.b, 2)
             );
-            
+
             if (distance < minDistance) {
                 minDistance = distance;
                 closestColor = { name, hex: color.hex, position: color.position, distance };
             }
         }
-        
+
         return closestColor;
     }
-    
+
     // Select color by name
     async selectColorByName(colorName: string): Promise<{ success: boolean; message: string; selectedColor?: string }> {
         const allColors = this.getAllColors();
         const color = allColors[colorName.toLowerCase()];
-        
+
         if (!color) {
             // Try to find partial matches
-            const partialMatches = Object.keys(allColors).filter(name => 
+            const partialMatches = Object.keys(allColors).filter(name =>
                 name.includes(colorName.toLowerCase()) || colorName.toLowerCase().includes(name)
             );
-            
+
             if (partialMatches.length === 1) {
                 const matchedColor = allColors[partialMatches[0]];
                 return await this.selectColorAtPosition(matchedColor.position, matchedColor.hex, partialMatches[0]);
@@ -3309,10 +3313,10 @@ class ColorPaletteManager {
                 };
             }
         }
-        
+
         return await this.selectColorAtPosition(color.position, color.hex, colorName);
     }
-    
+
     // Select color by hex value
     async selectColorByHex(hexColor: string): Promise<{ success: boolean; message: string; selectedColor?: string }> {
         // Normalize hex color
@@ -3323,7 +3327,7 @@ class ColorPaletteManager {
                 message: `Invalid hex color format: ${hexColor}. Use format #RRGGBB`
             };
         }
-        
+
         // Find exact match first
         const allColors = this.getAllColors();
         for (const [name, color] of Object.entries(allColors)) {
@@ -3331,7 +3335,7 @@ class ColorPaletteManager {
                 return await this.selectColorAtPosition(color.position, color.hex, name);
             }
         }
-        
+
         // Find closest match
         const closestColor = this.findClosestColor(normalizedHex);
         if (closestColor) {
@@ -3341,41 +3345,41 @@ class ColorPaletteManager {
             }
             return result;
         }
-        
+
         return {
             success: false,
             message: `Could not find suitable color match for ${normalizedHex}`
         };
     }
-    
+
     // Select color at specific position with validation
     private async selectColorAtPosition(
-        position: { x: number; y: number }, 
-        hexColor: string, 
+        position: { x: number; y: number },
+        hexColor: string,
         colorName?: string
     ): Promise<{ success: boolean; message: string; selectedColor?: string }> {
         try {
             // Take screenshot before clicking to validate position
             const beforeScreenshot = await captureScreen();
-            
+
             // Click the color position
             const clickResult = await smartClick(position, 'left', false, true);
-            
+
             if (!clickResult.success) {
                 return {
                     success: false,
                     message: `Failed to click color position: ${clickResult.message}`
                 };
             }
-            
+
             // Wait for color selection to take effect
             await new Promise(resolve => setTimeout(resolve, 200));
-            
+
             // Validate color selection by taking another screenshot
             const afterScreenshot = await captureScreen();
-            
+
             this.currentColor = hexColor;
-            
+
             return {
                 success: true,
                 message: `Successfully selected color ${colorName || hexColor}`,
@@ -3388,27 +3392,27 @@ class ColorPaletteManager {
             };
         }
     }
-    
+
     // Get current selected color
     getCurrentColor(): string {
         return this.currentColor;
     }
-    
+
     // Create custom color picker (opens Paint's color picker dialog)
     async openColorPicker(): Promise<{ success: boolean; message: string }> {
         try {
             // Right-click on color palette area to open context menu
             const contextMenuResult = await smartClick({ x: -700, y: 380 }, 'right', false, true);
-            
+
             if (!contextMenuResult.success) {
                 return {
                     success: false,
                     message: `Failed to open color context menu: ${contextMenuResult.message}`
                 };
             }
-            
+
             await new Promise(resolve => setTimeout(resolve, 500));
-            
+
             // Look for "Edit Colors" or similar option (this would need OCR to find)
             // For now, just return success with instruction
             return {
@@ -3422,25 +3426,25 @@ class ColorPaletteManager {
             };
         }
     }
-    
+
     // Analyze colors in current Paint canvas
-    async analyzeCanvasColors(): Promise<{ 
-        success: boolean; 
-        message: string; 
-        colors?: { hex: string; count: number; percentage: number }[] 
+    async analyzeCanvasColors(): Promise<{
+        success: boolean;
+        message: string;
+        colors?: { hex: string; count: number; percentage: number }[]
     }> {
         try {
             // Capture the Paint canvas area
             const canvasRegion = { x: -1200, y: 500, width: 800, height: 600 };
             const screenshot = await captureScreen(undefined, canvasRegion);
-            
+
             if (!screenshot.success || !screenshot.imagePath) {
                 return {
                     success: false,
                     message: "Failed to capture canvas for color analysis"
                 };
             }
-            
+
             // Use PowerShell to analyze colors in the image
             const colorAnalysisScript = `
             Add-Type -AssemblyName System.Drawing
@@ -3483,9 +3487,9 @@ class ColorPaletteManager {
                 Write-Output "ERROR|$($_.Exception.Message)"
             }
             `;
-            
+
             const result = await execPowerShellStructured(colorAnalysisScript);
-            
+
             if (result.success && result.data) {
                 return {
                     success: true,
@@ -3505,12 +3509,12 @@ class ColorPaletteManager {
             };
         }
     }
-    
+
     // Utility methods
     private hexToRgb(hex: string): { r: number; g: number; b: number } | null {
         const normalized = this.normalizeHex(hex);
         if (!normalized) return null;
-        
+
         const result = /^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(normalized);
         return result ? {
             r: parseInt(result[1], 16),
@@ -3518,21 +3522,21 @@ class ColorPaletteManager {
             b: parseInt(result[3], 16)
         } : null;
     }
-    
+
     private normalizeHex(hex: string): string | null {
         // Remove # if present
         let normalized = hex.replace('#', '');
-        
+
         // Convert 3-digit to 6-digit hex
         if (normalized.length === 3) {
             normalized = normalized.split('').map(char => char + char).join('');
         }
-        
+
         // Validate format
         if (!/^[0-9A-Fa-f]{6}$/.test(normalized)) {
             return null;
         }
-        
+
         return `#${normalized.toUpperCase()}`;
     }
 }
@@ -3544,84 +3548,86 @@ const colorPaletteManager = new ColorPaletteManager();
 class PaintToolManager {
     private currentTool: string = 'brush';
     private toolState: { [tool: string]: any } = {};
-    
-    private readonly toolDefinitions: { [name: string]: {
-        position: { x: number; y: number };
-        description: string;
-        category: 'drawing' | 'shape' | 'utility';
-        hasSettings?: boolean;
-        settingsPosition?: { x: number; y: number };
-    }} = {
-        'pencil': {
-            position: { x: -1359, y: 377 },
-            description: 'Pencil tool for precise drawing with thin lines',
-            category: 'drawing'
-        },
-        'brush': {
-            position: { x: -1394, y: 377 },
-            description: 'Brush tool for painting with customizable brush sizes',
-            category: 'drawing',
-            hasSettings: true
-        },
-        'spray': {
-            position: { x: -1429, y: 377 },
-            description: 'Spray paint tool for airbrush effects',
-            category: 'drawing',
-            hasSettings: true
-        },
-        'fill': {
-            position: { x: -1464, y: 377 },
-            description: 'Fill tool to fill areas with solid color',
-            category: 'utility'
-        },
-        'text': {
-            position: { x: -1499, y: 377 },
-            description: 'Text tool for adding text to the canvas',
-            category: 'utility',
-            hasSettings: true
-        },
-        'line': {
-            position: { x: -1534, y: 377 },
-            description: 'Line tool for drawing straight lines',
-            category: 'shape'
-        },
-        'curve': {
-            position: { x: -1569, y: 377 },
-            description: 'Curve tool for drawing curved lines with control points',
-            category: 'shape'
-        },
-        'rectangle': {
-            position: { x: -1604, y: 377 },
-            description: 'Rectangle tool for drawing rectangles and squares',
-            category: 'shape'
-        },
-        'polygon': {
-            position: { x: -1639, y: 377 },
-            description: 'Polygon tool for drawing multi-sided shapes',
-            category: 'shape'
-        },
-        'ellipse': {
-            position: { x: -1674, y: 377 },
-            description: 'Ellipse tool for drawing circles and ovals',
-            category: 'shape'
-        },
-        'rounded-rectangle': {
-            position: { x: -1709, y: 377 },
-            description: 'Rounded rectangle tool for drawing rectangles with rounded corners',
-            category: 'shape'
+
+    private readonly toolDefinitions: {
+        [name: string]: {
+            position: { x: number; y: number };
+            description: string;
+            category: 'drawing' | 'shape' | 'utility';
+            hasSettings?: boolean;
+            settingsPosition?: { x: number; y: number };
         }
-    };
-    
+    } = {
+            'pencil': {
+                position: { x: -1359, y: 377 },
+                description: 'Pencil tool for precise drawing with thin lines',
+                category: 'drawing'
+            },
+            'brush': {
+                position: { x: -1394, y: 377 },
+                description: 'Brush tool for painting with customizable brush sizes',
+                category: 'drawing',
+                hasSettings: true
+            },
+            'spray': {
+                position: { x: -1429, y: 377 },
+                description: 'Spray paint tool for airbrush effects',
+                category: 'drawing',
+                hasSettings: true
+            },
+            'fill': {
+                position: { x: -1464, y: 377 },
+                description: 'Fill tool to fill areas with solid color',
+                category: 'utility'
+            },
+            'text': {
+                position: { x: -1499, y: 377 },
+                description: 'Text tool for adding text to the canvas',
+                category: 'utility',
+                hasSettings: true
+            },
+            'line': {
+                position: { x: -1534, y: 377 },
+                description: 'Line tool for drawing straight lines',
+                category: 'shape'
+            },
+            'curve': {
+                position: { x: -1569, y: 377 },
+                description: 'Curve tool for drawing curved lines with control points',
+                category: 'shape'
+            },
+            'rectangle': {
+                position: { x: -1604, y: 377 },
+                description: 'Rectangle tool for drawing rectangles and squares',
+                category: 'shape'
+            },
+            'polygon': {
+                position: { x: -1639, y: 377 },
+                description: 'Polygon tool for drawing multi-sided shapes',
+                category: 'shape'
+            },
+            'ellipse': {
+                position: { x: -1674, y: 377 },
+                description: 'Ellipse tool for drawing circles and ovals',
+                category: 'shape'
+            },
+            'rounded-rectangle': {
+                position: { x: -1709, y: 377 },
+                description: 'Rounded rectangle tool for drawing rectangles with rounded corners',
+                category: 'shape'
+            }
+        };
+
     // Get all available tools
     getAllTools(): { [name: string]: { position: { x: number; y: number }; description: string; category: string } } {
         return this.toolDefinitions;
     }
-    
+
     // Get current tool
     getCurrentTool(): string {
         return this.currentTool;
     }
-    
+
     // Select tool with visual confirmation and state management
     async selectToolPrecise(toolName: string, verifySelection: boolean = true): Promise<{
         success: boolean;
@@ -3634,24 +3640,23 @@ class PaintToolManager {
         if (!tool) {
             const availableTools = Object.keys(this.toolDefinitions);
             const suggestions = this.findSimilarTools(toolName, availableTools);
-            
+
             return {
                 success: false,
-                message: `Tool "${toolName}" not found. Available tools: ${availableTools.join(', ')}${
-                    suggestions.length > 0 ? `. Did you mean: ${suggestions.join(', ')}?` : ''
-                }`
+                message: `Tool "${toolName}" not found. Available tools: ${availableTools.join(', ')}${suggestions.length > 0 ? `. Did you mean: ${suggestions.join(', ')}?` : ''
+                    }`
             };
         }
-        
+
         const previousTool = this.currentTool;
-        
+
         try {
             // Take screenshot before tool selection for comparison
             const beforeScreenshot = verifySelection ? await captureScreen() : null;
-            
+
             // Click the tool with visual feedback
             const clickResult = await smartClick(tool.position, 'left', false, true);
-            
+
             if (!clickResult.success) {
                 return {
                     success: false,
@@ -3659,10 +3664,10 @@ class PaintToolManager {
                     previousTool
                 };
             }
-            
+
             // Wait for tool selection to take effect
             await new Promise(resolve => setTimeout(resolve, 300));
-            
+
             // Visual confirmation by taking another screenshot
             let visualConfirmed = false;
             if (verifySelection && beforeScreenshot?.success) {
@@ -3675,14 +3680,14 @@ class PaintToolManager {
                     );
                 }
             }
-            
+
             // Update tool state
             this.currentTool = toolName.toLowerCase();
             this.toolState[toolName.toLowerCase()] = {
                 lastSelected: new Date(),
                 selectionCount: (this.toolState[toolName.toLowerCase()]?.selectionCount || 0) + 1
             };
-            
+
             // Provide additional tool-specific instructions
             let additionalInfo = '';
             switch (toolName.toLowerCase()) {
@@ -3702,7 +3707,7 @@ class PaintToolManager {
                     additionalInfo = ' Click multiple points to define the polygon, double-click to complete.';
                     break;
             }
-            
+
             return {
                 success: true,
                 message: `Successfully selected ${toolName} tool (${tool.description}).${additionalInfo}`,
@@ -3710,7 +3715,7 @@ class PaintToolManager {
                 previousTool,
                 visualConfirmed
             };
-            
+
         } catch (error) {
             return {
                 success: false,
@@ -3719,18 +3724,18 @@ class PaintToolManager {
             };
         }
     }
-    
+
     // Get tool by category
     getToolsByCategory(category: 'drawing' | 'shape' | 'utility'): string[] {
         return Object.entries(this.toolDefinitions)
             .filter(([_, tool]) => tool.category === category)
             .map(([name, _]) => name);
     }
-    
+
     // Smart tool recommendation based on task
     recommendTool(task: string): { tool: string; reason: string; alternatives?: string[] } {
         const lowerTask = task.toLowerCase();
-        
+
         if (lowerTask.includes('draw') || lowerTask.includes('sketch')) {
             if (lowerTask.includes('precise') || lowerTask.includes('thin') || lowerTask.includes('detail')) {
                 return {
@@ -3802,7 +3807,7 @@ class PaintToolManager {
             };
         }
     }
-    
+
     // Validate tool selection by checking visual changes
     private async compareToolSelectionScreenshots(
         beforePath: string,
@@ -3854,7 +3859,7 @@ class PaintToolManager {
                 Write-Output "ERROR|Screenshot comparison failed: $($_.Exception.Message)"
             }
             `;
-            
+
             const result = await execPowerShellStructured(script);
             return result.success;
         } catch (error) {
@@ -3862,15 +3867,15 @@ class PaintToolManager {
             return false; // Assume success if comparison fails
         }
     }
-    
+
     // Find similar tool names for suggestions
     private findSimilarTools(input: string, availableTools: string[]): string[] {
         const suggestions: string[] = [];
         const lowerInput = input.toLowerCase();
-        
+
         for (const tool of availableTools) {
             const lowerTool = tool.toLowerCase();
-            
+
             // Check for partial matches
             if (lowerTool.includes(lowerInput) || lowerInput.includes(lowerTool)) {
                 suggestions.push(tool);
@@ -3881,22 +3886,22 @@ class PaintToolManager {
                 }
             }
         }
-        
+
         return suggestions.slice(0, 3); // Return top 3 suggestions
     }
-    
+
     // Calculate string similarity (basic Levenshtein distance)
     private calculateSimilarity(str1: string, str2: string): number {
         const matrix: number[][] = [];
-        
+
         for (let i = 0; i <= str2.length; i++) {
             matrix[i] = [i];
         }
-        
+
         for (let j = 0; j <= str1.length; j++) {
             matrix[0][j] = j;
         }
-        
+
         for (let i = 1; i <= str2.length; i++) {
             for (let j = 1; j <= str1.length; j++) {
                 if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
@@ -3910,16 +3915,16 @@ class PaintToolManager {
                 }
             }
         }
-        
+
         const maxLength = Math.max(str1.length, str2.length);
         return (maxLength - matrix[str2.length][str1.length]) / maxLength;
     }
-    
+
     // Get tool usage statistics
     getToolStats(): { [tool: string]: { selectionCount: number; lastSelected?: Date } } {
         return { ...this.toolState };
     }
-    
+
     // Reset tool to default (brush)
     async resetToDefaultTool(): Promise<{ success: boolean; message: string }> {
         return await this.selectToolPrecise('brush', false);
@@ -3932,7 +3937,7 @@ const paintToolManager = new PaintToolManager();
 // Drawing Validation and Verification System
 class DrawingValidationSystem {
     private validationHistory: { [operation: string]: ValidationResult[] } = {};
-    
+
     // Validate that a drawing operation completed successfully
     async validateDrawingOperation(
         operationType: string,
@@ -3942,12 +3947,12 @@ class DrawingValidationSystem {
         expectedColor?: string
     ): Promise<ValidationResult> {
         const startTime = Date.now();
-        
+
         try {
             // If screenshots not provided, capture them
             let beforePath = beforeScreenshot;
             let afterPath = afterScreenshot;
-            
+
             if (!beforePath || !afterPath) {
                 const screenshot = await captureScreen(undefined, expectedRegion);
                 if (!screenshot.success || !screenshot.imagePath) {
@@ -3961,16 +3966,16 @@ class DrawingValidationSystem {
                 }
                 afterPath = screenshot.imagePath;
             }
-            
+
             // Analyze the drawing region for changes
             const analysisResult = await this.analyzeDrawingRegion(
                 afterPath!,
                 expectedRegion,
                 expectedColor
             );
-            
+
             const validationTime = Date.now() - startTime;
-            
+
             const result: ValidationResult = {
                 success: analysisResult.hasContent,
                 operationType,
@@ -3984,15 +3989,15 @@ class DrawingValidationSystem {
                     dominantColors: analysisResult.dominantColors
                 }
             };
-            
+
             // Store validation result
             if (!this.validationHistory[operationType]) {
                 this.validationHistory[operationType] = [];
             }
             this.validationHistory[operationType].push(result);
-            
+
             return result;
-            
+
         } catch (error) {
             return {
                 success: false,
@@ -4003,7 +4008,7 @@ class DrawingValidationSystem {
             };
         }
     }
-    
+
     // Analyze drawing region for content and changes
     private async analyzeDrawingRegion(
         imagePath: string,
@@ -4105,10 +4110,10 @@ class DrawingValidationSystem {
             Write-Output "ERROR|Analysis failed: $($_.Exception.Message)"
         }
         `;
-        
+
         try {
             const result = await execPowerShellStructured(script);
-            
+
             if (result.success && result.data) {
                 return result.data;
             } else {
@@ -4132,7 +4137,7 @@ class DrawingValidationSystem {
             };
         }
     }
-    
+
     // Validate specific shape drawing
     async validateShapeDrawing(
         shapeType: 'rectangle' | 'circle' | 'line' | 'polygon',
@@ -4149,14 +4154,14 @@ class DrawingValidationSystem {
                 validationTime: 0
             };
         }
-        
+
         const shapeAnalysis = await this.analyzeShapeGeometry(
             screenshot.imagePath,
             expectedBounds,
             shapeType,
             tolerance
         );
-        
+
         return {
             success: shapeAnalysis.shapeDetected,
             operationType: `${shapeType}_validation`,
@@ -4171,7 +4176,7 @@ class DrawingValidationSystem {
             }
         };
     }
-    
+
     // Analyze geometric shapes in the drawing
     private async analyzeShapeGeometry(
         imagePath: string,
@@ -4187,7 +4192,7 @@ class DrawingValidationSystem {
         analysisTime: number;
     }> {
         const startTime = Date.now();
-        
+
         const script = `
         Add-Type -AssemblyName System.Drawing
         
@@ -4288,10 +4293,10 @@ class DrawingValidationSystem {
             Write-Output "ERROR|Shape analysis failed: $($_.Exception.Message)"
         }
         `;
-        
+
         try {
             const result = await execPowerShellStructured(script);
-            
+
             if (result.success && result.data) {
                 return { ...result.data, analysisTime: Date.now() - startTime };
             } else {
@@ -4315,7 +4320,7 @@ class DrawingValidationSystem {
             };
         }
     }
-    
+
     // Get validation statistics
     getValidationStats(): {
         totalValidations: number;
@@ -4327,19 +4332,19 @@ class DrawingValidationSystem {
         let totalSuccesses = 0;
         let totalValidationTime = 0;
         const operationStats: { [operation: string]: { count: number; successRate: number } } = {};
-        
+
         for (const [operation, results] of Object.entries(this.validationHistory)) {
             const successes = results.filter(r => r.success).length;
             operationStats[operation] = {
                 count: results.length,
                 successRate: results.length > 0 ? (successes / results.length) * 100 : 0
             };
-            
+
             totalValidations += results.length;
             totalSuccesses += successes;
             totalValidationTime += results.reduce((sum, r) => sum + (r.validationTime || 0), 0);
         }
-        
+
         return {
             totalValidations,
             successRate: totalValidations > 0 ? (totalSuccesses / totalValidations) * 100 : 0,
@@ -4347,7 +4352,7 @@ class DrawingValidationSystem {
             averageValidationTime: totalValidations > 0 ? totalValidationTime / totalValidations : 0
         };
     }
-    
+
     // Clear validation history
     clearHistory(): void {
         this.validationHistory = {};
@@ -4405,7 +4410,7 @@ async function performScroll(
     const scrollUp = direction === 'up' || direction === 'north';
     const scrollLeft = direction === 'left' || direction === 'west';
     const scrollRight = direction === 'right' || direction === 'east';
-    
+
     let wheelDelta = amount * 120; // Standard wheel delta
     if (scrollUp) wheelDelta = -wheelDelta; // Reverse for up scroll
 
@@ -4454,8 +4459,8 @@ async function performScroll(
             direction,
             amount,
             targetElement,
-            message: output.startsWith('SUCCESS|') ? 
-                output.substring(8) : 
+            message: output.startsWith('SUCCESS|') ?
+                output.substring(8) :
                 (output.startsWith('ERROR|') ? output.substring(6) : 'Scroll operation failed')
         };
     } catch (error) {
@@ -4486,7 +4491,7 @@ async function sendKeyCombo(
         } else if ('title' in windowTarget) {
             await focusWindow(windowTarget.title);
         }
-        
+
         // Wait for focus to settle
         await new Promise(resolve => setTimeout(resolve, 200));
     }
@@ -4515,8 +4520,8 @@ async function sendKeyCombo(
         return {
             success: output.startsWith('SUCCESS|'),
             keys,
-            message: output.startsWith('SUCCESS|') ? 
-                output.substring(8) : 
+            message: output.startsWith('SUCCESS|') ?
+                output.substring(8) :
                 (output.startsWith('ERROR|') ? output.substring(6) : 'Key combination failed')
         };
     } catch (error) {
@@ -4580,7 +4585,7 @@ async function createWorkflow(
     steps: WorkflowStep[] = []
 ): Promise<{ success: boolean; workflowId: string; message: string }> {
     const workflowId = `workflow_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const workflow: Workflow = {
         id: workflowId,
         name,
@@ -4591,9 +4596,9 @@ async function createWorkflow(
         executionCount: 0,
         successRate: 0
     };
-    
+
     workflows[workflowId] = workflow;
-    
+
     return {
         success: true,
         workflowId,
@@ -4613,12 +4618,12 @@ async function startWorkflowRecording(
             message: 'A workflow recording is already in progress'
         };
     }
-    
+
     recordingId = `recording_${Date.now()}`;
     recordingWorkflow = [];
     recordingName = name;
     recordingDescription = description;
-    
+
     return {
         success: true,
         recordingId,
@@ -4639,7 +4644,7 @@ async function recordAction(
             message: 'No workflow recording in progress. Start recording first.'
         };
     }
-    
+
     const stepId = `step_${Date.now()}_${recordingWorkflow.length}`;
     const step: WorkflowStep = {
         id: stepId,
@@ -4649,9 +4654,9 @@ async function recordAction(
         enabled: true,
         retryCount: 0
     };
-    
+
     recordingWorkflow.push(step);
-    
+
     return {
         success: true,
         stepId,
@@ -4672,19 +4677,19 @@ async function stopWorkflowRecording(
             message: 'No workflow recording in progress'
         };
     }
-    
+
     const steps = [...recordingWorkflow];
     const stepsRecorded = steps.length;
-    
+
     // Clear recording state
     recordingWorkflow = null;
     recordingId = null;
     recordingName = null;
     recordingDescription = null;
-    
+
     // Create the workflow
     const result = await createWorkflow(name, description, steps);
-    
+
     return {
         success: result.success,
         workflowId: result.workflowId,
@@ -4703,7 +4708,7 @@ async function executeWorkflow(
     if (!workflow) {
         throw new GlassMCPError(`Workflow not found: ${workflowId}`);
     }
-    
+
     const executionId = `exec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const execution: WorkflowExecution = {
         workflowId,
@@ -4715,23 +4720,23 @@ async function executeWorkflow(
         errors: [],
         variables: { ...workflow.variables, ...variables }
     };
-    
+
     activeExecutions[executionId] = execution;
-    
+
     try {
         for (let i = 0; i < workflow.steps.length; i++) {
             const step = workflow.steps[i];
             execution.currentStep = i;
-            
+
             if (!step.enabled) {
                 continue;
             }
-            
+
             // Execute step with retry logic
             let success = false;
             let lastError: any = null;
             const maxRetries = step.retryCount || 0;
-            
+
             for (let retry = 0; retry <= maxRetries; retry++) {
                 try {
                     const result = await executeWorkflowStep(step, execution.variables);
@@ -4752,37 +4757,37 @@ async function executeWorkflow(
                     }
                 }
             }
-            
+
             if (!success) {
                 execution.errors.push({
                     stepId: step.id,
                     error: lastError instanceof Error ? lastError.message : String(lastError),
                     timestamp: new Date().toISOString()
                 });
-                
+
                 if (!continueOnError) {
                     execution.status = 'failed';
                     execution.endTime = new Date().toISOString();
-                    
+
                     // Update workflow statistics
                     workflow.executionCount++;
                     workflow.lastExecuted = new Date().toISOString();
-                    
+
                     return execution;
                 }
             }
         }
-        
+
         execution.status = 'completed';
         execution.endTime = new Date().toISOString();
         execution.currentStep = workflow.steps.length;
-        
+
         // Update workflow statistics
         workflow.executionCount++;
         workflow.lastExecuted = new Date().toISOString();
         const successfulExecutions = execution.errors.length === 0 ? 1 : 0;
         workflow.successRate = (workflow.successRate * (workflow.executionCount - 1) + successfulExecutions) / workflow.executionCount;
-        
+
     } catch (error) {
         execution.status = 'failed';
         execution.endTime = new Date().toISOString();
@@ -4792,7 +4797,7 @@ async function executeWorkflow(
             timestamp: new Date().toISOString()
         });
     }
-    
+
     return execution;
 }
 
@@ -4800,7 +4805,7 @@ async function executeWorkflow(
 async function executeWorkflowStep(step: WorkflowStep, variables: { [key: string]: any }): Promise<any> {
     // Replace variables in parameters
     const resolvedParams = resolveVariables(step.parameters, variables);
-    
+
     switch (step.type) {
         case 'click':
             return smartClick(
@@ -4809,7 +4814,7 @@ async function executeWorkflowStep(step: WorkflowStep, variables: { [key: string
                 resolvedParams.doubleClick || false,
                 resolvedParams.confirmClick !== false
             );
-            
+
         case 'type':
             return smartType(
                 resolvedParams.text,
@@ -4817,44 +4822,44 @@ async function executeWorkflowStep(step: WorkflowStep, variables: { [key: string
                 resolvedParams.typeMode || 'replace',
                 resolvedParams.confirmFocus !== false
             );
-            
+
         case 'wait':
             const duration = resolvedParams.duration || 1000;
             await new Promise(resolve => setTimeout(resolve, duration));
             return { success: true, waited: duration, message: `Waited ${duration}ms` };
-            
+
         case 'capture':
             const region = resolvedParams.region;
             return captureScreen(resolvedParams.monitor, region);
-            
+
         case 'verify':
             // Verify elements or conditions
             if (resolvedParams.elementExists) {
                 const elements = await detectUIElements(resolvedParams.windowHandle);
-                const elementFound = elements.some(el => 
+                const elementFound = elements.some(el =>
                     (resolvedParams.elementId && el.automationId === resolvedParams.elementId) ||
                     (resolvedParams.text && el.text?.includes(resolvedParams.text))
                 );
-                return { 
-                    success: elementFound, 
+                return {
+                    success: elementFound,
                     found: elementFound,
                     message: elementFound ? 'Element verification passed' : 'Element not found'
                 };
             }
             return { success: true, message: 'Verification step completed' };
-            
+
         case 'condition':
             // Evaluate condition (basic implementation)
             const condition = resolvedParams.condition;
             let result = true;
-            
+
             if (condition && typeof condition === 'string') {
                 // Simple variable comparison
                 const match = condition.match(/(\w+)\s*([><=!]+)\s*(.+)/);
                 if (match) {
                     const [, varName, operator, value] = match;
                     const varValue = variables[varName];
-                    
+
                     switch (operator) {
                         case '==':
                             result = varValue == value;
@@ -4873,9 +4878,9 @@ async function executeWorkflowStep(step: WorkflowStep, variables: { [key: string
                     }
                 }
             }
-            
+
             return { success: true, conditionMet: result, message: `Condition ${result ? 'met' : 'not met'}` };
-            
+
         default:
             throw new Error(`Unknown workflow step type: ${step.type}`);
     }
@@ -4925,13 +4930,13 @@ async function updateWorkflow(
             message: `Workflow not found: ${workflowId}`
         };
     }
-    
+
     // Update allowed fields
     if (updates.name) workflow.name = updates.name;
     if (updates.description) workflow.description = updates.description;
     if (updates.steps) workflow.steps = updates.steps;
     if (updates.variables) workflow.variables = updates.variables;
-    
+
     return {
         success: true,
         message: `Workflow ${workflowId} updated successfully`
@@ -4946,9 +4951,9 @@ async function deleteWorkflow(workflowId: string): Promise<{ success: boolean; m
             message: `Workflow not found: ${workflowId}`
         };
     }
-    
+
     delete workflows[workflowId];
-    
+
     return {
         success: true,
         message: `Workflow ${workflowId} deleted successfully`
@@ -4963,10 +4968,10 @@ function getExecutionStatus(executionId?: string): { executions: WorkflowExecuti
             activeCount: 1
         };
     }
-    
+
     const executions = Object.values(activeExecutions);
     const activeCount = executions.filter(e => e.status === 'running').length;
-    
+
     return {
         executions,
         activeCount
@@ -5056,7 +5061,7 @@ async function getSystemHealth(): Promise<{
 
         const result = await execPowerShell(healthScript);
         const healthData = JSON.parse(result.stdout);
-        
+
         return healthData;
     } catch (error) {
         throw new GlassMCPError(`Failed to get system health: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -5085,48 +5090,48 @@ async function manageProcess(action: 'list' | 'start' | 'stop' | 'restart' | 'ki
                         }
                     } | ConvertTo-Json
                 `;
-                
+
                 const result = await execPowerShell(listScript);
                 const processes = JSON.parse(result.stdout);
-                
+
                 return {
                     success: true,
                     processes: Array.isArray(processes) ? processes : [processes]
                 };
             }
-            
+
             case 'stop':
             case 'kill': {
                 if (!processName && !processId) {
                     throw new Error('Process name or ID required for stop/kill operation');
                 }
-                
-                const stopScript = processId 
+
+                const stopScript = processId
                     ? `Stop-Process -Id ${processId} ${action === 'kill' ? '-Force' : ''}; "Process stopped"`
                     : `Stop-Process -Name "${processName}" ${action === 'kill' ? '-Force' : ''}; "Process stopped"`;
-                
+
                 await execPowerShell(stopScript);
-                
+
                 return {
                     success: true,
                     message: `Process ${processName || processId} ${action}ed successfully`
                 };
             }
-            
+
             case 'start': {
                 if (!processName) {
                     throw new Error('Process name required for start operation');
                 }
-                
+
                 const startScript = `Start-Process "${processName}"; "Process started"`;
                 await execPowerShell(startScript);
-                
+
                 return {
                     success: true,
                     message: `Process ${processName} started successfully`
                 };
             }
-            
+
             default:
                 throw new Error(`Unsupported action: ${action}`);
         }
@@ -5159,58 +5164,58 @@ async function manageService(action: 'list' | 'start' | 'stop' | 'restart', serv
                         }
                     } | ConvertTo-Json
                 `;
-                
+
                 const result = await execPowerShell(listScript);
                 const services = JSON.parse(result.stdout);
-                
+
                 return {
                     success: true,
                     services: Array.isArray(services) ? services : [services]
                 };
             }
-            
+
             case 'start': {
                 if (!serviceName) {
                     throw new Error('Service name required for start operation');
                 }
-                
+
                 const startScript = `Start-Service -Name "${serviceName}"; "Service started"`;
                 await execPowerShell(startScript);
-                
+
                 return {
                     success: true,
                     message: `Service ${serviceName} started successfully`
                 };
             }
-            
+
             case 'stop': {
                 if (!serviceName) {
                     throw new Error('Service name required for stop operation');
                 }
-                
+
                 const stopScript = `Stop-Service -Name "${serviceName}" -Force; "Service stopped"`;
                 await execPowerShell(stopScript);
-                
+
                 return {
                     success: true,
                     message: `Service ${serviceName} stopped successfully`
                 };
             }
-            
+
             case 'restart': {
                 if (!serviceName) {
                     throw new Error('Service name required for restart operation');
                 }
-                
+
                 const restartScript = `Restart-Service -Name "${serviceName}" -Force; "Service restarted"`;
                 await execPowerShell(restartScript);
-                
+
                 return {
                     success: true,
                     message: `Service ${serviceName} restarted successfully`
                 };
             }
-            
+
             default:
                 throw new Error(`Unsupported action: ${action}`);
         }
@@ -5234,7 +5239,7 @@ async function manageRegistry(action: 'read' | 'write' | 'delete' | 'list', keyP
                 if (!valueName) {
                     throw new Error('Value name required for read operation');
                 }
-                
+
                 const readScript = `
                     try {
                         $value = Get-ItemProperty -Path "Registry::${keyPath}" -Name "${valueName}" -ErrorAction Stop
@@ -5250,16 +5255,16 @@ async function manageRegistry(action: 'read' | 'write' | 'delete' | 'list', keyP
                         } | ConvertTo-Json
                     }
                 `;
-                
+
                 const result = await execPowerShell(readScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'write': {
                 if (!valueName || value === undefined) {
                     throw new Error('Value name and value required for write operation');
                 }
-                
+
                 const writeScript = `
                     try {
                         if (!(Test-Path "Registry::${keyPath}")) {
@@ -5277,24 +5282,24 @@ async function manageRegistry(action: 'read' | 'write' | 'delete' | 'list', keyP
                         } | ConvertTo-Json
                     }
                 `;
-                
+
                 const result = await execPowerShell(writeScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'delete': {
                 const deleteScript = valueName
                     ? `Remove-ItemProperty -Path "Registry::${keyPath}" -Name "${valueName}" -Force; "Registry value deleted"`
                     : `Remove-Item -Path "Registry::${keyPath}" -Recurse -Force; "Registry key deleted"`;
-                
+
                 await execPowerShell(deleteScript);
-                
+
                 return {
                     success: true,
                     message: `Registry ${valueName ? 'value' : 'key'} deleted successfully`
                 };
             }
-            
+
             case 'list': {
                 const listScript = `
                     try {
@@ -5319,11 +5324,11 @@ async function manageRegistry(action: 'read' | 'write' | 'delete' | 'list', keyP
                         } | ConvertTo-Json
                     }
                 `;
-                
+
                 const result = await execPowerShell(listScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             default:
                 throw new Error(`Unsupported action: ${action}`);
         }
@@ -5414,7 +5419,7 @@ async function performSystemMaintenance(tasks: string[] = ['cleanup', 'defrag', 
 
     for (const task of tasks) {
         const startTime = Date.now();
-        
+
         try {
             switch (task) {
                 case 'cleanup': {
@@ -5439,7 +5444,7 @@ async function performSystemMaintenance(tasks: string[] = ['cleanup', 'defrag', 
                         
                         "Cleanup completed. Freed: $freed GB"
                     `;
-                    
+
                     const cleanupResult = await execPowerShell(cleanupScript);
                     results.completed.push(task);
                     results.details[task] = {
@@ -5449,7 +5454,7 @@ async function performSystemMaintenance(tasks: string[] = ['cleanup', 'defrag', 
                     };
                     break;
                 }
-                
+
                 case 'defrag': {
                     const defragScript = `
                         # Analyze and defragment drives
@@ -5472,7 +5477,7 @@ async function performSystemMaintenance(tasks: string[] = ['cleanup', 'defrag', 
                         
                         $results -join "; "
                     `;
-                    
+
                     const defragResult = await execPowerShell(defragScript);
                     results.completed.push(task);
                     results.details[task] = {
@@ -5482,7 +5487,7 @@ async function performSystemMaintenance(tasks: string[] = ['cleanup', 'defrag', 
                     };
                     break;
                 }
-                
+
                 case 'updates': {
                     const updatesScript = `
                         # Check for Windows updates
@@ -5507,7 +5512,7 @@ async function performSystemMaintenance(tasks: string[] = ['cleanup', 'defrag', 
                             }
                         }
                     `;
-                    
+
                     const updatesResult = await execPowerShell(updatesScript);
                     results.completed.push(task);
                     results.details[task] = {
@@ -5517,7 +5522,7 @@ async function performSystemMaintenance(tasks: string[] = ['cleanup', 'defrag', 
                     };
                     break;
                 }
-                
+
                 default:
                     throw new Error(`Unknown maintenance task: ${task}`);
             }
@@ -5551,7 +5556,7 @@ async function testConnectivity(target: string, testType: 'ping' | 'traceroute' 
             case 'ping': {
                 const count = options.count || 4;
                 const timeout = options.timeout || 1000;
-                
+
                 const pingScript = `
                     $target = "${target}"
                     $count = ${count}
@@ -5629,10 +5634,10 @@ async function testConnectivity(target: string, testType: 'ping' | 'traceroute' 
                 const result = await execPowerShell(pingScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'traceroute': {
                 const maxHops = options.count || 30;
-                
+
                 const traceScript = `
                     $target = "${target}"
                     $maxHops = ${maxHops}
@@ -5670,7 +5675,7 @@ async function testConnectivity(target: string, testType: 'ping' | 'traceroute' 
                 const result = await execPowerShell(traceScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'nslookup': {
                 const lookupScript = `
                     $target = "${target}"
@@ -5707,7 +5712,7 @@ async function testConnectivity(target: string, testType: 'ping' | 'traceroute' 
                 const result = await execPowerShell(lookupScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             default:
                 throw new Error(`Unsupported test type: ${testType}`);
         }
@@ -5775,7 +5780,7 @@ async function manageWiFi(action: 'list' | 'connect' | 'disconnect' | 'scan' | '
                 const result = await execPowerShell(listScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'scan': {
                 const scanScript = `
                     try {
@@ -5817,12 +5822,12 @@ async function manageWiFi(action: 'list' | 'connect' | 'disconnect' | 'scan' | '
                 const result = await execPowerShell(scanScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'connect': {
                 if (!profileName) {
                     throw new Error('Profile name required for connect operation');
                 }
-                
+
                 const connectScript = `
                     try {
                         $result = netsh wlan connect name="${profileName}"
@@ -5848,7 +5853,7 @@ async function manageWiFi(action: 'list' | 'connect' | 'disconnect' | 'scan' | '
                 const result = await execPowerShell(connectScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'disconnect': {
                 const disconnectScript = `
                     try {
@@ -5868,7 +5873,7 @@ async function manageWiFi(action: 'list' | 'connect' | 'disconnect' | 'scan' | '
                 const result = await execPowerShell(disconnectScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             default:
                 throw new Error(`Unsupported Wi-Fi action: ${action}`);
         }
@@ -5920,12 +5925,12 @@ async function manageNetworkInterface(action: 'list' | 'enable' | 'disable' | 's
                 const result = await execPowerShell(listScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'status': {
                 if (!interfaceName) {
                     throw new Error('Interface name required for status operation');
                 }
-                
+
                 const statusScript = `
                     try {
                         $adapter = Get-NetAdapter -Name "${interfaceName}" -ErrorAction Stop
@@ -5959,13 +5964,13 @@ async function manageNetworkInterface(action: 'list' | 'enable' | 'disable' | 's
                 const result = await execPowerShell(statusScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'enable':
             case 'disable': {
                 if (!interfaceName) {
                     throw new Error('Interface name required for enable/disable operation');
                 }
-                
+
                 const toggleScript = `
                     try {
                         ${action === 'enable' ? 'Enable' : 'Disable'}-NetAdapter -Name "${interfaceName}" -Confirm:$false
@@ -5984,7 +5989,7 @@ async function manageNetworkInterface(action: 'list' | 'enable' | 'disable' | 's
                 const result = await execPowerShell(toggleScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             default:
                 throw new Error(`Unsupported interface action: ${action}`);
         }
@@ -6144,7 +6149,7 @@ async function manageVPN(action: 'list' | 'connect' | 'disconnect' | 'status', v
                 const result = await execPowerShell(listScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'status': {
                 const statusScript = `
                     try {
@@ -6177,12 +6182,12 @@ async function manageVPN(action: 'list' | 'connect' | 'disconnect' | 'status', v
                 const result = await execPowerShell(statusScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'connect': {
                 if (!vpnName) {
                     throw new Error('VPN name required for connect operation');
                 }
-                
+
                 const connectScript = `
                     try {
                         Start-Process -FilePath "rasdial" -ArgumentList "${vpnName}" -Wait -NoNewWindow
@@ -6211,7 +6216,7 @@ async function manageVPN(action: 'list' | 'connect' | 'disconnect' | 'status', v
                 const result = await execPowerShell(connectScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             case 'disconnect': {
                 const disconnectScript = `
                     try {
@@ -6240,7 +6245,7 @@ async function manageVPN(action: 'list' | 'connect' | 'disconnect' | 'status', v
                 const result = await execPowerShell(disconnectScript);
                 return JSON.parse(result.stdout);
             }
-            
+
             default:
                 throw new Error(`Unsupported VPN action: ${action}`);
         }
@@ -6329,7 +6334,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                         width: params.region.width || 1920,
                         height: params.region.height || 1080
                     } : undefined;
-                    
+
                     return captureScreen(params.monitor, region);
                 }
             },
@@ -6355,7 +6360,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                             height: params.region.height || 1080
                         } : undefined
                     };
-                    
+
                     return analyzeScreen(options);
                 }
             },
@@ -6368,7 +6373,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 },
                 handler: async (params) => {
                     let targetImagePath = params.imagePath;
-                    
+
                     if (params.captureScreen || !targetImagePath) {
                         const region = params.region ? {
                             x: params.region.x || 0,
@@ -6376,18 +6381,18 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                             width: params.region.width || 1920,
                             height: params.region.height || 1080
                         } : undefined;
-                        
+
                         const capture = await captureScreen(undefined, region);
                         if (!capture.success || !capture.imagePath) {
                             throw new GlassMCPError('Failed to capture screen for OCR');
                         }
                         targetImagePath = capture.imagePath;
                     }
-                    
+
                     if (!targetImagePath) {
                         throw new GlassMCPError('No image path provided and screen capture disabled');
                     }
-                    
+
                     return performOCR(targetImagePath);
                 }
             },
@@ -6395,9 +6400,9 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 description: 'Detect UI elements, buttons, inputs, and clickable regions using Windows UI Automation',
                 parameters: {
                     windowHandle: { type: 'number', description: 'Detect elements in specific window', required: false },
-                    elementTypes: { 
-                        type: 'array', 
-                        description: 'Filter by element types: button, textbox, label, etc.', 
+                    elementTypes: {
+                        type: 'array',
+                        description: 'Filter by element types: button, textbox, label, etc.',
                         required: false,
                         items: { type: 'string' }
                     },
@@ -6406,23 +6411,23 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 },
                 handler: async (params) => {
                     const allElements = await detectUIElements(params.windowHandle);
-                    
+
                     let filteredElements = allElements;
-                    
+
                     if (params.onlyClickable) {
                         filteredElements = filteredElements.filter(el => el.isClickable);
                     }
-                    
+
                     if (params.onlyVisible !== false) {
                         filteredElements = filteredElements.filter(el => el.isVisible);
                     }
-                    
+
                     if (params.elementTypes && Array.isArray(params.elementTypes)) {
-                        filteredElements = filteredElements.filter(el => 
+                        filteredElements = filteredElements.filter(el =>
                             params.elementTypes.includes(el.type)
                         );
                     }
-                    
+
                     return {
                         elements: filteredElements,
                         totalFound: filteredElements.length,
@@ -6440,12 +6445,12 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 handler: async (params) => {
                     const elements = await detectUIElements(params.windowHandle);
                     const minConfidence = params.minConfidence || 0.7;
-                    
+
                     const clickableRegions = elements
-                        .filter(el => 
-                            el.isClickable && 
-                            el.isVisible && 
-                            el.isEnabled && 
+                        .filter(el =>
+                            el.isClickable &&
+                            el.isVisible &&
+                            el.isEnabled &&
                             el.confidence >= minConfidence
                         )
                         .map(el => ({
@@ -6457,12 +6462,12 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                             automationId: el.automationId,
                             className: el.className
                         }));
-                    
+
                     return {
                         clickableRegions,
                         totalFound: clickableRegions.length,
-                        averageConfidence: clickableRegions.length > 0 
-                            ? clickableRegions.reduce((sum, r) => sum + r.confidence, 0) / clickableRegions.length 
+                        averageConfidence: clickableRegions.length > 0
+                            ? clickableRegions.reduce((sum, r) => sum + r.confidence, 0) / clickableRegions.length
                             : 0,
                         analysisTimestamp: new Date().toISOString()
                     };
@@ -6488,7 +6493,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                     const bounds = params.bounds as { x: number; y: number; width: number; height: number };
                     const style = params.style || {};
                     const duration = params.duration || 5;
-                    
+
                     return createOverlay(params.overlayType, bounds, style, params.text, duration, params.windowHandle);
                 }
             },
@@ -6507,7 +6512,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                     const color = params.color || '#FF0000';
                     const duration = params.duration || 3;
                     const animation = params.animation !== false;
-                    
+
                     return highlightElement(bounds, style, color, duration, animation);
                 }
             },
@@ -6525,7 +6530,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                     const position = params.position || 'auto';
                     const style = params.style || {};
                     const duration = params.duration || 5;
-                    
+
                     return createAnnotation(targetPoint, params.text, position, style, duration);
                 }
             },
@@ -6551,7 +6556,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                         width: params.region.width || 1920,
                         height: params.region.height || 1080
                     } : undefined;
-                    
+
                     return captureWithOverlays(region, params.includeOverlays !== false, params.outputPath);
                 }
             }
@@ -6699,7 +6704,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                     const clickType = params.clickType || 'left';
                     const doubleClick = params.doubleClick || false;
                     const confirmClick = params.confirmClick !== false;
-                    
+
                     return smartClick(target, clickType, doubleClick, confirmClick);
                 }
             },
@@ -6715,7 +6720,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                     const target = params.target as { elementId: string } | { windowHandle: number } | { title: string } | undefined;
                     const typeMode = params.typeMode || 'replace';
                     const confirmFocus = params.confirmFocus !== false;
-                    
+
                     return smartType(params.text, target, typeMode, confirmFocus);
                 }
             },
@@ -6732,7 +6737,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                     const to = params.to as { x: number; y: number } | { elementId: string };
                     const duration = params.duration || 1000;
                     const showPath = params.showPath !== false;
-                    
+
                     return performDragDrop(from, to, duration, showPath);
                 }
             },
@@ -6747,7 +6752,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                     const direction = params.direction || 'down';
                     const amount = params.amount || 3;
                     const target = params.target as { elementId: string } | { windowHandle: number } | { x: number; y: number } | undefined;
-                    
+
                     return performScroll(direction, amount, target);
                 }
             },
@@ -6761,7 +6766,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 handler: async (params) => {
                     const windowTarget = params.windowTarget as { windowHandle: number } | { title: string } | undefined;
                     const holdDuration = params.holdDuration || 100;
-                    
+
                     return sendKeyCombo(params.keys, windowTarget, holdDuration);
                 }
             }
@@ -6776,16 +6781,16 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 parameters: {
                     name: { type: 'string', description: 'Unique workflow name', required: true },
                     description: { type: 'string', description: 'Workflow description', required: false },
-                    steps: { 
-                        type: 'array', 
-                        description: 'Array of workflow steps with type, action, and parameters', 
+                    steps: {
+                        type: 'array',
+                        description: 'Array of workflow steps with type, action, and parameters',
                         required: true,
                         items: { type: 'object' }
                     },
                     variables: { type: 'object', description: 'Default variable values for the workflow', required: false },
-                    tags: { 
-                        type: 'array', 
-                        description: 'Tags for workflow categorization', 
+                    tags: {
+                        type: 'array',
+                        description: 'Tags for workflow categorization',
                         required: false,
                         items: { type: 'string' }
                     }
@@ -6794,7 +6799,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                     const name = params.name;
                     const description = params.description || '';
                     const steps = params.steps || [];
-                    
+
                     return createWorkflow(name, description, steps);
                 }
             },
@@ -6807,7 +6812,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 handler: async (params) => {
                     const workflowName = params.workflowName;
                     const description = params.description || '';
-                    
+
                     return startWorkflowRecording(workflowName, description);
                 }
             },
@@ -6827,7 +6832,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                         condition: params.condition
                     };
                     const description = `${actionType} action`;
-                    
+
                     return recordAction(actionType, parameters, description);
                 }
             },
@@ -6838,7 +6843,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 },
                 handler: async (params) => {
                     const save = params.save !== false;
-                    
+
                     if (!save || !recordingName || !recordingDescription) {
                         // Clear recording state
                         recordingWorkflow = null;
@@ -6852,7 +6857,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                             message: 'Recording discarded'
                         };
                     }
-                    
+
                     return stopWorkflowRecording(recordingName, recordingDescription);
                 }
             },
@@ -6867,7 +6872,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                     const workflowName = params.workflowName;
                     const variables = params.variables || {};
                     const executionOptions = params.executionOptions || {};
-                    
+
                     return executeWorkflow(workflowName, variables, executionOptions);
                 }
             },
@@ -6891,7 +6896,7 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 handler: async (params) => {
                     const workflowName = params.workflowName;
                     const updates = params.updates;
-                    
+
                     return updateWorkflow(workflowName, updates);
                 }
             },
@@ -6904,14 +6909,14 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 handler: async (params) => {
                     const workflowName = params.workflowName;
                     const confirm = params.confirm;
-                    
+
                     if (!confirm) {
                         return {
                             success: false,
                             message: 'Deletion not confirmed. Set confirm: true to delete the workflow.'
                         };
                     }
-                    
+
                     return deleteWorkflow(workflowName);
                 }
             }
@@ -6962,10 +6967,10 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 },
                 handler: async (params) => {
                     return await manageRegistry(
-                        params.action as any, 
-                        params.keyPath, 
-                        params.valueName, 
-                        params.value, 
+                        params.action as any,
+                        params.keyPath,
+                        params.valueName,
+                        params.value,
                         params.valueType as any
                     );
                 }
@@ -6982,10 +6987,10 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
             performSystemMaintenance: {
                 description: 'Perform automated system maintenance tasks',
                 parameters: {
-                    tasks: { 
-                        type: 'array', 
-                        description: 'Maintenance tasks to perform: cleanup, defrag, updates', 
-                        required: false, 
+                    tasks: {
+                        type: 'array',
+                        description: 'Maintenance tasks to perform: cleanup, defrag, updates',
+                        required: false,
                         default: ['cleanup', 'defrag', 'updates'],
                         items: { type: 'string', enum: ['cleanup', 'defrag', 'updates'] }
                     }
@@ -7013,12 +7018,12 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
                 },
                 handler: async (params) => {
                     return await testConnectivity(
-                        params.target, 
-                        params.testType as any || 'ping', 
-                        { 
-                            count: params.count || 4, 
-                            timeout: params.timeout || 1000, 
-                            port: params.port 
+                        params.target,
+                        params.testType as any || 'ping',
+                        {
+                            count: params.count || 4,
+                            timeout: params.timeout || 1000,
+                            port: params.port
                         }
                     );
                 }
@@ -7076,23 +7081,23 @@ const consolidatedTools: { [toolName: string]: ConsolidatedTool } = {
 const legacyToolMapping: { [toolName: string]: { tool: string; operation: string; paramMapping?: (args: any) => any } } = {
     'window_list': { tool: 'glass_windows', operation: 'list' },
     'window_focus': { tool: 'glass_windows', operation: 'focus' },
-    'window_extract_text': { 
-        tool: 'glass_windows', 
+    'window_extract_text': {
+        tool: 'glass_windows',
         operation: 'extract_text',
         paramMapping: (args) => ({ windowHandle: args.windowHandle })
     },
-    'window_extract_text_by_title': { 
-        tool: 'glass_windows', 
+    'window_extract_text_by_title': {
+        tool: 'glass_windows',
         operation: 'extract_text',
         paramMapping: (args) => ({ title: args.title, exact: args.exact })
     },
-    'window_send_text': { 
-        tool: 'glass_windows', 
+    'window_send_text': {
+        tool: 'glass_windows',
         operation: 'send_text',
         paramMapping: (args) => ({ windowHandle: args.windowHandle, text: args.text })
     },
-    'window_send_text_by_title': { 
-        tool: 'glass_windows', 
+    'window_send_text_by_title': {
+        tool: 'glass_windows',
         operation: 'send_text',
         paramMapping: (args) => ({ title: args.title, text: args.text, exact: args.exact })
     },
@@ -7103,7 +7108,7 @@ const legacyToolMapping: { [toolName: string]: { tool: string; operation: string
 // Generate consolidated tool schemas
 function generateConsolidatedToolSchema(consolidatedTool: ConsolidatedTool): Tool {
     const operationEnum = Object.keys(consolidatedTool.operations);
-    
+
     return {
         name: consolidatedTool.name,
         description: `${consolidatedTool.description}. Operations: ${operationEnum.join(', ')}`,
@@ -7125,7 +7130,7 @@ function generateConsolidatedToolSchema(consolidatedTool: ConsolidatedTool): Too
 
 function generateDynamicProperties(operations: { [key: string]: ConsolidatedToolOperation }) {
     const allProperties: any = {};
-    
+
     Object.values(operations).forEach(op => {
         Object.entries(op.parameters).forEach(([paramName, paramDef]: [string, any]) => {
             if (!allProperties[paramName]) {
@@ -7147,7 +7152,7 @@ function generateDynamicProperties(operations: { [key: string]: ConsolidatedTool
             }
         });
     });
-    
+
     return allProperties;
 }
 
@@ -7157,21 +7162,21 @@ async function executeConsolidatedTool(toolName: string, params: any) {
     if (!tool) {
         throw new GlassMCPError(`Unknown consolidated tool: ${toolName}`);
     }
-    
+
     const { operation, ...operationParams } = params;
     const operationDef = tool.operations[operation];
-    
+
     if (!operationDef) {
         throw new GlassMCPError(`Unknown operation: ${operation} for tool: ${toolName}`);
     }
-    
+
     // Validate required parameters
     Object.entries(operationDef.parameters).forEach(([paramName, paramDef]: [string, any]) => {
         if (paramDef.required && !(paramName in operationParams)) {
             throw new GlassMCPError(`Missing required parameter: ${paramName} for operation: ${operation}`);
         }
     });
-    
+
     return await operationDef.handler(operationParams);
 }
 
@@ -7179,7 +7184,7 @@ async function executeConsolidatedTool(toolName: string, params: any) {
 const tools: Tool[] = [
     // New consolidated tools
     ...Object.values(consolidatedTools).map(generateConsolidatedToolSchema),
-    
+
     // Legacy tools with deprecation notices
     {
         name: 'window_list',
@@ -7275,7 +7280,7 @@ const tools: Tool[] = [
             required: ['text'],
         },
     },
-    
+
     // Non-consolidated tools (remaining)
     {
         name: 'system_info',
@@ -7513,18 +7518,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         if (legacyToolMapping[name]) {
             const mapping = legacyToolMapping[name];
             let mappedParams = args;
-            
+
             // Apply parameter mapping if provided
             if (mapping.paramMapping) {
                 mappedParams = mapping.paramMapping(args);
             }
-            
+
             // Add deprecation warning to result
             const result = await executeConsolidatedTool(mapping.tool, {
                 operation: mapping.operation,
                 ...mappedParams
             });
-            
+
             return {
                 content: [
                     {

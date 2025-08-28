@@ -1,0 +1,71 @@
+{
+  "test_summary": {
+    "total_tests": 5,
+    "successful_tests": 2,
+    "failed_tests": 3,
+    "success_rate": 0.4,
+    "total_duration": 18.640364170074463,
+    "timestamp": "2025-08-27T10:47:05.966197"
+  },
+  "test_results": [
+    {
+      "test_name": "System Initialization",
+      "success": false,
+      "details": "System not initialized",
+      "timestamp": "2025-08-27T10:46:47.325967"
+    },
+    {
+      "test_name": "Component Integration",
+      "success": false,
+      "details": "'initialized'",
+      "timestamp": "2025-08-27T10:46:47.326175"
+    },
+    {
+      "test_name": "Autonomous Operation",
+      "success": false,
+      "details": "System became inactive during autonomous operation",
+      "timestamp": "2025-08-27T10:46:57.341527"
+    },
+    {
+      "test_name": "Performance and Stress",
+      "success": true,
+      "details": "Completed in 1.01s, Success rate: 100.0%",
+      "timestamp": "2025-08-27T10:46:58.355715"
+    },
+    {
+      "test_name": "Command Execution",
+      "success": true,
+      "details": "Completed in 7.61s, Success rate: 100.0%",
+      "timestamp": "2025-08-27T10:47:05.966034"
+    }
+  ],
+  "final_system_status": {
+    "system_initialized": false,
+    "system_active": false,
+    "component_status": {
+      "control_center": {
+        "health_score": 0.95
+      },
+      "attention_system": {
+        "health_score": 0.88
+      },
+      "planning_engine": {
+        "health_score": 0.92
+      },
+      "execution_monitor": {
+        "health_score": 0.9
+      }
+    },
+    "integration_metrics": {
+      "component_health": 0.91,
+      "integration_efficiency": 0.87
+    }
+  },
+  "phase_1_validation": {
+    "unified_cognitive_architecture": false,
+    "autonomous_operation": false,
+    "component_integration": true,
+    "performance_criteria_met": false,
+    "overall_phase_1_success": false
+  }
+}

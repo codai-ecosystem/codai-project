@@ -283,7 +283,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6100/api/health"]
       interval: 30s
@@ -365,7 +364,6 @@ services:
       - romai-enterprise-api
       - romai-frontend
       - romai-agi
-    restart: unless-stopped
     environment:
       # Nginx Production Configuration
       NGINX_WORKER_PROCESSES: auto

@@ -38,7 +38,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               }
             },
             files: {
-              type: "array", 
+              type: "array",
               description: "Array of file paths",
               items: {
                 type: "string"
@@ -61,7 +61,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
-  
+
   if (name === "test_array_tool") {
     return {
       content: [
@@ -72,7 +72,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       ]
     };
   }
-  
+
   throw new Error(`Unknown tool: ${name}`);
 });
 

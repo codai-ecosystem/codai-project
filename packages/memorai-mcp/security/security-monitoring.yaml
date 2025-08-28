@@ -1,0 +1,549 @@
+# =================================================================
+# MemorAI MCP Server - Security Monitoring Configuration
+# Version: 1.0.0
+# Purpose: Real-time security monitoring and threat detection
+# =================================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: security-monitor
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+    monitor-type: security
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: security-monitor
+  template:
+    metadata:
+      labels:
+        app: security-monitor
+        component: security
+    spec:
+      serviceAccountName: security-monitor
+      containers:
+      - name: security-monitor
+        image: python:3.11-slim
+        command:
+        - /bin/bash
+        - -c
+        - |
+          pip install prometheus_client kubernetes watchdog psutil requests elasticsearch
+          
+          cat > /app/security_monitor.py << 'EOF'
+          import time
+          import json
+          import hashlib
+          import datetime
+          import threading
+          import subprocess
+          from prometheus_client import start_http_server, Counter, Histogram, Gauge
+          from kubernetes import client, config, watch
+          from watchdog.observers import Observer
+          from watchdog.events import FileSystemEventHandler
+          import requests
+          import logging
+          from elasticsearch import Elasticsearch
+          
+          # Configure logging
+          logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+          logger = logging.getLogger(__name__)
+          
+          # Prometheus metrics
+          SECURITY_ALERTS = Counter('memorai_security_alerts_total', 'Total security alerts', ['severity', 'type'])
+          THREAT_DETECTIONS = Counter('memorai_threat_detections_total', 'Total threat detections', ['threat_type'])
+          ACCESS_VIOLATIONS = Counter('memorai_access_violations_total', 'Access violations', ['user', 'resource'])
+          INTRUSION_ATTEMPTS = Counter('memorai_intrusion_attempts_total', 'Intrusion attempts', ['source_ip', 'method'])
+          SECURITY_SCAN_DURATION = Histogram('memorai_security_scan_duration_seconds', 'Security scan duration')
+          ACTIVE_THREATS = Gauge('memorai_active_threats', 'Current active threats')
+          
+          class SecurityMonitor:
+              def __init__(self):
+                  self.es = Elasticsearch(['elasticsearch.monitoring.svc.cluster.local:9200'])
+                  config.load_incluster_config()
+                  self.k8s_client = client.CoreV1Api()
+                  self.active_threats = set()
+                  self.whitelist_ips = self.load_ip_whitelist()
+                  
+              def load_ip_whitelist(self):
+                  """Load IP whitelist from ConfigMap"""
+                  try:
+                      cm = self.k8s_client.read_namespaced_config_map(
+                          name='security-whitelist',
+                          namespace='memorai-mcp'
+                      )
+                      return cm.data.get('whitelist_ips', '').split(',')
+                  except:
+                      return []
+              
+              def monitor_kubernetes_events(self):
+                  """Monitor Kubernetes events for security issues"""
+                  logger.info("Starting Kubernetes security monitoring...")
+                  
+                  w = watch.Watch()
+                  for event in w.stream(self.k8s_client.list_event_for_all_namespaces):
+                      event_obj = event['object']
+                      event_type = event['type']
+                      
+                      if self.is_security_relevant_event(event_obj):
+                          self.process_security_event(event_obj, event_type)
+              
+              def is_security_relevant_event(self, event):
+                  """Check if Kubernetes event is security-relevant"""
+                  security_reasons = [
+                      'Failed', 'FailedCreate', 'FailedMount', 'FailedAttachVolume',
+                      'Unhealthy', 'BackOff', 'FailedScheduling', 'FailedBinding',
+                      'NetworkNotReady', 'InspectFailed', 'ErrImageNeverPull'
+                  ]
+                  
+                  return (
+                      event.reason in security_reasons or
+                      'error' in event.message.lower() or
+                      'fail' in event.message.lower() or
+                      'unauthorized' in event.message.lower()
+                  )
+              
+              def process_security_event(self, event, event_type):
+                  """Process security-relevant Kubernetes event"""
+                  severity = self.calculate_event_severity(event)
+                  
+                  security_event = {
+                      'timestamp': datetime.datetime.utcnow().isoformat(),
+                      'event_type': 'kubernetes_security_event',
+                      'severity': severity,
+                      'namespace': event.namespace,
+                      'object_name': event.involved_object.name,
+                      'object_kind': event.involved_object.kind,
+                      'reason': event.reason,
+                      'message': event.message,
+                      'source_component': event.source.component,
+                      'first_timestamp': event.first_timestamp.isoformat() if event.first_timestamp else None,
+                      'last_timestamp': event.last_timestamp.isoformat() if event.last_timestamp else None,
+                      'count': event.count
+                  }
+                  
+                  # Index to Elasticsearch
+                  self.es.index(
+                      index=f"memorai-security-events-{datetime.datetime.utcnow().strftime('%Y.%m.%d')}",
+                      body=security_event
+                  )
+                  
+                  # Update metrics
+                  SECURITY_ALERTS.labels(severity=severity, type='kubernetes').inc()
+                  
+                  # Trigger alert for high-severity events
+                  if severity in ['HIGH', 'CRITICAL']:
+                      self.trigger_security_alert(security_event)
+                  
+                  logger.info(f"Processed security event: {event.reason} - {severity}")
+              
+              def calculate_event_severity(self, event):
+                  """Calculate event severity based on reason and message"""
+                  critical_reasons = ['FailedMount', 'FailedAttachVolume', 'NetworkNotReady']
+                  high_reasons = ['Failed', 'FailedCreate', 'Unhealthy']
+                  
+                  if event.reason in critical_reasons:
+                      return 'CRITICAL'
+                  elif event.reason in high_reasons:
+                      return 'HIGH'
+                  elif 'unauthorized' in event.message.lower():
+                      return 'HIGH'
+                  elif 'error' in event.message.lower():
+                      return 'MEDIUM'
+                  else:
+                      return 'LOW'
+              
+              def monitor_network_activity(self):
+                  """Monitor network activity for suspicious patterns"""
+                  logger.info("Starting network activity monitoring...")
+                  
+                  while True:
+                      try:
+                          # Monitor network connections
+                          netstat_output = subprocess.run(
+                              ['netstat', '-tuln'],
+                              capture_output=True,
+                              text=True
+                          ).stdout
+                          
+                          # Analyze connections for anomalies
+                          suspicious_connections = self.analyze_network_connections(netstat_output)
+                          
+                          for connection in suspicious_connections:
+                              self.handle_suspicious_network_activity(connection)
+                          
+                          time.sleep(30)  # Check every 30 seconds
+                          
+                      except Exception as e:
+                          logger.error(f"Error monitoring network activity: {str(e)}")
+                          time.sleep(60)
+              
+              def analyze_network_connections(self, netstat_output):
+                  """Analyze network connections for suspicious activity"""
+                  suspicious = []
+                  
+                  for line in netstat_output.split('\n'):
+                      if 'ESTABLISHED' in line:
+                          parts = line.split()
+                          if len(parts) >= 5:
+                              foreign_address = parts[4]
+                              local_address = parts[3]
+                              
+                              # Extract IP from address
+                              foreign_ip = foreign_address.split(':')[0] if ':' in foreign_address else foreign_address
+                              
+                              # Check for suspicious patterns
+                              if self.is_suspicious_connection(foreign_ip, local_address):
+                                  suspicious.append({
+                                      'foreign_address': foreign_address,
+                                      'local_address': local_address,
+                                      'foreign_ip': foreign_ip,
+                                      'timestamp': datetime.datetime.utcnow().isoformat()
+                                  })
+                  
+                  return suspicious
+              
+              def is_suspicious_connection(self, foreign_ip, local_address):
+                  """Check if network connection is suspicious"""
+                  # Skip localhost connections
+                  if foreign_ip in ['127.0.0.1', '::1', 'localhost']:
+                      return False
+                  
+                  # Skip whitelisted IPs
+                  if foreign_ip in self.whitelist_ips:
+                      return False
+                  
+                  # Check for connections from unexpected countries/regions
+                  # This would integrate with GeoIP service
+                  
+                  # Check for connections to known malicious IPs
+                  # This would integrate with threat intelligence feeds
+                  
+                  # For now, flag connections from private IP ranges that aren't expected
+                  private_ranges = ['10.', '192.168.', '172.16.', '172.17.', '172.18.']
+                  if not any(foreign_ip.startswith(range_) for range_ in private_ranges):
+                      # External connection - might be suspicious
+                      return True
+                  
+                  return False
+              
+              def handle_suspicious_network_activity(self, connection):
+                  """Handle suspicious network activity detection"""
+                  threat_id = hashlib.md5(
+                      f"{connection['foreign_ip']}{connection['timestamp']}".encode()
+                  ).hexdigest()
+                  
+                  if threat_id not in self.active_threats:
+                      self.active_threats.add(threat_id)
+                      
+                      security_event = {
+                          'timestamp': connection['timestamp'],
+                          'event_type': 'suspicious_network_activity',
+                          'severity': 'MEDIUM',
+                          'threat_id': threat_id,
+                          'foreign_ip': connection['foreign_ip'],
+                          'foreign_address': connection['foreign_address'],
+                          'local_address': connection['local_address'],
+                          'description': f"Suspicious network connection detected from {connection['foreign_ip']}"
+                      }
+                      
+                      # Index to Elasticsearch
+                      self.es.index(
+                          index=f"memorai-security-events-{datetime.datetime.utcnow().strftime('%Y.%m.%d')}",
+                          body=security_event
+                      )
+                      
+                      # Update metrics
+                      THREAT_DETECTIONS.labels(threat_type='suspicious_network').inc()
+                      ACTIVE_THREATS.set(len(self.active_threats))
+                      
+                      logger.warning(f"Suspicious network activity: {connection['foreign_ip']}")
+              
+              def monitor_file_integrity(self):
+                  """Monitor file integrity for unauthorized changes"""
+                  logger.info("Starting file integrity monitoring...")
+                  
+                  class SecurityFileHandler(FileSystemEventHandler):
+                      def __init__(self, monitor):
+                          self.monitor = monitor
+                      
+                      def on_modified(self, event):
+                          if not event.is_directory:
+                              self.monitor.handle_file_change(event.src_path, 'modified')
+                      
+                      def on_created(self, event):
+                          if not event.is_directory:
+                              self.monitor.handle_file_change(event.src_path, 'created')
+                      
+                      def on_deleted(self, event):
+                          if not event.is_directory:
+                              self.monitor.handle_file_change(event.src_path, 'deleted')
+                  
+                  # Monitor critical directories
+                  observer = Observer()
+                  handler = SecurityFileHandler(self)
+                  
+                  critical_paths = [
+                      '/app/config',
+                      '/etc/ssl/certs',
+                      '/var/run/secrets'
+                  ]
+                  
+                  for path in critical_paths:
+                      try:
+                          observer.schedule(handler, path, recursive=True)
+                      except FileNotFoundError:
+                          logger.warning(f"Path not found for monitoring: {path}")
+                  
+                  observer.start()
+                  
+                  try:
+                      while True:
+                          time.sleep(1)
+                  except KeyboardInterrupt:
+                      observer.stop()
+                  observer.join()
+              
+              def handle_file_change(self, file_path, change_type):
+                  """Handle file integrity change detection"""
+                  # Skip temporary and log files
+                  if any(skip in file_path for skip in ['.tmp', '.log', '.swp', '__pycache__']):
+                      return
+                  
+                  security_event = {
+                      'timestamp': datetime.datetime.utcnow().isoformat(),
+                      'event_type': 'file_integrity_change',
+                      'severity': 'MEDIUM',
+                      'file_path': file_path,
+                      'change_type': change_type,
+                      'description': f"File {change_type}: {file_path}"
+                  }
+                  
+                  # Index to Elasticsearch
+                  self.es.index(
+                      index=f"memorai-security-events-{datetime.datetime.utcnow().strftime('%Y.%m.%d')}",
+                      body=security_event
+                  )
+                  
+                  # Update metrics
+                  THREAT_DETECTIONS.labels(threat_type='file_integrity').inc()
+                  
+                  logger.info(f"File integrity change: {change_type} - {file_path}")
+              
+              def trigger_security_alert(self, event):
+                  """Trigger security alert for high-priority events"""
+                  alert = {
+                      'alert_id': f"security-{int(time.time())}",
+                      'timestamp': datetime.datetime.utcnow().isoformat(),
+                      'severity': event['severity'],
+                      'event_type': event['event_type'],
+                      'description': event.get('description', f"Security event: {event['event_type']}"),
+                      'event_data': event
+                  }
+                  
+                  # Send to SIEM
+                  self.es.index(index='memorai-security-alerts', body=alert)
+                  
+                  # Send webhook notification
+                  webhook_url = os.environ.get('SECURITY_WEBHOOK_URL')
+                  if webhook_url:
+                      try:
+                          requests.post(webhook_url, json=alert, timeout=10)
+                      except requests.exceptions.RequestException as e:
+                          logger.error(f"Failed to send webhook alert: {str(e)}")
+                  
+                  # Send Slack notification for critical alerts
+                  if event['severity'] == 'CRITICAL':
+                      self.send_slack_alert(alert)
+                  
+                  logger.warning(f"Security alert triggered: {alert['alert_id']}")
+              
+              def send_slack_alert(self, alert):
+                  """Send critical security alerts to Slack"""
+                  slack_webhook = os.environ.get('SLACK_WEBHOOK_URL')
+                  if not slack_webhook:
+                      return
+                  
+                  slack_payload = {
+                      "text": f"🚨 CRITICAL Security Alert - MemorAI MCP Server",
+                      "attachments": [
+                          {
+                              "color": "danger",
+                              "title": f"Alert ID: {alert['alert_id']}",
+                              "text": alert['description'],
+                              "fields": [
+                                  {
+                                      "title": "Severity",
+                                      "value": alert['severity'],
+                                      "short": True
+                                  },
+                                  {
+                                      "title": "Event Type",
+                                      "value": alert['event_type'],
+                                      "short": True
+                                  },
+                                  {
+                                      "title": "Timestamp",
+                                      "value": alert['timestamp'],
+                                      "short": True
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+                  
+                  try:
+                      requests.post(slack_webhook, json=slack_payload, timeout=10)
+                  except requests.exceptions.RequestException as e:
+                      logger.error(f"Failed to send Slack alert: {str(e)}")
+              
+              def run(self):
+                  """Main monitoring loop"""
+                  logger.info("Starting MemorAI MCP Server Security Monitor...")
+                  
+                  # Start Prometheus metrics server
+                  start_http_server(8080)
+                  
+                  # Start monitoring threads
+                  threads = [
+                      threading.Thread(target=self.monitor_kubernetes_events, daemon=True),
+                      threading.Thread(target=self.monitor_network_activity, daemon=True),
+                      threading.Thread(target=self.monitor_file_integrity, daemon=True)
+                  ]
+                  
+                  for thread in threads:
+                      thread.start()
+                  
+                  # Keep main thread alive
+                  try:
+                      while True:
+                          time.sleep(60)
+                          # Clean up old threats
+                          current_time = time.time()
+                          self.active_threats = {
+                              threat for threat in self.active_threats
+                              if current_time - int(threat[-10:], 16) < 3600  # Keep for 1 hour
+                          }
+                          ACTIVE_THREATS.set(len(self.active_threats))
+                  except KeyboardInterrupt:
+                      logger.info("Security monitor shutting down...")
+          
+          if __name__ == "__main__":
+              monitor = SecurityMonitor()
+              monitor.run()
+          EOF
+          
+          python /app/security_monitor.py
+        env:
+        - name: SECURITY_WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: memorai-mcp-secrets
+              key: WEBHOOK_SECRET
+        - name: SLACK_WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: notification-secrets
+              key: slack-webhook-url
+        ports:
+        - containerPort: 8080
+          name: metrics
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "300m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false  # Needs write access for monitoring
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_ADMIN  # For network monitoring
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: security-monitor
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+spec:
+  selector:
+    app: security-monitor
+  ports:
+  - name: metrics
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: security-monitor
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: security-monitor
+  labels:
+    app: memorai-mcp-server
+    component: security
+rules:
+- apiGroups: [""]
+  resources: ["events", "pods", "services", "configmaps", "nodes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets", "daemonsets", "statefulsets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["networkpolicies", "ingresses"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: security-monitor
+  labels:
+    app: memorai-mcp-server
+    component: security
+subjects:
+- kind: ServiceAccount
+  name: security-monitor
+  namespace: memorai-mcp
+roleRef:
+  kind: ClusterRole
+  name: security-monitor
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security-whitelist
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: security
+data:
+  whitelist_ips: "10.0.0.0,192.168.0.0,172.16.0.0,127.0.0.1"
+  trusted_networks: "10.0.0.0/8,192.168.0.0/16,172.16.0.0/12"
+  allowed_external_services: "github.com,npmjs.com,docker.io,k8s.io"

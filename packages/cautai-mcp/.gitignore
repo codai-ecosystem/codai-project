@@ -1,0 +1,48 @@
+# Cautai specific ignores
+*.vsix
+.vscode-test/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Dependencies
+node_modules/
+.pnpm/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
+.turbo/
+.vitest/
+
+# Coverage reports
+coverage/
+
+# Temporary files
+tmp/
+temp/
+
+# IDE files
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test artifacts
+test-results/
+playwright-report/
+.playwright/

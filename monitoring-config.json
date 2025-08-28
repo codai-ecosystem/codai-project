@@ -1,0 +1,84 @@
+{
+  "Alerting": {
+    "Channels": [
+      "console",
+      "file"
+    ],
+    "Enabled": true,
+    "LogFile": "monitoring-alerts.log"
+  },
+  "Metrics": {
+    "RetentionDays": 30,
+    "StorageFile": "metrics-data.json",
+    "CollectionInterval": 10
+  },
+  "Monitoring": {
+    "Interval": 30,
+    "HealthCheckTimeout": 5000,
+    "RetryAttempts": 3,
+    "AlertThresholds": {
+      "ErrorRate": {
+        "Critical": 5.0,
+        "Warning": 1.0
+      },
+      "ResponseTime": {
+        "Critical": 500,
+        "Warning": 100
+      },
+      "Availability": {
+        "Critical": 95.0,
+        "Warning": 99.0
+      }
+    }
+  },
+  "Services": [
+    {
+      "HealthEndpoint": "/api/health",
+      "Type": "backend",
+      "Critical": true,
+      "Name": "Identity API",
+      "Port": 8100,
+      "MetricsEndpoint": "/api/metrics"
+    },
+    {
+      "HealthEndpoint": "/api/health",
+      "Type": "gateway",
+      "Critical": true,
+      "Name": "API Gateway",
+      "Port": 8010,
+      "MetricsEndpoint": "/api/metrics"
+    },
+    {
+      "HealthEndpoint": "/api/health",
+      "Type": "orchestration",
+      "Critical": true,
+      "Name": "Hub API",
+      "Port": 8110,
+      "MetricsEndpoint": "/api/metrics"
+    },
+    {
+      "HealthEndpoint": "/api/health",
+      "Type": "frontend",
+      "Critical": false,
+      "Name": "MemorAI Frontend",
+      "Port": 8006,
+      "MetricsEndpoint": "/api/metrics"
+    },
+    {
+      "HealthEndpoint": "/health",
+      "Type": "database",
+      "Critical": true,
+      "Name": "CBD Database",
+      "Port": 8180,
+      "MetricsEndpoint": "/metrics"
+    },
+    {
+      "HealthEndpoint": "/health",
+      "Type": "mcp",
+      "Critical": false,
+      "Name": "MemorAI MCP",
+      "Port": 4950,
+      "MetricsEndpoint": "/metrics"
+    }
+  ]
+}

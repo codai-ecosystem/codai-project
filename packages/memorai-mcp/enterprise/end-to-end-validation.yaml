@@ -1,0 +1,964 @@
+# End-to-End Deployment Validation
+# MemorAI MCP Server v9.5.0 - Phase 6 Task 11: Enterprise Integration
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-deployment-validation-config
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: validation
+    environment: production
+    version: v9.5.0
+data:
+  # Validation Configuration
+  VALIDATION_ENABLED: "true"
+  VALIDATION_SCHEDULE: "0 0 * * *"  # Daily at midnight
+  HEALTH_CHECK_INTERVAL: "30"  # seconds
+  READINESS_CHECK_TIMEOUT: "300"  # seconds
+  
+  # Environment Validation
+  VALIDATE_DEVELOPMENT: "true"
+  VALIDATE_STAGING: "true"
+  VALIDATE_PRODUCTION: "true"
+  CROSS_ENVIRONMENT_VALIDATION: "true"
+  
+  # Service Validation
+  VALIDATE_MCP_SERVER: "true"
+  VALIDATE_DATABASE: "true"
+  VALIDATE_REDIS: "true"
+  VALIDATE_LOAD_BALANCER: "true"
+  VALIDATE_API_GATEWAY: "true"
+  
+  # Functional Validation
+  VALIDATE_MEMORY_OPERATIONS: "true"
+  VALIDATE_SEARCH_FUNCTIONALITY: "true"
+  VALIDATE_AUTHENTICATION: "true"
+  VALIDATE_AUTHORIZATION: "true"
+  VALIDATE_DATA_PERSISTENCE: "true"
+  
+  # Performance Validation
+  VALIDATE_RESPONSE_TIMES: "true"
+  VALIDATE_THROUGHPUT: "true"
+  VALIDATE_RESOURCE_USAGE: "true"
+  MAX_RESPONSE_TIME_MS: "500"
+  MIN_THROUGHPUT_RPS: "100"
+  MAX_CPU_PERCENT: "80"
+  MAX_MEMORY_PERCENT: "85"
+  
+  # Integration Validation
+  VALIDATE_SSO_INTEGRATION: "true"
+  VALIDATE_AUDIT_LOGGING: "true"
+  VALIDATE_BACKUP_SYSTEMS: "true"
+  VALIDATE_MONITORING: "true"
+  VALIDATE_ALERTING: "true"
+  
+  # Security Validation
+  VALIDATE_ENCRYPTION: "true"
+  VALIDATE_ACCESS_CONTROLS: "true"
+  VALIDATE_NETWORK_SECURITY: "true"
+  VALIDATE_COMPLIANCE: "true"
+  
+  # Rollback Configuration
+  ENABLE_ROLLBACK: "true"
+  ROLLBACK_ON_VALIDATION_FAILURE: "false"  # Manual decision required
+  ROLLBACK_TIMEOUT_MINUTES: "30"
+  BACKUP_BEFORE_DEPLOYMENT: "true"
+  
+  # Notification Configuration
+  NOTIFY_ON_SUCCESS: "true"
+  NOTIFY_ON_FAILURE: "true"
+  NOTIFY_ON_WARNING: "true"
+  NOTIFICATION_CHANNELS: "slack,email,pagerduty"
+  
+  # Reporting Configuration
+  GENERATE_VALIDATION_REPORT: "true"
+  REPORT_FORMAT: "html,json,pdf"
+  STORE_HISTORICAL_DATA: "true"
+  RETENTION_DAYS: "365"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: memorai-deployment-validation-secrets
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: validation
+    environment: production
+    version: v9.5.0
+type: Opaque
+stringData:
+  # Validation API Keys
+  VALIDATION_API_KEY: "memorai-deployment-validation-key-2025"
+  HEALTH_CHECK_TOKEN: "health-check-service-token"
+  
+  # Environment Access Tokens
+  DEV_ENVIRONMENT_TOKEN: "development-environment-access-token"
+  STAGING_ENVIRONMENT_TOKEN: "staging-environment-access-token"
+  PROD_ENVIRONMENT_TOKEN: "production-environment-access-token"
+  
+  # Service Credentials
+  DATABASE_VALIDATION_USER: "validation_checker"
+  DATABASE_VALIDATION_PASS: "secure-db-validation-password"
+  REDIS_VALIDATION_PASS: "redis-validation-password"
+  
+  # External Service Integration
+  MONITORING_API_KEY: "prometheus-grafana-monitoring-api-key"
+  LOGGING_API_KEY: "elasticsearch-logging-validation-key"
+  BACKUP_SERVICE_TOKEN: "backup-validation-service-token"
+  
+  # Notification Secrets
+  SLACK_VALIDATION_WEBHOOK: "https://hooks.slack.com/services/validation/webhook"
+  EMAIL_SMTP_PASSWORD: "smtp-validation-notifications-password"
+  PAGERDUTY_API_KEY: "pagerduty-incident-management-api-key"
+  
+  # Security Validation
+  SECURITY_SCAN_TOKEN: "security-validation-scanner-token"
+  COMPLIANCE_API_KEY: "compliance-validation-api-key"
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memorai-deployment-validation
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: validation
+    type: deployment-validation
+    environment: production
+    version: v9.5.0
+spec:
+  schedule: "0 0 * * *"  # Daily at midnight
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: memorai-validation-service-account
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1005
+            runAsGroup: 3005
+            fsGroup: 2005
+          containers:
+          - name: deployment-validator
+            image: memorai/deployment-validator:v9.5.0
+            command:
+            - /bin/bash
+            - -c
+            - |
+              set -euo pipefail
+              
+              echo "🚀 Starting MemorAI End-to-End Deployment Validation - $(date)"
+              echo "========================================================="
+              
+              VALIDATION_DATE=$(date +%Y%m%d_%H%M%S)
+              VALIDATION_DIR="/validation/results/$VALIDATION_DATE"
+              mkdir -p "$VALIDATION_DIR"
+              
+              # Initialize validation tracking
+              TOTAL_CHECKS=0
+              PASSED_CHECKS=0
+              FAILED_CHECKS=0
+              WARNING_CHECKS=0
+              
+              # Function to log validation result
+              log_validation() {
+                local component="$1"
+                local test_name="$2"
+                local status="$3"
+                local message="$4"
+                
+                TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
+                
+                case "$status" in
+                  "PASS")
+                    PASSED_CHECKS=$((PASSED_CHECKS + 1))
+                    echo "✅ $component - $test_name: PASS - $message"
+                    ;;
+                  "FAIL")
+                    FAILED_CHECKS=$((FAILED_CHECKS + 1))
+                    echo "❌ $component - $test_name: FAIL - $message"
+                    ;;
+                  "WARN")
+                    WARNING_CHECKS=$((WARNING_CHECKS + 1))
+                    echo "⚠️ $component - $test_name: WARNING - $message"
+                    ;;
+                esac
+                
+                # Log to JSON for reporting
+                echo "{\"timestamp\":\"$(date --iso-8601)\",\"component\":\"$component\",\"test\":\"$test_name\",\"status\":\"$status\",\"message\":\"$message\"}" >> "$VALIDATION_DIR/validation_results.jsonl"
+              }
+              
+              echo "🏗️ Phase 1: Infrastructure Validation"
+              echo "====================================="
+              
+              # Kubernetes Cluster Health
+              echo "☸️ Validating Kubernetes cluster health..."
+              if kubectl cluster-info > /dev/null 2>&1; then
+                log_validation "Infrastructure" "K8s_Cluster_Health" "PASS" "Kubernetes cluster is healthy"
+              else
+                log_validation "Infrastructure" "K8s_Cluster_Health" "FAIL" "Kubernetes cluster health check failed"
+              fi
+              
+              # Namespace Validation
+              for namespace in memorai-development memorai-staging memorai-production; do
+                if kubectl get namespace "$namespace" > /dev/null 2>&1; then
+                  log_validation "Infrastructure" "Namespace_$namespace" "PASS" "Namespace $namespace exists"
+                else
+                  log_validation "Infrastructure" "Namespace_$namespace" "FAIL" "Namespace $namespace does not exist"
+                fi
+              done
+              
+              echo "📊 Phase 2: Service Health Validation"
+              echo "====================================="
+              
+              # MemorAI MCP Server Health Check
+              if [[ "$VALIDATE_MCP_SERVER" == "true" ]]; then
+                echo "🧠 Validating MemorAI MCP Server..."
+                
+                for env in development staging production; do
+                  service_url="http://memorai-mcp-service.memorai-$env.svc.cluster.local:4950"
+                  
+                  if curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$service_url/health" | grep -q "200"; then
+                    log_validation "MCP_Server" "Health_Check_$env" "PASS" "MCP Server healthy in $env environment"
+                    
+                    # Validate MCP protocol
+                    response=$(curl -s --max-time 10 -X POST "$service_url/mcp" \
+                      -H "Content-Type: application/json" \
+                      -H "Authorization: Bearer $VALIDATION_API_KEY" \
+                      -d '{"jsonrpc":"2.0","method":"tools/list","id":1}')
+                    
+                    if echo "$response" | jq -e '.result.tools' > /dev/null 2>&1; then
+                      log_validation "MCP_Server" "Protocol_Validation_$env" "PASS" "MCP protocol working in $env"
+                    else
+                      log_validation "MCP_Server" "Protocol_Validation_$env" "FAIL" "MCP protocol not responding in $env"
+                    fi
+                  else
+                    log_validation "MCP_Server" "Health_Check_$env" "FAIL" "MCP Server not responding in $env environment"
+                  fi
+                done
+              fi
+              
+              # Database Health Check
+              if [[ "$VALIDATE_DATABASE" == "true" ]]; then
+                echo "🗄️ Validating PostgreSQL database..."
+                
+                if PGPASSWORD="$DATABASE_VALIDATION_PASS" psql -h postgres-prod -U "$DATABASE_VALIDATION_USER" -d memorai_prod -c "SELECT 1;" > /dev/null 2>&1; then
+                  log_validation "Database" "Connection_Test" "PASS" "Database connection successful"
+                  
+                  # Check database size and performance
+                  db_size=$(PGPASSWORD="$DATABASE_VALIDATION_PASS" psql -h postgres-prod -U "$DATABASE_VALIDATION_USER" -d memorai_prod -t -c "SELECT pg_size_pretty(pg_database_size('memorai_prod'));")
+                  log_validation "Database" "Size_Check" "PASS" "Database size: $db_size"
+                  
+                  # Validate memory table exists and has data
+                  memory_count=$(PGPASSWORD="$DATABASE_VALIDATION_PASS" psql -h postgres-prod -U "$DATABASE_VALIDATION_USER" -d memorai_prod -t -c "SELECT COUNT(*) FROM memories;")
+                  if [[ $memory_count -gt 0 ]]; then
+                    log_validation "Database" "Data_Validation" "PASS" "Found $memory_count memories in database"
+                  else
+                    log_validation "Database" "Data_Validation" "WARN" "No memories found in database"
+                  fi
+                else
+                  log_validation "Database" "Connection_Test" "FAIL" "Database connection failed"
+                fi
+              fi
+              
+              # Redis Cache Validation
+              if [[ "$VALIDATE_REDIS" == "true" ]]; then
+                echo "🔄 Validating Redis cache..."
+                
+                if redis-cli -h redis-prod -a "$REDIS_VALIDATION_PASS" ping | grep -q "PONG"; then
+                  log_validation "Redis" "Connection_Test" "PASS" "Redis connection successful"
+                  
+                  # Test cache operations
+                  redis-cli -h redis-prod -a "$REDIS_VALIDATION_PASS" set "validation_test_$VALIDATION_DATE" "test_value" > /dev/null
+                  if redis-cli -h redis-prod -a "$REDIS_VALIDATION_PASS" get "validation_test_$VALIDATION_DATE" | grep -q "test_value"; then
+                    log_validation "Redis" "Cache_Operations" "PASS" "Cache read/write operations working"
+                    redis-cli -h redis-prod -a "$REDIS_VALIDATION_PASS" del "validation_test_$VALIDATION_DATE" > /dev/null
+                  else
+                    log_validation "Redis" "Cache_Operations" "FAIL" "Cache operations not working"
+                  fi
+                else
+                  log_validation "Redis" "Connection_Test" "FAIL" "Redis connection failed"
+                fi
+              fi
+              
+              echo "🔧 Phase 3: Functional Validation"
+              echo "==============================="
+              
+              # Memory Operations Validation
+              if [[ "$VALIDATE_MEMORY_OPERATIONS" == "true" ]]; then
+                echo "🧠 Validating memory operations..."
+                
+                # Test memory creation
+                create_response=$(curl -s --max-time 30 -X POST "http://memorai-mcp-service.memorai-production.svc.cluster.local:4950/mcp" \
+                  -H "Content-Type: application/json" \
+                  -H "Authorization: Bearer $VALIDATION_API_KEY" \
+                  -d "{\"jsonrpc\":\"2.0\",\"method\":\"remember\",\"params\":{\"agentId\":\"validation_agent_$VALIDATION_DATE\",\"content\":\"End-to-end validation test memory created at $(date)\",\"metadata\":{\"importance\":5,\"tags\":[\"validation\",\"e2e\"]}},\"id\":1}")
+                
+                if echo "$create_response" | jq -e '.result.structuredKey' > /dev/null 2>&1; then
+                  log_validation "Memory_Operations" "Create_Memory" "PASS" "Memory creation successful"
+                  
+                  # Test memory retrieval
+                  search_response=$(curl -s --max-time 30 -X POST "http://memorai-mcp-service.memorai-production.svc.cluster.local:4950/mcp" \
+                    -H "Content-Type: application/json" \
+                    -H "Authorization: Bearer $VALIDATION_API_KEY" \
+                    -d "{\"jsonrpc\":\"2.0\",\"method\":\"recall\",\"params\":{\"agentId\":\"validation_agent_$VALIDATION_DATE\",\"query\":\"validation test\",\"limit\":10},\"id\":2}")
+                  
+                  if echo "$search_response" | jq -e '.result.memories[0]' > /dev/null 2>&1; then
+                    log_validation "Memory_Operations" "Search_Memory" "PASS" "Memory search successful"
+                  else
+                    log_validation "Memory_Operations" "Search_Memory" "FAIL" "Memory search failed"
+                  fi
+                else
+                  log_validation "Memory_Operations" "Create_Memory" "FAIL" "Memory creation failed"
+                fi
+              fi
+              
+              # Authentication Validation
+              if [[ "$VALIDATE_AUTHENTICATION" == "true" ]]; then
+                echo "🔐 Validating authentication..."
+                
+                # Test with valid API key
+                auth_response=$(curl -s -w "%{http_code}" -o /dev/null --max-time 10 \
+                  -H "Authorization: Bearer $VALIDATION_API_KEY" \
+                  "http://memorai-mcp-service.memorai-production.svc.cluster.local:4950/health")
+                
+                if [[ "$auth_response" == "200" ]]; then
+                  log_validation "Authentication" "Valid_API_Key" "PASS" "Authentication with valid API key successful"
+                else
+                  log_validation "Authentication" "Valid_API_Key" "FAIL" "Authentication with valid API key failed"
+                fi
+                
+                # Test with invalid API key
+                invalid_auth_response=$(curl -s -w "%{http_code}" -o /dev/null --max-time 10 \
+                  -H "Authorization: Bearer invalid-key-12345" \
+                  "http://memorai-mcp-service.memorai-production.svc.cluster.local:4950/health")
+                
+                if [[ "$invalid_auth_response" == "401" ]] || [[ "$invalid_auth_response" == "403" ]]; then
+                  log_validation "Authentication" "Invalid_API_Key_Rejected" "PASS" "Invalid API key properly rejected"
+                else
+                  log_validation "Authentication" "Invalid_API_Key_Rejected" "FAIL" "Invalid API key not properly rejected"
+                fi
+              fi
+              
+              echo "⚡ Phase 4: Performance Validation"
+              echo "==============================="
+              
+              # Response Time Validation
+              if [[ "$VALIDATE_RESPONSE_TIMES" == "true" ]]; then
+                echo "⏱️ Validating response times..."
+                
+                response_time=$(curl -s -w "%{time_total}" -o /dev/null --max-time 30 \
+                  -H "Authorization: Bearer $VALIDATION_API_KEY" \
+                  "http://memorai-mcp-service.memorai-production.svc.cluster.local:4950/health")
+                
+                response_time_ms=$(echo "$response_time * 1000" | bc -l | cut -d. -f1)
+                
+                if [[ $response_time_ms -lt $MAX_RESPONSE_TIME_MS ]]; then
+                  log_validation "Performance" "Response_Time" "PASS" "Response time: ${response_time_ms}ms (< ${MAX_RESPONSE_TIME_MS}ms)"
+                else
+                  log_validation "Performance" "Response_Time" "WARN" "Response time: ${response_time_ms}ms (> ${MAX_RESPONSE_TIME_MS}ms)"
+                fi
+              fi
+              
+              # Resource Usage Validation
+              if [[ "$VALIDATE_RESOURCE_USAGE" == "true" ]]; then
+                echo "📊 Validating resource usage..."
+                
+                # Get CPU and memory usage from Kubernetes metrics
+                cpu_usage=$(kubectl top pod -n memorai-production -l app=memorai-mcp --no-headers | awk '{sum += $2} END {print sum}' | sed 's/m//')
+                memory_usage=$(kubectl top pod -n memorai-production -l app=memorai-mcp --no-headers | awk '{sum += $3} END {print sum}' | sed 's/Mi//')
+                
+                # Get resource limits
+                cpu_limit=$(kubectl get pods -n memorai-production -l app=memorai-mcp -o jsonpath='{.items[0].spec.containers[0].resources.limits.cpu}' | sed 's/m//')
+                memory_limit=$(kubectl get pods -n memorai-production -l app=memorai-mcp -o jsonpath='{.items[0].spec.containers[0].resources.limits.memory}' | sed 's/Mi//')
+                
+                if [[ -n "$cpu_usage" ]] && [[ -n "$cpu_limit" ]]; then
+                  cpu_percent=$(echo "scale=1; $cpu_usage * 100 / $cpu_limit" | bc -l)
+                  if (( $(echo "$cpu_percent < $MAX_CPU_PERCENT" | bc -l) )); then
+                    log_validation "Performance" "CPU_Usage" "PASS" "CPU usage: ${cpu_percent}% (< ${MAX_CPU_PERCENT}%)"
+                  else
+                    log_validation "Performance" "CPU_Usage" "WARN" "CPU usage: ${cpu_percent}% (> ${MAX_CPU_PERCENT}%)"
+                  fi
+                fi
+                
+                if [[ -n "$memory_usage" ]] && [[ -n "$memory_limit" ]]; then
+                  memory_percent=$(echo "scale=1; $memory_usage * 100 / $memory_limit" | bc -l)
+                  if (( $(echo "$memory_percent < $MAX_MEMORY_PERCENT" | bc -l) )); then
+                    log_validation "Performance" "Memory_Usage" "PASS" "Memory usage: ${memory_percent}% (< ${MAX_MEMORY_PERCENT}%)"
+                  else
+                    log_validation "Performance" "Memory_Usage" "WARN" "Memory usage: ${memory_percent}% (> ${MAX_MEMORY_PERCENT}%)"
+                  fi
+                fi
+              fi
+              
+              echo "🔒 Phase 5: Security & Compliance Validation"
+              echo "=========================================="
+              
+              # TLS/SSL Validation
+              if [[ "$VALIDATE_ENCRYPTION" == "true" ]]; then
+                echo "🔐 Validating TLS/SSL encryption..."
+                
+                if openssl s_client -connect memorai-mcp-service.memorai-production.svc.cluster.local:4950 -servername memorai-mcp-service < /dev/null 2>/dev/null | grep -q "Verify return code: 0"; then
+                  log_validation "Security" "TLS_Certificate" "PASS" "TLS certificate validation successful"
+                else
+                  log_validation "Security" "TLS_Certificate" "WARN" "TLS certificate validation issues detected"
+                fi
+              fi
+              
+              # RBAC Validation
+              if [[ "$VALIDATE_ACCESS_CONTROLS" == "true" ]]; then
+                echo "🛡️ Validating RBAC access controls..."
+                
+                if kubectl auth can-i get secrets --as=system:serviceaccount:memorai-production:memorai-mcp-production -n memorai-production > /dev/null 2>&1; then
+                  log_validation "Security" "RBAC_Service_Account" "PASS" "Service account RBAC permissions configured correctly"
+                else
+                  log_validation "Security" "RBAC_Service_Account" "FAIL" "Service account RBAC permissions misconfigured"
+                fi
+              fi
+              
+              echo "📋 Phase 6: Report Generation"
+              echo "============================"
+              
+              # Calculate validation score
+              if [[ $TOTAL_CHECKS -gt 0 ]]; then
+                SUCCESS_RATE=$(echo "scale=1; $PASSED_CHECKS * 100 / $TOTAL_CHECKS" | bc -l)
+                WARNING_RATE=$(echo "scale=1; $WARNING_CHECKS * 100 / $TOTAL_CHECKS" | bc -l)
+                FAILURE_RATE=$(echo "scale=1; $FAILED_CHECKS * 100 / $TOTAL_CHECKS" | bc -l)
+              else
+                SUCCESS_RATE=0
+                WARNING_RATE=0
+                FAILURE_RATE=0
+              fi
+              
+              # Generate validation summary
+              cat > "$VALIDATION_DIR/validation_summary.json" << EOF
+              {
+                "timestamp": "$(date --iso-8601)",
+                "validation_date": "$VALIDATION_DATE",
+                "environment": "production",
+                "version": "v9.5.0",
+                "summary": {
+                  "total_checks": $TOTAL_CHECKS,
+                  "passed_checks": $PASSED_CHECKS,
+                  "failed_checks": $FAILED_CHECKS,
+                  "warning_checks": $WARNING_CHECKS,
+                  "success_rate_percent": $SUCCESS_RATE,
+                  "warning_rate_percent": $WARNING_RATE,
+                  "failure_rate_percent": $FAILURE_RATE
+                },
+                "overall_status": "$(if [[ $FAILED_CHECKS -eq 0 ]] && [[ $WARNING_CHECKS -lt 3 ]]; then echo "HEALTHY"; elif [[ $FAILED_CHECKS -lt 5 ]]; then echo "WARNING"; else echo "CRITICAL"; fi)"
+              }
+              EOF
+              
+              # Generate HTML report
+              python3 /scripts/generate_validation_report.py \
+                --results-dir "$VALIDATION_DIR" \
+                --output "$VALIDATION_DIR/deployment_validation_report.html"
+              
+              echo "📊 Validation Summary:"
+              echo "===================="
+              echo "✅ Passed: $PASSED_CHECKS/$TOTAL_CHECKS (${SUCCESS_RATE}%)"
+              echo "⚠️ Warnings: $WARNING_CHECKS/$TOTAL_CHECKS (${WARNING_RATE}%)"
+              echo "❌ Failed: $FAILED_CHECKS/$TOTAL_CHECKS (${FAILURE_RATE}%)"
+              
+              # Upload results to storage
+              echo "☁️ Uploading validation results..."
+              aws s3 cp "$VALIDATION_DIR/" "s3://memorai-validation-reports/$VALIDATION_DATE/" \
+                --recursive \
+                --server-side-encryption AES256
+              
+              # Determine notification status
+              if [[ $FAILED_CHECKS -eq 0 ]] && [[ $WARNING_CHECKS -lt 3 ]]; then
+                NOTIFICATION_STATUS="SUCCESS"
+                NOTIFICATION_COLOR="good"
+                NOTIFICATION_ICON="✅"
+              elif [[ $FAILED_CHECKS -lt 5 ]]; then
+                NOTIFICATION_STATUS="WARNING"
+                NOTIFICATION_COLOR="warning"
+                NOTIFICATION_ICON="⚠️"
+              else
+                NOTIFICATION_STATUS="CRITICAL"
+                NOTIFICATION_COLOR="danger"
+                NOTIFICATION_ICON="🚨"
+              fi
+              
+              # Send notification
+              if [[ "$NOTIFY_ON_SUCCESS" == "true" && "$NOTIFICATION_STATUS" == "SUCCESS" ]] || \
+                 [[ "$NOTIFY_ON_WARNING" == "true" && "$NOTIFICATION_STATUS" == "WARNING" ]] || \
+                 [[ "$NOTIFY_ON_FAILURE" == "true" && "$NOTIFICATION_STATUS" == "CRITICAL" ]]; then
+                
+                curl -X POST "$SLACK_VALIDATION_WEBHOOK" \
+                  -H "Content-Type: application/json" \
+                  -d "{
+                    \"text\": \"$NOTIFICATION_ICON MemorAI MCP Server v9.5.0 - Deployment Validation $NOTIFICATION_STATUS\",
+                    \"attachments\": [{
+                      \"color\": \"$NOTIFICATION_COLOR\",
+                      \"fields\": [
+                        {\"title\": \"Success Rate\", \"value\": \"${SUCCESS_RATE}%\", \"short\": true},
+                        {\"title\": \"Total Checks\", \"value\": \"$TOTAL_CHECKS\", \"short\": true},
+                        {\"title\": \"Passed\", \"value\": \"$PASSED_CHECKS\", \"short\": true},
+                        {\"title\": \"Failed\", \"value\": \"$FAILED_CHECKS\", \"short\": true},
+                        {\"title\": \"Report\", \"value\": \"s3://memorai-validation-reports/$VALIDATION_DATE/\", \"short\": false}
+                      ]
+                    }]
+                  }"
+              fi
+              
+              echo "✅ End-to-End Deployment Validation Completed!"
+              echo "Report available at: s3://memorai-validation-reports/$VALIDATION_DATE/"
+              
+              # Exit with appropriate code
+              if [[ $FAILED_CHECKS -gt 0 ]]; then
+                exit 1
+              else
+                exit 0
+              fi
+            envFrom:
+            - configMapRef:
+                name: memorai-deployment-validation-config
+            - secretRef:
+                name: memorai-deployment-validation-secrets
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "2Gi"
+                cpu: "1000m"
+            volumeMounts:
+            - name: validation-storage
+              mountPath: /validation
+            - name: validation-scripts
+              mountPath: /scripts
+              readOnly: true
+          volumes:
+          - name: validation-storage
+            persistentVolumeClaim:
+              claimName: memorai-validation-storage
+          - name: validation-scripts
+            configMap:
+              name: memorai-validation-scripts
+              defaultMode: 0755
+          restartPolicy: OnFailure
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-validation-scripts
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: validation
+    type: scripts
+    environment: production
+    version: v9.5.0
+data:
+  generate_validation_report.py: |
+    #!/usr/bin/env python3
+    """
+    End-to-End Deployment Validation Report Generator
+    Creates comprehensive HTML reports for deployment validation results
+    """
+    import json
+    import os
+    import argparse
+    from datetime import datetime
+    import glob
+    
+    class ValidationReporter:
+        def __init__(self, results_dir: str):
+            self.results_dir = results_dir
+            self.validation_data = []
+            self.summary_data = {}
+            
+        def load_validation_data(self):
+            """Load validation results from JSONL file"""
+            jsonl_file = os.path.join(self.results_dir, "validation_results.jsonl")
+            if os.path.exists(jsonl_file):
+                with open(jsonl_file, 'r') as f:
+                    for line in f:
+                        if line.strip():
+                            self.validation_data.append(json.loads(line))
+            
+            # Load summary data
+            summary_file = os.path.join(self.results_dir, "validation_summary.json")
+            if os.path.exists(summary_file):
+                with open(summary_file, 'r') as f:
+                    self.summary_data = json.load(f)
+        
+        def generate_html_report(self, output_file: str):
+            """Generate comprehensive HTML validation report"""
+            
+            # Group results by component
+            components = {}
+            for result in self.validation_data:
+                component = result['component']
+                if component not in components:
+                    components[component] = []
+                components[component].append(result)
+            
+            # Generate HTML content
+            html_content = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>MemorAI MCP Server v9.5.0 - End-to-End Deployment Validation Report</title>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {{
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        margin: 0;
+                        padding: 20px;
+                        background-color: #f5f7fa;
+                        color: #2c3e50;
+                    }}
+                    .container {{
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        background: white;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+                        overflow: hidden;
+                    }}
+                    .header {{
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        padding: 40px;
+                        text-align: center;
+                    }}
+                    .header h1 {{
+                        margin: 0;
+                        font-size: 2.5em;
+                        font-weight: 300;
+                    }}
+                    .header p {{
+                        margin: 10px 0 0 0;
+                        opacity: 0.9;
+                        font-size: 1.1em;
+                    }}
+                    .summary {{
+                        padding: 40px;
+                        background: #f8f9fa;
+                        border-bottom: 1px solid #e9ecef;
+                    }}
+                    .metrics-grid {{
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        gap: 20px;
+                        margin-top: 20px;
+                    }}
+                    .metric-card {{
+                        background: white;
+                        padding: 24px;
+                        border-radius: 8px;
+                        text-align: center;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                        border-left: 4px solid #3498db;
+                    }}
+                    .metric-value {{
+                        font-size: 2.5em;
+                        font-weight: bold;
+                        margin-bottom: 8px;
+                    }}
+                    .metric-label {{
+                        font-size: 0.9em;
+                        color: #7f8c8d;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }}
+                    .success {{ color: #27ae60; border-left-color: #27ae60; }}
+                    .warning {{ color: #f39c12; border-left-color: #f39c12; }}
+                    .danger {{ color: #e74c3c; border-left-color: #e74c3c; }}
+                    .content {{
+                        padding: 40px;
+                    }}
+                    .component-section {{
+                        margin-bottom: 40px;
+                        background: #f8f9fa;
+                        border-radius: 8px;
+                        overflow: hidden;
+                    }}
+                    .component-header {{
+                        background: #34495e;
+                        color: white;
+                        padding: 20px;
+                        font-size: 1.3em;
+                        font-weight: 500;
+                    }}
+                    .test-table {{
+                        width: 100%;
+                        border-collapse: collapse;
+                        background: white;
+                    }}
+                    .test-table th {{
+                        background: #ecf0f1;
+                        padding: 15px;
+                        text-align: left;
+                        font-weight: 600;
+                        border-bottom: 2px solid #bdc3c7;
+                    }}
+                    .test-table td {{
+                        padding: 12px 15px;
+                        border-bottom: 1px solid #ecf0f1;
+                    }}
+                    .test-table tr:hover {{
+                        background-color: #f8f9fa;
+                    }}
+                    .status-badge {{
+                        padding: 4px 12px;
+                        border-radius: 20px;
+                        font-size: 0.85em;
+                        font-weight: bold;
+                        text-transform: uppercase;
+                    }}
+                    .status-pass {{
+                        background-color: #d4edda;
+                        color: #155724;
+                        border: 1px solid #c3e6cb;
+                    }}
+                    .status-warn {{
+                        background-color: #fff3cd;
+                        color: #856404;
+                        border: 1px solid #ffeaa7;
+                    }}
+                    .status-fail {{
+                        background-color: #f8d7da;
+                        color: #721c24;
+                        border: 1px solid #f5c6cb;
+                    }}
+                    .overall-status {{
+                        text-align: center;
+                        padding: 30px;
+                        margin: 20px 0;
+                        border-radius: 8px;
+                        font-size: 1.2em;
+                        font-weight: bold;
+                    }}
+                    .timestamp {{
+                        text-align: center;
+                        color: #7f8c8d;
+                        font-size: 0.9em;
+                        margin-top: 20px;
+                        padding-top: 20px;
+                        border-top: 1px solid #ecf0f1;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h1>🚀 MemorAI MCP Server v9.5.0</h1>
+                        <p>End-to-End Deployment Validation Report</p>
+                    </div>
+                    
+                    <div class="summary">
+                        <h2>📊 Validation Summary</h2>
+                        {self.generate_summary_section()}
+                    </div>
+                    
+                    <div class="content">
+                        {self.generate_overall_status()}
+                        {self.generate_component_sections(components)}
+                    </div>
+                    
+                    <div class="timestamp">
+                        Generated on {datetime.now().strftime('%Y-%m-%d at %H:%M:%S UTC')}
+                    </div>
+                </div>
+            </body>
+            </html>
+            """
+            
+            with open(output_file, 'w') as f:
+                f.write(html_content)
+            
+            print(f"📋 Validation report generated: {output_file}")
+        
+        def generate_summary_section(self):
+            """Generate summary metrics section"""
+            if not self.summary_data:
+                return "<p>No summary data available</p>"
+            
+            summary = self.summary_data.get('summary', {})
+            
+            return f"""
+            <div class="metrics-grid">
+                <div class="metric-card success">
+                    <div class="metric-value">{summary.get('passed_checks', 0)}</div>
+                    <div class="metric-label">Tests Passed</div>
+                </div>
+                <div class="metric-card warning">
+                    <div class="metric-value">{summary.get('warning_checks', 0)}</div>
+                    <div class="metric-label">Warnings</div>
+                </div>
+                <div class="metric-card danger">
+                    <div class="metric-value">{summary.get('failed_checks', 0)}</div>
+                    <div class="metric-label">Tests Failed</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">{summary.get('success_rate_percent', 0):.1f}%</div>
+                    <div class="metric-label">Success Rate</div>
+                </div>
+            </div>
+            """
+        
+        def generate_overall_status(self):
+            """Generate overall status section"""
+            if not self.summary_data:
+                return ""
+            
+            status = self.summary_data.get('overall_status', 'UNKNOWN')
+            status_class = {
+                'HEALTHY': 'success',
+                'WARNING': 'warning',
+                'CRITICAL': 'danger'
+            }.get(status, '')
+            
+            status_icon = {
+                'HEALTHY': '✅',
+                'WARNING': '⚠️',
+                'CRITICAL': '🚨'
+            }.get(status, '❓')
+            
+            return f"""
+            <div class="overall-status {status_class}">
+                {status_icon} Overall Status: {status}
+            </div>
+            """
+        
+        def generate_component_sections(self, components):
+            """Generate component test sections"""
+            sections_html = ""
+            
+            for component_name, tests in components.items():
+                sections_html += f"""
+                <div class="component-section">
+                    <div class="component-header">
+                        {component_name} Component Tests
+                    </div>
+                    <table class="test-table">
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Status</th>
+                                <th>Message</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                """
+                
+                for test in tests:
+                    status_class = {
+                        'PASS': 'status-pass',
+                        'WARN': 'status-warn',
+                        'FAIL': 'status-fail'
+                    }.get(test['status'], 'status-unknown')
+                    
+                    test_time = datetime.fromisoformat(test['timestamp'].replace('Z', '+00:00')).strftime('%H:%M:%S')
+                    
+                    sections_html += f"""
+                            <tr>
+                                <td>{test['test']}</td>
+                                <td><span class="status-badge {status_class}">{test['status']}</span></td>
+                                <td>{test['message']}</td>
+                                <td>{test_time}</td>
+                            </tr>
+                    """
+                
+                sections_html += """
+                        </tbody>
+                    </table>
+                </div>
+                """
+            
+            return sections_html
+    
+    def main():
+        parser = argparse.ArgumentParser(description='Generate End-to-End Deployment Validation Report')
+        parser.add_argument('--results-dir', required=True, help='Directory containing validation results')
+        parser.add_argument('--output', required=True, help='Output HTML file path')
+        
+        args = parser.parse_args()
+        
+        reporter = ValidationReporter(args.results_dir)
+        reporter.load_validation_data()
+        reporter.generate_html_report(args.output)
+    
+    if __name__ == "__main__":
+        main()
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memorai-validation-storage
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: validation
+    environment: production
+    version: v9.5.0
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ssd-retain
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memorai-validation-service-account
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: validation
+    environment: production
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: memorai-validation-cluster-role
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps", "extensions"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["batch"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["*"]
+  verbs: ["get", "list"]
+- apiGroups: ["authorization.k8s.io"]
+  resources: ["*"]
+  verbs: ["create"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: memorai-validation-cluster-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: memorai-validation-service-account
+  namespace: memorai-production
+roleRef:
+  kind: ClusterRole
+  name: memorai-validation-cluster-role
+  apiGroup: rbac.authorization.k8s.io

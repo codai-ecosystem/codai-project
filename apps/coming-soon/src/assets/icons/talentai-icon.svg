@@ -1,0 +1,44 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="talentai-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe" />
+      <stop offset="100%" style="stop-color:#00f2fe" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Person silhouette -->
+  <circle cx="12" cy="7" r="3" fill="url(#talentai-gradient)" stroke="currentColor" stroke-width="2"/>
+  <path d="M12 12 C8 12 5 15 5 19 L19 19 C19 15 16 12 12 12 Z" 
+        fill="url(#talentai-gradient)" 
+        stroke="currentColor" 
+        stroke-width="2"/>
+  
+  <!-- AI enhancement indicators -->
+  <g stroke="url(#talentai-gradient)" stroke-width="1.5" fill="none">
+    <!-- Skill indicators around head -->
+    <circle cx="8" cy="5" r="1" stroke-dasharray="2,1"/>
+    <circle cx="16" cy="5" r="1" stroke-dasharray="2,1"/>
+    <circle cx="6" cy="9" r="1" stroke-dasharray="2,1"/>
+    <circle cx="18" cy="9" r="1" stroke-dasharray="2,1"/>
+    
+    <!-- Connection lines to indicate networking -->
+    <path d="M8 5 L7 4" stroke-linecap="round"/>
+    <path d="M16 5 L17 4" stroke-linecap="round"/>
+    <path d="M6 9 L5 10" stroke-linecap="round"/>
+    <path d="M18 9 L19 10" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Performance/growth indicators -->
+  <g stroke="url(#talentai-gradient)" stroke-width="2" fill="url(#talentai-gradient)" opacity="0.8">
+    <path d="M2 20 L4 18 L6 19 L8 17" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M16 17 L18 19 L20 18 L22 20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  
+  <!-- Data points -->
+  <g fill="url(#talentai-gradient)" opacity="0.9">
+    <circle cx="2" cy="20" r="1"/>
+    <circle cx="6" cy="19" r="1"/>
+    <circle cx="18" cy="19" r="1"/>
+    <circle cx="22" cy="20" r="1"/>
+  </g>
+</svg>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Integration - MemorAI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #DD0031;
+      --secondary: #10B981;
+      --bg: #F9FAFB;
+      --text: #1F2937;
+      --border: #E5E7EB;
+      --code-bg: #1E293B;
+    }
+
+    body {
+      font-family: Inter, sans-serif;
+      background: var(--bg);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .section {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      color: #E2E8F0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      font-family: monospace;
+    }
+
+    .nav {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .nav a {
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      margin: 1rem 0 0.5rem;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+
+    .checkmark {
+      color: var(--secondary);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🅰️ Angular Integration Guide</h1>
+      <p>Integrate MemorAI with Angular applications using services and dependency injection</p>
+    </div>
+
+    <div class="nav">
+      <a href="../developer-portal.html">← Portal</a>
+      <a href="index.html">Overview</a>
+      <a href="react.html">React</a>
+      <a href="vue.html">Vue</a>
+      <a href="#" style="background: var(--primary); color: white;">Angular</a>
+    </div>
+
+    <div class="section">
+      <h2>📦 Installation</h2>
+      <div class="code-block">
+        npm install @memorai/sdk @memorai/angular
+        # or
+        ng add @memorai/angular</div>
+    </div>
+
+    <div class="section">
+      <h2>⚙️ Module Setup</h2>
+      <div class="code-block">
+        // app.module.ts
+        import { NgModule } from '@angular/core';
+        import { MemorAIModule } from '@memorai/angular';
+
+        @NgModule({
+        imports: [
+        MemorAIModule.forRoot({
+        baseURL: environment.memoraiBaseURL,
+        apiKey: environment.memoraiApiKey,
+        defaultAgentId: 'angular-app'
+        })
+        ]
+        })
+        export class AppModule { }</div>
+
+      <h3>Environment Configuration</h3>
+      <div class="code-block">
+        // environment.ts
+        export const environment = {
+        memoraiBaseURL: 'http://localhost:4950',
+        memoraiApiKey: 'your-api-key',
+        memoraiAgentId: 'angular-application'
+        };</div>
+    </div>
+
+    <div class="section">
+      <h2>🔧 Service Integration</h2>
+      <div class="code-block">
+        // memory.service.ts
+        import { Injectable } from '@angular/core';
+        import { MemorAIService } from '@memorai/angular';
+        import { Observable } from 'rxjs';
+
+        @Injectable({ providedIn: 'root' })
+        export class MemoryService {
+        constructor(private memorai: MemorAIService) {}
+
+        async storeMemory(content: string, metadata?: any) {
+        return this.memorai.remember({
+        content,
+        agentId: 'angular-app',
+        metadata: { importance: 7, ...metadata }
+        });
+        }
+
+        async searchMemories(query: string): Promise<any[]> {
+          return this.memorai.recall({
+          query,
+          agentId: 'angular-app',
+          limit: 20
+          });
+          }
+
+          getConnectionStatus(): Observable<boolean> {
+            return this.memorai.connectionStatus$;
+            }
+            }</div>
+    </div>
+
+    <div class="section">
+      <h2>📱 Component Example</h2>
+      <div class="code-block">
+        // memory-manager.component.ts
+        import { Component, OnInit } from '@angular/core';
+        import { MemoryService } from './memory.service';
+
+        @Component({
+        selector: 'app-memory-manager',
+        template: `
+        <div class="memory-manager">
+          <div class="status" [class]="statusClass">
+            {{ connectionStatus ? 'Connected' : 'Disconnected' }}
+          </div>
+
+          <form (ngSubmit)="addMemory()" #memoryForm="ngForm">
+            <textarea [(ngModel)]="newContent" name="content" placeholder="Enter memory..." required></textarea>
+            <button type="submit" [disabled]="!memoryForm.valid">
+              Add Memory
+            </button>
+          </form>
+
+          <input [(ngModel)]="searchQuery" placeholder="Search..." (keyup.enter)="search()">
+          <button (click)="search()">Search</button>
+
+          <div *ngFor="let memory of memories" class="memory-item">
+            {{ memory.content }}
+            <span class="importance">★{{ memory.metadata?.importance }}</span>
+          </div>
+        </div>
+        `
+        })
+        export class MemoryManagerComponent implements OnInit {
+        newContent = '';
+        searchQuery = '';
+        memories: any[] = [];
+        connectionStatus = false;
+
+        constructor(private memoryService: MemoryService) {}
+
+        ngOnInit() {
+        this.memoryService.getConnectionStatus()
+        .subscribe(status => this.connectionStatus = status);
+        }
+
+        async addMemory() {
+        if (!this.newContent.trim()) return;
+
+        try {
+        await this.memoryService.storeMemory(this.newContent, {
+        timestamp: new Date().toISOString()
+        });
+        this.newContent = '';
+        } catch (error) {
+        console.error('Failed to add memory:', error);
+        }
+        }
+
+        async search() {
+        if (!this.searchQuery.trim()) return;
+
+        try {
+        this.memories = await this.memoryService.searchMemories(this.searchQuery);
+        } catch (error) {
+        console.error('Search failed:', error);
+        }
+        }
+
+        get statusClass() {
+        return this.connectionStatus ? 'connected' : 'disconnected';
+        }
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>✨ Features</h2>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>Angular service integration with dependency injection</span>
+      </div>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>RxJS observables for reactive programming</span>
+      </div>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>TypeScript support with strict typing</span>
+      </div>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>Angular CLI integration</span>
+      </div>
+      <div class="feature">
+        <span class="checkmark">✅</span>
+        <span>Environment-based configuration</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🔍 Advanced Usage</h2>
+      <div class="code-block">
+        // Advanced service with RxJS
+        import { BehaviorSubject, Observable, from } from 'rxjs';
+        import { map, catchError } from 'rxjs/operators';
+
+        @Injectable()
+        export class AdvancedMemoryService {
+        private memories$ = new BehaviorSubject<any[]>([]);
+
+          constructor(private memorai: MemorAIService) {}
+
+          getMemories(): Observable<any[]> {
+            return this.memories$.asObservable();
+            }
+
+            searchMemoriesRx(query: string): Observable<any[]> {
+              return from(this.memorai.recall({ query, limit: 50 })).pipe(
+              map(results => {
+              this.memories$.next(results);
+              return results;
+              }),
+              catchError(error => {
+              console.error('Search error:', error);
+              return [];
+              })
+              );
+              }
+              }</div>
+    </div>
+  </div>
+</body>
+
+</html>

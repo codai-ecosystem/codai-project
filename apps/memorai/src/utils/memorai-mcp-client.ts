@@ -2,7 +2,7 @@
  * MemorAI MCP Client - Direct integration with MemorAI MCP Server
  */
 
-interface MemorAIMCPMemory {
+export interface MemorAIMCPMemory {
     structuredKey: string;
     content: string;
     agentId: string;
@@ -39,7 +39,7 @@ export class MemorAIMCPClient {
     /**
      * Search memories using MemorAI MCP recall functionality
      */
-    async searchMemories(query: string, agentId = 'github-copilot'): Promise<MemorAIMCPMemory[]> {
+    async searchMemories(query: string, agentId = 'github-copilot', options?: any): Promise<MemorAIMCPMemory[]> {
         try {
             const response = await fetch(`${this.baseUrl}/`, {
                 method: 'POST',
@@ -264,7 +264,7 @@ export class MemorAIMCPClient {
                 else if (line.startsWith('Tags: ')) {
                     const tagsStr = line.substring(6);
                     if (tagsStr !== 'None') {
-                        memory.tags = tagsStr.split(', ').map(tag => tag.trim());
+                        memory.tags = tagsStr.split(', ').map((tag: string) => tag.trim());
                     }
                 }
                 else if (line.startsWith('Created: ')) {
@@ -686,7 +686,8 @@ export class MemorAIMCPClient {
                     );
                     imported++;
                 } catch (error) {
-                    errors.push(`Failed to import memory: ${error.message}`);
+                    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                    errors.push(`Failed to import memory: ${errorMessage}`);
                 }
             }
 
@@ -698,11 +699,12 @@ export class MemorAIMCPClient {
             };
         } catch (error) {
             console.error('Import from JSON failed:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 success: false,
                 imported: 0,
                 skipped: 0,
-                errors: [error.message]
+                errors: [errorMessage]
             };
         }
     }
@@ -814,7 +816,8 @@ export class MemorAIMCPClient {
                         errors.push(`Failed to delete ${key}: ${response.statusText}`);
                     }
                 } catch (error) {
-                    errors.push(`Failed to delete ${key}: ${error.message}`);
+                    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                    errors.push(`Failed to delete ${key}: ${errorMessage}`);
                 }
             }
 
@@ -825,10 +828,11 @@ export class MemorAIMCPClient {
             };
         } catch (error) {
             console.error('Bulk delete failed:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 success: false,
                 deleted: 0,
-                errors: [error.message]
+                errors: [errorMessage]
             };
         }
     }
@@ -863,12 +867,15 @@ export class MemorAIMCPClient {
                         importance: updates.importance !== undefined ? updates.importance : memory.importance
                     };
 
-                    // Use remember to update (this will overwrite existing)
-                    await this.rememberMemory(
+                    // Use addMemory to update (this will overwrite existing)
+                    await this.addMemory(
                         updatedMemory.content,
-                        updatedMemory.project,
-                        updatedMemory.tags,
-                        updatedMemory.importance
+                        'github-copilot',
+                        {
+                            project: updatedMemory.project,
+                            tags: updatedMemory.tags,
+                            importance: updatedMemory.importance
+                        }
                     );
 
                     // Delete the old memory if the structured key would be different
@@ -877,7 +884,8 @@ export class MemorAIMCPClient {
 
                     updated++;
                 } catch (error) {
-                    errors.push(`Failed to update ${memory.structuredKey}: ${error.message}`);
+                    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                    errors.push(`Failed to update ${memory.structuredKey}: ${errorMessage}`);
                 }
             }
 
@@ -888,10 +896,11 @@ export class MemorAIMCPClient {
             };
         } catch (error) {
             console.error('Bulk update failed:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 success: false,
                 updated: 0,
-                errors: [error.message]
+                errors: [errorMessage]
             };
         }
     }

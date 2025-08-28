@@ -1,0 +1,98 @@
+# 🚀 RomAI AGI Simple Production Deployment
+# Simplified production deployment for romcp.ro
+# Focus on the working AGI system with production optimizations
+
+version: '3.8'
+
+services:
+  # RomAI AGI Server - Core Intelligence System
+  romai-agi:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    image: romai/agi:production
+    container_name: romai-agi-production
+    restart: unless-stopped
+    environment:
+      # Production Configuration
+      PYTHONPATH: /app/src:/app/src/ml/serving:/app/src/ml/models:/app/src/ml/orchestration
+      PYTORCH_CUDA_ALLOC_CONF: max_split_size_mb:1024
+      TRANSFORMERS_CACHE: /app/.cache/transformers
+      HF_HOME: /app/.cache/huggingface
+      MODEL_CACHE_DIR: /app/.cache/models
+      ROMAI_AGI_PORT: 6101
+      ROMAI_AGI_HOST: 0.0.0.0
+      ROMAI_LOG_LEVEL: INFO
+      QUANTUM_ENABLED: true
+      CONSCIOUSNESS_ENGINE: true
+      ADVANCED_CAPABILITIES_ENABLED: true
+      NODE_ENV: production
+      
+      # Performance Optimization
+      PERFORMANCE_OPTIMIZER_ENABLED: false  # Disabled due to cache issues
+      CACHE_BYPASS_ENABLED: true  # Mathematical reasoning fix
+      
+    ports:
+      - "6101:6101"  # AGI API
+    volumes:
+      - romai_models:/app/.cache/models
+      - romai_logs:/app/logs
+    networks:
+      - romai-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '4.0'
+        reservations:
+          memory: 4G
+          cpus: '2.0'
+
+  # Nginx Load Balancer - Production SSL & Routing
+  nginx:
+    image: nginx:alpine
+    container_name: romai-nginx-production
+    restart: unless-stopped
+    ports:
+      - "80:80"    # HTTP (redirect to HTTPS)
+      - "443:443"  # HTTPS (production)
+    volumes:
+      - ./nginx/nginx.production.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - romai-agi
+    networks:
+      - romai-network
+    environment:
+      NGINX_DOMAIN: romcp.ro
+      NGINX_AGI_BACKEND: romai-agi:6101
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# Production Networks
+networks:
+  romai-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/16
+
+# Production Volumes
+volumes:
+  romai_models:
+    driver: local
+  romai_logs:
+    driver: local
+  nginx_logs:
+    driver: local

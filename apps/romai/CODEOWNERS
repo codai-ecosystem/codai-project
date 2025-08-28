@@ -1,0 +1,131 @@
+# RomAI Code Owners
+# This file defines code ownership for RomAI components with Romanian cultural intelligence focus
+# Romanian cultural experts must review all cultural intelligence changes
+# Security team must review GDPR compliance and Romanian data protection changes
+
+# Global RomAI ownership
+/apps/romai/ @codai-team/romai-leads @codai-team/romanian-cultural-experts
+
+# Romanian Cultural Intelligence Core
+/apps/romai/src/ml/cultural/ @codai-team/romanian-cultural-experts @codai-team/romai-ml-engineers
+/apps/romai/src/components/cultural/ @codai-team/romanian-cultural-experts @codai-team/romai-frontend-leads
+/apps/romai/src/services/culturalIntelligence/ @codai-team/romanian-cultural-experts @codai-team/romai-backend-leads
+
+# Romanian Language Processing
+/apps/romai/src/ml/language/ @codai-team/romanian-linguistic-experts @codai-team/romai-ml-engineers
+/apps/romai/src/components/language/ @codai-team/romanian-linguistic-experts @codai-team/romai-frontend-leads
+/apps/romai/src/services/romanianLanguage/ @codai-team/romanian-linguistic-experts @codai-team/romai-backend-leads
+
+# Mathematical Reasoning (with Romanian terminology)
+/apps/romai/src/ml/reasoning/autonomous_math_engine.py @codai-team/romai-ml-engineers @codai-team/romanian-math-experts
+/apps/romai/src/components/math/ @codai-team/romai-frontend-leads @codai-team/romanian-math-experts
+/apps/romai/src/services/mathEngine/ @codai-team/romai-backend-leads @codai-team/romanian-math-experts
+
+# Logical Reasoning (with Romanian philosophical context)
+/apps/romai/src/ml/reasoning/autonomous_logical_engine.py @codai-team/romai-ml-engineers @codai-team/romanian-philosophy-experts
+/apps/romai/src/components/logical/ @codai-team/romai-frontend-leads @codai-team/romanian-philosophy-experts
+/apps/romai/src/services/logicalReasoning/ @codai-team/romai-backend-leads @codai-team/romanian-philosophy-experts
+
+# Security & GDPR Compliance (Romanian data protection focus)
+/apps/romai/src/api/security/ @codai-team/security-team @codai-team/gdpr-compliance-experts
+/apps/romai/src/services/gdpr/ @codai-team/security-team @codai-team/gdpr-compliance-experts @codai-team/romanian-legal-experts
+/apps/romai/src/middleware/authentication/ @codai-team/security-team @codai-team/romai-backend-leads
+/apps/romai/src/middleware/authorization/ @codai-team/security-team @codai-team/romai-backend-leads
+
+# Romanian Data Protection Specific
+/apps/romai/src/services/romanianDataProtection/ @codai-team/romanian-legal-experts @codai-team/gdpr-compliance-experts
+/apps/romai/src/api/dataProtection/ @codai-team/romanian-legal-experts @codai-team/security-team
+
+# Frontend Components (Romanian-first UI)
+/apps/romai/src/components/ui/ @codai-team/romai-frontend-leads @codai-team/ux-designers
+/apps/romai/src/components/common/ @codai-team/romai-frontend-leads
+/apps/romai/src/hooks/ @codai-team/romai-frontend-leads
+/apps/romai/src/contexts/ @codai-team/romai-frontend-leads
+
+# Romanian Cultural UI Components
+/apps/romai/src/components/cultural/ @codai-team/romanian-cultural-experts @codai-team/romai-frontend-leads @codai-team/ux-designers
+
+# API Routes (with Romanian cultural endpoints)
+/apps/romai/src/api/cultural/ @codai-team/romanian-cultural-experts @codai-team/romai-backend-leads
+/apps/romai/src/api/mathematical/ @codai-team/romai-backend-leads @codai-team/romanian-math-experts
+/apps/romai/src/api/logical/ @codai-team/romai-backend-leads @codai-team/romanian-philosophy-experts
+
+# Machine Learning Models (Romanian context aware)
+/apps/romai/src/ml/models/ @codai-team/romai-ml-engineers @codai-team/ml-architects
+/apps/romai/src/ml/training/ @codai-team/romai-ml-engineers @codai-team/ml-architects
+/apps/romai/src/ml/serving/ @codai-team/romai-ml-engineers @codai-team/devops-team
+
+# Romanian Cultural Data
+/apps/romai/src/data/cultural/ @codai-team/romanian-cultural-experts @codai-team/data-engineers
+/apps/romai/src/data/historical/ @codai-team/romanian-historians @codai-team/data-engineers
+/apps/romai/src/data/linguistic/ @codai-team/romanian-linguistic-experts @codai-team/data-engineers
+
+# Configuration Files
+/apps/romai/next.config.js @codai-team/romai-frontend-leads @codai-team/devops-team
+/apps/romai/tsconfig.json @codai-team/romai-leads
+/apps/romai/tailwind.config.ts @codai-team/romai-frontend-leads @codai-team/ux-designers
+/apps/romai/vitest.config.ts @codai-team/romai-leads @codai-team/qa-engineers
+/apps/romai/playwright.config.ts @codai-team/qa-engineers @codai-team/romai-leads
+
+# Environment and Docker
+/apps/romai/.env.example @codai-team/devops-team @codai-team/romai-leads
+/apps/romai/Dockerfile @codai-team/devops-team @codai-team/romai-backend-leads
+/apps/romai/docker-compose.yml @codai-team/devops-team @codai-team/romai-leads
+
+# Testing (with Romanian cultural validation)
+/apps/romai/src/tests/ @codai-team/qa-engineers @codai-team/romai-leads
+/apps/romai/src/tests/cultural/ @codai-team/romanian-cultural-experts @codai-team/qa-engineers
+/apps/romai/src/tests/integration/cultural/ @codai-team/romanian-cultural-experts @codai-team/qa-engineers
+/apps/romai/src/tests/e2e/romanian-user-journeys/ @codai-team/qa-engineers @codai-team/romanian-cultural-experts
+
+# Documentation (Romanian cultural context)
+/apps/romai/README.md @codai-team/romai-leads @codai-team/technical-writers
+/apps/romai/CONTRIBUTING.md @codai-team/romai-leads @codai-team/romanian-cultural-experts
+/apps/romai/docs/ @codai-team/technical-writers @codai-team/romai-leads
+/apps/romai/docs/cultural/ @codai-team/romanian-cultural-experts @codai-team/technical-writers
+/apps/romai/docs/adrs/ @codai-team/romai-leads @codai-team/architects
+
+# Project Management
+/apps/romai/BACKLOG.md @codai-team/product-managers @codai-team/romai-leads
+/apps/romai/TEST_PLAN.md @codai-team/qa-engineers @codai-team/romai-leads
+/apps/romai/package.json @codai-team/romai-leads @codai-team/devops-team
+
+# CI/CD Pipeline (Romanian cultural validation included)
+/.github/workflows/romai-launcher-pipeline.yml @codai-team/devops-team @codai-team/romai-leads
+/.github/PULL_REQUEST_TEMPLATE/romai_pull_request.md @codai-team/romai-leads @codai-team/romanian-cultural-experts
+
+# Security and Compliance
+/apps/romai/src/middleware/security/ @codai-team/security-team
+/apps/romai/src/utils/encryption/ @codai-team/security-team @codai-team/romai-backend-leads
+/apps/romai/src/utils/validation/ @codai-team/security-team @codai-team/romai-backend-leads
+
+# Performance and Monitoring (Romanian query optimization)
+/apps/romai/src/utils/performance/ @codai-team/performance-engineers @codai-team/romai-backend-leads
+/apps/romai/src/monitoring/ @codai-team/sre-team @codai-team/performance-engineers
+
+# Internationalization (Romanian-first)
+/apps/romai/src/i18n/ @codai-team/romanian-linguistic-experts @codai-team/romai-frontend-leads
+/apps/romai/src/locales/ @codai-team/romanian-linguistic-experts @codai-team/romai-frontend-leads
+
+# Database and Data Models (Romanian cultural data)
+/apps/romai/src/database/ @codai-team/data-engineers @codai-team/romai-backend-leads
+/apps/romai/src/models/ @codai-team/data-engineers @codai-team/romai-backend-leads
+/apps/romai/src/migrations/ @codai-team/data-engineers @codai-team/romai-backend-leads
+
+# Infrastructure as Code (Romanian data residency compliant)
+/apps/romai/infrastructure/ @codai-team/devops-team @codai-team/sre-team
+/apps/romai/kubernetes/ @codai-team/devops-team @codai-team/sre-team
+/apps/romai/terraform/ @codai-team/devops-team @codai-team/sre-team
+
+# Critical Romanian Cultural Files (Requires Expert Review)
+/apps/romai/src/data/cultural/romanian-historical-figures.json @codai-team/romanian-historians @codai-team/romanian-cultural-experts
+/apps/romai/src/data/cultural/romanian-traditions.json @codai-team/romanian-cultural-experts @codai-team/romanian-ethnologists
+/apps/romai/src/data/linguistic/romanian-diacritics.json @codai-team/romanian-linguistic-experts
+/apps/romai/src/data/regional/romanian-regions.json @codai-team/romanian-geographers @codai-team/romanian-cultural-experts
+
+# Emergency Security Overrides (Security Team Only)
+/apps/romai/src/emergency/ @codai-team/security-team
+/apps/romai/src/incident/ @codai-team/security-team @codai-team/sre-team
+
+# Global Fallback (Leadership Review Required)
+* @codai-team/romai-leads

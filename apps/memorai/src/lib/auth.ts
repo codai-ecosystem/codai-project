@@ -203,6 +203,16 @@ export const auth = {
 };
 
 /**
+ * Get current session (server-side)
+ * This is a mock implementation - in production, this would integrate with NextAuth.js
+ */
+export async function getSession(): Promise<CodaiSession | null> {
+    // In production, this would use NextAuth.js getServerSession
+    // For now, return null (unauthenticated)
+    return null;
+}
+
+/**
  * Mock auth functions for development
  * These will be replaced with actual NextAuth.js functions once it's properly installed
  */

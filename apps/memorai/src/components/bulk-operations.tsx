@@ -54,7 +54,7 @@ export function BulkOperations({ client }: BulkOperationsProps) {
         } catch (error) {
             setStatus({
                 type: 'error',
-                message: `Search failed: ${error.message}`
+                message: `Search failed: ${error instanceof Error ? error.message : 'Unknown error'}`
             });
         } finally {
             setIsLoading(false);
@@ -102,7 +102,7 @@ export function BulkOperations({ client }: BulkOperationsProps) {
         } catch (error) {
             setStatus({
                 type: 'error',
-                message: `Bulk delete failed: ${error.message}`
+                message: `Bulk delete failed: ${error instanceof Error ? error.message : 'Unknown error'}`
             });
         } finally {
             setIsLoading(false);
@@ -144,7 +144,7 @@ export function BulkOperations({ client }: BulkOperationsProps) {
         } catch (error) {
             setStatus({
                 type: 'error',
-                message: `Bulk update failed: ${error.message}`
+                message: `Bulk update failed: ${error instanceof Error ? error.message : 'Unknown error'}`
             });
         } finally {
             setIsLoading(false);
@@ -167,7 +167,7 @@ export function BulkOperations({ client }: BulkOperationsProps) {
             <div className="space-y-4">
                 <div>
                     <Label htmlFor="operation-type">Operation Type</Label>
-                    <Select value={operation} onValueChange={(value: 'delete' | 'update') => setOperation(value)}>
+                    <Select value={operation} onValueChange={(value: string) => setOperation(value as 'delete' | 'update')}>
                         <SelectTrigger>
                             <SelectValue placeholder="Select operation" />
                         </SelectTrigger>

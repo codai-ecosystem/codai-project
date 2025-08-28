@@ -7,17 +7,17 @@ import { defineConfig, devices } from '@playwright/test'
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  forbidOnly: !!process.env['CI'],
+  retries: process.env['CI'] ? 2 : 0,
+  workers: process.env['CI'] ? 1 : '50%',
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
     ['json', { outputFile: 'playwright-results.json' }],
     ['junit', { outputFile: 'playwright-results.xml' }],
-    ...(process.env.CI ? [['github']] : [['list']])
+    ...(process.env['CI'] ? [['github'] as const] : [['list'] as const])
   ],
   use: {
-    baseURL: 'http://localhost:4006',
+    baseURL: process.env['PLAYWRIGHT_BASE_URL'] || 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -26,6 +26,9 @@ export default defineConfig({
     // Improved accessibility testing
     actionTimeout: 10000,
     navigationTimeout: 30000,
+    // Locale testing
+    locale: 'en-US',
+    timezoneId: 'America/New_York',
   },
   // Test against modern browsers
   projects: [
@@ -74,20 +77,20 @@ export default defineConfig({
       name: 'accessibility',
       use: {
         ...devices['Desktop Chrome'],
-        // Force reduced motion for consistent testing
-        reducedMotion: 'reduce',
         // High contrast for a11y testing
         colorScheme: 'dark',
       },
     },
   ],
   // Development server setup
-  webServer: process.env.CI ? undefined : {
-    command: 'pnpm dev',
-    url: 'http://localhost:4006',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
-  },
+  ...(process.env['CI'] ? {} : {
+    webServer: {
+      command: 'pnpm dev',
+      url: 'http://localhost:3000',
+      reuseExistingServer: !process.env['CI'],
+      timeout: 120000,
+    }
+  }),
   // Global setup and teardown
   globalSetup: './tests/e2e/global-setup.ts',
   globalTeardown: './tests/e2e/global-teardown.ts',
@@ -97,7 +100,6 @@ export default defineConfig({
   expect: {
     timeout: 5000,
     toHaveScreenshot: {
-      mode: 'only-on-failure',
       animations: 'disabled',
       caret: 'hide',
     },

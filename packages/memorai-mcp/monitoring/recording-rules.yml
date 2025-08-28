@@ -1,0 +1,306 @@
+# MemorAI MCP Server - Recording Rules
+# Pre-computed metrics for dashboards and alerting optimization
+
+groups:
+  # HTTP Request Metrics
+  - name: memorai-mcp-http-recording
+    interval: 30s
+    rules:
+    - record: memorai_mcp:http_request_rate_5m
+      expr: rate(memorai_mcp_http_requests_total[5m])
+      labels:
+        team: memorai
+        component: http
+
+    - record: memorai_mcp:http_request_rate_1h
+      expr: rate(memorai_mcp_http_requests_total[1h])
+      labels:
+        team: memorai
+        component: http
+
+    - record: memorai_mcp:http_error_rate_5m
+      expr: rate(memorai_mcp_http_requests_total{status=~"5.."}[5m]) / rate(memorai_mcp_http_requests_total[5m])
+      labels:
+        team: memorai
+        component: http
+
+    - record: memorai_mcp:http_latency_95th_5m
+      expr: histogram_quantile(0.95, rate(memorai_mcp_http_request_duration_seconds_bucket[5m]))
+      labels:
+        team: memorai
+        component: http
+
+    - record: memorai_mcp:http_latency_99th_5m
+      expr: histogram_quantile(0.99, rate(memorai_mcp_http_request_duration_seconds_bucket[5m]))
+      labels:
+        team: memorai
+        component: http
+
+  # Memory System Metrics
+  - name: memorai-mcp-memory-recording
+    interval: 30s
+    rules:
+    - record: memorai_mcp:memory_operation_rate_5m
+      expr: rate(memorai_mcp_memory_operations_total[5m])
+      labels:
+        team: memorai
+        component: memory
+
+    - record: memorai_mcp:memory_operation_latency_95th_5m
+      expr: histogram_quantile(0.95, rate(memorai_mcp_memory_operation_duration_seconds_bucket[5m]))
+      labels:
+        team: memorai
+        component: memory
+
+    - record: memorai_mcp:memory_storage_utilization
+      expr: memorai_mcp_memory_storage_used_bytes / memorai_mcp_memory_storage_total_bytes
+      labels:
+        team: memorai
+        component: memory
+
+    - record: memorai_mcp:memory_replication_success_rate_5m
+      expr: rate(memorai_mcp_memory_replication_success_total[5m]) / rate(memorai_mcp_memory_replication_attempts_total[5m])
+      labels:
+        team: memorai
+        component: memory-replication
+
+    - record: memorai_mcp:memory_conflict_rate_5m
+      expr: rate(memorai_mcp_memory_conflicts_total[5m])
+      labels:
+        team: memorai
+        component: memory-conflicts
+
+    - record: memorai_mcp:memory_network_peers_active
+      expr: memorai_mcp_memory_network_peers{status="active"}
+      labels:
+        team: memorai
+        component: memory-network
+
+  # Resource Utilization Metrics
+  - name: memorai-mcp-resource-recording
+    interval: 30s
+    rules:
+    - record: memorai_mcp:cpu_utilization_5m
+      expr: rate(process_cpu_seconds_total{job="memorai-mcp-server"}[5m])
+      labels:
+        team: memorai
+        component: resources
+
+    - record: memorai_mcp:memory_utilization_mb
+      expr: process_resident_memory_bytes{job="memorai-mcp-server"} / 1024 / 1024
+      labels:
+        team: memorai
+        component: resources
+
+    - record: memorai_mcp:heap_utilization
+      expr: nodejs_heap_space_size_used_bytes{job="memorai-mcp-server"} / nodejs_heap_space_size_total_bytes{job="memorai-mcp-server"}
+      labels:
+        team: memorai
+        component: resources
+
+    - record: memorai_mcp:gc_duration_95th_5m
+      expr: histogram_quantile(0.95, rate(nodejs_gc_duration_seconds_bucket{job="memorai-mcp-server"}[5m]))
+      labels:
+        team: memorai
+        component: resources
+
+  # Database Metrics
+  - name: memorai-mcp-database-recording
+    interval: 30s
+    rules:
+    - record: memorai_mcp:postgres_connection_utilization
+      expr: pg_stat_activity_count / pg_settings_max_connections
+      labels:
+        team: memorai
+        component: database
+
+    - record: memorai_mcp:postgres_query_rate_5m
+      expr: rate(pg_stat_database_xact_commit[5m]) + rate(pg_stat_database_xact_rollback[5m])
+      labels:
+        team: memorai
+        component: database
+
+    - record: memorai_mcp:postgres_slow_query_rate_5m
+      expr: rate(pg_stat_activity_max_tx_duration[5m])
+      labels:
+        team: memorai
+        component: database
+
+    - record: memorai_mcp:redis_memory_utilization
+      expr: redis_memory_used_bytes / redis_memory_max_bytes
+      labels:
+        team: memorai
+        component: cache
+
+    - record: memorai_mcp:redis_hit_rate_5m
+      expr: rate(redis_keyspace_hits_total[5m]) / (rate(redis_keyspace_hits_total[5m]) + rate(redis_keyspace_misses_total[5m]))
+      labels:
+        team: memorai
+        component: cache
+
+  # Business Logic Metrics
+  - name: memorai-mcp-business-recording
+    interval: 1m
+    rules:
+    - record: memorai_mcp:total_memories_stored
+      expr: memorai_mcp_memories_total
+      labels:
+        team: memorai
+        component: business
+
+    - record: memorai_mcp:memory_creation_rate_1h
+      expr: rate(memorai_mcp_memories_created_total[1h])
+      labels:
+        team: memorai
+        component: business
+
+    - record: memorai_mcp:memory_retrieval_rate_1h
+      expr: rate(memorai_mcp_memories_retrieved_total[1h])
+      labels:
+        team: memorai
+        component: business
+
+    - record: memorai_mcp:memory_search_success_rate_5m
+      expr: rate(memorai_mcp_memory_search_success_total[5m]) / rate(memorai_mcp_memory_search_attempts_total[5m])
+      labels:
+        team: memorai
+        component: business
+
+    - record: memorai_mcp:agent_active_sessions
+      expr: memorai_mcp_agent_sessions{status="active"}
+      labels:
+        team: memorai
+        component: business
+
+  # Network Performance Metrics
+  - name: memorai-mcp-network-recording
+    interval: 30s
+    rules:
+    - record: memorai_mcp:network_throughput_bytes_5m
+      expr: rate(memorai_mcp_network_bytes_transmitted_total[5m]) + rate(memorai_mcp_network_bytes_received_total[5m])
+      labels:
+        team: memorai
+        component: network
+
+    - record: memorai_mcp:network_packet_loss_rate_5m
+      expr: rate(memorai_mcp_network_packets_dropped_total[5m]) / rate(memorai_mcp_network_packets_total[5m])
+      labels:
+        team: memorai
+        component: network
+
+    - record: memorai_mcp:network_latency_95th_5m
+      expr: histogram_quantile(0.95, rate(memorai_mcp_network_latency_seconds_bucket[5m]))
+      labels:
+        team: memorai
+        component: network
+
+    - record: memorai_mcp:peer_discovery_rate_5m
+      expr: rate(memorai_mcp_peer_discoveries_total[5m])
+      labels:
+        team: memorai
+        component: network
+
+    - record: memorai_mcp:network_partition_events_1h
+      expr: increase(memorai_mcp_network_partition_events_total[1h])
+      labels:
+        team: memorai
+        component: network
+
+  # SLA/SLO Metrics
+  - name: memorai-mcp-slo-recording
+    interval: 1m
+    rules:
+    # Availability SLI (99.9% target)
+    - record: memorai_mcp:availability_sli_5m
+      expr: avg_over_time(up{job="memorai-mcp-server"}[5m])
+      labels:
+        team: memorai
+        component: slo
+        slo: availability
+
+    # Latency SLI (95% of requests < 2s)
+    - record: memorai_mcp:latency_sli_5m
+      expr: |
+        (
+          sum(rate(memorai_mcp_http_request_duration_seconds_bucket{le="2.0"}[5m]))
+          /
+          sum(rate(memorai_mcp_http_request_duration_seconds_count[5m]))
+        )
+      labels:
+        team: memorai
+        component: slo
+        slo: latency
+
+    # Error Rate SLI (< 1% error rate)
+    - record: memorai_mcp:error_rate_sli_5m
+      expr: |
+        (
+          1 - (
+            sum(rate(memorai_mcp_http_requests_total{status=~"5.."}[5m]))
+            /
+            sum(rate(memorai_mcp_http_requests_total[5m]))
+          )
+        )
+      labels:
+        team: memorai
+        component: slo
+        slo: error_rate
+
+    # Memory Operation Success Rate SLI (99% success)
+    - record: memorai_mcp:memory_success_sli_5m
+      expr: |
+        (
+          sum(rate(memorai_mcp_memory_operations_total{status="success"}[5m]))
+          /
+          sum(rate(memorai_mcp_memory_operations_total[5m]))
+        )
+      labels:
+        team: memorai
+        component: slo
+        slo: memory_operations
+
+  # Aggregated Metrics for Dashboards
+  - name: memorai-mcp-dashboard-recording
+    interval: 1m
+    rules:
+    - record: memorai_mcp:overall_health_score
+      expr: |
+        (
+          memorai_mcp:availability_sli_5m * 0.4 +
+          memorai_mcp:latency_sli_5m * 0.3 +
+          memorai_mcp:error_rate_sli_5m * 0.2 +
+          memorai_mcp:memory_success_sli_5m * 0.1
+        )
+      labels:
+        team: memorai
+        component: dashboard
+
+    - record: memorai_mcp:requests_per_second_5m
+      expr: sum(memorai_mcp:http_request_rate_5m)
+      labels:
+        team: memorai
+        component: dashboard
+
+    - record: memorai_mcp:memory_operations_per_second_5m
+      expr: sum(memorai_mcp:memory_operation_rate_5m)
+      labels:
+        team: memorai
+        component: dashboard
+
+    - record: memorai_mcp:active_connections
+      expr: sum(memorai_mcp_active_connections)
+      labels:
+        team: memorai
+        component: dashboard
+
+    - record: memorai_mcp:total_resource_utilization
+      expr: |
+        (
+          avg(memorai_mcp:cpu_utilization_5m) * 0.4 +
+          avg(memorai_mcp:memory_utilization_mb / 2048) * 0.3 +
+          avg(memorai_mcp:postgres_connection_utilization) * 0.2 +
+          avg(memorai_mcp:redis_memory_utilization) * 0.1
+        )
+      labels:
+        team: memorai
+        component: dashboard

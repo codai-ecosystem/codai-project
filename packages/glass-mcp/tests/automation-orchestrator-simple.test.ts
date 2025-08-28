@@ -68,9 +68,9 @@ describe('AdvancedAutomationOrchestrator - Simple Tests', () => {
     it('should execute workflow successfully', async () => {
       const workflow = createMockWorkflow('test-workflow-1');
       const context = createMockAutomationContext();
-      
+
       const result = await orchestrator.executeWorkflow(workflow, context);
-      
+
       expect(result).toHaveProperty('workflowId', workflow.id);
       expect(result).toHaveProperty('status');
       expect(result).toHaveProperty('duration');

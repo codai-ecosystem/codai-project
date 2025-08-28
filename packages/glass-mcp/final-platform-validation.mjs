@@ -75,28 +75,28 @@ async function listAllTools() {
 async function validatePlatform() {
     try {
         console.log('📋 Fetching available tools...\n');
-        
+
         const tools = await listAllTools();
-        
+
         // Define expected consolidated tools
         const expectedTools = [
-            'glass_vision', 
-            'glass_drawing', 
-            'glass_interact', 
-            'glass_workflows', 
-            'glass_system', 
+            'glass_vision',
+            'glass_drawing',
+            'glass_interact',
+            'glass_workflows',
+            'glass_system',
             'glass_network'
         ];
-        
+
         console.log(`🔍 Found ${tools.length} total tools available`);
         console.log('');
-        
+
         // Check consolidated tools
         console.log('🎯 CONSOLIDATED TOOLS VERIFICATION');
         console.log('==================================');
-        
+
         let foundConsolidated = 0;
-        
+
         for (const expectedTool of expectedTools) {
             const tool = tools.find(t => t.name === expectedTool);
             if (tool) {
@@ -107,18 +107,18 @@ async function validatePlatform() {
                 console.log(`❌ ${expectedTool}: MISSING`);
             }
         }
-        
+
         console.log('');
         console.log('📊 CONSOLIDATED TOOLS SUMMARY');
         console.log('=============================');
         console.log(`✅ Found: ${foundConsolidated}/6 consolidated tools`);
-        console.log(`📊 Success Rate: ${Math.round((foundConsolidated/6) * 100)}%`);
-        
+        console.log(`📊 Success Rate: ${Math.round((foundConsolidated / 6) * 100)}%`);
+
         // Overall platform status
         console.log('');
         console.log('🏆 REVOLUTIONARY PLATFORM STATUS');
         console.log('================================');
-        
+
         if (foundConsolidated === 6) {
             console.log('🎉 COMPLETE SUCCESS - ALL 6 CONSOLIDATED TOOLS ACTIVE!');
             console.log('🚀 Revolutionary Windows Automation Platform - OPERATIONAL');
@@ -133,7 +133,7 @@ async function validatePlatform() {
             console.log('  🌐 Network Automation (glass_network)');
             console.log('');
             console.log('🎯 "Better than Playwright for browsers" - ACHIEVED!');
-            
+
             return true;
         } else if (foundConsolidated >= 4) {
             console.log('⚠️ MOSTLY COMPLETE - CORE PLATFORM READY');
@@ -144,7 +144,7 @@ async function validatePlatform() {
             console.log('🛠️ Major tools missing or non-functional');
             return false;
         }
-        
+
     } catch (error) {
         console.log('❌ PLATFORM VALIDATION FAILED');
         console.log(`🚨 Error: ${error.message}`);

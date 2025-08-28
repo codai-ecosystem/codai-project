@@ -355,16 +355,4 @@ export interface AIPerformanceMetrics {
 }
 
 // Export all types for easy importing
-export type {
-    MemoryPattern,
-    MemoryRecommendation,
-    ContentAnalysis,
-    MemoryCluster,
-    UsageAnalytics,
-    AIInsightsDashboard,
-    AIInsight,
-    MemoryHealthScore,
-    MemorySimilarity,
-    AutoCategorizationResult,
-    AIPerformanceMetrics
-};
+// (Types are already exported via individual declarations above)

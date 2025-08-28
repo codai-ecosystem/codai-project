@@ -1,0 +1,414 @@
+# =================================================================
+# MemorAI MCP Server - Horizontal Pod Autoscaler Configuration
+# Version: 1.0.0
+# Purpose: Advanced autoscaling with multiple metrics and behaviors
+# =================================================================
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: memorai-mcp-hpa
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    scaling-type: horizontal
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: memorai-mcp-server
+  minReplicas: 3
+  maxReplicas: 50
+  metrics:
+  # CPU-based scaling
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  
+  # Memory-based scaling
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  
+  # Custom metric: Request rate
+  - type: Pods
+    pods:
+      metric:
+        name: memorai_requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "100"
+  
+  # Custom metric: Memory operations per second
+  - type: Pods
+    pods:
+      metric:
+        name: memorai_memory_operations_per_second
+      target:
+        type: AverageValue
+        averageValue: "50"
+  
+  # Custom metric: Response latency
+  - type: Pods
+    pods:
+      metric:
+        name: memorai_response_latency_p99
+      target:
+        type: AverageValue
+        averageValue: "500m"  # 500ms
+  
+  # External metric: Queue depth
+  - type: External
+    external:
+      metric:
+        name: redis_queue_depth
+        selector:
+          matchLabels:
+            service: memorai-mcp-redis
+      target:
+        type: AverageValue
+        averageValue: "10"
+  
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+      - type: Pods
+        value: 4
+        periodSeconds: 15
+      selectPolicy: Max
+    
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+      selectPolicy: Min
+
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: memorai-mcp-vpa
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+    scaling-type: vertical
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: memorai-mcp-server
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+    - containerName: memorai-mcp-server
+      minAllowed:
+        cpu: 100m
+        memory: 256Mi
+      maxAllowed:
+        cpu: 4000m
+        memory: 8Gi
+      controlledResources: ["cpu", "memory"]
+      controlledValues: RequestsAndLimits
+    - containerName: redis-sidecar
+      minAllowed:
+        cpu: 50m
+        memory: 64Mi
+      maxAllowed:
+        cpu: 500m
+        memory: 1Gi
+      controlledResources: ["cpu", "memory"]
+      controlledValues: RequestsAndLimits
+
+---
+# Custom Metrics API for HPA
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-metrics-apiserver
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+spec:
+  ports:
+  - port: 443
+    targetPort: 6443
+  selector:
+    app: custom-metrics-apiserver
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custom-metrics-apiserver
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: custom-metrics-apiserver
+  template:
+    metadata:
+      labels:
+        app: custom-metrics-apiserver
+    spec:
+      serviceAccountName: custom-metrics-apiserver
+      containers:
+      - name: custom-metrics-apiserver
+        image: k8s.gcr.io/prometheus-adapter/prometheus-adapter:v0.11.1
+        args:
+        - --cert-dir=/var/run/serving-cert
+        - --config=/etc/adapter/config.yaml
+        - --logtostderr=true
+        - --prometheus-url=http://prometheus.monitoring.svc:9090/
+        - --metrics-relist-interval=1m
+        - --v=4
+        - --secure-port=6443
+        ports:
+        - containerPort: 6443
+        volumeMounts:
+        - mountPath: /var/run/serving-cert
+          name: volume-serving-cert
+          readOnly: false
+        - mountPath: /etc/adapter/
+          name: config
+          readOnly: true
+        - mountPath: /tmp
+          name: tmp-vol
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: volume-serving-cert
+        emptyDir: {}
+      - name: config
+        configMap:
+          name: adapter-config
+      - name: tmp-vol
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: adapter-config
+  namespace: memorai-mcp
+data:
+  config.yaml: |
+    rules:
+    # Request rate metric
+    - seriesQuery: 'memorai_requests_total{namespace!="",pod!=""}'
+      seriesFilters: []
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod:
+            resource: pod
+      name:
+        matches: "^memorai_requests_total"
+        as: "memorai_requests_per_second"
+      metricsQuery: 'rate(<<.Series>>{<<.LabelMatchers>>}[2m])'
+    
+    # Memory operations metric
+    - seriesQuery: 'memorai_memory_operations_total{namespace!="",pod!=""}'
+      seriesFilters: []
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod:
+            resource: pod
+      name:
+        matches: "^memorai_memory_operations_total"
+        as: "memorai_memory_operations_per_second"
+      metricsQuery: 'rate(<<.Series>>{<<.LabelMatchers>>}[2m])'
+    
+    # Response latency metric
+    - seriesQuery: 'memorai_response_time_seconds{namespace!="",pod!=""}'
+      seriesFilters: []
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod:
+            resource: pod
+      name:
+        matches: "^memorai_response_time_seconds"
+        as: "memorai_response_latency_p99"
+      metricsQuery: 'histogram_quantile(0.99, rate(<<.Series>>_bucket{<<.LabelMatchers>>}[2m]))'
+    
+    # External metrics from Redis
+    externalRules:
+    - seriesQuery: 'redis_connected_clients'
+      seriesFilters:
+      - isNot: "^redis_connected_clients.*_total$"
+      resources:
+        template: <<.Resource>>
+      name:
+        matches: "^redis_connected_clients"
+        as: "redis_queue_depth"
+      metricsQuery: '<<.Series>>{<<.LabelMatchers>>}'
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: custom-metrics-apiserver
+  namespace: memorai-mcp
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: custom-metrics-server-resources
+rules:
+- apiGroups:
+  - custom.metrics.k8s.io
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: custom-metrics-resource-reader
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - pods
+  - services
+  verbs:
+  - get
+  - list
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: custom-metrics:system:auth-delegator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: custom-metrics-apiserver
+  namespace: memorai-mcp
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: custom-metrics-resource-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: custom-metrics-resource-reader
+subjects:
+- kind: ServiceAccount
+  name: custom-metrics-apiserver
+  namespace: memorai-mcp
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: custom-metrics-server-resources
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: custom-metrics-server-resources
+subjects:
+- kind: ServiceAccount
+  name: custom-metrics-apiserver
+  namespace: memorai-mcp
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: custom-metrics-auth-reader
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: extension-apiserver-authentication-reader
+subjects:
+- kind: ServiceAccount
+  name: custom-metrics-apiserver
+  namespace: memorai-mcp
+
+---
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1beta1.custom.metrics.k8s.io
+spec:
+  service:
+    name: custom-metrics-apiserver
+    namespace: memorai-mcp
+  group: custom.metrics.k8s.io
+  version: v1beta1
+  insecureSkipTLSVerify: true
+  groupPriorityMinimum: 100
+  versionPriority: 100
+
+---
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1beta1.external.metrics.k8s.io
+spec:
+  service:
+    name: custom-metrics-apiserver
+    namespace: memorai-mcp
+  group: external.metrics.k8s.io
+  version: v1beta1
+  insecureSkipTLSVerify: true
+  groupPriorityMinimum: 100
+  versionPriority: 100
+
+---
+# Pod Disruption Budget for availability during scaling
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: memorai-mcp-pdb
+  namespace: memorai-mcp
+  labels:
+    app: memorai-mcp-server
+    component: performance
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: memorai-mcp-server

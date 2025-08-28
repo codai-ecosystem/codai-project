@@ -1,0 +1,3 @@
+{
+  "extends": "../cautai-mcp/tsconfig.json"
+}

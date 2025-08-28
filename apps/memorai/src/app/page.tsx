@@ -1,16 +1,16 @@
 'use client'
 
 import React from 'react';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function MemorAIPage() {
+export default function RootPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to dashboard as the main entry point
-    router.push('/dashboard');
+    // Redirect to default locale (English)
+    // The middleware will handle locale detection and proper redirects
+    router.push('/en/dashboard');
   }, [router]);
 
   return (

@@ -1,0 +1,333 @@
+name: MemorAI Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    pa      - name: Deploy to Azure Static Web Apps
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/apps/memorai"
+          api_location: ""
+          output_location: "out"
+          skip_app_build: false
+        env:
+          # Production environment variables
+          NODE_ENV: production
+          NEXT_PUBLIC_APP_URL: https://memorai.azurestaticapps.net
+          NEXT_PUBLIC_API_BASE_URL: https://memorai-api.azurestaticapps.net
+          NEXTAUTH_URL: https://memorai.azurestaticapps.net
+          NEXT_PUBLIC_MEMORAI_MCP_URL: https://memorai-mcp.azurestaticapps.net
+          NEXT_PUBLIC_CBD_BASE_URL: https://cbd-api.azurestaticapps.net
+          NEXT_TELEMETRY_DISABLED: "1"
+          NODE_OPTIONS: "--max-old-space-size=2048"
+          # Secrets from GitHub repository secrets
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          NEXT_PUBLIC_MEMORAI_API_KEY: ${{ secrets.MEMORAI_API_KEY }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          CSRF_SECRET: ${{ secrets.CSRF_SECRET }}
+          APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }} - 'apps/memorai/**'
+      - 'packages/**'
+      - '.github/workflows/memorai-deploy.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+    paths:
+      - 'apps/memorai/**'
+      - 'packages/**'
+
+env:
+  NODE_VERSION: '18'
+  PNPM_VERSION: '8'
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          lfs: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: |
+          cd packages/shared-ui && pnpm build
+          cd ../api-utils && pnpm build
+
+      - name: Run TypeScript check
+        run: cd apps/memorai && pnpm type-check
+
+      - name: Run linting
+        run: cd apps/memorai && pnpm lint
+
+      - name: Run unit tests
+        run: cd apps/memorai && pnpm test
+        env:
+          CI: true
+
+      - name: Run security audit
+        run: cd apps/memorai && pnpm audit --audit-level moderate
+
+      - name: Install Playwright browsers
+        run: cd apps/memorai && npx playwright install --with-deps
+
+      - name: Run E2E tests
+        run: cd apps/memorai && pnpm test:e2e
+        env:
+          CI: true
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: http://localhost:3000
+          CBD_BASE_URL: ${{ secrets.CBD_BASE_URL }}
+
+      - name: Build application
+        run: cd apps/memorai && pnpm build
+        env:
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          NODE_ENV: production
+
+      - name: Run bundle analysis
+        run: cd apps/memorai && pnpm analyze
+        env:
+          ANALYZE: true
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: memorai-build-${{ github.sha }}
+          path: apps/memorai/out/
+          retention-days: 30
+
+      - name: Deploy to Azure Static Web Apps
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/apps/memorai"
+          api_location: ""
+          output_location: "out"
+          skip_app_build: true # We already built the app
+        env:
+          # Public environment variables
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          
+          # Authentication
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          
+          # Database and APIs
+          CBD_BASE_URL: ${{ secrets.CBD_BASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          
+          # AI Services
+          AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_OPENAI_DEPLOYMENT_NAME: ${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}
+          AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
+          
+          # Monitoring
+          APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
+          
+          # Security
+          CSRF_SECRET: ${{ secrets.CSRF_SECRET }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          
+          # Rate Limiting
+          RATE_LIMIT_REDIS_URL: ${{ secrets.RATE_LIMIT_REDIS_URL }}
+
+      - name: Post-deployment health check
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 60
+          
+          # Get deployment URL from Azure Static Web Apps
+          DEPLOYMENT_URL="${{ steps.builddeploy.outputs.static_web_app_url }}"
+          
+          echo "Testing deployment URL: $DEPLOYMENT_URL"
+          
+          # Health check with retries
+          for i in {1..10}; do
+            if curl -f -s "$DEPLOYMENT_URL/api/health" > /dev/null; then
+              echo "✅ Health check passed on attempt $i"
+              break
+            else
+              echo "⏳ Health check failed on attempt $i, retrying in 30s..."
+              sleep 30
+            fi
+            
+            if [ $i -eq 10 ]; then
+              echo "❌ Health check failed after 10 attempts"
+              exit 1
+            fi
+          done
+
+      - name: Run security scan
+        run: |
+          DEPLOYMENT_URL="${{ steps.builddeploy.outputs.static_web_app_url }}"
+          
+          # Test security headers
+          echo "Testing security headers..."
+          HEADERS=$(curl -sI "$DEPLOYMENT_URL")
+          
+          if echo "$HEADERS" | grep -q "X-Content-Type-Options: nosniff"; then
+            echo "✅ X-Content-Type-Options header present"
+          else
+            echo "❌ X-Content-Type-Options header missing"
+            exit 1
+          fi
+          
+          if echo "$HEADERS" | grep -q "X-Frame-Options: DENY"; then
+            echo "✅ X-Frame-Options header present"
+          else
+            echo "❌ X-Frame-Options header missing"
+            exit 1
+          fi
+
+      - name: Performance audit
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            ${{ steps.builddeploy.outputs.static_web_app_url }}
+          configPath: './apps/memorai/lighthouse.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "🚀 MemorAI deployment successful!"
+          echo "📍 URL: ${{ steps.builddeploy.outputs.static_web_app_url }}"
+          echo "📊 Performance report available in artifacts"
+          echo "🔒 Security checks passed"
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "close"
+
+  security_scan:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build_and_deploy_job
+    runs-on: ubuntu-latest
+    name: Security Scanning
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript,typescript
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+      - name: Run npm audit
+        run: |
+          cd apps/memorai
+          npm audit --audit-level high
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=medium
+          command: test
+
+  monitoring_setup:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build_and_deploy_job
+    runs-on: ubuntu-latest
+    name: Setup Monitoring
+    
+    steps:
+      - name: Setup Application Insights alerts
+        run: |
+          echo "Setting up Application Insights monitoring..."
+          # This would typically use Azure CLI to configure alerts
+          # For now, we'll just verify the connection string is available
+          if [ -z "${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}" ]; then
+            echo "❌ APPLICATIONINSIGHTS_CONNECTION_STRING not configured"
+            exit 1
+          else
+            echo "✅ Application Insights configured"
+          fi
+
+      - name: Verify monitoring endpoints
+        run: |
+          DEPLOYMENT_URL="${{ needs.build_and_deploy_job.outputs.deployment_url }}"
+          
+          echo "Testing monitoring endpoints..."
+          
+          # Test health endpoint
+          if curl -f -s "$DEPLOYMENT_URL/api/health" | grep -q '"status":"healthy"'; then
+            echo "✅ Health endpoint working"
+          else
+            echo "❌ Health endpoint failed"
+            exit 1
+          fi
+          
+          # Test security status endpoint
+          if curl -f -s "$DEPLOYMENT_URL/api/security/status" > /dev/null; then
+            echo "✅ Security status endpoint working"
+          else
+            echo "❌ Security status endpoint failed"
+            exit 1
+          fi

@@ -1,0 +1,251 @@
+# Cautai Production Environment Override
+# Optimized for production deployment with security and performance
+
+version: '3.8'
+
+services:
+  # Production MCP server with optimizations
+  cautai-mcp-server:
+    environment:
+      NODE_ENV: production
+      LOG_LEVEL: warn
+      ENABLE_METRICS: "true"
+      ENABLE_HEALTH_CHECKS: "true"
+      CLUSTER_MODE: "true"
+      MAX_MEMORY: "2048"
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.5'
+        reservations:
+          memory: 1G
+          cpus: '0.8'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # Production HTTP server with load balancing
+  cautai-http-server:
+    environment:
+      NODE_ENV: production
+      LOG_LEVEL: warn
+      ENABLE_CLUSTERING: "true"
+      MAX_WORKERS: "4"
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    healthcheck:
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # Production web frontend
+  romcp-web:
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+      # Production API URLs (to be replaced with actual domains)
+      NEXT_PUBLIC_API_URL: https://api.romcp.ro
+      NEXT_PUBLIC_MCP_URL: wss://mcp.romcp.ro
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.8'
+        reservations:
+          memory: 256M
+          cpus: '0.3'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    healthcheck:
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # Production database with performance tuning
+  cautai-postgres:
+    environment:
+      # Performance tuning for production
+      POSTGRES_SHARED_BUFFERS: "512MB"
+      POSTGRES_EFFECTIVE_CACHE_SIZE: "2GB"
+      POSTGRES_MAINTENANCE_WORK_MEM: "128MB"
+      POSTGRES_WORK_MEM: "32MB"
+      POSTGRES_WAL_BUFFERS: "16MB"
+      POSTGRES_RANDOM_PAGE_COST: "1.1"
+      POSTGRES_LOG_STATEMENT: "ddl"
+      POSTGRES_LOG_MIN_DURATION_STATEMENT: "1000"
+    volumes:
+      - cautai_postgres_prod_data:/var/lib/postgresql/data
+      - ./scripts/production-postgres.conf:/etc/postgresql/postgresql.conf:ro
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+        reservations:
+          memory: 2G
+          cpus: '1.0'
+    ports: []  # Remove external port exposure in production
+
+  # Production Redis with persistence
+  cautai-redis:
+    environment:
+      REDIS_MAXMEMORY: "2048mb"
+      REDIS_MAXMEMORY_POLICY: "allkeys-lru"
+    volumes:
+      - cautai_redis_prod_data:/data
+      - ./docker/redis/redis-prod.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    ports: []  # Remove external port exposure
+
+  # Production Nginx with SSL termination
+  cautai-nginx:
+    volumes:
+      - ./docker/nginx/cautai-nginx-prod.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+      - cautai_nginx_prod_logs:/var/log/nginx
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
+          cpus: '0.2'
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Production Elasticsearch with security
+  cautai-elasticsearch:
+    environment:
+      - cluster.name=cautai-prod
+      - node.name=cautai-es-01
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - xpack.security.authc.anonymous.roles=kibana_system
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - network.host=0.0.0.0
+    volumes:
+      - cautai_elasticsearch_prod_data:/usr/share/elasticsearch/data
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+        reservations:
+          memory: 2G
+          cpus: '1.0'
+    ports: []  # Remove external access
+    profiles: ["full", "search"]
+
+  # Production monitoring with Prometheus (optional)
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: cautai-prometheus
+    volumes:
+      - ./docker/prometheus/prometheus-prod.yml:/etc/prometheus/prometheus.yml:ro
+      - cautai_prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--storage.tsdb.retention.time=30d'
+    networks:
+      - cautai-network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+    profiles: ["monitoring"]
+
+  # Grafana for metrics visualization (optional)
+  grafana:
+    image: grafana/grafana:10.1.0
+    container_name: cautai-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=cautai_admin_2025
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - cautai_grafana_data:/var/lib/grafana
+      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - cautai-network
+    depends_on:
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.3'
+    profiles: ["monitoring"]
+
+volumes:
+  cautai_postgres_prod_data:
+    name: cautai_postgres_prod_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/cautai/postgres
+  
+  cautai_redis_prod_data:
+    name: cautai_redis_prod_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/cautai/redis
+  
+  cautai_elasticsearch_prod_data:
+    name: cautai_elasticsearch_prod_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/cautai/elasticsearch
+  
+  cautai_nginx_prod_logs:
+    name: cautai_nginx_prod_logs
+  
+  cautai_prometheus_data:
+    name: cautai_prometheus_data
+  
+  cautai_grafana_data:
+    name: cautai_grafana_data

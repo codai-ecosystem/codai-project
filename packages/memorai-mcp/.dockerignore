@@ -1,18 +1,147 @@
+# MemorAI MCP Server - Production.dockerignore
+# Enterprise - optimized exclusions for production container builds
+
+# Node.js
 node_modules
-.git
-.env
-*.backup.ts
+npm - debug.log *
+    yarn - debug.log *
+    yarn - error.log *
+.npm /
+.yarn /
+    yarn.lock
+package - lock.json
+
+# Git and version control
+    .git
+    .gitignore
+    .gitattributes
+    .gitmodules
+
+# Environment files(use external secret management)
+    .env *
+    !.env.example
+
+# Build artifacts(rebuilt in container)
 build
 dist
 coverage
-.nyc_output
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.DS_Store
-.vscode
-.idea
+    .nyc_output
+    *.tsbuildinfo
+        .eslintcache
+
+# Logs and temporary files
+    *.log
+    *.backup.ts
+tmp /
+    temp /
+.tmp /
+
+# Test files and directories
+    ** /__tests__/
+    ** /test/
+    ** /tests/
+    **/*.test.*
+**/*.spec.*
+    test - results /
+    junit.xml
+
+# Development tools
+    .vscode
+    .idea
+    .devcontainer /
 *.swp
-*.swo
-*~
+    *.swo
+    * ~
+
+# OS generated files
+    .DS_Store
+    .DS_Store ?
+._ *
+.Spotlight - V100
+        .Trashes
+ehthumbs.db
+Thumbs.db
+
+# Documentation
+    *.md
+README *
+    CHANGELOG *
+    CONTRIBUTING *
+    docs /
+    documentation /
+
+# Development directories
+    .github /
+    scripts / dev /
+    dev.js
+dev.ts
+
+# Python
+__pycache__ /
+*.py[cod]
+    * $py.class
+    *.so
+        .Python
+        .pytest_cache /
+    pip - log.txt
+
+# Machine learning models(too large)
+    *.pkl
+    *.h5
+    *.pb
+models /
+    weights /
+    checkpoints /
+
+# Data files
+data /
+    datasets /
+*.csv
+    *.json.gz
+
+# Security and secrets
+secrets /
+    certs /
+    keys /
+*.pem
+    *.key
+    *.crt
+
+# Configuration files
+    .eslintrc *
+.prettierrc *
+.stylelintrc *
+.editorconfig
+tsconfig.json
+webpack.config.js
+jest.config.js
+vitest.config.ts
+
+# Docker files(use external deployment)
+Dockerfile *
+    docker - compose *
+
+# CI / CD
+    .travis.yml
+    .circleci /
+    Jenkinsfile
+
+# Kubernetes and infrastructure
+k8s /
+    kubernetes /
+*.tf
+    *.tfvars
+        .terraform /
+
+# Performance and monitoring
+benchmark /
+    perf /
+.profile
+flame - graph *
+*.prof
+
+# Cache directories
+    .cache /
+*.sqlite
+    *.sqlite3
+    *.db

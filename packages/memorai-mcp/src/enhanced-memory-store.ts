@@ -4,11 +4,17 @@
  */
 
 import { randomUUID } from 'node:crypto';
+import { EventEmitter } from 'node:events';
 import { OpenAI } from 'openai';
 import { PersistentMemoryStore } from './persistent-memory-store.js';
-import { AdvancedMemoryAnalytics, MemoryCluster, MemoryInsight, TemporalPattern } from './advanced-memory-analytics.js';
+import { AdvancedMemoryAnalytics, MemoryInsight, TemporalPattern } from './advanced-memory-analytics.js';
 import { IntelligentMemorySummarization, SummarizedMemory, SummarizationOptions } from './intelligent-memory-summarization.js';
 import { CrossAgentPermissionManager, PermissionRule, AccessRequest, AccessResult, MemoryAuditLog } from './cross-agent-permissions.js';
+import { MemoryClusteringEngine, MemoryCluster, ClusteringOptions, ClusteringResult, ClusterableMemory } from './memory-clustering-engine.js';
+import { AdvancedMemorySearch, SearchQuery, SearchFilters, SearchOptions as AdvancedSearchOptions, SearchResult, SearchResponse } from './advanced-memory-search.js';
+import { SearchQueryBuilder, createSearchQuery, SearchTemplates } from './search-query-builder.js';
+import { MemoryLifecycleManager, MemoryLifecyclePolicy, ArchiveStrategy, RetentionRule, LifecycleStats } from './memory-lifecycle-manager.js';
+import { PerformanceCache, ConnectionPoolManager, LazyLoadManager, CacheConfig, PerformanceConfig } from './performance-optimization-cache.js';
 
 
 
@@ -53,7 +59,7 @@ interface ScoredMemory extends StoredMemory {
     };
 }
 
-export class EnhancedMemoryStore {
+export class EnhancedMemoryStore extends EventEmitter {
     private memories: Map<string, StoredMemory[]> = new Map();
     private embeddings: Map<string, number[]> = new Map();
     private azureClient: OpenAI;
@@ -63,9 +69,18 @@ export class EnhancedMemoryStore {
     private analytics: AdvancedMemoryAnalytics;
     private summarization: IntelligentMemorySummarization;
     private permissions: CrossAgentPermissionManager;
+    private clusteringEngine: MemoryClusteringEngine;
+    private advancedSearch: AdvancedMemorySearch;
+    private lifecycleManager: MemoryLifecycleManager;
 
-    constructor(azureConfig?: any, persistentStore?: PersistentMemoryStore) {
-        console.error('[MemorAI] Enhanced Memory Store initialized with Azure OpenAI Phase 2+3+4');
+    // Performance Optimization Components (US-MEM-010)
+    private performanceCache?: PerformanceCache;
+    private connectionPool?: ConnectionPoolManager;
+    private lazyLoader?: LazyLoadManager;
+
+    constructor(azureConfig?: any, persistentStore?: PersistentMemoryStore, performanceConfig?: PerformanceConfig) {
+        super();
+        console.error('[MemorAI] Enhanced Memory Store initialized with Azure OpenAI Phase 2+3+4 + Performance Optimization');
 
         this.persistentStore = persistentStore;
 
@@ -86,6 +101,31 @@ export class EnhancedMemoryStore {
         this.analytics = new AdvancedMemoryAnalytics(config);
         this.summarization = new IntelligentMemorySummarization(config);
         this.permissions = new CrossAgentPermissionManager();
+        this.clusteringEngine = new MemoryClusteringEngine(config);
+        this.advancedSearch = new AdvancedMemorySearch([], true);
+        this.lifecycleManager = new MemoryLifecycleManager(this, {
+            enableScheduler: true,
+            batchSize: 1000,
+            maxConcurrentOperations: 3,
+            auditRetentionDays: 365,
+            defaultArchiveStrategy: 'standard',
+            complianceMode: 'moderate'
+        });
+
+        // Initialize Performance Optimization Components (US-MEM-010)
+        if (performanceConfig) {
+            if (performanceConfig.caching?.enabled) {
+                this.performanceCache = new PerformanceCache(performanceConfig.caching);
+            }
+
+            if (performanceConfig.connectionPooling?.enabled) {
+                this.connectionPool = new ConnectionPoolManager(performanceConfig);
+            }
+
+            if (performanceConfig.lazyLoading?.enabled && this.performanceCache) {
+                this.lazyLoader = new LazyLoadManager(performanceConfig.lazyLoading, this.performanceCache);
+            }
+        }
 
         console.error('[MemorAI] Azure OpenAI configured:', {
             endpoint: (config.endpoint || process.env.AZURE_OPENAI_ENDPOINT) ? 'configured' : 'missing',
@@ -94,7 +134,13 @@ export class EnhancedMemoryStore {
             persistentStorage: this.persistentStore ? 'enabled' : 'disabled',
             advancedAnalytics: 'enabled',
             intelligentSummarization: 'enabled',
-            crossAgentPermissions: 'enabled'
+            crossAgentPermissions: 'enabled',
+            advancedClustering: 'enabled (US-MEM-001)',
+            advancedSearch: 'enabled (US-MEM-008)',
+            lifecycleManagement: 'enabled (US-MEM-009)',
+            performanceCache: this.performanceCache ? 'enabled (US-MEM-010)' : 'disabled',
+            connectionPooling: this.connectionPool ? 'enabled (US-MEM-010)' : 'disabled',
+            lazyLoading: this.lazyLoader ? 'enabled (US-MEM-010)' : 'disabled'
         });
     }
 
@@ -500,14 +546,45 @@ export class EnhancedMemoryStore {
     // ============================================================================
 
     /**
-     * Cluster memories using advanced analytics
+     * Cluster memories using advanced clustering engine (US-MEM-001 Implementation)
      */
-    async clusterMemories(agentId: string, clusterCount?: number): Promise<MemoryCluster[]> {
+    async clusterMemories(
+        agentId: string,
+        options: ClusteringOptions = {}
+    ): Promise<ClusteringResult> {
         const memories = this.memories.get(agentId) || [];
-        if (memories.length === 0) return [];
+        if (memories.length === 0) {
+            return {
+                clusters: [],
+                metrics: {
+                    totalClusters: 0,
+                    averageClusterSize: 0,
+                    silhouetteScore: 0,
+                    cohesionScore: 0,
+                    separationScore: 0
+                },
+                recommendations: ['No memories to cluster'],
+                hierarchy: []
+            };
+        }
 
-        console.log(`🧠 Clustering ${memories.length} memories for agent ${agentId}`);
-        return await this.analytics.clusterMemories(memories, clusterCount);
+        console.log(`🧠 Advanced clustering ${memories.length} memories for agent ${agentId}`);
+
+        // Convert StoredMemory to ClusterableMemory format
+        const clusterableMemories: ClusterableMemory[] = memories.map(memory => ({
+            id: memory.id,
+            agentId: memory.agentId,
+            content: memory.content,
+            metadata: memory.metadata,
+            embeddings: memory.embeddings,
+            timestamp: memory.timestamp
+        }));
+
+        // Use the new advanced clustering engine
+        const result = await this.clusteringEngine.clusterMemories(clusterableMemories, options);
+
+        console.log(`✅ Clustering complete: ${result.clusters.length} clusters, silhouette: ${result.metrics.silhouetteScore.toFixed(3)}`);
+        return result;
     }
 
     /**
@@ -806,8 +883,8 @@ export class EnhancedMemoryStore {
 
         console.log(`📊 Generating analytics dashboard for agent ${agentId}`);
 
-        const [clusters, temporalPatterns, insights, lifecycle] = await Promise.all([
-            this.clusterMemories(agentId, 5),
+        const [clusteringResult, temporalPatterns, insights, lifecycle] = await Promise.all([
+            this.clusterMemories(agentId, { targetClusters: 5 }),
             this.analyzeTemporalPatterns(agentId),
             this.generateInsights(agentId),
             this.performLifecycleManagement(agentId)
@@ -824,7 +901,7 @@ export class EnhancedMemoryStore {
                 newestMemory: timestamps.length > 0 ? new Date(Math.max(...timestamps)).toISOString() : '',
                 storageSize: memories.reduce((sum, m) => sum + m.content.length, 0)
             },
-            clusters,
+            clusters: clusteringResult.clusters,
             temporalPatterns,
             insights,
             permissions: this.getPermissionAnalytics(),
@@ -833,6 +910,201 @@ export class EnhancedMemoryStore {
                 toCompress: lifecycle.toCompress.length,
                 toDelete: lifecycle.toDelete.length,
                 suggestions: lifecycle.suggestions
+            }
+        };
+    }
+
+    /**
+     * US-MEM-008: Advanced Memory Search & Filtering
+     * Perform semantic search with vector similarity, temporal filtering, and intelligent ranking
+     */
+    async performAdvancedSearch(
+        agentId: string,
+        searchQuery: SearchQuery
+    ): Promise<SearchResponse> {
+        const agentMemories = this.memories.get(agentId) || [];
+
+        console.log(`🔍 [US-MEM-008] Performing advanced search for agent ${agentId}`);
+        console.log(`📊 Search query:`, searchQuery.text ? `"${searchQuery.text}"` : 'filters only');
+        console.log(`📈 Search options:`, searchQuery.options || 'default');
+
+        // Convert StoredMemory to Memory format for advanced search
+        const memoriesToSearch = agentMemories.map(memory => ({
+            id: memory.id,
+            agentId: memory.agentId,
+            content: memory.content,
+            structuredKey: memory.structuredKey,
+            timestamp: memory.timestamp,
+            importance: memory.metadata.importance || 5,
+            entityType: memory.metadata.entityType || 'general',
+            project: memory.metadata.project,
+            session: memory.metadata.session,
+            tags: memory.metadata.tags || [],
+            embeddings: memory.embeddings
+        }));
+
+        // Update the advanced search engine with current memories
+        this.advancedSearch.updateMemories(memoriesToSearch);
+
+        // Perform the search
+        const result = await this.advancedSearch.search(searchQuery);
+
+        console.log(`✅ Advanced search completed: ${result.results.length} results in ${result.searchTime}ms`);
+
+        return result;
+    }
+
+    /**
+     * Advanced search with fluent query builder
+     */
+    async searchWithBuilder(
+        agentId: string,
+        builderFn: (builder: SearchQueryBuilder) => SearchQueryBuilder
+    ): Promise<SearchResponse> {
+        const builder = createSearchQuery();
+        const query = builderFn(builder).build();
+        return this.performAdvancedSearch(agentId, query);
+    }
+
+    /**
+     * Quick search using predefined templates
+     */
+    async quickSearch(
+        agentId: string,
+        searchText: string,
+        template: 'recent' | 'important' | 'semantic' | 'fuzzy' | 'comprehensive' | 'quick' = 'quick'
+    ): Promise<SearchResponse> {
+        let builder: SearchQueryBuilder;
+
+        switch (template) {
+            case 'recent':
+                builder = SearchTemplates.recent(searchText);
+                break;
+            case 'important':
+                builder = SearchTemplates.important(searchText);
+                break;
+            case 'semantic':
+                builder = SearchTemplates.semantic(searchText);
+                break;
+            case 'fuzzy':
+                builder = SearchTemplates.fuzzy(searchText);
+                break;
+            case 'comprehensive':
+                builder = SearchTemplates.comprehensive(searchText);
+                break;
+            case 'quick':
+            default:
+                builder = SearchTemplates.quick(searchText);
+                break;
+        }
+
+        return this.searchWithBuilder(agentId, () => builder);
+    }
+
+    /**
+     * Search within a specific project
+     */
+    async searchProject(
+        agentId: string,
+        projectName: string,
+        searchText?: string
+    ): Promise<SearchResponse> {
+        const builder = SearchTemplates.project(projectName, searchText);
+        return this.searchWithBuilder(agentId, () => builder);
+    }
+
+    /**
+     * Get search suggestions for auto-completion
+     */
+    async getSearchSuggestions(
+        agentId: string,
+        query: string,
+        maxSuggestions: number = 10
+    ): Promise<Array<{ text: string; type: string; confidence: number }>> {
+        const agentMemories = this.memories.get(agentId) || [];
+
+        // Update the advanced search engine with current memories
+        const memoriesToSearch = agentMemories.map(memory => ({
+            id: memory.id,
+            agentId: memory.agentId,
+            content: memory.content,
+            structuredKey: memory.structuredKey,
+            timestamp: memory.timestamp,
+            importance: memory.metadata.importance || 5,
+            entityType: memory.metadata.entityType || 'general',
+            project: memory.metadata.project,
+            session: memory.metadata.session,
+            tags: memory.metadata.tags || [],
+            embeddings: memory.embeddings
+        }));
+
+        this.advancedSearch.updateMemories(memoriesToSearch);
+
+        return this.advancedSearch.getSuggestions(query, maxSuggestions);
+    }
+
+    /**
+     * Search across multiple agents with permission checking
+     */
+    async crossAgentAdvancedSearch(
+        requestingAgent: string,
+        targetAgents: string[],
+        searchQuery: SearchQuery
+    ): Promise<SearchResponse> {
+        console.log(`🔄 Cross-agent advanced search: ${requestingAgent} → [${targetAgents.join(', ')}]`);
+
+        const allResults: SearchResult[] = [];
+        let totalSearchTime = 0;
+        let totalCount = 0;
+
+        for (const targetAgent of targetAgents) {
+            // Check if we have permission to search this agent's memories
+            const hasPermission = await this.permissions.checkCrossAgentAccess({
+                requestingAgent,
+                targetAgent,
+                operation: 'search',
+                resourceId: 'memories'
+            });
+
+            if (hasPermission.granted) {
+                const agentResult = await this.performAdvancedSearch(targetAgent, searchQuery);
+
+                // Mark results as cross-agent
+                agentResult.results.forEach(result => {
+                    (result as any).crossAgent = true;
+                    (result as any).sourceAgent = targetAgent;
+                });
+
+                allResults.push(...agentResult.results);
+                totalSearchTime += agentResult.searchTime;
+                totalCount += agentResult.totalCount;
+
+                console.log(`✅ Searched ${targetAgent}: ${agentResult.results.length} results`);
+            } else {
+                console.log(`❌ Access denied to ${targetAgent}: ${hasPermission.reason}`);
+            }
+        }
+
+        // Sort combined results by score
+        allResults.sort((a, b) => b.score - a.score);
+
+        // Apply pagination if specified in options
+        const limit = searchQuery.options?.limit || 20;
+        const offset = searchQuery.options?.offset || 0;
+        const paginatedResults = allResults.slice(offset, offset + limit);
+
+        return {
+            results: paginatedResults,
+            totalCount,
+            searchTime: totalSearchTime,
+            query: searchQuery,
+            suggestions: [], // Could aggregate suggestions from all agents
+            aggregations: {
+                byAgent: {},
+                byProject: {},
+                byTimeRange: {},
+                byImportance: {},
+                byEntityType: {}
             }
         };
     }
@@ -877,6 +1149,400 @@ export class EnhancedMemoryStore {
             const scoreB = (b.relevanceScore || 0) + ((b.metadata.importance || 5) / 100);
             return scoreB - scoreA;
         }).slice(0, options.limit || 10);
+    }
+
+    /**
+     * US-MEM-009: Memory Lifecycle Management Methods
+     * TTL management, archiving strategies, cleanup policies, retention rules
+     */
+
+    /**
+     * Create lifecycle policy for automated memory management
+     */
+    async createLifecyclePolicy(policy: Omit<MemoryLifecyclePolicy, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+        return await this.lifecycleManager.createPolicy(policy);
+    }
+
+    /**
+     * Update existing lifecycle policy
+     */
+    async updateLifecyclePolicy(id: string, updates: Partial<MemoryLifecyclePolicy>): Promise<void> {
+        await this.lifecycleManager.updatePolicy(id, updates);
+    }
+
+    /**
+     * Delete lifecycle policy
+     */
+    async deleteLifecyclePolicy(id: string): Promise<void> {
+        await this.lifecycleManager.deletePolicy(id);
+    }
+
+    /**
+     * Get all lifecycle policies
+     */
+    getLifecyclePolicies(): MemoryLifecyclePolicy[] {
+        return this.lifecycleManager.getPolicies();
+    }
+
+    /**
+     * Apply lifecycle policies to agent's memories
+     */
+    async applyLifecyclePolicies(agentId: string, dryRun: boolean = false): Promise<{
+        processed: number;
+        archived: number;
+        deleted: number;
+        errors: Array<{ memoryId: string; error: string }>;
+    }> {
+        return await this.lifecycleManager.applyPolicies(agentId, dryRun);
+    }
+
+    /**
+     * Create archive strategy
+     */
+    createArchiveStrategy(strategy: ArchiveStrategy): void {
+        this.lifecycleManager.createArchiveStrategy(strategy);
+    }
+
+    /**
+     * Archive specific memory
+     */
+    async archiveMemory(memoryId: string, strategyId?: string): Promise<void> {
+        await this.lifecycleManager.archiveMemory(memoryId, strategyId);
+    }
+
+    /**
+     * Create retention rule
+     */
+    createRetentionRule(rule: RetentionRule): void {
+        this.lifecycleManager.createRetentionRule(rule);
+    }
+
+    /**
+     * Apply retention rules to agent's memories
+     */
+    async applyRetentionRules(agentId: string): Promise<{
+        processed: number;
+        retained: number;
+        archived: number;
+        deleted: number;
+    }> {
+        return await this.lifecycleManager.applyRetentionRules(agentId);
+    }
+
+    /**
+     * Start batch cleanup operation
+     */
+    async startBatchCleanup(agentId: string, options: {
+        maxAge?: number;
+        minImportance?: number;
+        entityTypes?: string[];
+        dryRun?: boolean;
+    } = {}): Promise<string> {
+        return await this.lifecycleManager.startBatchCleanup(agentId, options);
+    }
+
+    /**
+     * Get batch operation status
+     */
+    getBatchOperationStatus(operationId: string) {
+        return this.lifecycleManager.getBatchOperationStatus(operationId);
+    }
+
+    /**
+     * Get lifecycle statistics for agent
+     */
+    async getLifecycleStats(agentId: string): Promise<LifecycleStats> {
+        return await this.lifecycleManager.getLifecycleStats(agentId);
+    }
+
+    /**
+     * Get lifecycle events
+     */
+    getLifecycleEvents(agentId?: string, limit: number = 100, offset: number = 0) {
+        return this.lifecycleManager.getLifecycleEvents(agentId, limit, offset);
+    }
+
+    /**
+     * Helper methods for lifecycle manager to access memory store operations
+     */
+    async getAllMemories(agentId: string): Promise<StoredMemory[]> {
+        return this.memories.get(agentId) || [];
+    }
+
+    async getMemory(memoryId: string): Promise<StoredMemory | null> {
+        for (const memories of this.memories.values()) {
+            const memory = memories.find(m => m.id === memoryId);
+            if (memory) return memory;
+        }
+        return null;
+    }
+
+    async updateMemory(memoryId: string, updates: Partial<StoredMemory>): Promise<void> {
+        for (const [agentId, memories] of this.memories.entries()) {
+            const index = memories.findIndex(m => m.id === memoryId);
+            if (index !== -1) {
+                memories[index] = { ...memories[index], ...updates };
+                this.memories.set(agentId, memories);
+
+                // Update persistent store if available
+                if (this.persistentStore) {
+                    await this.persistentStore.updateMemory(memoryId, updates);
+                }
+                return;
+            }
+        }
+        throw new Error(`Memory ${memoryId} not found`);
+    }
+
+    async deleteMemory(memoryId: string): Promise<void> {
+        for (const [agentId, memories] of this.memories.entries()) {
+            const index = memories.findIndex(m => m.id === memoryId);
+            if (index !== -1) {
+                memories.splice(index, 1);
+                this.memories.set(agentId, memories);
+
+                // Delete from persistent store if available
+                if (this.persistentStore) {
+                    await this.persistentStore.deleteMemory(memoryId);
+                }
+                return;
+            }
+        }
+        throw new Error(`Memory ${memoryId} not found`);
+    }
+
+    /**
+     * PERFORMANCE OPTIMIZATION METHODS (US-MEM-010)
+     */
+
+    /**
+     * Get cached memory if available
+     */
+    async getCachedMemory<T = any>(key: string): Promise<T | null> {
+        if (!this.performanceCache) return null;
+        return await this.performanceCache.get<T>(key);
+    }
+
+    /**
+     * Set cached memory with TTL
+     */
+    async setCachedMemory<T = any>(key: string, value: T, ttl?: number): Promise<void> {
+        if (!this.performanceCache) return;
+        await this.performanceCache.set(key, value, ttl);
+    }
+
+    /**
+     * Batch get multiple cached memories
+     */
+    async batchGetCachedMemories<T = any>(keys: string[]): Promise<Map<string, T | null>> {
+        if (!this.performanceCache) {
+            return new Map(keys.map(key => [key, null]));
+        }
+        return await this.performanceCache.mget<T>(keys);
+    }
+
+    /**
+     * Batch set multiple cached memories
+     */
+    async batchSetCachedMemories<T = any>(entries: Array<{ key: string, value: T, ttl?: number }>): Promise<void> {
+        if (!this.performanceCache) return;
+        await this.performanceCache.mset(entries);
+    }
+
+    /**
+     * Lazy load memories with caching
+     */
+    async lazyLoadMemories<T = any>(
+        dataKey: string,
+        loader: () => Promise<T[]>,
+        options?: { offset?: number; limit?: number }
+    ) {
+        if (!this.lazyLoader) {
+            // Fallback to direct loading
+            const data = await loader();
+            const offset = options?.offset || 0;
+            const limit = options?.limit || 10;
+
+            return {
+                data: data.slice(offset, offset + limit),
+                hasMore: offset + limit < data.length,
+                totalCount: data.length,
+                fromCache: false,
+                loadTime: 0
+            };
+        }
+
+        return await this.lazyLoader.lazyLoad(dataKey, loader, options);
+    }
+
+    /**
+     * Warm cache with recent memories
+     */
+    async warmMemoryCache(strategy: 'recent' | 'popular' | 'critical' = 'recent'): Promise<void> {
+        if (!this.performanceCache) return;
+
+        const allMemories: any[] = [];
+
+        for (const [agentId, memories] of this.memories.entries()) {
+            const enrichedMemories = memories.map(memory => ({
+                ...memory,
+                agentId,
+                accessCount: (memory.metadata as any)?.accessCount || 0,
+                importance: memory.metadata.importance || 5
+            }));
+
+            allMemories.push(...enrichedMemories);
+        }
+
+        await this.performanceCache.warmCache(strategy, allMemories);
+    }
+
+    /**
+     * Get performance metrics
+     */
+    getPerformanceMetrics() {
+        const metrics: any = {};
+
+        if (this.performanceCache) {
+            metrics.cache = this.performanceCache.getMetrics();
+        }
+
+        if (this.connectionPool) {
+            metrics.connections = this.connectionPool.getMetrics();
+        }
+
+        metrics.memoryStore = {
+            totalAgents: this.memories.size,
+            totalMemories: Array.from(this.memories.values()).reduce((sum, memories) => sum + memories.length, 0),
+            embeddingsCount: this.embeddings.size
+        };
+
+        return metrics;
+    }
+
+    /**
+     * Perform system health check including performance components
+     */
+    async performanceHealthCheck() {
+        const health = {
+            memoryStore: true,
+            cache: false,
+            connections: false,
+            lazyLoading: false,
+            metrics: {}
+        };
+
+        if (this.performanceCache) {
+            const cacheHealth = await this.performanceCache.healthCheck();
+            health.cache = cacheHealth.redis && cacheHealth.localCache;
+        }
+
+        if (this.connectionPool) {
+            const connectionMetrics = this.connectionPool.getMetrics();
+            health.connections = connectionMetrics.total > 0;
+        }
+
+        health.lazyLoading = !!this.lazyLoader;
+        health.metrics = this.getPerformanceMetrics();
+
+        return health;
+    }
+
+    /**
+     * Clear performance cache
+     */
+    async clearPerformanceCache(): Promise<void> {
+        if (!this.performanceCache) return;
+        await this.performanceCache.clear();
+    }
+
+    /**
+     * Optimize memory recall with caching
+     */
+    async optimizedRecall(agentId: string, query: string, options: SearchOptions = {}): Promise<ScoredMemory[]> {
+        const cacheKey = `recall:${agentId}:${JSON.stringify({ query, options })}`;
+
+        // Try cache first
+        const cached = await this.getCachedMemory<ScoredMemory[]>(cacheKey);
+        if (cached) {
+            console.log(`✅ Cache hit for recall: ${query.substring(0, 30)}...`);
+            return cached;
+        }
+
+        // Fallback to regular recall
+        const results = await this.recall(agentId, query, options);
+
+        // Cache results for 5 minutes
+        await this.setCachedMemory(cacheKey, results, 300);
+
+        console.log(`✅ Cached recall results: ${query.substring(0, 30)}...`);
+        return results;
+    }
+
+    /**
+     * Batch optimized recall for multiple queries
+     */
+    async batchOptimizedRecall(requests: Array<{ agentId: string, query: string, options?: SearchOptions }>): Promise<ScoredMemory[][]> {
+        const cacheKeys = requests.map(req =>
+            `recall:${req.agentId}:${JSON.stringify({ query: req.query, options: req.options || {} })}`
+        );
+
+        // Check cache for all requests
+        const cachedResults = await this.batchGetCachedMemories<ScoredMemory[]>(cacheKeys);
+
+        const results: ScoredMemory[][] = [];
+        const uncachedRequests: Array<{ index: number, request: typeof requests[0] }> = [];
+
+        // Process cached and identify uncached requests
+        for (let i = 0; i < requests.length; i++) {
+            const cached = cachedResults.get(cacheKeys[i]);
+            if (cached) {
+                results[i] = cached;
+            } else {
+                uncachedRequests.push({ index: i, request: requests[i] });
+            }
+        }
+
+        // Process uncached requests
+        if (uncachedRequests.length > 0) {
+            const uncachedResults = await Promise.all(
+                uncachedRequests.map(({ request }) =>
+                    this.recall(request.agentId, request.query, request.options || {})
+                )
+            );
+
+            // Cache results and populate final results
+            const cacheEntries = uncachedRequests.map(({ index, request }, i) => ({
+                key: cacheKeys[index],
+                value: uncachedResults[i],
+                ttl: 300
+            }));
+
+            await this.batchSetCachedMemories(cacheEntries);
+
+            // Fill in results
+            uncachedRequests.forEach(({ index }, i) => {
+                results[index] = uncachedResults[i];
+            });
+        }
+
+        return results;
+    }
+
+    /**
+     * Dispose of lifecycle resources and performance components
+     */
+    async dispose(): Promise<void> {
+        await this.lifecycleManager.dispose();
+
+        // Dispose performance components
+        if (this.performanceCache) {
+            await this.performanceCache.dispose();
+        }
+
+        if (this.connectionPool) {
+            await this.connectionPool.dispose();
+        }
     }
 }
 

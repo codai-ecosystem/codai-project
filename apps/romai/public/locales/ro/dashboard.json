@@ -1,0 +1,62 @@
+{
+  "title": "Tablou de Bord RomAI AGI",
+  "subtitle": "Sistem Avansat de Inteligență Românească",
+  "welcome_message": "Bine ați venit la platforma RomAI AGI",
+  "system_status": "Starea Sistemului",
+  "metrics": {
+    "consciousness_level": "Nivel de Conștiință",
+    "reasoning_accuracy": "Precizia Raționamentului",
+    "learning_rate": "Rata de Învățare",
+    "response_time": "Timp de Răspuns",
+    "memory_usage": "Utilizarea Memoriei",
+    "romanian_alignment": "Alinierea Românească"
+  },
+  "romanian_intelligence": {
+    "title": "Capabilități de Inteligență Românească",
+    "language_accuracy": "Precizia Limbajului",
+    "cultural_understanding": "Înțelegerea Culturală",
+    "historical_knowledge": "Cunoștințele Istorice",
+    "dialectal_awareness": "Conștientizarea Dialectală",
+    "tradition_recognition": "Recunoașterea Tradițiilor",
+    "formal_speech": "Vorbirea Formală"
+  },
+  "quick_actions": {
+    "title": "Acțiuni Rapide",
+    "start_training": "Începe Antrenamentul",
+    "chat_interface": "Interfața de Chat",
+    "analytics": "Analize",
+    "settings": "Setări"
+  },
+  "system_components": {
+    "model_server": "Server Model",
+    "model_loaded": "Model Încărcat",
+    "gpu_available": "GPU Disponibil",
+    "neural_quantum_bridge": "Podul Neural-Cuantic",
+    "consciousness_engine": "Motorul de Conștiință",
+    "romanian_processor": "Procesorul Românesc"
+  },
+  "live_activity": {
+    "title": "Activitate Live",
+    "consciousness_increased": "Nivelul de conștiință a crescut la {{percent}}%",
+    "cultural_analysis_completed": "Analiza culturală românească completă",
+    "learning_pattern_recognized": "Model nou de învățare recunoscut",
+    "memory_optimization_completed": "Optimizarea memoriei completă",
+    "neural_quantum_bridge_calibrated": "Podul Neural-Cuantic calibrat"
+  },
+  "system_info": {
+    "title": "Informații Sistem",
+    "version": "Versiunea",
+    "model": "Model",
+    "gpu": "GPU",
+    "memory": "Memorie",
+    "uptime": "Timp de funcționare"
+  },
+  "status_indicators": {
+    "online": "Conectat",
+    "offline": "Deconectat",
+    "active": "Activ",
+    "inactive": "Inactiv",
+    "healthy": "Sănătos",
+    "unhealthy": "Problematic"
+  }
+}

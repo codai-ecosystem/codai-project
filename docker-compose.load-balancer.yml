@@ -1,0 +1,341 @@
+# RomAI Load Balancer Docker Compose Configuration
+# Phase 3E: Load Balancing & Scalability Implementation
+
+version: '3.9'
+
+services:
+  # Nginx Load Balancer
+  romai-load-balancer:
+    image: nginx:1.25-alpine
+    container_name: romai-load-balancer
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Status page
+    volumes:
+      - ./nginx/romai-load-balancer.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/romai-locations.conf:/etc/nginx/conf.d/romai-locations.conf:ro
+      - ./ssl:/etc/ssl:ro
+      - nginx_cache:/var/cache/nginx
+      - nginx_logs:/var/log/nginx
+    environment:
+      - NGINX_WORKER_PROCESSES=auto
+      - NGINX_WORKER_CONNECTIONS=4096
+    depends_on:
+      - romai-agi-1
+      - romai-agi-2
+      - romai-enterprise-1
+      - static-content-1
+    networks:
+      - romai_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "com.romai.service=load-balancer"
+      - "com.romai.environment=production"
+
+  # RomAI AGI Application Instances
+  romai-agi-1:
+    build:
+      context: .
+      dockerfile: Dockerfile.romai-production
+    container_name: romai-agi-1
+    restart: unless-stopped
+    environment:
+      - ROMAI_AGI_PORT=6101
+      - ROMAI_AGI_HOST=0.0.0.0
+      - ROMAI_ENV=production
+      - ROMAI_INSTANCE_ID=agi-1
+      - ROMAI_LOG_LEVEL=INFO
+      - QUANTUM_ENABLED=true
+      - CONSCIOUSNESS_ENGINE=true
+      - ADVANCED_CAPABILITIES_ENABLED=true
+    env_file:
+      - .env.romai.production
+    networks:
+      - romai_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    resources:
+      limits:
+        cpus: '2.0'
+        memory: 4G
+      reservations:
+        cpus: '1.0'
+        memory: 2G
+    labels:
+      - "com.romai.service=agi-backend"
+      - "com.romai.instance=1"
+
+  romai-agi-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.romai-production
+    container_name: romai-agi-2
+    restart: unless-stopped
+    environment:
+      - ROMAI_AGI_PORT=6101
+      - ROMAI_AGI_HOST=0.0.0.0
+      - ROMAI_ENV=production
+      - ROMAI_INSTANCE_ID=agi-2
+      - ROMAI_LOG_LEVEL=INFO
+      - QUANTUM_ENABLED=true
+      - CONSCIOUSNESS_ENGINE=true
+      - ADVANCED_CAPABILITIES_ENABLED=true
+    env_file:
+      - .env.romai.production
+    networks:
+      - romai_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    resources:
+      limits:
+        cpus: '2.0'
+        memory: 4G
+      reservations:
+        cpus: '1.0'
+        memory: 2G
+    labels:
+      - "com.romai.service=agi-backend"
+      - "com.romai.instance=2"
+
+  romai-agi-3:
+    build:
+      context: .
+      dockerfile: Dockerfile.romai-production
+    container_name: romai-agi-3
+    restart: unless-stopped
+    environment:
+      - ROMAI_AGI_PORT=6101
+      - ROMAI_AGI_HOST=0.0.0.0
+      - ROMAI_ENV=production
+      - ROMAI_INSTANCE_ID=agi-3
+      - ROMAI_LOG_LEVEL=INFO
+      - QUANTUM_ENABLED=true
+      - CONSCIOUSNESS_ENGINE=true
+      - ADVANCED_CAPABILITIES_ENABLED=true
+    env_file:
+      - .env.romai.production
+    networks:
+      - romai_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    resources:
+      limits:
+        cpus: '1.5'
+        memory: 3G
+      reservations:
+        cpus: '0.5'
+        memory: 1.5G
+    labels:
+      - "com.romai.service=agi-backend"
+      - "com.romai.instance=3"
+
+  # RomAI Enterprise API Instances
+  romai-enterprise-1:
+    build:
+      context: .
+      dockerfile: Dockerfile.romai-production
+      target: enterprise-api
+    container_name: romai-enterprise-1
+    restart: unless-stopped
+    command: ["python", "-m", "uvicorn", "api.enterprise.api_platform:app", "--host", "0.0.0.0", "--port", "8001"]
+    environment:
+      - ENTERPRISE_API_PORT=8001
+      - ROMAI_ENV=production
+      - ROMAI_INSTANCE_ID=enterprise-1
+      - ROMAI_AGI_BASE_URL=http://romai-agi-1:6101
+      - COMPLIANCE_MODE=eu_ai_act
+      - AUDIT_ENABLED=true
+    env_file:
+      - .env.romai.production
+    networks:
+      - romai_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+    resources:
+      limits:
+        cpus: '1.0'
+        memory: 2G
+      reservations:
+        cpus: '0.5'
+        memory: 1G
+    labels:
+      - "com.romai.service=enterprise-api"
+      - "com.romai.instance=1"
+
+  romai-enterprise-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.romai-production
+      target: enterprise-api
+    container_name: romai-enterprise-2
+    restart: unless-stopped
+    command: ["python", "-m", "uvicorn", "api.enterprise.api_platform:app", "--host", "0.0.0.0", "--port", "8001"]
+    environment:
+      - ENTERPRISE_API_PORT=8001
+      - ROMAI_ENV=production
+      - ROMAI_INSTANCE_ID=enterprise-2
+      - ROMAI_AGI_BASE_URL=http://romai-agi-2:6101
+      - COMPLIANCE_MODE=eu_ai_act
+      - AUDIT_ENABLED=true
+    env_file:
+      - .env.romai.production
+    networks:
+      - romai_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+    resources:
+      limits:
+        cpus: '1.0'
+        memory: 2G
+      reservations:
+        cpus: '0.5'
+        memory: 1G
+    labels:
+      - "com.romai.service=enterprise-api"
+      - "com.romai.instance=2"
+
+  # Static Content Server
+  static-content-1:
+    image: nginx:1.25-alpine
+    container_name: static-content-1
+    restart: unless-stopped
+    volumes:
+      - ./static:/usr/share/nginx/html:ro
+      - ./nginx/static.conf:/etc/nginx/conf.d/default.conf:ro
+    environment:
+      - NGINX_HOST=static-content-1
+      - NGINX_PORT=80
+    networks:
+      - romai_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 2
+    labels:
+      - "com.romai.service=static-content"
+
+  static-content-2:
+    image: nginx:1.25-alpine
+    container_name: static-content-2
+    restart: unless-stopped
+    volumes:
+      - ./static:/usr/share/nginx/html:ro
+      - ./nginx/static.conf:/etc/nginx/conf.d/default.conf:ro
+    environment:
+      - NGINX_HOST=static-content-2
+      - NGINX_PORT=80
+    networks:
+      - romai_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 2
+    labels:
+      - "com.romai.service=static-content"
+
+  # Auto-scaling backup instances (can be scaled)
+  romai-agi-4:
+    build:
+      context: .
+      dockerfile: Dockerfile.romai-production
+    container_name: romai-agi-4
+    restart: unless-stopped
+    environment:
+      - ROMAI_AGI_PORT=6101
+      - ROMAI_AGI_HOST=0.0.0.0
+      - ROMAI_ENV=production
+      - ROMAI_INSTANCE_ID=agi-4-backup
+      - ROMAI_LOG_LEVEL=INFO
+      - QUANTUM_ENABLED=true
+      - CONSCIOUSNESS_ENGINE=true
+      - ADVANCED_CAPABILITIES_ENABLED=true
+    env_file:
+      - .env.romai.production
+    networks:
+      - romai_network
+    deploy:
+      replicas: 0  # Starts as backup, can be scaled up
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 45s
+      timeout: 10s
+      retries: 2
+      start_period: 90s
+    labels:
+      - "com.romai.service=agi-backend"
+      - "com.romai.instance=4"
+      - "com.romai.role=backup"
+
+  # Load Testing and Monitoring
+  load-balancer-monitor:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: romai-lb-monitor
+    restart: unless-stopped
+    command:
+      - '--nginx.scrape-uri=http://romai-load-balancer:8080/nginx_status'
+      - '--web.listen-address=:9113'
+    ports:
+      - "9113:9113"
+    networks:
+      - romai_network
+    depends_on:
+      - romai-load-balancer
+    labels:
+      - "com.romai.service=monitoring"
+      - "com.romai.component=load-balancer-exporter"
+
+networks:
+  romai_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+    labels:
+      - "com.romai.network=production"
+
+volumes:
+  nginx_cache:
+    driver: local
+    labels:
+      - "com.romai.volume=nginx-cache"
+  
+  nginx_logs:
+    driver: local
+    labels:
+      - "com.romai.volume=nginx-logs"

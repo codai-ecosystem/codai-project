@@ -3,6 +3,8 @@
 import { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { useSearchMemories, useDeleteMemory } from '@/lib/api'
+import { useAgentId } from '@/lib/hooks/useSession'
+import { useToast } from '@/lib/providers/toast.provider'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { CreateMemoryForm } from './CreateMemoryForm'
@@ -15,6 +17,8 @@ import type { Memory } from '@/lib/api'
 
 export function MemoriesPage() {
   const t = useTranslations('memories.page')
+  const agentId = useAgentId()
+  const { showToast } = useToast()
   
   // State management
   const [filters, setFilters] = useState<MemoryFilters>({
@@ -28,14 +32,14 @@ export function MemoriesPage() {
   
   // API hooks
   const searchParams = useMemo(() => ({
-    agentId: 'default-agent', // TODO: Get from session context
+    agentId: agentId || 'anonymous', // Use actual session agent ID or fallback
     query: searchQuery || filters.query || '*',
     limit: 20,
     minImportance: filters.importance?.min || 0,
     project: filters.project,
     session: filters.session,
     includeOtherAgents: false,
-  }), [searchQuery, filters])
+  }), [searchQuery, filters, agentId])
   
   const {
     data: searchResults,
@@ -60,14 +64,22 @@ export function MemoriesPage() {
   const handleCreateSuccess = useCallback((_memory: Memory) => {
     setShowCreateForm(false)
     refetchSearch()
-    // TODO: Add toast notification
-  }, [refetchSearch])
+    showToast({
+      type: 'success',
+      title: t('actions.create.success.title'),
+      description: t('actions.create.success.description')
+    })
+  }, [refetchSearch, showToast, t])
 
   const handleEditSuccess = useCallback((_memory: Memory) => {
     setEditingMemory(null)
     refetchSearch()
-    // TODO: Add toast notification
-  }, [refetchSearch])
+    showToast({
+      type: 'success',
+      title: t('actions.edit.success.title'), 
+      description: t('actions.edit.success.description')
+    })
+  }, [refetchSearch, showToast, t])
 
   const handleEdit = useCallback((memory: Memory) => {
     setEditingMemory(memory)
@@ -77,12 +89,21 @@ export function MemoriesPage() {
     deleteMemoryMutation.mutateAsync(memoryId)
       .then(() => {
         refetchSearch()
-        // TODO: Add toast notification
+        showToast({
+          type: 'success',
+          title: t('actions.delete.success.title'),
+          description: t('actions.delete.success.description')
+        })
       })
       .catch((error) => {
         console.error('Failed to delete memory:', error)
+        showToast({
+          type: 'error',
+          title: t('actions.delete.error.title'),
+          description: t('actions.delete.error.description')
+        })
       })
-  }, [deleteMemoryMutation, refetchSearch])
+  }, [deleteMemoryMutation, refetchSearch, showToast, t])
 
   const handleCancelCreate = useCallback(() => {
     setShowCreateForm(false)

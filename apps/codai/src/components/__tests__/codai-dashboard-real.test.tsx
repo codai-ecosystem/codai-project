@@ -12,43 +12,36 @@ import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 import Dashboard from '../Dashboard';
 
-// Real CODAI Dashboard Test Component with authentic functionality
-const CodaiDashboardTestWrapper = () => {
-    const [projects, setProjects] = React.useState([
-        {
-            id: '1',
-            name: 'AI Chat Application',
-            description: 'Modern chat interface with AI capabilities',
-            status: 'active' as const,
-            progress: 75,
-            members: 4,
-            updatedAt: new Date('2025-01-15')
-        },
-        {
-            id: '2',
-            name: 'Data Analytics Platform',
-            description: 'Real-time data processing and visualization',
-            status: 'completed' as const,
-            progress: 100,
-            members: 6,
-            updatedAt: new Date('2025-01-20')
-        },
-        {
-            id: '3',
-            name: 'E-commerce Integration',
-            description: 'Seamless payment processing system',
-            status: 'paused' as const,
-            progress: 45,
-            members: 2,
-            updatedAt: new Date('2025-01-18')
-        }
-    ]);
-
-    const [newProjectCount, setNewProjectCount] = React.useState(0);
-    const [lastClickedProject, setLastClickedProject] = React.useState<string | null>(null);
-
-    const handleCreateProject = () => {
-        const newProject = {
+// Mock data for real testing
+const mockProjects = [
+    {
+        id: '1',
+        name: 'AI Chat Application',
+        description: 'Modern chat interface with AI capabilities',
+        status: 'active' as const,
+        progress: 75,
+        members: 4,
+        updatedAt: new Date('2025-01-15')
+    },
+    {
+        id: '2',
+        name: 'Data Analytics Platform',
+        description: 'Real-time data processing and visualization',
+        status: 'completed' as const,
+        progress: 100,
+        members: 6,
+        updatedAt: new Date('2025-01-20')
+    },
+    {
+        id: '3',
+        name: 'E-commerce Integration',
+        description: 'Seamless payment processing system',
+        status: 'paused' as const,
+        progress: 45,
+        members: 2,
+        updatedAt: new Date('2025-01-18')
+    }
+];
             id: `new-${Date.now()}`,
             name: `New Project ${newProjectCount + 1}`,
             description: 'Automatically created project for testing',

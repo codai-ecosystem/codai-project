@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import { ThemeProvider } from './theme/ThemeProvider';
+import { ToastProvider } from '@/lib/providers/toast.provider';
 
 interface ProvidersProps {
     children: ReactNode;
@@ -10,7 +11,9 @@ interface ProvidersProps {
 export default function Providers({ children }: ProvidersProps) {
     return (
         <ThemeProvider defaultTheme="system" storageKey="memorai-theme">
-            {children}
+            <ToastProvider>
+                {children}
+            </ToastProvider>
         </ThemeProvider>
     );
 }

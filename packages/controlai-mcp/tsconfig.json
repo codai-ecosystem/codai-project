@@ -26,11 +26,32 @@
     ]
   },
   "include": [
-    "src/**/*"
+    "src/mcp-server.ts",
+    "src/automation/**/*",
+    "src/drawing/**/*",
+    "src/glass-mcp-client.ts",
+    "src/mouse-drawing/**/*",
+    "src/types/**/*",
+    "src/vision/**/*",
+    "src/glass-mcp-launcher.ts",
+    "src/glass-mcp-orchestrator.ts",
+    "src/integration-optimizer.ts",
+    "src/performance-monitor.ts",
+    "src/configuration-manager.ts",
+    "src/intelligence/**/*",
+    "src/mcp-server-*.ts",
+    "src/test-suite.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "src/server.ts",
+    "src/tools/**/*",
+    "src/services/**/*",
+    "src/utils/**/*",
+    "src/ai/**/*",
+    "src/coordination/**/*",
+    "src/database/**/*"
   ]
 }

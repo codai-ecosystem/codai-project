@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { useUpdateMemory } from '@/lib/api/hooks'
+import { useToast } from '@/lib/providers/toast.provider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -21,6 +22,7 @@ interface EditMemoryFormProps {
 
 export function EditMemoryForm({ memory, onSuccess, onCancel }: EditMemoryFormProps) {
   const t = useTranslations('memories.edit')
+  const { showToast } = useToast()
   const updateMemoryMutation = useUpdateMemory()
   
   const [formData, setFormData] = useState<UpdateMemory>({
@@ -83,9 +85,19 @@ export function EditMemoryForm({ memory, onSuccess, onCancel }: EditMemoryFormPr
           }
         }
       })
+      showToast({
+        type: 'success',
+        title: t('success.title'),
+        description: t('success.description')
+      })
       onSuccess?.(updatedMemory)
     } catch (error) {
       console.error('Failed to update memory:', error)
+      showToast({
+        type: 'error',
+        title: t('error.title'),
+        description: t('error.description')
+      })
     }
   }
 

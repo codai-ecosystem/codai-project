@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { useCreateMemory } from '@/lib/api'
+import { useAgentId } from '@/lib/hooks/useSession'
+import { useToast } from '@/lib/providers/toast.provider'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -20,10 +22,12 @@ interface CreateMemoryFormProps {
 export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps) {
   const t = useTranslations('memories.create')
   const vt = useTranslations('memories.create.validation')  // Add validation translations
+  const agentId = useAgentId()
+  const { showToast } = useToast()
   const createMemoryMutation = useCreateMemory()
   
   const [formData, setFormData] = useState<CreateMemory>({
-    agentId: 'default-agent', // TODO: Get from session context
+    agentId: agentId || 'anonymous', // Use actual session agent ID or fallback
     content: '',
     metadata: {
       importance: 5,

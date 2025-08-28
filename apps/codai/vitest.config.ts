@@ -13,7 +13,7 @@ export default defineConfig({
     test: {
         name: 'codai-real-tests',
         environment: 'jsdom',
-        // setupFiles: ['../../tests/setup.ts'], // Commented out for self-contained testing
+        setupFiles: ['./vitest.setup.ts'], // Enable proper React test setup
         globals: true,
 
         // Coverage settings for world-class standards

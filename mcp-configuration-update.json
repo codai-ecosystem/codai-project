@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "glass-mcp": {
+      "command": "npx",
+      "args": ["@codai/glass-mcp@2.1.0"],
+      "description": "Glass MCP - AI-powered project management server (formerly ControlAI MCP)",
+      "env": {
+        "GLASS_MCP_PORT": "7001",
+        "GLASS_MCP_MODE": "project-management"
+      }
+    },
+    "controlai-mcp": {
+      "command": "npx", 
+      "args": ["@codai/controlai-mcp@2.1.0"],
+      "description": "ControlAI MCP - UI automation, visual intelligence, and screen control server with consolidated vision capabilities",
+      "env": {
+        "CONTROLAI_MCP_PORT": "7002", 
+        "CONTROLAI_MCP_MODE": "ui-automation"
+      }
+    },
+    "memorai-mcp": {
+      "command": "npx",
+      "args": ["@codai/memorai-mcp@latest"],
+      "description": "MemorAI MCP - Advanced memory management and context preservation"
+    },
+    "cautai-mcp": {
+      "command": "npx", 
+      "args": ["@codai/cautai-mcp@latest"],
+      "description": "CAUTAI MCP - Web search and information retrieval server"
+    }
+  }
+}
